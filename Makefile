@@ -22,7 +22,8 @@
 .PHONY: make
 make:
 	git update-index --assume-unchanged custom_tlds.txt
-	#pip install mysql
+	#yum install -y perl-DBD-MySQL
+	pip install MySQL-python
 	pip install coveralls
 
 .PHONY: test
