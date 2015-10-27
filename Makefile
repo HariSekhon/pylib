@@ -23,6 +23,7 @@
 make:
 	git update-index --assume-unchanged custom_tlds.txt
 	#pip install mysql
+	pip install coveralls
 
 .PHONY: test
 test:
