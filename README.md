@@ -36,4 +36,4 @@ The following are more my main libraries
 Repos using this library:
 
 * [Advanced Nagios Plugins Collection](https://github.com/harisekhon/nagios-plugins) - 220+ programs - the largest repo of monitoring code for Hadoop & NoSQL technologies, every Hadoop vendor's management API and every major NoSQL technology (HBase, Cassandra, MongoDB, Elasticsearch, Solr, Riak, Redis etc.) as well as traditional Linux and infrastructure
-* [pytools](https://github.com/harisekhon/pytools) - tools for Hadoop, Linux CLI etc
+* [PyTools](https://github.com/harisekhon/pytools) - tools for Hadoop, Spark, Pig Jython UDFs, Ambari, Linux etc
