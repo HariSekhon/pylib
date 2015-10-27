@@ -23,7 +23,8 @@
 make:
 	git update-index --assume-unchanged custom_tlds.txt
 	#yum install -y perl-DBD-MySQL
-	pip install MySQL-python
+	# this breaks in Python 3 in Travis with "ImportError: No module named ConfigParser"
+	#pip install MySQL-python
 	pip install coveralls
 
 .PHONY: test
