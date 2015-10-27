@@ -20,5 +20,5 @@ install:
 script:
   - make test
 
-#after_success:
-#  - cover -report coveralls
+after_success:
+  - coveralls
