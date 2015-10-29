@@ -19,10 +19,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
-# ============================================================================ #
-#                           Status Codes
-# ============================================================================ #
-
     # Python 2.7+
     #@unittest.skip('skipping test codes')
     def test_status_codes(self):
@@ -30,89 +26,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(ERRORS['WARNING'], 1)
         self.assertEqual(ERRORS['CRITICAL'], 2)
         self.assertEqual(ERRORS['UNKNOWN'], 3)
-
-    # self.assertTrue($port, undef, 'port is undef');
-
-# ============================================================================ #
-# self.assertTrue(set_timeout_range(5,50),   50,   'set_timeout_range(1,50)');
-# self.assertTrue($timeout_min, 5,  '$timeout_min eq 5');
-# self.assertTrue($timeout_max, 50, '$timeout_max eq 50');
-# self.assertTrue(set_timeout_max(200),     'set_timeout_max(200)');
-# self.assertTrue($timeout_max, 200, '$timeout_max eq 200');
-# self.assertTrue(set_timeout_default(100), 'set_timeout_default(100)');
-# self.assertTrue($timeout_default, 100, '$timeout_default eq 100');
-
-    #def test_current_status(self):
-    #    self.assertEqual(status, 'UNKNOWN')
-
-    # def test_get_status_code(self):
-    #     self.assertEqual(get_status_code(status), 3)
-    #     self.assertEqual(get_status_code(), 3)
-
-# # ============================================================================ #
-# $status = 'OK';
-# self.assertTrue(status(),  0, 'status() eq 0');
-# self.assertTrue(status2(), 0, 'status() eq 0');
-# self.assertTrue(status3(), 0, 'status() eq 0');
-# self.assertTrue(is_ok,        'is_self.assertTrue()');
-# self.assertTrue(!is_warning,  'is_warning() fail on OK');
-# self.assertTrue(!is_critical, 'is_critical() fail on OK');
-# self.assertTrue(!is_unknown,  'is_unknown() fail on OK');
-#
-# # ============================================================================ #
-# self.assertTrue(unknown, 'UNKNOWN', 'unknown()');
-# self.assertTrue(status(),  3, 'status() eq 3');
-# self.assertTrue(status2(), 3, 'status() eq 3');
-# self.assertTrue(status3(), 3, 'status() eq 3');
-# self.assertTrue(is_unknown,   'is_unknown()');
-# self.assertTrue(!is_ok,       'is_self.assertTrue() fail on UNKNOWN');
-# self.assertTrue(!is_warning,  'is_warning() fail on UNKNOWN');
-# self.assertTrue(!is_critical, 'is_critical() fail on UNKNOWN');
-#
-# # ============================================================================ #
-# self.assertTrue(warning, 'WARNING', 'warning()');
-# self.assertTrue(status(),  1, 'status() eq 1');
-# self.assertTrue(status2(), 1, 'status() eq 1');
-# self.assertTrue(status3(), 1, 'status() eq 1');
-# self.assertTrue(unknown, '',  'unknown() doesn't set \$status when WARNING');
-# self.assertTrue(is_warning,   'is_warning()');
-# self.assertTrue(!is_ok,       'is_self.assertTrue() fail on WARNING');
-# self.assertTrue(!is_critical, 'is_critical() fail on WARNING');
-# self.assertTrue(!is_unknown,  'is_unknown() fail on WARNING');
-#
-# # ============================================================================ #
-# self.assertTrue(critical, 'CRITICAL', 'critical()');
-# self.assertTrue(status(),  2, 'status() eq 2');
-# self.assertTrue(status2(), 2, 'status() eq 2');
-# self.assertTrue(status3(), 2, 'status() eq 2');
-# self.assertTrue(unknown, '',  'unknown() doesn't set \$status when CRITICAL');
-# self.assertTrue(warning, '',  'warning() doesn't set \$status when CRITICAL');
-# self.assertTrue(is_critical,  'is_critical()');
-# self.assertTrue(!is_ok,       'is_self.assertTrue() fail on CRITICAL');
-# self.assertTrue(!is_warning,  'is_warning() fail on CRITICAL');
-# self.assertTrue(!is_unknown,  'is_unknown() fail on CRITICAL');
-#
-# # ============================================================================ #
-# self.assertTrue(get_status_code('OK'),         0, 'get_status_code(OK) eq 0');
-# self.assertTrue(get_status_code('WARNING'),    1, 'get_status_code(WARNING) eq 1');
-# self.assertTrue(get_status_code('CRITICAL'),   2, 'get_status_code(OK) eq 2');
-# self.assertTrue(get_status_code('UNKNOWN'),    3, 'get_status_code(UNKNOWN) eq 3');
-# self.assertTrue(get_status_code('DEPENDENT'),  4, 'get_status_code(DEPENDENT) eq 4');
-# # This code errors out now
-# #self.assertTrue(get_status_code('NONEXISTENT'),  undef, 'get_status_code(NONEXISTENT) eq undef');
-#
-# # This should cause compilation failure
-# #self.assertTrue(critical('blah'), 'critical('blah')');
-#
-# # ============================================================================ #
-# $verbose++;
-# # TODO: This only checks the sub runs and returns success, should really check it outputs the right thing but not sure how to check the stdout from this sub
-# self.assertTrue(status(), 'status()');
-
-# ============================================================================ #
-#                           O S   H e l p e r s
-# ============================================================================ #
-# self.assertTrue(isOS($^O),    'isOS($^O)');
 
     def test_isOS(self):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
@@ -143,45 +56,19 @@ class HariSekhonUtilsTest(unittest.TestCase):
         def test_linux_mac_only(self):
             self.assertTrue(linux_mac_only())
 
-
-# ============================================================================ #
-    #def test_check_string(self):
-    #    self.assertTrue()
-
-# self.assertTrue(check_string('test', 'test'),    1,      'check_string('test', 'test') eq 1');
-# self.assertTrue(check_string('test', 'testa'),    undef,  '!check_string('test', 'testa') eq undef');
-# self.assertTrue(check_regex('test', '^test$'),   1,      'check_regex('test', '^test$') eq 1');
-# self.assertTrue(check_regex('test', '^tes$'),    undef,  'check_regex('test', '^tes$') eq undef');
-
     def test_min_value(self):
         self.assertEquals(min_value(1, 4), 4)
         self.assertEquals(min_value(3, 1), 3)
         self.assertEqual(min_value(3,4), 4)
 
-# # ============================================================================ #
-# self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
-# self.assertTrue(human_units(1023*(1024**1)),     '1023KB',       'human_units KB');
-# self.assertTrue(human_units(1023.1*(1024**2)),   '1023.1MB',    'human_units MB');
-# self.assertTrue(human_units(1023.2*(1024**3)),   '1023.2GB',    'human_units GB');
-# self.assertTrue(human_units(1023.31*(1024**4)),  '1023.31TB',    'human_units TB');
-# self.assertTrue(human_units(1023.012*(1024**5)), '1023.01PB',    'human_units PB');
-# self.assertTrue(human_units(1023*(1024**6)), '1023EB', 'human_units EB'');
-#
-# # ============================================================================ #
-# self.assertTrue(month2int('Jan'),  0, 'month2int(Jan)');
-# self.assertTrue(month2int('Feb'),  1, 'month2int(Feb)');
-# self.assertTrue(month2int('Mar'),  2, 'month2int(Mar)');
-# self.assertTrue(month2int('Apr'),  3, 'month2int(Apr)');
-# self.assertTrue(month2int('May'),  4, 'month2int(May)');
-# self.assertTrue(month2int('Jun'),  5, 'month2int(Jun)');
-# self.assertTrue(month2int('Jul'),  6, 'month2int(Jul)');
-# self.assertTrue(month2int('Aug'),  7, 'month2int(Aug)');
-# self.assertTrue(month2int('Sep'),  8, 'month2int(Sep)');
-# self.assertTrue(month2int('Oct'),  9, 'month2int(Oct)');
-# self.assertTrue(month2int('Nov'), 10, 'month2int(Nov)');
-# self.assertTrue(month2int('Dec'), 11, 'month2int(Dec)');
-
-# # ============================================================================ #
+    #def test_human_units(self):
+        # self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
+        # self.assertTrue(human_units(1023*(1024**1)),     '1023KB',       'human_units KB');
+        # self.assertTrue(human_units(1023.1*(1024**2)),   '1023.1MB',    'human_units MB');
+        # self.assertTrue(human_units(1023.2*(1024**3)),   '1023.2GB',    'human_units GB');
+        # self.assertTrue(human_units(1023.31*(1024**4)),  '1023.31TB',    'human_units TB');
+        # self.assertTrue(human_units(1023.012*(1024**5)), '1023.01PB',    'human_units PB');
+        # self.assertTrue(human_units(1023*(1024**6)), '1023EB', 'human_units EB'');
 
     def test_perf_suffix(self):
         self.assertEqual(perf_suffix('blah_in_bytes'), 'b')
@@ -189,8 +76,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(perf_suffix('blah.bytes'), 'b')
         self.assertEqual(perf_suffix('blah.millis'), 'ms')
         self.assertEqual(perf_suffix('blah.blah2'), '')
-
-# # ============================================================================ #
 
     def test_isAlNum(self):
         self.assertTrue(isAlNum('ABC123efg'))
@@ -255,19 +140,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isDirname('/tmp/test'))
         self.assertTrue(isDirname('./test'))
         self.assertFalse(isDirname('\@me'))
-
-# self.assertTrue(validate_directory('./t'),       './t',      'validate_directory('./t')');
-# if(isLinuxOrMac()){
-#     self.assertTrue(validate_directory('/etc'),      '/etc',     'validate_directory('/etc')');
-#     self.assertTrue(validate_directory('/etc/'),     '/etc/',    'validate_directory('/etc/')');
-#     self.assertTrue(validate_dir('/etc/'),           '/etc/',    'validate_dir('/etc/')');
-# }
-# self.assertTrue(validate_directory('b@ddir', 1), undef,      'validate_directory(b@ddir)');
-# # cannot validate dir not existing here as it terminates program
-
-    # def test_isCollection(self):
-    #     self.assertTrue()
-    #     self.assertFalse()
 
     def test_isDomain(self):
         self.assertTrue(isDomain('localDomain'))
@@ -446,14 +318,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
         # not supporting tilda home dirs
         self.assertFalse(isPathQualified('~blah'))
 
-    # def test_isPort(self):
-    #     self.assertTrue(isPort(1))
-    #     self.assertTrue(isPort(80))
-    #     self.assertTrue(isPort(65535))
-    #     self.assertFalse(isPort(65536))
-    #     self.assertFalse(isPort('a'))
-    #     self.assertFalse(isPort(-1))
-    #     self.assertFalse(isPort(0))
+    def test_isPort(self):
+        self.assertTrue(isPort(1))
+        self.assertTrue(isPort(80))
+        self.assertTrue(isPort(65535))
+        self.assertFalse(isPort(65536))
+        self.assertFalse(isPort('a'))
+        self.assertFalse(isPort(-1))
+        self.assertFalse(isPort(0))
 
     def test_isProcessName(self):
         self.assertTrue(isProcessName('../my_program'))
@@ -467,9 +339,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isPythonTraceback('... Traceback (most recent call last):'))
         self.assertFalse(isPythonTraceback('blah'))
 
-# self.assertTrue(isRegex('.*'),   '.*',   'isRegex('.*') eq '.*'');
-# self.assertTrue(isRegex('(.*)'), '(.*)', 'isRegex('(.*)') eq '(.*)'');
-# self.assertTrue(isRegex('(.*'),  undef,  'isRegex('(.*') eq undef');
+    # def isRegex(self):
+        # self.assertTrue(isRegex('.*'),   '.*',   'isRegex('.*') eq '.*'');
+        # self.assertTrue(isRegex('(.*)'), '(.*)', 'isRegex('(.*)') eq '(.*)'');
+        # self.assertTrue(isRegex('(.*'),  undef,  'isRegex('(.*') eq undef');
 
     def test_isScientific(self):
         self.assertTrue(isScientific('1.2345E10'))
@@ -511,9 +384,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isVersion('1.0-2'))
         self.assertFalse(isVersion('1.0-a'))
 
-# # ============================================================================ #
-# self.assertTrue(isXml('<blah></blah>'), 'isXML()');
-# self.assertTrue(!isXml('<blah>'), '!isXml()');
+    # def test_isXml(self):
+        # self.assertTrue(isXml('<blah></blah>'), 'isXML()');
+        # self.assertTrue(!isXml('<blah>'), '!isXml()');
 
     def test_isYes(self):
         self.assertTrue(isYes('yEs'))
@@ -532,9 +405,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(plural(1), '')
         self.assertEqual(plural(2), 's')
 
-# # ============================================================================ #
-# like(random_alnum(20),  qr/^[A-Za-z0-9]{20}$/,                      'random_alnum(20)');
-# like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
+    #def test_random_alnum(self):
+        # like(random_alnum(20),  qr/^[A-Za-z0-9]{20}$/,                      'random_alnum(20)');
+        # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
 
     def test_sec2human(self):
         self.assertEqual(sec2human(1),     '1 sec')
@@ -555,18 +428,16 @@ class HariSekhonUtilsTest(unittest.TestCase):
     #         if(os.getenv('TRAVIS', None) or os.popen('PATH=$PATH:/usr/sbin dmidecode | grep -i virtual').read().strip() == '' ):
     #             self.assertEqual(resolve_ip('a.resolvers.level3.net'),    '4.2.2.1')
     #             # self.assertEqual(validate_resolvable('a.resolvers.level3.net'),    '4.2.2.1',      'validate_resolvable('a.resolvers.level3.net')');
-
         # self.assertTrue(resolve_ip('4.2.2.2'),                   '4.2.2.2',      'resolve_ip('4.2.2.2') returns 4.2.2.2');
         # self.assertTrue(validate_resolvable('4.2.2.2'),                   '4.2.2.2',      'validate_resolvable('4.2.2.2') returns 4.2.2.2');
 
-    # def test_sec2min(self):
-        # self.assertTrue(sec2min(65),     '1:05',     'sec2min(65) eq '1:05'');
-        # self.assertTrue(sec2min(30),     '0:30',     'sec2min(30) eq '0:30'');
-        # self.assertTrue(sec2min(3601),   '60:01',    'sec2min(3601) eq '60:01'');
-        # self.assertTrue(sec2min(-1),     undef,      'sec2min(-1) eq undef');
-        # self.assertTrue(sec2min('aa'),   undef,      'sec2min('aa') eq undef');
-        # self.assertTrue(sec2min(0),      '0:00',     'sec2min(0) eq 0:00');
-        #
+    def test_sec2min(self):
+        self.assertEqual(sec2min(65),     '1:05')
+        self.assertEqual(sec2min(30),     '0:30')
+        self.assertEqual(sec2min(3601),   '60:01')
+        self.assertFalse(sec2min(-1))
+        self.assertFalse(sec2min('aa'))
+        self.assertEqual(sec2min(0),      '0:00')
 
         
 if __name__ == '__main__':

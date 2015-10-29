@@ -437,7 +437,7 @@ def isPathQualified(arg):
 def isPort(arg):
     if not re.match('^(\d+)$', str(arg)):
         return False
-    if port >= 1 and port <= 65535:
+    if arg >= 1 and arg <= 65535:
         return True
     return False
 
@@ -584,10 +584,10 @@ def isYes(arg):
 
 # def resolve_ip
 
-# def sec2min(secs):
-#     if not isFloat(secs):
-#         return
-#     return "%d:%.2d" % (int(secs / 60), secs % 60)
+def sec2min(secs):
+    if not isFloat(secs):
+        return
+    return "%d:%.2d" % (int(secs / 60), secs % 60)
 
 def sec2human(secs):
     isFloat(secs) or code_error('invalid non-float argument passed to sec2human')
