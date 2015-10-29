@@ -3,6 +3,8 @@ Hari Sekhon Python Library [![Build Status](https://travis-ci.org/harisekhon/pyl
 
 My personal libraries, full of lots of validation code and utility functions.
 
+Only supports Python 2 for now.
+
 #### Build + Unit Tests ####
 
 ```
