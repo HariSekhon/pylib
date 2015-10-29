@@ -29,6 +29,7 @@ make:
 
 .PHONY: test
 test:
+	python HariSekhonUtilsTest.py
 
 .PHONY: install
 install:
