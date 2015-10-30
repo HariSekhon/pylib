@@ -31,7 +31,7 @@ ERRORS = {
     "DEPENDENT" : 4
 }
 
-libdir = os.path.dirname(__file__)
+libdir = os.path.dirname(__file__) or '.'
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
@@ -81,7 +81,7 @@ def quit(status, msg):
 def isJython():
     """ Returns True if running in Jython interpreter """
 
-    if  "JYTHON_JAR" in dir(sys):
+    if "JYTHON_JAR" in dir(sys):
         return True
     else:
         return False
