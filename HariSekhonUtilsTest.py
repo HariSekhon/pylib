@@ -12,20 +12,21 @@
 import os
 import sys
 import unittest
+
 sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])))
 from HariSekhonUtils import *
 
-class HariSekhonUtilsTest(unittest.TestCase):
 
+class HariSekhonUtilsTest(unittest.TestCase):
     # XXX: must prefix with test_ in order for the tests to be called
 
     # Python 2.7+
-    #@unittest.skip('skipping test codes')
+    # @unittest.skip('skipping test codes')
     def test_status_codes(self):
-        self.assertEqual(ERRORS['OK'], 0)
-        self.assertEqual(ERRORS['WARNING'], 1)
+        self.assertEqual(ERRORS['OK'],       0)
+        self.assertEqual(ERRORS['WARNING'],  1)
         self.assertEqual(ERRORS['CRITICAL'], 2)
-        self.assertEqual(ERRORS['UNKNOWN'], 3)
+        self.assertEqual(ERRORS['UNKNOWN'],  3)
 
     def test_isOS(self):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
@@ -33,20 +34,26 @@ class HariSekhonUtilsTest(unittest.TestCase):
     if isLinux():
         def test_isLinux_string(self):
             self.assertEqual(platform.system(), 'Linux')
+
         def test_isLinux(self):
             self.assertTrue(isLinux())
+
         def test_isMac(self):
             self.assertFalse(isMac())
+
         def test_linux_only(self):
             self.assertTrue(linux_only())
 
     if isMac():
         def test_isMac_string(self):
             self.assertEqual(platform.system(), 'Darwin')
+
         def test_isLinux(self):
             self.assertFalse(isLinux())
+
         def test_isLinux(self):
             self.assertTrue(isMac())
+
         def test_mac_only(self):
             self.assertTrue(mac_only())
 
@@ -59,7 +66,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_min_value(self):
         self.assertEquals(min_value(1, 4), 4)
         self.assertEquals(min_value(3, 1), 3)
-        self.assertEqual(min_value(3,4), 4)
+        self.assertEquals(min_value(3,4),  4)
 
     #def test_human_units(self):
         # self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
@@ -439,7 +446,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(sec2min('aa'))
         self.assertEqual(sec2min(0),      '0:00')
 
-        
+
 if __name__ == '__main__':
     # unittest.main()
     suite = unittest.TestLoader().loadTestsFromTestCase(HariSekhonUtilsTest)
