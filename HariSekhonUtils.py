@@ -152,7 +152,7 @@ def load_tlds(file):
         else:
             warn("TLD: '%s' from tld file '%s' not validated, skipping that domain" % (line, file))
     #warn("loaded %s TLDs from file '%s'" % (tld_count, file) )
-    total_tld_count = total_tld_count + tld_count
+    total_tld_count += tld_count
 
 tld_file = libdir + '/tlds-alpha-by-domain.txt'
 load_tlds(tld_file)
