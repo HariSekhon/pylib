@@ -150,7 +150,7 @@ def load_tlds(file):
             tld_regex += line + '|'
             tld_count += 1
         else:
-            warn("TLD: '%s' from tld file '%s' not validated, skipping that domain" % (line, file))
+            warn("TLD: '%s' from tld file '%s' not validated, skipping that TLD" % (line, file))
     #warn("loaded %s TLDs from file '%s'" % (tld_count, file) )
     total_tld_count += tld_count
 
