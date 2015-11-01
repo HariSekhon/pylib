@@ -157,7 +157,7 @@ def load_tlds(file):
 tld_file = libdir + '/tlds-alpha-by-domain.txt'
 load_tlds(tld_file)
 if total_tld_count < 900:
-    code_error('only %s tlds loaded, expected > 900' % total_tld_count)
+    code_error('%s tlds loaded, expected > 900' % total_tld_count)
 
 custom_tlds = libdir + '/custom_tlds.txt'
 if(os.path.isfile(custom_tlds)):
