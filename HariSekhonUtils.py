@@ -36,14 +36,12 @@ libdir = os.path.dirname(__file__) or '.'
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
 def printerr(msg, *indent):
-    """ Print error message to stdout """
-
     if indent:
         print >> sys.stderr, ">>> ",
     print >> sys.stderr, "%s" % msg
 
-def warn(msg, *indent):
-     printerr(msg, indent)
+def warn(msg):
+     printerr('WARNING: ' + msg)
 
 def die(msg, *ec):
     """ Print error message and exit program """

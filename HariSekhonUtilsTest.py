@@ -29,6 +29,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(ERRORS['CRITICAL'], 2)
         self.assertEqual(ERRORS['UNKNOWN'],  3)
 
+    def test_warn(self):
+        warn('testing')
+
     def test_isOS(self):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
 
