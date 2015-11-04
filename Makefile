@@ -47,7 +47,7 @@ yum-packages:
 	# python-pip requires EPEL, so try to get the correct EPEL rpm - for Make must escape the $3
 	rpm -ivh "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`awk '{print substr($$3, 0, 1); exit}' /etc/*release`.noarch.rpm" || :
 	# for mysql_config to build MySQL-python
-	rpm -q libmysqlclient || $(SUDO) yum install -y libmysqlclient || :
+	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel || :
 	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel || :
 	rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
 
