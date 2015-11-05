@@ -488,6 +488,10 @@ def isPythonTraceback(arg):
         return True
     return False
 
+def isPythonVersion(min):
+    version = sys.version.split('\n')[0]
+    return isMinVersion(version, min)
+
 # def isRegex
 
 # def isScalar

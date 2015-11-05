@@ -376,6 +376,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isPythonTraceback('... Traceback (most recent call last):'))
         self.assertFalse(isPythonTraceback('blah'))
 
+    def test_isPythonVersion(self):
+        self.assertTrue(isPythonVersion('2.3'))
+        self.assertFalse(isPythonVersion('10.0'))
+
     # def isRegex(self):
         # self.assertTrue(isRegex('.*'),   '.*',   'isRegex('.*') eq '.*'');
         # self.assertTrue(isRegex('(.*)'), '(.*)', 'isRegex('(.*)') eq '(.*)'');
