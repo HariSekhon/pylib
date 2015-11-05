@@ -432,12 +432,10 @@ def isMinVersion(version, min):
     m = re.search('(\d+(?:\.\d+)?)', version)
     if m:
         version2 = float(m.group(1))
-    else:
-        return False
+        if version2 >= min:
+            return True
     # except ValueError, e:
     #     die("failed to detect version from string '%s': %s" % (version, e))
-    if version2 >= min:
-        return True
     return False
 
 def isNagiosUnit(arg):
