@@ -427,12 +427,15 @@ def isMinVersion(version, min):
     if not isFloat(min):
         code_error('invalid second arg passed to min_version')
     min = float(min)
-    try:
-        m = re.search('(\d+(?:\.\d+)?)', version)
-        if m:
-            version2 = float(m.group(1))
-    except ValueError, e:
-        die("failed to detect version from string '%s': %s" % (version, e))
+    # exception should never happen because of the regex
+    # try:
+    m = re.search('(\d+(?:\.\d+)?)', version)
+    if m:
+        version2 = float(m.group(1))
+    else:
+        return False
+    # except ValueError, e:
+    #     die("failed to detect version from string '%s': %s" % (version, e))
     if version2 >= min:
         return True
     return False
