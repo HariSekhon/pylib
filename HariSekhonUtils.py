@@ -35,6 +35,10 @@ libdir = os.path.dirname(__file__) or '.'
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
+def support_msg(repo):
+    support_msg = 'Please try latest version from https:/github.com/harisekhon/%s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/harisekhon/%s/issues' % (repo, repo)
+    return support_msg
+
 def printerr(msg, *indent):
     if indent:
         print >> sys.stderr, ">>> ",
@@ -202,6 +206,7 @@ krb5_principal_regex = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?
 threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
 version_regex      = r'\d(\.\d+)*'
+version_regex_lax  = version_regex + r'-?.*'
 
 def isAlNum(arg):
     if re.match('^[A-Za-z0-9]+$', str(arg)):
@@ -488,6 +493,11 @@ def isUser(arg):
 
 def isVersion(arg):
     if re.match('^' + version_regex + '$', str(arg)):
+        return True
+    return False
+
+def isVersionLax(arg):
+    if re.match('^' + version_regex_lax + '$', str(arg)):
         return True
     return False
 

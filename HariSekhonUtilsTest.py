@@ -395,6 +395,17 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isVersion('1.0-2'))
         self.assertFalse(isVersion('1.0-a'))
 
+    def test_isVersionLax(self):
+        self.assertTrue(isVersion(1))
+        self.assertTrue(isVersionLax('2.1.2'))
+        self.assertTrue(isVersionLax('2.2.0.4'))
+        self.assertTrue(isVersionLax('3.0'))
+        self.assertFalse(isVersionLax('a'))
+        self.assertTrue(isVersionLax('3a'))
+        self.assertTrue(isVersionLax('1.0-2'))
+        self.assertTrue(isVersionLax('1.0-a'))
+        self.assertFalse(isVersionLax('hari'))
+
     # def test_isXml(self):
         # self.assertTrue(isXml('<blah></blah>'), 'isXML()');
         # self.assertTrue(!isXml('<blah>'), '!isXml()');
@@ -419,6 +430,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
     #def test_random_alnum(self):
         # like(random_alnum(20),  qr/^[A-Za-z0-9]{20}$/,                      'random_alnum(20)');
         # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
+
+    def test_support_msg(self):
+        # avoid assertRegexpMatches as it's only available >= 2.7
+        self.assertTrue(re.search('https://github.com/harisekhon/testrepo/issues', support_msg('testrepo')))
 
     def test_sec2human(self):
         self.assertEqual(sec2human(1),     '1 sec')
