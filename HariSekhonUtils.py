@@ -428,14 +428,11 @@ def isMinVersion(version, min):
         code_error('invalid second arg passed to min_version')
     min = float(min)
     try:
-        parts = version.split('.')
-        if parts < 2:
-            raise ValueError('no dot detected in version')
-        major_version = int(parts[0].strip())
-        minor_version = int(parts[1].strip())
+        m = re.search('(\d+(?:\.\d+)?)', version)
+        if m:
+            version2 = float(m.group(1))
     except ValueError, e:
         die("failed to detect version from string '%s': %s" % (version, e))
-    version2 = float(str(major_version) + '.' + str(minor_version))
     if version2 >= min:
         return True
     return False
