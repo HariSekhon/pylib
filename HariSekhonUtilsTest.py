@@ -299,6 +299,16 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isLdapDn('uid=hari,cn=users,cn=accounts,dc=local'))
         self.assertFalse(isLdapDn('hari@LOCAL'))
 
+    def test_isMinVersion(self):
+        self.assertTrue(isMinVersion('1.3.0', '1.3'))
+        self.assertTrue(isMinVersion('1.3.0-alpha', '1.3'))
+        self.assertTrue(isMinVersion('1.3', '1.3'))
+        self.assertTrue(isMinVersion('1.4', '1.3'))
+        self.assertTrue(isMinVersion('1.3.1', '1.2'))
+        self.assertTrue(isMinVersion('1.3.1', 1.2))
+        self.assertFalse(isMinVersion('1.3.1', '1.4'))
+        self.assertFalse(isMinVersion('1.2.99', '1.3'))
+
     def test_isNagiosUnit(self):
         self.assertTrue(isNagiosUnit('s'))
         self.assertTrue(isNagiosUnit('ms'))

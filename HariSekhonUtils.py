@@ -420,6 +420,26 @@ def isLdapDn(arg):
         return True
     return False
 
+def isMinVersion(version, min):
+    if not isVersionLax(version):
+        warn("'%s' is not a recognized version format" % version)
+        return False
+    if not isFloat(min):
+        code_error('invalid second arg passed to min_version')
+    min = float(min)
+    try:
+        parts = version.split('.')
+        if parts < 2:
+            raise ValueError('no dot detected in version')
+        major_version = int(parts[0].strip())
+        minor_version = int(parts[1].strip())
+    except ValueError, e:
+        die("failed to detect version from string '%s': %s" % (version, e))
+    version2 = float(str(major_version) + '.' + str(minor_version))
+    if version2 >= min:
+        return True
+    return False
+
 def isNagiosUnit(arg):
     arg = str(arg).lower()
     for unit in valid_nagios_units:
@@ -501,6 +521,11 @@ def isVersionLax(arg):
         return True
     return False
 
+def isYes(arg):
+    if re.match('^\s*y(?:es)?\s*$', str(arg), re.I):
+        return True
+    return False
+
 def isOS(arg):
     if platform.system().lower() == str(arg).lower():
         return True
@@ -535,8 +560,10 @@ def linux_mac_only():
 # XXX: add logging
 
 def min_value(value, min):
-    isFloat(value) or code_error('invalid first arg passed to min_value(), must be float')
-    isFloat(min) or code_error('invalid second arg passed to min_value(), must be float')
+    if not isFloat(value):
+        code_error('invalid first arg passed to min_value(), must be float')
+    if not isFloat(min):
+        code_error('invalid second arg passed to min_value(), must be float')
     if (value < min):
         return min
     return value
@@ -577,11 +604,6 @@ def plural(arg):
     return ''
 
 # def prompt
-
-def isYes(arg):
-    if re.match('^\s*y(?:es)?\s*$', str(arg), re.I):
-        return True
-    return False
 
 # def random_alnum(num):
 #     isInt(num) or code_error('invalid length passed to random_alnum')
