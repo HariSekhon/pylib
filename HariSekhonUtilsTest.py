@@ -48,6 +48,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
         def test_linux_only(self):
             self.assertTrue(linux_only())
 
+        def test_mac_only(self):
+            # assertRaises >= 2.7
+            try:
+                mac_only()
+                raise Exception
+            except MacOnlyException:
+                pass
+
     if isMac():
         def test_isMac_string(self):
             self.assertEqual(platform.system(), 'Darwin')
@@ -60,6 +68,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
         def test_mac_only(self):
             self.assertTrue(mac_only())
+
+        def test_linux_only(self):
+            # assertRaises >= 2.7
+            try:
+                linux_only()
+                raise Exception
+            except LinuxOnlyException:
+                pass
 
     if isLinux() or isMac():
         def test_isLinuxOrMac(self):

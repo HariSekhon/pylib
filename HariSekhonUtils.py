@@ -75,6 +75,19 @@ def quit(status, msg):
     printerr(msg)
     sys.exit(ERRORS[status])
 
+class LinuxOnlyException(Exception):
+    # def __init__(self, value):
+    #     self.value = value
+    # def __str__(self):
+    #     return repr(self.value)
+    pass
+
+class MacOnlyException(Exception):
+    # def __init__(self, value):
+    #     self.value = value
+    # def __str__(self):
+    #     return repr(self.value)
+    pass
 
 # ============================================================================ #
 #                           Jython Utils
@@ -542,12 +555,12 @@ supported_os_msg = "this program is only supported on %s at this time"
 
 def mac_only():
     if not isMac():
-        raise Exception(supported_os_msg % 'Mac/Darwin')
+        raise MacOnlyException(supported_os_msg % 'Mac/Darwin')
     return True
 
 def linux_only():
     if not isLinux():
-        raise Exception(supported_os_msg % 'Linux')
+        raise LinuxOnlyException(supported_os_msg % 'Linux')
     return True
 
 def linux_mac_only():
