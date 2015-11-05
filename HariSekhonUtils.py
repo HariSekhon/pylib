@@ -19,8 +19,8 @@ import sys
 #import re
 #import signal
 
-__author__      = "Hari Sekhon"
-__version__     = 0.6
+__author__      = 'Hari Sekhon'
+__version__     = '0.6.1'
 
 # Standard Nagios return codes
 ERRORS = {
