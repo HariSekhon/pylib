@@ -34,7 +34,7 @@ ERRORS = {
 
 libdir = os.path.dirname(__file__) or '.'
 
-prog = inspect.getfile(inspect.currentframe())
+prog = inspect.getfile(inspect.currentframe().f_back)
 
 if re.search(r'\bcheck_', prog):
     sys.stderr = sys.stdout
