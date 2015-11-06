@@ -16,7 +16,6 @@ import unittest
 sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])))
 from HariSekhonUtils import *
 
-
 class HariSekhonUtilsTest(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
@@ -31,6 +30,17 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_warn(self):
         warn('testing')
+
+    def test_code_error(self):
+        try:
+            code_error('test')
+            raise Exception('code_error() failed to raise exception')
+        except CodingErrorException:
+            pass
+
+# ============================================================================ #
+#                          OS Validation Functions
+# ============================================================================ #
 
     def test_isOS(self):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
@@ -83,26 +93,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         def test_linux_mac_only(self):
             self.assertTrue(linux_mac_only())
 
-    def test_min_value(self):
-        self.assertEquals(min_value(1, 4), 4)
-        self.assertEquals(min_value(3, 1), 3)
-        self.assertEquals(min_value(3,4),  4)
-
-    #def test_human_units(self):
-        # self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
-        # self.assertTrue(human_units(1023*(1024**1)),     '1023KB',       'human_units KB');
-        # self.assertTrue(human_units(1023.1*(1024**2)),   '1023.1MB',    'human_units MB');
-        # self.assertTrue(human_units(1023.2*(1024**3)),   '1023.2GB',    'human_units GB');
-        # self.assertTrue(human_units(1023.31*(1024**4)),  '1023.31TB',    'human_units TB');
-        # self.assertTrue(human_units(1023.012*(1024**5)), '1023.01PB',    'human_units PB');
-        # self.assertTrue(human_units(1023*(1024**6)), '1023EB', 'human_units EB'');
-
-    def test_perf_suffix(self):
-        self.assertEqual(perf_suffix('blah_in_bytes'), 'b')
-        self.assertEqual(perf_suffix('blah_in_millis'), 'ms')
-        self.assertEqual(perf_suffix('blah.bytes'), 'b')
-        self.assertEqual(perf_suffix('blah.millis'), 'ms')
-        self.assertEqual(perf_suffix('blah.blah2'), '')
+# ============================================================================ #
+#                          Validation Functions
+# ============================================================================ #
 
     def test_isAlNum(self):
         self.assertTrue(isAlNum('ABC123efg'))
@@ -125,9 +118,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isAwsSecretKey('@' * 40))
         self.assertFalse(isAwsSecretKey('A' * 20))
 
-    # def test_isChars(self):
-    #     self.assertTrue(isChars('Alpha-01_', 'A-Za-z0-9_-'))
-    #     self.assertFalse(isChars('Alpha-01_*', 'A-Za-z0-9_-'))
+    def test_isChars(self):
+        self.assertTrue(isChars('Alpha-01_', 'A-Za-z0-9_-'))
+        self.assertFalse(isChars('Alpha-01_*', 'A-Za-z0-9_-'))
 
     def test_isCollection(self):
         self.assertTrue(isCollection('students.grades'))
@@ -453,6 +446,29 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isYes('N'))
         self.assertFalse(isYes(''))
 
+# ============================================================================ #
+
+    def test_min_value(self):
+        self.assertEquals(min_value(1, 4), 4)
+        self.assertEquals(min_value(3, 1), 3)
+        self.assertEquals(min_value(3,4),  4)
+
+    #def test_human_units(self):
+        # self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
+        # self.assertTrue(human_units(1023*(1024**1)),     '1023KB',       'human_units KB');
+        # self.assertTrue(human_units(1023.1*(1024**2)),   '1023.1MB',    'human_units MB');
+        # self.assertTrue(human_units(1023.2*(1024**3)),   '1023.2GB',    'human_units GB');
+        # self.assertTrue(human_units(1023.31*(1024**4)),  '1023.31TB',    'human_units TB');
+        # self.assertTrue(human_units(1023.012*(1024**5)), '1023.01PB',    'human_units PB');
+        # self.assertTrue(human_units(1023*(1024**6)), '1023EB', 'human_units EB'');
+
+    def test_perf_suffix(self):
+        self.assertEqual(perf_suffix('blah_in_bytes'), 'b')
+        self.assertEqual(perf_suffix('blah_in_millis'), 'ms')
+        self.assertEqual(perf_suffix('blah.bytes'), 'b')
+        self.assertEqual(perf_suffix('blah.millis'), 'ms')
+        self.assertEqual(perf_suffix('blah.blah2'), '')
+
     # def test_pkill(self):
     #     self.assertFalse(pkill('nonexistentprogram'))
 
@@ -497,6 +513,139 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(sec2min(-1))
         self.assertFalse(sec2min('aa'))
         self.assertEqual(sec2min(0),      '0:00')
+
+# ============================================================================ #
+#                          Validation Functions
+# ============================================================================ #
+
+    # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
+    def test_validate_alnum(self):
+        self.assertTrue(validate_alnum('Alnum2Test99', 'alnum test'))
+        self.assertTrue(validate_alnum('0', 'alnum zero'))
+        try:
+            validate_alnum('Alnum2Test99*', 'alnum invalid')
+            raise Exception('validate_alnum() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_aws_access_key(self):
+        self.assertTrue(validate_aws_access_key('A' * 20))
+        try:
+            validate_aws_access_key('A' * 19 + '*')
+            raise Exception('validate_aws_access_key() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_aws_bucket(self):
+        self.assertTrue(validate_aws_bucket("BucKeT63"))
+        try:
+            validate_aws_access_key('A' * 64)
+            raise Exception('validate_aws_bucket() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_aws_secret_key(self):
+        self.assertTrue(validate_aws_secret_key('A' * 40))
+        self.assertTrue(validate_aws_secret_key('1' *40))
+        self.assertTrue(validate_aws_secret_key('A1' * 20))
+        try:
+            validate_aws_access_key('A' * 41)
+            raise Exception('validate_aws_secret_key() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_chars(self):
+        self.assertTrue(validate_chars("log_date=2015-05-23_10", "validate chars", "A-Za-z0-9_=-"))
+        try:
+            validate_chars("log_date=2015-05-23_10*", "validate chars broken", "A-Za-z0-9_=-")
+            raise Exception('validate_chars() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_collection(self):
+        self.assertTrue(validate_collection("students.grades"))
+        try:
+            validate_collection("students.grades*")
+            raise Exception('validate_collection() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_collection(self):
+        self.assertTrue(validate_collection("students.grades"))
+        try:
+            validate_collection("students.grades*")
+            raise Exception('validate_collection() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_database(self):
+        self.assertTrue(validate_database("mysql", "MySQL"))
+        try:
+            validate_database("mysql*", "MySQL")
+            raise Exception('validate_database() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_database_columnname(self):
+        self.assertTrue(validate_database_columnname("myColumn_1"))
+        try:
+            validate_database_columnname("myColumn_1*"),
+            raise Exception('validate_database_columnname() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_database_fieldname(self):
+        self.assertTrue(validate_database_fieldname("age"))
+        self.assertTrue(validate_database_fieldname(10))
+        self.assertTrue(validate_database_fieldname("count(*)"))
+        try:
+            validate_database_fieldname("age*")
+            raise Exception('validate_database_fieldname() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_database_fieldname(self):
+        self.assertTrue(validate_database_fieldname("age"))
+        self.assertTrue(validate_database_fieldname(10))
+        self.assertTrue(validate_database_fieldname("count(*)"))
+        try:
+            validate_database_fieldname("age*")
+            raise Exception('validate_database_fieldname() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_database_tablename(self):
+        self.assertTrue(validate_database_tablename("myTable", "Hive"))
+        self.assertTrue(validate_database_tablename("default.myTable", "Hive", allow_qualified=True))
+        try:
+            validate_database_tablename("myTable*", "Hive")
+            raise Exception('validate_database_tablename() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+    def test_validate_database_viewname(self):
+        self.assertTrue(validate_database_viewname("myview", "Hive"))
+        self.assertTrue(validate_database_viewname("default.myview", "Hive", allow_qualified=True))
+        try:
+            validate_database_viewname("myview*", "Hive")
+            raise Exception('validate_database_viewname() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+
+
 
 
 if __name__ == '__main__':

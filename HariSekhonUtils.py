@@ -41,17 +41,21 @@ if re.search(r'\bcheck_', prog):
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
+
 def support_msg(repo="pytools"):
     support_msg = 'Please try latest version from https:/github.com/harisekhon/%s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/harisekhon/%s/issues' % (repo, repo)
     return support_msg
+
 
 def printerr(msg, *indent):
     if indent:
         print >> sys.stderr, ">>> ",
     print >> sys.stderr, "%s" % msg
 
+
 def warn(msg):
      printerr('WARNING: ' + msg)
+
 
 def die(msg, *ec):
     """ Print error message and exit program """
@@ -71,15 +75,20 @@ def die(msg, *ec):
             sys.exit(ERRORS["CRITICAL"])
     sys.exit(ERRORS["CRITICAL"])
 
+
 def code_error(msg):
-    printerr("CODE ERROR: " + msg)
-    sys.exit(ERRORS['UNKNOWN'])
+    raise CodingErrorException(msg)
+
 
 def quit(status, msg):
     """ Quit with status code from ERRORS dictionary after printing given msg """
-
     printerr(msg)
     sys.exit(ERRORS[status])
+
+
+# ============================================================================ #
+#                              Custom Exceptions
+# ============================================================================ #
 
 class LinuxOnlyException(Exception):
     # def __init__(self, value):
@@ -88,15 +97,21 @@ class LinuxOnlyException(Exception):
     #     return repr(self.value)
     pass
 
+
 class MacOnlyException(Exception):
-    # def __init__(self, value):
-    #     self.value = value
-    # def __str__(self):
-    #     return repr(self.value)
     pass
 
+
+class InvalidOptionsException(Exception):
+    pass
+
+
+class CodingErrorException(Exception):
+    pass
+
+
 # ============================================================================ #
-#                           Jython Utils
+#                               Jython Utils
 # ============================================================================ #
 
 def isJython():
@@ -128,9 +143,11 @@ if isJython():
     java_oom     = "java.lang.OutOfMemoryError: Java heap space"
     java_oom_fix = "\nAdd/Increase -J-Xmx<value> command line argument\n"
 
+
 # ============================================================================ #
 
-verbose = False
+verbose = 0
+
 def vprint(msg):
     """ Print if verbose """
 
@@ -228,6 +245,7 @@ version_regex      = r'\d(\.\d+)*'
 version_regex_short = r'\d(\.\d+)?'
 version_regex_lax  = version_regex + r'-?.*'
 
+
 def isAlNum(arg):
     if re.match('^[A-Za-z0-9]+$', str(arg)):
         return True
@@ -235,52 +253,72 @@ def isAlNum(arg):
 
 # isArray
 
+
 def isAwsAccessKey(arg):
     if re.match('^' + aws_access_key_regex + '$', str(arg)):
         return True
     return False
+
 
 def isAwsHostname(arg):
     if re.match('^' + aws_hostname_regex + '$', str(arg)):
         return True
     return False
 
+
 def isAwsFqdn(arg):
     if re.match('^' + aws_fqdn_regex + '$', str(arg)):
         return True
     return False
+
 
 def isAwsSecretKey(arg):
     if re.match('^' + aws_secret_key_regex + '$', str(arg)):
         return True
     return False
 
-# isChars
+
+def isChars(arg, chars):
+    if not chars:
+        code_error('no chars passed to isChars()')
+    if not isRegex("[" + chars + "]"):
+        code_error('invalid char range passed to isChars')
+    if re.match('^[' + chars + ']+$', str(arg)):
+        return True
+    return False
+
+
 # isCode
+
 
 def isCollection(arg):
     if re.match('^\w(?:[\w\.]*\w)?$', str(arg)):
         return True
     return False
 
+
 def isDigit(arg):
     return isInt(arg)
+
 
 def isDatabaseName(arg):
     if re.match('^\w+$', str(arg)):
         return True
     return False
 
+
 def isDatabaseColumnName(arg):
     if re.match('^' + column_regex + '$', str(arg)):
         return True
     return False
 
+
 def isDatabaseFieldName(arg):
     arg = str(arg)
-    if re.match('^\d+$', arg) or re.match('^[\w()*,._-]+$', arg):
+    if re.match('^\d+$', arg) or re.match('^[A-Za-z][\w()*,._-]+[A-Za-z0-9)]$', arg):
         return True
     return False
+
 
 def isDatabaseTableName(arg, allow_qualified = False):
     arg = str(arg)
@@ -292,8 +330,10 @@ def isDatabaseTableName(arg, allow_qualified = False):
             return True
     return False
 
+
 def isDatabaseViewName(arg, allow_qualified = False):
     return isDatabaseTableName(arg, allow_qualified)
+
 
 def isDomain(arg):
     arg = str(arg)
@@ -303,6 +343,7 @@ def isDomain(arg):
         return True
     return False
 
+
 def isDomainStrict(arg):
     arg = str(arg)
     if len(arg) > 255:
@@ -310,6 +351,7 @@ def isDomainStrict(arg):
     if re.match('^' + domain_regex_strict + '$', arg):
         return True
     return False
+
 
 def isDnsShortname(arg):
     arg = str(arg)
@@ -319,6 +361,7 @@ def isDnsShortname(arg):
         return True
     return False
 
+
 def isEmail(arg):
     arg = str(arg)
     if len(arg) > 256:
@@ -326,6 +369,7 @@ def isEmail(arg):
     if re.match('^' + email_regex + '$', arg):
         return True
     return False
+
 
 def isFilename(arg):
     arg = str(arg)
@@ -335,6 +379,7 @@ def isFilename(arg):
         return True
     return False
 
+
 def isDirname(arg):
     arg = str(arg)
     if re.match('^\s*$', arg):
@@ -342,6 +387,7 @@ def isDirname(arg):
     if re.match('^' + dirname_regex + '$', arg):
         return True
     return False
+
 
 def isFloat(arg, allow_negative = False):
     neg = ''
@@ -351,6 +397,7 @@ def isFloat(arg, allow_negative = False):
         return True
     return False
 
+
 def isFqdn(arg):
     arg = str(arg)
     if len(arg) > 255:
@@ -359,12 +406,15 @@ def isFqdn(arg):
         return True
     return False
 
+
 #def isHash
+
 
 def isHex(arg):
     if re.match('^(?:0x)?[A-Fa-f\d]+$', str(arg)):
         return True
     return False
+
 
 def isHost(arg):
     arg = str(arg)
@@ -374,6 +424,7 @@ def isHost(arg):
         return True
     return False
 
+
 def isHostname(arg):
     arg = str(arg)
     if len(arg) > 255:
@@ -381,6 +432,7 @@ def isHostname(arg):
     if re.match('^' + hostname_regex + '$', arg):
         return True
     return False
+
 
 def isInt(arg, *allow_negative):
     neg = ""
@@ -390,10 +442,12 @@ def isInt(arg, *allow_negative):
         return True
     return False
 
+
 def isInterface(arg):
     if re.match('^(?:em|eth|bond|lo|docker)\d+|lo|veth[A-Fa-f0-9]+$', str(arg)):
         return True
     return False
+
 
 def isIP(arg):
     arg = str(arg)
@@ -407,6 +461,7 @@ def isIP(arg):
         if octet < 0 or octet > 255:
             return False
     return True
+
 
 def isJavaException(arg):
     arg = str(arg)
@@ -422,23 +477,28 @@ def isJavaException(arg):
         return True
     return False
 
+
 # def isJson
 # def isXml
+
 
 def isKrb5Princ(arg):
     if re.match('^' + krb5_principal_regex + '$', str(arg)):
         return True
     return False
 
+
 def isLabel(arg):
     if re.match('^[\%\(\)\/\*\w\s-]+$', str(arg)):
         return True
     return False
 
+
 def isLdapDn(arg):
     if re.match('^' + ldap_dn_regex + '$', str(arg)):
         return True
     return False
+
 
 def isMinVersion(version, min):
     if not isVersionLax(version):
@@ -458,6 +518,7 @@ def isMinVersion(version, min):
     #     die("failed to detect version from string '%s': %s" % (version, e))
     return False
 
+
 def isNagiosUnit(arg):
     arg = str(arg).lower()
     for unit in valid_nagios_units:
@@ -465,15 +526,18 @@ def isNagiosUnit(arg):
             return True
     return False
 
+
 def isNoSqlKey(arg):
     if re.match('^([\w\_\,\.\:\+\-]+)$', str(arg)):
         return True
     return False
 
+
 def isPathQualified(arg):
     if re.match('^(?:\.?\/)', str(arg)):
         return True
     return False
+
 
 def isPort(arg):
     if not re.match('^(\d+)$', str(arg)):
@@ -482,10 +546,12 @@ def isPort(arg):
         return True
     return False
 
+
 def isProcessName(arg):
     if re.match('^' + process_name_regex + '$', str(arg)):
         return True
     return False
+
 
 def isPythonTraceback(arg):
     arg = str(arg)
@@ -495,6 +561,7 @@ def isPythonTraceback(arg):
         return True
     return False
 
+
 def getPythonVersion():
     m = re.match("^(" + version_regex_short + ")", sys.version.split('\n')[0])
     if m:
@@ -502,13 +569,16 @@ def getPythonVersion():
         return float(m.group(1))
     raise Exception("couldn't determine Python version!")
 
+
 def isPythonVersion(expected):
     version = getPythonVersion()
     return version == expected
 
+
 def isPythonMinVersion(min):
     version = getPythonVersion()
     return isMinVersion(version, min)
+
 
 def isRegex(regex):
     try:
@@ -518,7 +588,9 @@ def isRegex(regex):
         pass
     return False
 
+
 # def isScalar
+
 
 def isScientific(arg, allow_negative = False):
     neg = ""
@@ -528,7 +600,9 @@ def isScientific(arg, allow_negative = False):
         return True
     return False
 
+
 # def isThreshold
+
 
 def isUrl(arg):
     # checking for String yet another breakage between Python 2 and 3
@@ -540,63 +614,75 @@ def isUrl(arg):
         return True
     return False
 
+
 def isUrlPathSuffix(arg):
     if re.match('^' + url_path_suffix_regex + '$', str(arg)):
         return True
     return False
+
 
 def isUser(arg):
     if re.match('^' + user_regex + '$', str(arg)):
         return True
     return False
 
+
 def isVersion(arg):
     if re.match('^' + version_regex + '$', str(arg)):
         return True
     return False
+
 
 def isVersionLax(arg):
     if re.match('^' + version_regex_lax + '$', str(arg)):
         return True
     return False
 
+
 def isYes(arg):
     if re.match('^\s*y(?:es)?\s*$', str(arg), re.I):
         return True
     return False
+
 
 def isOS(arg):
     if platform.system().lower() == str(arg).lower():
         return True
     return False
 
+
 def isMac():
     return isOS('Darwin')
+
 
 def isLinux():
     return isOS('Linux')
 
+
 def isLinuxOrMac():
     return isLinux() or isMac()
 
+
 supported_os_msg = "this program is only supported on %s at this time"
+
 
 def mac_only():
     if not isMac():
         raise MacOnlyException(supported_os_msg % 'Mac/Darwin')
     return True
 
+
 def linux_only():
     if not isLinux():
         raise LinuxOnlyException(supported_os_msg % 'Linux')
     return True
+
 
 def linux_mac_only():
     if not isLinuxOrMac():
         raise Exception(supported_os_msg % 'Linux or Mac/Darwin')
     return True
 
-# XXX: add logging
 
 def min_value(value, min):
     if not isFloat(value):
@@ -607,10 +693,12 @@ def min_value(value, min):
         return min
     return value
 
+
 # msg_perf_thresholds
 # msg_thresholds
 # month2int
 # open_file
+
 
 def perf_suffix(arg):
     arg = str(arg)
@@ -620,6 +708,7 @@ def perf_suffix(arg):
     elif re.search(prefix + 'millis', arg):
         return 'ms'
     return ''
+
 
 # def pkill(search, kill_flags = ""):
 #     search = str(search)
@@ -635,6 +724,7 @@ def perf_suffix(arg):
 #     # XXX: FIXME
 #     return os.popen("ps aux | awk '/" + search + "/ {print \$2}' | while read pid; do kill " + kill_flags + " $pid >/dev/null 2>&1; done")
 
+
 def plural(arg):
     # TODO: add support for arrays, dictionaries
     if(type(arg) == int or type(arg) == float):
@@ -642,7 +732,9 @@ def plural(arg):
             return 's'
     return ''
 
+
 # def prompt
+
 
 # def random_alnum(num):
 #     isInt(num) or code_error('invalid length passed to random_alnum')
@@ -651,12 +743,15 @@ def plural(arg):
 #     # XXX: TODO
 #     return string
 
+
 # def resolve_ip
+
 
 def sec2min(secs):
     if not isFloat(secs):
         return
     return "%d:%.2d" % (int(secs / 60), secs % 60)
+
 
 def sec2human(secs):
     isFloat(secs) or code_error('invalid non-float argument passed to sec2human')
@@ -676,9 +771,11 @@ def sec2human(secs):
     human_time += '%d sec%s' % (secs, plural(secs))
     return human_time
 
+
 # set_http_timeout
 # set_sudo
 # set_timeout
+
 
 def skip_java_output(mystr):
     if re.search('Class JavaLaunchHelper is implemented in both|^SLF4J', str(mystr)):
@@ -691,9 +788,9 @@ def skip_java_output(mystr):
 # uniq_array (use set)
 # uniq_array2 (preserve order can't use set)
 
+
 #def user_exists(user):
 
-# validate_*
 
 def which(bin, quit_on_err):
     isFilename(bin) or code_error('invalid filename '%' supplied to which()' % bin)
@@ -716,6 +813,179 @@ def which(bin, quit_on_err):
         quit('UNKNOWN', "couldn't find '%' in $PATH (%s)" % (bin, os.getenv('PATH', '')))
     return None
 
+
+# ============================================================================ #
+#                           Options Validation
+# ============================================================================ #
+
+def validate_alnum(arg, name):
+    if not name:
+        code_error("second arg 'name' not defined when calling validate_alnum()")
+    if not arg:
+        raise InvalidOptionsException('%s not defined' % name)
+    if isAlNum(arg):
+        vlog_options(name, arg)
+        return True
+    raise InvalidOptionsException('invalid %s defined: must be alphanumeric' % name)
+
+
+def validate_aws_access_key(arg):
+    if not arg:
+        raise InvalidOptionsException('aws access key not defined')
+    arg = str(arg)
+    if isAwsAccessKey(arg):
+        vlog_options('aws access key', 'X' * 18 + arg[18:20])
+        return True
+    raise InvalidOptionsException('invalid aws access key defined: must be 20 alphanumeric characters')
+
+
+def validate_aws_bucket(arg):
+    if not arg:
+        raise InvalidOptionsException('aws bucket not defined')
+    arg = str(arg)
+    if isDnsShortname(arg):
+        vlog_options('aws bucket', arg)
+        return True
+    raise InvalidOptionsException('invalid aws access key defined: must be 20 alphanumeric characters')
+
+
+def validate_aws_secret_key(arg):
+    if not arg:
+        raise InvalidOptionsException('aws secret key not defined')
+    arg = str(arg)
+    if isAwsSecretKey(arg):
+        vlog_options('aws secret key', 'X' * 38 + arg[38:40])
+        return True
+    raise InvalidOptionsException('invalid aws secret key defined: must be 40 alphanumeric characters')
+
+
+def validate_chars(arg, name, chars):
+    if not name:
+        code_error("second arg 'name' not defined when calling validate_chars()")
+    if not arg:
+        raise InvalidOptionsException('%s not defined' % name)
+    if isChars(arg, chars):
+        vlog_options(name, arg)
+        return True
+    raise InvalidOptionsException('invalid %s defined: must be one of the following chars: %s' % (name, chars))
+
+
+def validate_collection(arg, name=''):
+    if name:
+        name =+ ' '
+    if not arg:
+        raise InvalidOptionsException('%scollection not defined' % name)
+    if isCollection(arg):
+        vlog_options('%scollection' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %scollection defined: must be alphanumeric, with optional periods in the middle' % name)
+
+
+def validate_database(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        code_error('%sdatabase not defined' % name)
+    if isDatabaseName(arg):
+        vlog_options('%sdatabase' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sdatabase defined: must be alphanumeric' % name)
+
+
+def validate_database_columnname(arg):
+    if not arg:
+        code_error('column not defined')
+    if isDatabaseColumnName(arg):
+        vlog_options('column', arg)
+        return True
+    raise InvalidOptionsException('invalid column defined: must be alphanumeric')
+
+
+def validate_database_fieldname(arg):
+    if not arg:
+        code_error('field not defined')
+    if isDatabaseFieldName(arg):
+        vlog_options('field', arg)
+        return True
+    raise InvalidOptionsException('invalid field defined: must be alphanumeric')
+
+
+def validate_database_tablename(arg, name='', allow_qualified=False):
+    if name:
+        name += ' '
+    if not arg:
+        code_error('%stable not defined' % name)
+    if isDatabaseTableName(arg, allow_qualified):
+        vlog_options('%stable' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %stable defined: must be alphanumeric' % name)
+
+
+def validate_database_viewname(arg, name='', allow_qualified=False):
+    if name:
+        name += " "
+    if not arg:
+        code_error('%sview not defined' % name)
+    if isDatabaseViewName(arg, allow_qualified):
+        vlog_options('%sview' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sview defined: must be alphanumeric' % name)
+
+
+#    def validate_host(self):
+#        """Exits with an error if the hostname
+#        does not conform to expected format"""
+#
+#        # Input Validation - Rock my regex ;-)
+#        re_hostname = re.compile("^[a-zA-Z0-9]+[a-zA-Z0-9-]*((([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6})?$")
+#        re_ipaddr   = re.compile("^((25[0-5]|2[0-4]\d|[01]\d\d|\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]\d\d|\d?\d)$")
+#
+#        if self.server == None:
+#            end(UNKNOWN, "You must supply a server hostname or ip address. " \
+#                       + "See --help for details")
+#
+#        if not re_hostname.match(self.server) and \
+#           not re_ipaddr.match(self.server):
+#            end(UNKNOWN, "Server given does not appear to be a valid " \
+#                       + "hostname or ip address")
+#
+#
+##    def validate_port(self):
+##        """Exits with an error if the port is not valid"""
+##
+##        if self.port == None:
+##            self.port = ""
+##        else:
+##            try:
+##                self.port = int(self.port)
+##                if not 1 <= self.port <= 65535:
+##                    raise ValueError
+##            except ValueError:
+##                end(UNKNOWN, "port number must be a whole number between " \
+##                           + "1 and 65535")
+#
+
+
+# ============================================================================ #
+#
+# TODO: quick hack, replace with 'logger'
+
+def vlog(msg):
+    global verbose
+    if verbose:
+        printerr(msg)
+
+def vlog2(msg):
+    if verbose > 1:
+        printerr(msg)
+
+def vlog3(msg):
+    global verbose
+    if verbose > 2:
+        printerr(msg)
+
+def vlog_options(name, option):
+    vlog2('%-25s %s' % (name, option))
 
 # ============================================================================ #
 
@@ -774,38 +1044,6 @@ def which(bin, quit_on_err):
 #        self.validate_host()
 #        self.validate_timeout()
 #
-#
-#    def validate_host(self):
-#        """Exits with an error if the hostname
-#        does not conform to expected format"""
-#
-#        # Input Validation - Rock my regex ;-)
-#        re_hostname = re.compile("^[a-zA-Z0-9]+[a-zA-Z0-9-]*((([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6})?$")
-#        re_ipaddr   = re.compile("^((25[0-5]|2[0-4]\d|[01]\d\d|\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]\d\d|\d?\d)$")
-#
-#        if self.server == None:
-#            end(UNKNOWN, "You must supply a server hostname or ip address. " \
-#                       + "See --help for details")
-#
-#        if not re_hostname.match(self.server) and \
-#           not re_ipaddr.match(self.server):
-#            end(UNKNOWN, "Server given does not appear to be a valid " \
-#                       + "hostname or ip address")
-#
-#
-##    def validate_port(self):
-##        """Exits with an error if the port is not valid"""
-##
-##        if self.port == None:
-##            self.port = ""
-##        else:
-##            try:
-##                self.port = int(self.port)
-##                if not 1 <= self.port <= 65535:
-##                    raise ValueError
-##            except ValueError:
-##                end(UNKNOWN, "port number must be a whole number between " \
-##                           + "1 and 65535")
 #
 #
 #    def validate_timeout(self):
@@ -895,11 +1133,3 @@ def which(bin, quit_on_err):
 #
 #        end(CRITICAL, "%splugin has self terminated after " % check_name
 #                    + "exceeding the timeout %s" % timeout)
-#
-#
-#    def vprint(self, threshold, message):
-#        """Prints a message if the first arg is numerically greater than the
-#        verbosity level"""
-#
-#        if self.verbosity >= threshold:
-#            print "%s" % message
