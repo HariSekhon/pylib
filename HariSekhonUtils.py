@@ -11,6 +11,7 @@
 
 """ Personal Library originally started to standardize Nagios Plugin development but superceded by Perl version """
 
+import inspect
 import os
 import re
 import platform
@@ -20,7 +21,7 @@ import sys
 #import signal
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.6.1'
+__version__     = '0.6.2'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -32,6 +33,11 @@ ERRORS = {
 }
 
 libdir = os.path.dirname(__file__) or '.'
+
+prog = inspect.getfile(inspect.currentframe())
+
+if re.search(r'\bcheck_', prog):
+    sys.stderr = sys.stdout
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
@@ -488,8 +494,18 @@ def isPythonTraceback(arg):
         return True
     return False
 
-def isPythonVersion(min):
-    version = sys.version.split('\n')[0]
+def getPythonVersion():
+    m = re.match("^(" + version_regex + ")", sys.version.split('\n')[0])
+    if m:
+        return m.group(1)
+    raise Exception("couldn't determine Python version!")
+
+def isPythonVersion(expected):
+    version = getPythonVersion()
+    return version == expected
+
+def isPythonMinVersion(min):
+    version = getPythonVersion()
     return isMinVersion(version, min)
 
 # def isRegex

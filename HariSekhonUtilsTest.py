@@ -377,8 +377,11 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isPythonTraceback('blah'))
 
     def test_isPythonVersion(self):
-        self.assertTrue(isPythonVersion('2.3'))
-        self.assertFalse(isPythonVersion('10.0'))
+        self.assertTrue(isPythonVersion(getPythonVersion()))
+
+    def test_isPythonMinVersion(self):
+        self.assertTrue(isPythonMinVersion('2.3'))
+        self.assertFalse(isPythonMinVersion('10.0'))
 
     # def isRegex(self):
         # self.assertTrue(isRegex('.*'),   '.*',   'isRegex('.*') eq '.*'');
