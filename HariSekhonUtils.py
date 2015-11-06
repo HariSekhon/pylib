@@ -225,6 +225,7 @@ krb5_principal_regex = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?
 threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
 version_regex      = r'\d(\.\d+)*'
+version_regex_short = r'\d(\.\d+)?'
 version_regex_lax  = version_regex + r'-?.*'
 
 def isAlNum(arg):
@@ -448,7 +449,7 @@ def isMinVersion(version, min):
     min = float(min)
     # exception should never happen because of the regex
     # try:
-    m = re.search('(\d+(?:\.\d+)?)', version)
+    m = re.search('(\d+(?:\.\d+)?)', str(version))
     if m:
         version2 = float(m.group(1))
         if version2 >= min:
@@ -495,9 +496,10 @@ def isPythonTraceback(arg):
     return False
 
 def getPythonVersion():
-    m = re.match("^(" + version_regex + ")", sys.version.split('\n')[0])
+    m = re.match("^(" + version_regex_short + ")", sys.version.split('\n')[0])
     if m:
-        return m.group(1)
+        # regex matched so no NumberFormatException on float cast
+        return float(m.group(1))
     raise Exception("couldn't determine Python version!")
 
 def isPythonVersion(expected):
