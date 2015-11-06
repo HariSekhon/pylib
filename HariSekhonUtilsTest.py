@@ -7,7 +7,9 @@
 #  License: see accompanying LICENSE file
 #
 
-# PyUnit Tests for HariSekhonUtils
+# ============================================================================ #
+#                   PyUnit Tests for HariSekhonUtils
+# ============================================================================ #
 
 import os
 import sys
@@ -522,131 +524,446 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_validate_alnum(self):
         self.assertTrue(validate_alnum('Alnum2Test99', 'alnum test'))
         self.assertTrue(validate_alnum('0', 'alnum zero'))
+
+    def test_validate_alnum_exception(self):
         try:
             validate_alnum('Alnum2Test99*', 'alnum invalid')
             raise Exception('validate_alnum() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_alnum_exception_none(self):
+        try:
+            validate_alnum(None, 'alnum invalid')
+            raise Exception('validate_alnum() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_alnum_exception_blank(self):
+        try:
+            validate_alnum('', 'alnum invalid')
+            raise Exception('validate_alnum() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_aws_access_key(self):
         self.assertTrue(validate_aws_access_key('A' * 20))
+
+    def test_validate_aws_access_key_exception(self):
         try:
             validate_aws_access_key('A' * 19 + '*')
             raise Exception('validate_aws_access_key() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_aws_access_key_exception_none(self):
+        try:
+            validate_aws_access_key(None)
+            raise Exception('validate_aws_access_key() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_aws_access_key_exception_blank(self):
+        try:
+            validate_aws_access_key('')
+            raise Exception('validate_aws_access_key() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_aws_bucket(self):
         self.assertTrue(validate_aws_bucket("BucKeT63"))
+
+    def test_validate_aws_bucket_exception(self):
         try:
             validate_aws_access_key('A' * 64)
             raise Exception('validate_aws_bucket() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_aws_bucket_exception_none(self):
+        try:
+            validate_aws_access_key(None)
+            raise Exception('validate_aws_bucket() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_aws_bucket_exception_blank(self):
+        try:
+            validate_aws_access_key('')
+            raise Exception('validate_aws_bucket() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_aws_secret_key(self):
         self.assertTrue(validate_aws_secret_key('A' * 40))
         self.assertTrue(validate_aws_secret_key('1' *40))
         self.assertTrue(validate_aws_secret_key('A1' * 20))
+
+    def test_validate_aws_secret_key_exception(self):
         try:
             validate_aws_access_key('A' * 41)
             raise Exception('validate_aws_secret_key() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_aws_secret_key_exception_none(self):
+        try:
+            validate_aws_access_key(None)
+            raise Exception('validate_aws_secret_key() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_aws_secret_key_exception_blank(self):
+        try:
+            validate_aws_access_key('')
+            raise Exception('validate_aws_secret_key() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_chars(self):
-        self.assertTrue(validate_chars("log_date=2015-05-23_10", "validate chars", "A-Za-z0-9_=-"))
+        self.assertTrue(validate_chars('log_date=2015-05-23_10', 'validate chars', 'A-Za-z0-9_=-'))
+
+    def test_validate_chars_exception(self):
         try:
-            validate_chars("log_date=2015-05-23_10*", "validate chars broken", "A-Za-z0-9_=-")
+            validate_chars('log_date=2015-05-23_10*', 'validate chars broken', 'A-Za-z0-9_=-')
             raise Exception('validate_chars() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_chars_exception_none(self):
+        try:
+            validate_chars(None, 'validate chars broken', 'A-Za-z0-9_=-')
+            raise Exception('validate_chars() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_chars_exception_blank(self):
+        try:
+            validate_chars('', 'validate chars broken', 'A-Za-z0-9_=-')
+            raise Exception('validate_chars() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_collection(self):
-        self.assertTrue(validate_collection("students.grades"))
+        self.assertTrue(validate_collection('students.grades'))
+
+    def test_validate_collection_exception(self):
         try:
-            validate_collection("students.grades*")
+            validate_collection('students.grades*')
             raise Exception('validate_collection() failed to raise exception')
         except InvalidOptionsException:
             pass
 
-
-    def test_validate_collection(self):
-        self.assertTrue(validate_collection("students.grades"))
+    def test_validate_collection_exception_none(self):
         try:
-            validate_collection("students.grades*")
-            raise Exception('validate_collection() failed to raise exception')
+            validate_collection(None)
+            raise Exception('validate_collection() failed to raise exception for none')
         except InvalidOptionsException:
             pass
 
+    def test_validate_collection_exception_blank(self):
+        try:
+            validate_collection('')
+            raise Exception('validate_collection() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_database(self):
-        self.assertTrue(validate_database("mysql", "MySQL"))
+        self.assertTrue(validate_database('mysql', 'MySQL'))
+
+    def test_validate_database_exception(self):
         try:
-            validate_database("mysql*", "MySQL")
+            validate_database('mysql*', 'MySQL')
             raise Exception('validate_database() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_database_exception_none(self):
+        try:
+            validate_database(None, 'MySQL')
+            raise Exception('validate_database() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_database_exception_blank(self):
+        try:
+            validate_database('', 'MySQL')
+            raise Exception('validate_database() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_database_columnname(self):
-        self.assertTrue(validate_database_columnname("myColumn_1"))
+        self.assertTrue(validate_database_columnname('myColumn_1'))
+
+    def test_validate_database_columnname_exception(self):
         try:
-            validate_database_columnname("myColumn_1*"),
+            validate_database_columnname('myColumn_1*')
             raise Exception('validate_database_columnname() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_database_columnname_exception_none(self):
+        try:
+            validate_database_columnname(None)
+            raise Exception('validate_database_columnname() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_database_columnname_exception_blank(self):
+        try:
+            validate_database_columnname('')
+            raise Exception('validate_database_columnname() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_database_fieldname(self):
-        self.assertTrue(validate_database_fieldname("age"))
+        self.assertTrue(validate_database_fieldname('age'))
         self.assertTrue(validate_database_fieldname(10))
-        self.assertTrue(validate_database_fieldname("count(*)"))
+        self.assertTrue(validate_database_fieldname('count(*)'))
+
+    def test_validate_database_fieldname_exception(self):
         try:
-            validate_database_fieldname("age*")
+            validate_database_fieldname('age*')
             raise Exception('validate_database_fieldname() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_database_fieldname_exception_none(self):
+        try:
+            validate_database_fieldname(None)
+            raise Exception('validate_database_fieldname() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_database_fieldname_exception_blank(self):
+        try:
+            validate_database_fieldname('')
+            raise Exception('validate_database_fieldname() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_database_fieldname(self):
-        self.assertTrue(validate_database_fieldname("age"))
+        self.assertTrue(validate_database_fieldname('age'))
         self.assertTrue(validate_database_fieldname(10))
-        self.assertTrue(validate_database_fieldname("count(*)"))
+        self.assertTrue(validate_database_fieldname('count(*)'))
+
+    def test_validate_database_fieldname_exception(self):
         try:
-            validate_database_fieldname("age*")
+            validate_database_fieldname('age*')
             raise Exception('validate_database_fieldname() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_database_fieldname_exception_none(self):
+        try:
+            validate_database_fieldname(None)
+            raise Exception('validate_database_fieldname() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_database_fieldname_exception_blank(self):
+        try:
+            validate_database_fieldname('')
+            raise Exception('validate_database_fieldname() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_database_tablename(self):
-        self.assertTrue(validate_database_tablename("myTable", "Hive"))
-        self.assertTrue(validate_database_tablename("default.myTable", "Hive", allow_qualified=True))
+        self.assertTrue(validate_database_tablename('myTable', 'Hive'))
+        self.assertTrue(validate_database_tablename('default.myTable', 'Hive', allow_qualified=True))
+
+    def test_validate_database_tablename_exception(self):
         try:
-            validate_database_tablename("myTable*", "Hive")
+            validate_database_tablename('myTable*', 'Hive')
             raise Exception('validate_database_tablename() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_database_tablename_exception_none(self):
+        try:
+            validate_database_tablename(None, 'Hive')
+            raise Exception('validate_database_tablename() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_database_tablename_exception_blank(self):
+        try:
+            validate_database_tablename('', 'Hive')
+            raise Exception('validate_database_tablename() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_database_viewname(self):
-        self.assertTrue(validate_database_viewname("myview", "Hive"))
-        self.assertTrue(validate_database_viewname("default.myview", "Hive", allow_qualified=True))
+        self.assertTrue(validate_database_viewname('myview', 'Hive'))
+        self.assertTrue(validate_database_viewname('default.myview', 'Hive', allow_qualified=True))
+
+    def test_validate_database_viewname_exception(self):
         try:
-            validate_database_viewname("myview*", "Hive")
+            validate_database_viewname('myview*', 'Hive')
             raise Exception('validate_database_viewname() failed to raise exception')
         except InvalidOptionsException:
             pass
 
+    def test_validate_database_viewname_exception_none(self):
+        try:
+            validate_database_viewname(None, 'Hive')
+            raise Exception('validate_database_viewname() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
 
+    def test_validate_database_viewname_exception_blank(self):
+        try:
+            validate_database_viewname('', 'Hive')
+            raise Exception('validate_database_viewname() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
 
+# ============================================================================ #
 
+    def test_validate_dirname(self):
+        self.assertTrue(validate_dirname('test_Dir'))
+        self.assertTrue(validate_dirname('/tmp/test'))
+        self.assertTrue(validate_dirname('/nonexistentdir', None, 1))
+
+    def test_validate_dirname_exception(self):
+        try:
+            validate_dirname('b@ddir')
+            raise Exception('validate_dirname() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_dirname_exception_none(self):
+        try:
+            validate_dirname(None)
+            raise Exception('validate_dirname() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_dirname_exception_blank(self):
+        try:
+            validate_dirname('')
+            raise Exception('validate_dirname() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_directory(self):
+        if isLinuxOrMac():
+            self.assertTrue(validate_directory('/etc'))
+            self.assertTrue(validate_directory('/etc/'))
+
+    def test_validate_directory_exception(self):
+        try:
+            validate_directory('/nonexistentdir')
+            raise Exception('validate_directory() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_directory_exception_none(self):
+        try:
+            validate_directory(None)
+            raise Exception('validate_directory() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_directory_exception_blank(self):
+        try:
+            validate_directory('')
+            raise Exception('validate_directory() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_domain(self):
+        self.assertTrue(validate_domain('localDomain'))
+        self.assertTrue(validate_domain('domain.local'))
+        self.assertTrue(validate_domain('harisekhon.com'))
+        self.assertTrue(validate_domain('1harisekhon.com'))
+        self.assertTrue(validate_domain('com'))
+        self.assertTrue(validate_domain('a' * 63 + '.com'))
+        self.assertTrue(validate_domain('compute.internal'))
+        self.assertTrue(validate_domain('eu-west-1.compute.internal'))
+
+    def test_validate_domain_exception(self):
+        try:
+            validate_domain('a' * 64)
+            raise Exception('validate_domain() failed to raise exception for 64 char')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_domain_exception64(self):
+        try:
+            validate_domain('harisekhon')
+            raise Exception('validate_domain() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_domain_exception_none(self):
+        try:
+            validate_domain(None)
+            raise Exception('validate_domain() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_domain_exception_blank(self):
+        try:
+            validate_domain('')
+            raise Exception('validate_domain() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_email(self):
+        self.assertTrue(validate_email('hari\'sekhon@gmail.com'))
+        self.assertTrue(validate_email('hari@LOCALDOMAIN'))
+
+    def test_validate_email_exception(self):
+        try:
+            validate_email("harisekhon")
+            raise Exception('validate_email() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_email_exception_none(self):
+        try:
+            validate_email(None)
+            raise Exception('validate_email() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_email_exception_blank(self):
+        try:
+            validate_email('')
+            raise Exception('validate_email() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
 
 if __name__ == '__main__':
     # unittest.main()

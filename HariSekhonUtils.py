@@ -885,7 +885,7 @@ def validate_database(arg, name=''):
     if name:
         name += ' '
     if not arg:
-        code_error('%sdatabase not defined' % name)
+        raise InvalidOptionsException('%sdatabase not defined' % name)
     if isDatabaseName(arg):
         vlog_options('%sdatabase' % name, arg)
         return True
@@ -894,7 +894,7 @@ def validate_database(arg, name=''):
 
 def validate_database_columnname(arg):
     if not arg:
-        code_error('column not defined')
+        raise InvalidOptionsException('column not defined')
     if isDatabaseColumnName(arg):
         vlog_options('column', arg)
         return True
@@ -903,7 +903,7 @@ def validate_database_columnname(arg):
 
 def validate_database_fieldname(arg):
     if not arg:
-        code_error('field not defined')
+        raise InvalidOptionsException('field not defined')
     if isDatabaseFieldName(arg):
         vlog_options('field', arg)
         return True
@@ -914,7 +914,7 @@ def validate_database_tablename(arg, name='', allow_qualified=False):
     if name:
         name += ' '
     if not arg:
-        code_error('%stable not defined' % name)
+        raise InvalidOptionsException('%stable not defined' % name)
     if isDatabaseTableName(arg, allow_qualified):
         vlog_options('%stable' % name, arg)
         return True
@@ -925,11 +925,67 @@ def validate_database_viewname(arg, name='', allow_qualified=False):
     if name:
         name += " "
     if not arg:
-        code_error('%sview not defined' % name)
+        raise InvalidOptionsException('%sview not defined' % name)
     if isDatabaseViewName(arg, allow_qualified):
         vlog_options('%sview' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sview defined: must be alphanumeric' % name)
+
+
+def validate_database_query_select_show(arg, name=''):
+    if name:
+        name += " "
+    if not arg:
+        raise InvalidOptionsException('%squery not defined' % name)
+    if not re.match('^\s*((?:SHOW|SELECT)\s+.+)$', str(arg)):
+        raise InvalidOptionsException('invalid %squery defined: may only be a SELECT or SHOW statement' % name)
+    if re.search('insert|update|delete|create|drop|alter|truncate', arg, re.I):
+        raise InvalidOptionsException('invalid %squery defined: found DML statement keywords!' % name)
+    vlog_options('%squery' % name, arg)
+    return True
+
+
+def validate_dirname(arg, name='', nolog=False):
+    if name:
+        name += " "
+    if not arg:
+        raise InvalidOptionsException('%sdirectory name not defined' % name)
+    if isDirname(arg):
+        vlog_options('%sdirectory' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sdirectory name defined (does not match regex criteria)')
+
+
+def validate_directory(arg, name='', nolog=False):
+    if name:
+        name += " "
+    if not arg:
+        raise InvalidOptionsException('%sdirectory not defined' % name)
+    validate_dirname(arg, name, nolog)
+    if os.path.isdir(arg):
+        vlog_options('%sdirectory' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sdirectory defined' % name)
+
+
+def validate_domain(arg, name=''):
+    if name:
+        name += " "
+    if not arg:
+        raise InvalidOptionsException('%sdomain name not defined' % name)
+    if isDomain(arg):
+        vlog_options('%sdomain' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sdomain name defined' % name)
+
+
+def validate_email(arg):
+    if not arg:
+        raise InvalidOptionsException('email not defined')
+    if isEmail(arg):
+        vlog_options('email', arg)
+        return True
+    raise InvalidOptionsException('invalid email address defined')
 
 
 #    def validate_host(self):
