@@ -41,7 +41,7 @@ if re.search(r'\bcheck_', prog):
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
-def support_msg(repo):
+def support_msg(repo="pytools"):
     support_msg = 'Please try latest version from https:/github.com/harisekhon/%s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/harisekhon/%s/issues' % (repo, repo)
     return support_msg
 
