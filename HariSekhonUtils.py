@@ -508,7 +508,13 @@ def isPythonMinVersion(min):
     version = getPythonVersion()
     return isMinVersion(version, min)
 
-# def isRegex
+def isRegex(regex):
+    try:
+        re.match(str(regex), "")
+        return True
+    except re.error, e:
+        pass
+    return False
 
 # def isScalar
 

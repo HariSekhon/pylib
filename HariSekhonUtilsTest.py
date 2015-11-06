@@ -383,10 +383,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isPythonMinVersion('2.3'))
         self.assertFalse(isPythonMinVersion('10.0'))
 
-    # def isRegex(self):
-        # self.assertTrue(isRegex('.*'),   '.*',   'isRegex('.*') eq '.*'');
-        # self.assertTrue(isRegex('(.*)'), '(.*)', 'isRegex('(.*)') eq '(.*)'');
-        # self.assertTrue(isRegex('(.*'),  undef,  'isRegex('(.*') eq undef');
+    def test_isRegex(self):
+        self.assertTrue(isRegex('.*'))
+        self.assertTrue(isRegex('(.*)'))
+        self.assertFalse(isRegex('(.*'))
 
     def test_isScientific(self):
         self.assertTrue(isScientific('1.2345E10'))
