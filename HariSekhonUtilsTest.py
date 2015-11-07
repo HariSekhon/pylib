@@ -662,7 +662,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(re.search('https://github.com/harisekhon/testrepo/issues', support_msg('testrepo')))
         self.assertTrue(re.search('https://github.com/harisekhon/pylib/issues', support_msg('')))
 
-    def skip_java_output(self):
+    def test_skip_java_output(self):
         self.assertTrue(skip_java_output('Class JavaLaunchHelper is implemented in both'))
         self.assertTrue(skip_java_output('SLF4J'))
         self.assertFalse(skip_java_output('aSLF4J'))
