@@ -28,8 +28,6 @@ If using bespoke internal domains such as ```.local``` or ```.intranet``` that a
 
 #### See Also ####
 
-The following are more my main libraries
-
 * [Java version of this library](https://github.com/harisekhon/lib-java)
 * [Perl version of this library](https://github.com/harisekhon/lib)
 
