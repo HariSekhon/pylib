@@ -14,6 +14,8 @@
 import inspect
 import os
 import re
+import logging
+import logging.config
 import platform
 import string
 import sys
@@ -36,11 +38,19 @@ libdir = os.path.dirname(__file__) or '.'
 
 prog = inspect.getfile(inspect.currentframe().f_back)
 
-if re.search(r'\bcheck_', prog):
-    sys.stderr = sys.stdout
+logging.config.fileConfig("logging.conf")
+log = logging.getLogger('HariSekhonUtils')
+# Settings now controlled separately in logging.conf file
+# log.setLevel(logging.WARN)
+# log_streamhandler = logging.StreamHandler()
+# log_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+# log_streamhandler.setFormatter(log_formatter)
+# log.addHandler(log_streamhandler)
+
+# if re.search(r'\bcheck_', prog):
+#     sys.stderr = sys.stdout
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
-
 
 def support_msg(repo="pytools"):
     if isBlankOrNone(repo):
@@ -56,7 +66,7 @@ def printerr(msg, indent=False):
 
 
 def warn(msg):
-     printerr('WARNING: %s' % msg)
+     log.warn(msg)
 
 
 def die(msg, *ec):
@@ -577,9 +587,10 @@ def isLdapDn(arg):
 
 def isMinVersion(version, min):
     if version == None:
+        log.warn("'%s' is not a recognized version format" % version)
         return False
     if not isVersionLax(version):
-        warn("'%s' is not a recognized version format" % version)
+        log.warn("'%s' is not a recognized version format" % version)
         return False
     if not isFloat(min):
         code_error('invalid second arg passed to min_version')
@@ -923,7 +934,7 @@ def validate_alnum(arg, name):
     if not arg:
         raise InvalidOptionsException('%s not defined' % name)
     if isAlNum(arg):
-        vlog_options(name, arg)
+        vlog_option(name, arg)
         return True
     raise InvalidOptionsException('invalid %s defined: must be alphanumeric' % name)
 
@@ -933,7 +944,7 @@ def validate_aws_access_key(arg):
         raise InvalidOptionsException('aws access key not defined')
     arg = str(arg)
     if isAwsAccessKey(arg):
-        vlog_options('aws access key', 'X' * 18 + arg[18:20])
+        vlog_option('aws access key', 'X' * 18 + arg[18:20])
         return True
     raise InvalidOptionsException('invalid aws access key defined: must be 20 alphanumeric characters')
 
@@ -943,7 +954,7 @@ def validate_aws_bucket(arg):
         raise InvalidOptionsException('aws bucket not defined')
     arg = str(arg)
     if isDnsShortname(arg):
-        vlog_options('aws bucket', arg)
+        vlog_option('aws bucket', arg)
         return True
     raise InvalidOptionsException('invalid aws access key defined: must be 20 alphanumeric characters')
 
@@ -953,7 +964,7 @@ def validate_aws_secret_key(arg):
         raise InvalidOptionsException('aws secret key not defined')
     arg = str(arg)
     if isAwsSecretKey(arg):
-        vlog_options('aws secret key', 'X' * 38 + arg[38:40])
+        vlog_option('aws secret key', 'X' * 38 + arg[38:40])
         return True
     raise InvalidOptionsException('invalid aws secret key defined: must be 40 alphanumeric characters')
 
@@ -964,7 +975,7 @@ def validate_chars(arg, name, chars):
     if not arg:
         raise InvalidOptionsException('%s not defined' % name)
     if isChars(arg, chars):
-        vlog_options(name, arg)
+        vlog_option(name, arg)
         return True
     raise InvalidOptionsException('invalid %s defined: must be one of the following chars: %s' % (name, chars))
 
@@ -975,7 +986,7 @@ def validate_collection(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%scollection not defined' % name)
     if isCollection(arg):
-        vlog_options('%scollection' % name, arg)
+        vlog_option('%scollection' % name, arg)
         return True
     raise InvalidOptionsException('invalid %scollection defined: must be alphanumeric, with optional periods in the middle' % name)
 
@@ -986,7 +997,7 @@ def validate_database(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%sdatabase not defined' % name)
     if isDatabaseName(arg):
-        vlog_options('%sdatabase' % name, arg)
+        vlog_option('%sdatabase' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sdatabase defined: must be alphanumeric' % name)
 
@@ -995,7 +1006,7 @@ def validate_database_columnname(arg):
     if not arg:
         raise InvalidOptionsException('column not defined')
     if isDatabaseColumnName(arg):
-        vlog_options('column', arg)
+        vlog_option('column', arg)
         return True
     raise InvalidOptionsException('invalid column defined: must be alphanumeric')
 
@@ -1004,7 +1015,7 @@ def validate_database_fieldname(arg):
     if not arg:
         raise InvalidOptionsException('field not defined')
     if isDatabaseFieldName(arg):
-        vlog_options('field', arg)
+        vlog_option('field', arg)
         return True
     raise InvalidOptionsException('invalid field defined: must be alphanumeric')
 
@@ -1015,7 +1026,7 @@ def validate_database_tablename(arg, name='', allow_qualified=False):
     if not arg:
         raise InvalidOptionsException('%stable not defined' % name)
     if isDatabaseTableName(arg, allow_qualified):
-        vlog_options('%stable' % name, arg)
+        vlog_option('%stable' % name, arg)
         return True
     raise InvalidOptionsException('invalid %stable defined: must be alphanumeric' % name)
 
@@ -1026,7 +1037,7 @@ def validate_database_viewname(arg, name='', allow_qualified=False):
     if not arg:
         raise InvalidOptionsException('%sview not defined' % name)
     if isDatabaseViewName(arg, allow_qualified):
-        vlog_options('%sview' % name, arg)
+        vlog_option('%sview' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sview defined: must be alphanumeric' % name)
 
@@ -1040,7 +1051,7 @@ def validate_database_query_select_show(arg, name=''):
         raise InvalidOptionsException('invalid %squery defined: may only be a SELECT or SHOW statement' % name)
     if re.search('insert|update|delete|create|drop|alter|truncate', arg, re.I):
         raise InvalidOptionsException('invalid %squery defined: found DML statement keywords!' % name)
-    vlog_options('%squery' % name, arg)
+    vlog_option('%squery' % name, arg)
     return True
 
 
@@ -1051,7 +1062,7 @@ def validate_dirname(arg, name='', nolog=False):
         raise InvalidOptionsException('%sdirectory name not defined' % name)
     if isDirname(arg):
         if not nolog:
-            vlog_options('%sdirectory' % name, arg)
+            vlog_option('%sdirectory' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sdirectory name defined (does not match regex criteria)')
 
@@ -1064,7 +1075,7 @@ def validate_directory(arg, name='', nolog=False):
     validate_dirname(arg, name, nolog)
     if os.path.isdir(arg):
         if not nolog:
-            vlog_options('%sdirectory' % name, arg)
+            vlog_option('%sdirectory' % name, arg)
         return True
     raise InvalidOptionsException("%sdirectory not found '%s'"  % (name, arg))
 
@@ -1077,7 +1088,7 @@ def validate_domain(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%sdomain name not defined' % name)
     if isDomain(arg):
-        vlog_options('%sdomain' % name, arg)
+        vlog_option('%sdomain' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sdomain name defined' % name)
 
@@ -1087,7 +1098,7 @@ def validate_email(arg):
     if not arg:
         raise InvalidOptionsException('email not defined')
     if isEmail(arg):
-        vlog_options('email', arg)
+        vlog_option('email', arg)
         return True
     raise InvalidOptionsException('invalid email address defined (does not match regex criteria)')
 
@@ -1099,7 +1110,7 @@ def validate_filename(arg, name='', nolog=False):
         raise InvalidOptionsException('%sfilename not defined' % name)
     if isFilename(arg):
         if not nolog:
-            vlog_options('%sfilename' % name, arg)
+            vlog_option('%sfilename' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sfilename (does not match regex criteria)' % name)
 
@@ -1112,7 +1123,7 @@ def validate_file(arg, name='', nolog=False):
     validate_filename(arg, name, nolog)
     if os.path.isfile(arg):
         if not nolog:
-            vlog_options('%sfilename' % name, arg)
+            vlog_option('%sfilename' % name, arg)
         return True
     raise InvalidOptionsException("%sfile not found '%s'" % (name, arg))
 
@@ -1130,7 +1141,7 @@ def validate_float(arg, name, min, max):
         except ValueError, e:
             code_error('invalid min/max (%s/%s) passed to validate_float(): %s' % (min, max, e))
         if (arg >= min and arg <= max):
-            vlog_options(name, arg)
+            vlog_option(name, arg)
             return True
         raise InvalidOptionsException('invalid %s defined: must be real number between %s and %s' % (name, min, max))
     raise InvalidOptionsException('invalid %s defined: must be a real number' % name)
@@ -1142,7 +1153,7 @@ def validate_fqdn(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%sFQDN not defined' % name)
     if isFqdn(arg):
-        vlog_options('%sfqdn' % name, arg)
+        vlog_option('%sfqdn' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sFQDN defined' % name)
 
@@ -1153,7 +1164,7 @@ def validate_host(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%shost not defined' % name)
     if isHost(arg):
-        vlog_options('%shost' % name, arg)
+        vlog_option('%shost' % name, arg)
         return True
     raise InvalidOptionsException('invalid %shost defined: not a valid hostname or IP address' % name)
 
@@ -1167,7 +1178,7 @@ def validate_hostname(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%shostname not defined' % name)
     if isHostname(arg):
-        vlog_options('%shostname' % name, arg)
+        vlog_option('%shostname' % name, arg)
         return True
     raise InvalidOptionsException('invalid %shostname defined: not a valid hostname' % name)
 
@@ -1185,7 +1196,7 @@ def validate_int(arg, name, min, max):
         except ValueError, e:
             code_error('invalid min/max (%s/%s) passed to validate_int(): %s' % (min, max, e))
         if (arg >= min and arg <= max):
-            vlog_options(name, arg)
+            vlog_option(name, arg)
             return True
         raise InvalidOptionsException('invalid %s defined: must be real number between %s and %s' % (name, min, max))
     raise InvalidOptionsException('invalid %s defined: must be a real number' % name)
@@ -1196,7 +1207,7 @@ def validate_interface(arg):
     if not arg:
         raise InvalidOptionsException('interface not defined')
     if isInterface(arg):
-        vlog_options('interface', arg)
+        vlog_option('interface', arg)
         return True
     raise InvalidOptionsException('invalid interface defined: not a valid interface')
 
@@ -1207,7 +1218,7 @@ def validate_ip(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%sIP not defined' % name)
     if isIP(arg):
-        vlog_options('%sIP' % name, arg)
+        vlog_option('%sIP' % name, arg)
         return True
     raise InvalidOptionsException('invalid IP defined')
 
@@ -1218,7 +1229,7 @@ def validate_krb5_princ(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%skrb5 principal not defined' % name)
     if isKrb5Princ(arg):
-        vlog_options('%skrb5 principal' % name, arg)
+        vlog_option('%skrb5 principal' % name, arg)
         return True
     raise InvalidOptionsException('invalid krb5 principal defined')
 
@@ -1229,7 +1240,7 @@ def validate_krb5_realm(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%skrb5 realm not defined' % name)
     if isDomain(arg):
-        vlog_options('%skrb5 realm' % name, arg)
+        vlog_option('%skrb5 realm' % name, arg)
         return True
     raise InvalidOptionsException('invalid krb5 realm defined')
 
@@ -1238,7 +1249,7 @@ def validate_label(arg):
     if not arg:
         raise InvalidOptionsException('label not defined')
     if isLabel(arg):
-        vlog_options('label', arg)
+        vlog_option('label', arg)
         return True
     raise InvalidOptionsException('invalid label defined: must be an alphanumeric identifier')
 
@@ -1249,7 +1260,7 @@ def validate_ldap_dn(arg, name=''):
     if not arg:
         raise InvalidOptionsException('ldap %sdn not defined' % name)
     if isLdapDn(arg):
-        vlog_options('ldap %sdn' % name, arg)
+        vlog_option('ldap %sdn' % name, arg)
         return True
     raise InvalidOptionsException('invalid ldap %sdn defined' % name)
 
@@ -1265,7 +1276,7 @@ def validate_nosql_key(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%skey not defined' % name)
     if isNoSqlKey(arg):
-        vlog_options('%skey' % name, arg)
+        vlog_option('%skey' % name, arg)
         return True
     raise InvalidOptionsException('invalid %skey defined: may only contain characters: alphanumeric, commas, colons, underscores, pluses, dashes' % name)
 
@@ -1276,7 +1287,7 @@ def validate_port(arg, name=''):
     if arg == None:
         raise InvalidOptionsException('%sport not defined' % name)
     if isPort(arg):
-        vlog_options('%sport' % name, arg)
+        vlog_option('%sport' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sport number defined: must be a positive integer' % name)
 
@@ -1287,7 +1298,7 @@ def validate_process_name(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%sprocess name not defined' % name)
     if isProcessName(arg):
-        vlog_options('%sprocess name' % name, arg)
+        vlog_option('%sprocess name' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sprocess name defined' % name)
 
@@ -1302,7 +1313,7 @@ def validate_password(arg, name=''):
         raise InvalidOptionsException('%spassword not defined' % name)
     if re.search('[`\'"]|\\$\\(', arg):
         raise InvalidOptionsException('invalid %spassword defined, may not contain quotes, subshell escape sequences like $( ) or backticks' % name)
-    vlog_options('%spassword' % name, '<omitted>')
+    vlog_option('%spassword' % name, '<omitted>')
     return True
 
 
@@ -1315,7 +1326,7 @@ def validate_units(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%sunits not defined' % name)
     if isNagiosUnit(arg):
-        vlog_options('%sunits' % name, arg)
+        vlog_option('%sunits' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sunits defined: must be one of: ' % name + str(valid_nagios_units))
 
@@ -1326,7 +1337,7 @@ def validate_url(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%surl not defined' % name)
     if isUrl(arg):
-        vlog_options('%surl' % name, arg)
+        vlog_option('%surl' % name, arg)
         return True
     raise InvalidOptionsException('invalid %surl defined' % name)
 
@@ -1337,7 +1348,7 @@ def validate_url_path_suffix(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%surl path suffix not defined' % name)
     if isUrlPathSuffix(arg):
-        vlog_options('%surl path suffix' % name, arg)
+        vlog_option('%surl path suffix' % name, arg)
         return True
     raise InvalidOptionsException('invalid %surl path suffix defined' % name)
 
@@ -1348,7 +1359,7 @@ def validate_user(arg, name=''):
     if not arg:
         raise InvalidOptionsException('%suser not defined' % name)
     if isUser(arg):
-        vlog_options('%suser' % name, arg)
+        vlog_option('%suser' % name, arg)
         return True
     raise InvalidOptionsException('invalid %suser defined: must be alphanumeric' % name)
 
@@ -1386,20 +1397,15 @@ def validate_user(arg, name=''):
 # TODO: quick hack, replace with 'logger'
 
 def vlog(msg):
-    global verbose
-    if verbose:
-        printerr(msg)
+    log.warn(msg)
 
 def vlog2(msg):
-    if verbose > 1:
-        printerr(msg)
+    log.info(msg)
 
 def vlog3(msg):
-    global verbose
-    if verbose > 2:
-        printerr(msg)
+    log.debug(msg)
 
-def vlog_options(name, option):
+def vlog_option(name, option):
     vlog2('%-25s %s' % (name, option))
 
 

@@ -2006,6 +2006,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
 # ============================================================================ #
 
+    def test_vlog(self):
+        vlog('vlog test')
+
+    def test_vlog2(self):
+        vlog2('vlog2 test')
+
+    def test_vlog3(self):
+        vlog3('vlog2 test')
+
+    def test_vlog_option(self):
+        vlog_option('vlog_option', 'test')
+
+
+# ============================================================================ #
+
     if isLinuxOrMac():
         def test_which(self):
             self.assertTrue(which('/bin/sh'))
