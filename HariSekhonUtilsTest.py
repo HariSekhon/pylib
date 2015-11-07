@@ -282,6 +282,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isEmail("hari'sekhon@gmail.com"))
         self.assertTrue(isEmail('hari@LOCALDOMAIN'))
         self.assertFalse(isEmail('harisekhon'))
+        self.assertFalse(isEmail('a' * 256))
         self.assertFalse(isEmail(' '))
         self.assertFalse(isEmail(None))
 
@@ -319,6 +320,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isFqdn('hari.sekhon.com'))
         # denying this results in failing host.local as well
         self.assertFalse(isFqdn('hari@harisekhon.com'))
+        self.assertFalse(isFqdn('a' * 256))
         self.assertFalse(isFqdn(' '))
         self.assertFalse(isFqdn(None))
 
@@ -353,7 +355,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isHostname('1harisekhon.com'))
         self.assertFalse(isHostname('-help'))
         self.assertTrue(isHostname('a' * 63))
-        self.assertFalse(isHostname('a' * 64))
+        self.assertFalse(isHostname('a' * 256))
         self.assertFalse(isHostname('hari~sekhon'))
         self.assertFalse(isHostname(' '))
         self.assertFalse(isHostname(None))
@@ -657,6 +659,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         # like(random_alnum(20),  qr/^[A-Za-z0-9]{20}$/,                      'random_alnum(20)');
         # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
 
+    def test_read_file_without_comments(self):
+        read_file_without_comments('HariSekhonUtils.py')
+
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
         self.assertTrue(re.search('https://github.com/harisekhon/testrepo/issues', support_msg('testrepo')))
@@ -715,6 +720,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(sec2min(None),   '')
 
     def test_skip_java_output(self):
+        self.assertTrue(skip_java_output('SLF4J '))
         self.assertFalse(skip_java_output(' SLF4J '))
         self.assertFalse(skip_java_output(None))
 

@@ -518,10 +518,10 @@ def isIP(arg):
     if arg == None:
         return False
     arg = str(arg)
-    if not re.match('^' + ip_regex + '$', str(arg)):
-        return False
     octets = arg.split('.')
     if len(octets) > 4:
+        return False
+    if not re.match('^' + ip_regex + '$', str(arg)):
         return False
     for octet in octets:
         octet = int(octet)
