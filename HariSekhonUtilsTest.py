@@ -50,6 +50,12 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_isOS(self):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
+        try:
+            isOS(None)
+            raise Exception('failed to raise exception for none arg')
+        except CodingErrorException:
+            pass
+
 
     if isLinux():
         def test_isLinux_string(self):
@@ -68,7 +74,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
             # assertRaises >= 2.7
             try:
                 mac_only()
-                raise Exception
+                raise Exception('failed to raise mac only exception when running on Linux')
             except MacOnlyException:
                 pass
 
@@ -89,7 +95,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
             # assertRaises >= 2.7
             try:
                 linux_only()
-                raise Exception
+                raise Exception('failed to raise linux_only exception when running on Mac')
             except LinuxOnlyException:
                 pass
 
@@ -381,8 +387,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isIP('255.255.255.254'))
         # may be entirely valid depending on the CIDR subnet mask
         self.assertTrue(isIP('10.10.10.0'))
+        self.assertFalse(isIP('10.10.10.10.10'))
         self.assertTrue(isIP('10.10.10.255'))
         self.assertFalse(isIP('10.10.10.256'))
+        self.assertFalse(isIP('10.10.-1.10'))
         self.assertFalse(isIP('x.x.x.x'))
         self.assertFalse(isIP(' '))
         self.assertFalse(isIP(None))
@@ -494,6 +502,11 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_isPythonVersion(self):
         self.assertTrue(isPythonVersion(getPythonVersion()))
+        try:
+            isPythonVersion(None)
+            raise Exception('failed to raise exception for none arg')
+        except CodingErrorException:
+            pass
 
     def test_isPythonMinVersion(self):
         self.assertTrue(isPythonMinVersion('2.3'))
@@ -673,6 +686,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(sec2human(10),    '10 secs')
         self.assertEqual(sec2human(61),    '1 min 1 sec')
         self.assertEqual(sec2human(3676),  '1 hour 1 min 16 secs')
+        self.assertEqual(sec2human(100000), '1 day 3 hours 46 mins 40 secs')
         try:
             sec2human(None)
             raise Exception('failed to raise exception for none')
@@ -699,6 +713,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(sec2min(''),     '')
         self.assertEqual(sec2min(' '),    '')
         self.assertEqual(sec2min(None),   '')
+
+    def test_skip_java_output(self):
+        self.assertFalse(skip_java_output(' SLF4J '))
+        self.assertFalse(skip_java_output(None))
 
 # ============================================================================ #
 #                          Validation Functions
@@ -770,21 +788,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_validate_aws_bucket_exception(self):
         try:
-            validate_aws_access_key('A' * 64)
+            validate_aws_bucket('A' * 64)
             raise Exception('validate_aws_bucket() failed to raise exception')
         except InvalidOptionsException:
             pass
 
     def test_validate_aws_bucket_exception_none(self):
         try:
-            validate_aws_access_key(None)
+            validate_aws_bucket(None)
             raise Exception('validate_aws_bucket() failed to raise exception for none')
         except InvalidOptionsException:
             pass
 
     def test_validate_aws_bucket_exception_blank(self):
         try:
-            validate_aws_access_key('')
+            validate_aws_bucket('')
             raise Exception('validate_aws_bucket() failed to raise exception for blank')
         except InvalidOptionsException:
             pass
@@ -798,28 +816,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_validate_aws_secret_key_exception_blank(self):
         try:
-            validate_aws_access_key('')
+            validate_aws_secret_key('')
             raise Exception('validate_aws_secret_key() failed to raise exception for blank')
         except InvalidOptionsException:
             pass
 
     def test_validate_aws_secret_key_exception(self):
         try:
-            validate_aws_access_key('A' * 41)
+            validate_aws_secret_key('A' * 41)
             raise Exception('validate_aws_secret_key() failed to raise exception')
         except InvalidOptionsException:
             pass
 
     def test_validate_aws_secret_key_exception_none(self):
         try:
-            validate_aws_access_key(None)
+            validate_aws_secret_key(None)
             raise Exception('validate_aws_secret_key() failed to raise exception for none')
         except InvalidOptionsException:
             pass
 
     def test_validate_aws_secret_key_exception_blank(self):
         try:
-            validate_aws_access_key('')
+            validate_aws_secret_key('')
             raise Exception('validate_aws_secret_key() failed to raise exception for blank')
         except InvalidOptionsException:
             pass
@@ -1982,8 +2000,24 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
 # ============================================================================ #
 
-    def test_which(self):
-        self.assertTrue(which('/bin/sh'))
+    if isLinuxOrMac():
+        def test_which(self):
+            self.assertTrue(which('/bin/sh'))
+            self.assertTrue(which('sh'))
+
+        def test_which_exception_non_executable(self):
+            try:
+                which('/etc/hosts')
+                raise Exception('which() failed to raise non executable exception for /etc/hosts')
+            except FileNotExecutableException:
+                pass
+
+    def test_which_exception_non_found(self):
+        try:
+            which('/etc/nonexistent')
+            raise Exception('which() failed to raise exception for nonexistent file')
+        except FileNotFoundException:
+                pass
 
     def test_which_exception_invalid_filename(self):
         try:

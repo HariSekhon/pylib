@@ -331,10 +331,6 @@ def isCollection(arg):
     return False
 
 
-def isDigit(arg):
-    return isInt(arg)
-
-
 def isDatabaseName(arg):
     if arg == None:
         return False
@@ -900,10 +896,10 @@ def sec2human(secs):
 # set_timeout
 
 
-def skip_java_output(mystr):
+def skip_java_output(arg):
     if arg == None:
         return False
-    if re.search('Class JavaLaunchHelper is implemented in both|^SLF4J', str(mystr)):
+    if re.search('Class JavaLaunchHelper is implemented in both|^SLF4J', str(arg)):
         return True
     return False
 
@@ -1411,22 +1407,20 @@ def which(bin):
     if not isFilename(bin):
         raise InvalidFilenameException("invalid filename '%s' supplied to which()" % bin)
     bin = str(bin)
-    if re.match('^.{1,2}\/', bin):
+    if re.match('^.{0,2}\/', bin):
         if os.path.isfile(bin):
             if os.access(bin, os.X_OK):
                 return bin
-            raise FileNotExecutableException("'%' is not executable" % bin)
-        raise FileNotFoundException("'%' not found" % bin)
+            raise FileNotExecutableException("'%s' is not executable" % bin)
+        else:
+            raise FileNotFoundException("'%s' not found" % bin)
     else:
         for basepath in os.getenv('PATH', '').split(os.pathsep):
             path = os.path.join(basepath, bin)
             if os.path.isfile(path):
                 if os.access(path, os.X_OK):
                     return path
-                # elif quit_on_err:
-                #     quit('UNKNOWN', "'%' is not executable" % path)
-        raise FileNotFoundException("could not find executable file '%s' in $PATH (%s)" % (bin, os.getenv('PATH', '') ) )
-    raise FileNotFoundException("'%' not found" % bin)
+    raise FileNotFoundException("could not find executable file '%s' in $PATH (%s)" % (bin, os.getenv('PATH', '') ) )
 
 
 # ============================================================================ #
