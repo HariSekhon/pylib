@@ -30,6 +30,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(ERRORS['CRITICAL'], 2)
         self.assertEqual(ERRORS['UNKNOWN'],  3)
 
+    def test_printerr(self):
+        printerr('testing')
+        printerr('testing', True)
+
     def test_warn(self):
         warn('testing')
 
@@ -103,8 +107,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isAlNum('ABC123efg'))
         self.assertTrue(isAlNum('0'))
         self.assertFalse(isAlNum('1.2'))
-        self.assertFalse(isAlNum(''))
+        self.assertFalse(isAlNum(' '))
         self.assertFalse(isAlNum('hari\@domain.com'))
+        self.assertFalse(isAlNum(None))
 
     def test_isAwsAccessKey(self):
         self.assertTrue(isAwsAccessKey('A' * 20))
@@ -113,28 +118,82 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isAwsAccessKey('@' * 20))
         self.assertFalse(isAwsAccessKey('A' * 40))
         self.assertFalse(isAwsAccessKey('1' * 40))
+        self.assertFalse(isAwsAccessKey(' '))
+        self.assertFalse(isAwsAccessKey(None))
+
+    def test_isAwsHostname(self):
+        self.assertTrue(isAwsHostname('ip-172-31-1-1'))
+        self.assertTrue(isAwsHostname('ip-172-31-1-1.eu-west-1.compute.internal'))
+        self.assertFalse(isAwsHostname('harisekhon'))
+        self.assertFalse(isAwsHostname('10.10.10.1'))
+        self.assertFalse(isAwsHostname(' '))
+        self.assertFalse(isAwsHostname(None))
+
+    def test_isAwsFqdn(self):
+        self.assertTrue(isAwsFqdn('ip-172-31-1-1.eu-west-1.compute.internal'))
+        self.assertFalse(isAwsFqdn('ip-172-31-1-1'))
+        self.assertFalse(isAwsFqdn(' '))
+        self.assertFalse(isAwsFqdn(None))
 
     def test_isAwsSecretKey(self):
         self.assertTrue(isAwsSecretKey('A' * 40))
         self.assertTrue(isAwsSecretKey('1' * 40))
         self.assertFalse(isAwsSecretKey('@' * 40))
         self.assertFalse(isAwsSecretKey('A' * 20))
+        self.assertFalse(isAwsSecretKey('A' * 20))
+        self.assertFalse(isAwsSecretKey(' '))
+        self.assertFalse(isAwsSecretKey(None))
+
+    def test_isBlankOrNone(self):
+        self.assertTrue(isBlankOrNone(' '))
+        self.assertTrue(isBlankOrNone(''))
+        self.assertTrue(isBlankOrNone('   '))
+        self.assertTrue(isBlankOrNone(None))
+        self.assertFalse(isBlankOrNone(' a'))
+        self.assertFalse(isBlankOrNone(' a '))
 
     def test_isChars(self):
         self.assertTrue(isChars('Alpha-01_', 'A-Za-z0-9_-'))
         self.assertFalse(isChars('Alpha-01_*', 'A-Za-z0-9_-'))
 
+    def test_isChars_exception_blank_chars(self):
+        try:
+            isChars('alpha', '')
+            raise Exception('failed to coding raise exception for blank chars')
+        except CodingErrorException:
+            pass
+
+    def test_isChars_exception_none_chars(self):
+        try:
+            isChars('alpha', None)
+            raise Exception('failed to coding raise exception for none chars')
+        except CodingErrorException:
+            pass
+
+    def test_isChars_exception_invalid_char_range(self):
+        try:
+            isChars('alpha', 'c-a')
+            raise Exception('failed to coding raise exception for invalid char range')
+        except CodingErrorException:
+            pass
+
     def test_isCollection(self):
         self.assertTrue(isCollection('students.grades'))
         self.assertFalse(isCollection('wrong\@.grades'))
+        self.assertFalse(isCollection(' '))
+        self.assertFalse(isCollection(None))
 
     def test_isDatabaseName(self):
         self.assertTrue(isDatabaseName('mysql1'))
         self.assertFalse(isDatabaseName('my@sql'))
+        self.assertFalse(isDatabaseName(' '))
+        self.assertFalse(isDatabaseName(None))
 
     def test_isDatabaseColumnName(self):
         self.assertTrue(isDatabaseColumnName('myColumn_1'))
         self.assertFalse(isDatabaseColumnName("'column'"))
+        self.assertFalse(isDatabaseColumnName(' '))
+        self.assertFalse(isDatabaseColumnName(None))
 
     # rely on this for MySQL field by position
     def test_isDatabaseFieldName(self):
@@ -142,6 +201,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isDatabaseFieldName(2))
         self.assertTrue(isDatabaseFieldName('count(*)'))
         self.assertFalse(isDatabaseFieldName('\@something'))
+        self.assertFalse(isDatabaseFieldName(' '))
+        self.assertFalse(isDatabaseFieldName(None))
 
     def test_isDatabaseTableName(self):
         self.assertTrue(isDatabaseTableName('myTable_1'))
@@ -149,6 +210,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isDatabaseTableName('default.myTable_1', True))
         self.assertFalse(isDatabaseTableName('default.myTable_1', False))
         self.assertFalse(isDatabaseTableName('default.myTable_1'))
+        self.assertFalse(isDatabaseTableName(' '))
+        self.assertFalse(isDatabaseTableName(None))
 
     def test_isDatabaseViewName(self):
         self.assertTrue(isDatabaseViewName('myView_1'))
@@ -156,12 +219,16 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isDatabaseViewName('default.myView_1', True))
         self.assertFalse(isDatabaseViewName('default.myView_1', False))
         self.assertFalse(isDatabaseViewName('default.myView_1'))
+        self.assertFalse(isDatabaseViewName(' '))
+        self.assertFalse(isDatabaseViewName(None))
 
     def test_isDirname(self):
         self.assertTrue(isDirname('test_Dir'))
         self.assertTrue(isDirname('/tmp/test'))
         self.assertTrue(isDirname('./test'))
         self.assertFalse(isDirname('\@me'))
+        self.assertFalse(isDirname(' '))
+        self.assertFalse(isDirname(None))
 
     def test_isDomain(self):
         self.assertTrue(isDomain('localDomain'))
@@ -170,30 +237,54 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isDomain('1harisekhon.com'))
         self.assertTrue(isDomain('com'))
         self.assertTrue(isDomain('a' * 63 + '.com'))
-        self.assertFalse(isDomain('a' * 64))
-        self.assertFalse(isDomain('harisekhon'))
         self.assertTrue(isDomain('compute.internal'))
         self.assertTrue(isDomain('eu-west-1.compute.internal'))
+        self.assertFalse(isDomain('a' * 64))
+        self.assertFalse(isDomain('a' * 252 + '.com'))
+        self.assertFalse(isDomain('harisekhon'))
+        self.assertFalse(isDomain(' '))
+        self.assertFalse(isDomain(None))
+
+    def test_isDomainStrict(self):
         self.assertTrue(isDomainStrict('123domain.com'))
         self.assertTrue(isDomainStrict('domain.local'))
         self.assertFalse(isDomainStrict('com'))
         self.assertTrue(isDomainStrict('domain.com'))
         self.assertTrue(isDomainStrict('domain.local'))
         self.assertTrue(isDomainStrict('domain.localDomain'))
+        self.assertTrue(isDomainStrict('domain.local'))
+        self.assertTrue(isDomainStrict('harisekhon.com'))
+        self.assertTrue(isDomainStrict('1harisekhon.com'))
+        self.assertTrue(isDomainStrict('a' * 63 + '.com'))
+        self.assertTrue(isDomainStrict('compute.internal'))
+        self.assertTrue(isDomainStrict('eu-west-1.compute.internal'))
+        self.assertFalse(isDomainStrict('localDomain'))
+        self.assertFalse(isDomainStrict('com'))
+        self.assertFalse(isDomainStrict('a' * 64))
+        self.assertFalse(isDomainStrict('a' * 252 + '.com'))
+        self.assertFalse(isDomainStrict('harisekhon'))
+        self.assertFalse(isDomainStrict(' '))
+        self.assertFalse(isDomainStrict(None))
 
     def test_isDnsShortname(self):
         self.assertTrue(isDnsShortname('myHost'))
         self.assertFalse(isDnsShortname('myHost.domain.com'))
+        self.assertFalse(isDnsShortname(' '))
+        self.assertFalse(isDnsShortname(None))
 
     def test_isEmail(self):
         self.assertTrue(isEmail("hari'sekhon@gmail.com"))
         self.assertTrue(isEmail('hari@LOCALDOMAIN'))
         self.assertFalse(isEmail('harisekhon'))
+        self.assertFalse(isEmail(' '))
+        self.assertFalse(isEmail(None))
 
     def test_isFilename(self):
         self.assertTrue(isFilename('some_File.txt'))
         self.assertTrue(isFilename('/tmp/test'))
         self.assertFalse(isFilename('@me'))
+        self.assertFalse(isFilename(' '))
+        self.assertFalse(isFilename(None))
 
     def test_isFloat(self):
         self.assertTrue(isFloat(1))
@@ -215,16 +306,23 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isFloat('nan'))
         self.assertFalse(isFloat('nan', True))
 
+        self.assertFalse(isFloat(' ', True))
+        self.assertFalse(isFloat(None, True))
+
     def test_isFqdn(self):
         self.assertTrue(isFqdn('hari.sekhon.com'))
         # denying this results in failing host.local as well
         self.assertFalse(isFqdn('hari@harisekhon.com'))
+        self.assertFalse(isFqdn(' '))
+        self.assertFalse(isFqdn(None))
 
     def test_isHex(self):
         self.assertTrue(isHex('0xAf09b'))
         self.assertFalse(isHex('0xhari'))
         self.assertTrue(isHex(0))
         self.assertFalse(isHex('g'))
+        self.assertFalse(isHex(' '))
+        self.assertFalse(isHex(None))
 
     def test_isHost(self):
         self.assertTrue(isHost('harisekhon.com'))
@@ -237,16 +335,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isHost('10.10.10.255'))
         self.assertFalse(isHost('10.10.10.256'))
         self.assertFalse(isHost('a' * 256))
-
-    def test_isAwsHostname(self):
-        self.assertTrue(isAwsHostname('ip-172-31-1-1'))
-        self.assertTrue(isAwsHostname('ip-172-31-1-1.eu-west-1.compute.internal'))
-        self.assertFalse(isAwsHostname('harisekhon'))
-        self.assertFalse(isAwsHostname('10.10.10.1'))
-
-    def test_isAwsFqdn(self):
-        self.assertTrue(isAwsFqdn('ip-172-31-1-1.eu-west-1.compute.internal'))
-        self.assertFalse(isAwsFqdn('ip-172-31-1-1'))
+        self.assertFalse(isHost(' '))
+        self.assertFalse(isHost(None))
 
     def test_isHostname(self):
         self.assertTrue(isHostname('harisekhon.com'))
@@ -259,6 +349,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isHostname('a' * 63))
         self.assertFalse(isHostname('a' * 64))
         self.assertFalse(isHostname('hari~sekhon'))
+        self.assertFalse(isHostname(' '))
+        self.assertFalse(isHostname(None))
 
     def test_isInt(self):
         self.assertTrue(isInt(0))
@@ -266,6 +358,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isInt(-1))
         self.assertFalse(isInt(1.1))
         self.assertFalse(isInt('a'))
+        self.assertFalse(isInt(' '))
+        self.assertFalse(isInt(''))
+        self.assertFalse(isInt(None))
 
     def test_isInterface(self):
         self.assertTrue(isInterface('eth0'))
@@ -275,6 +370,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isInterface('vethfa1b2c3'))
         self.assertFalse(isInterface('vethfa1b2z3'))
         self.assertFalse(isInterface('b@ip'))
+        self.assertFalse(isInterface(' '))
+        self.assertFalse(isInterface(None))
 
     def test_isIP(self):
         self.assertTrue(isIP('10.10.10.1'))
@@ -287,10 +384,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isIP('10.10.10.255'))
         self.assertFalse(isIP('10.10.10.256'))
         self.assertFalse(isIP('x.x.x.x'))
+        self.assertFalse(isIP(' '))
+        self.assertFalse(isIP(None))
 
     def test_isJavaException(self):
         self.assertTrue(isJavaException('        at org.apache.ambari.server.api.services.stackadvisor.StackAdvisorRunner.runScript(StackAdvisorRunner.java:96)'))
         self.assertFalse(isJavaException('blah'))
+        self.assertFalse(isJavaException(' '))
+        self.assertFalse(isJavaException(None))
 
     def test_isKrb5Princ(self):
         self.assertTrue(isKrb5Princ('tgt/HARI.COM@HARI.COM'))
@@ -301,14 +402,20 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isKrb5Princ('cloudera-scm/admin@SUB.REALM.COM'))
         self.assertTrue(isKrb5Princ('hari@hari.com'))
         self.assertFalse(isKrb5Princ('hari$HARI.COM'))
+        self.assertFalse(isKrb5Princ(' '))
+        self.assertFalse(isKrb5Princ(None))
 
     def test_isLabel(self):
         self.assertTrue(isLabel('st4ts_used (%)'))
         self.assertFalse(isLabel('b@dlabel'))
+        self.assertFalse(isLabel(' '))
+        self.assertFalse(isLabel(None))
 
     def test_isLdapDn(self):
         self.assertTrue(isLdapDn('uid=hari,cn=users,cn=accounts,dc=local'))
         self.assertFalse(isLdapDn('hari@LOCAL'))
+        self.assertFalse(isLdapDn(' '))
+        self.assertFalse(isLdapDn(None))
 
     def test_isMinVersion(self):
         self.assertTrue(isMinVersion('1.3.0', '1.3'))
@@ -319,6 +426,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isMinVersion('1.3.1', 1.2))
         self.assertFalse(isMinVersion('1.3.1', '1.4'))
         self.assertFalse(isMinVersion('1.2.99', '1.3'))
+        self.assertFalse(isMinVersion(' ', '1.3'))
+        self.assertFalse(isMinVersion(None, '1.3'))
 
     def test_isNagiosUnit(self):
         self.assertTrue(isNagiosUnit('s'))
@@ -332,10 +441,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isNagiosUnit('c'))
         self.assertTrue(isNagiosUnit('%'))
         self.assertFalse(isNagiosUnit('Kbps'))
+        self.assertFalse(isNagiosUnit(' '))
+        self.assertFalse(isNagiosUnit(None))
 
     def test_isNoSqlKey(self):
         self.assertTrue(isNoSqlKey('HariSekhon:check_riak_write.pl:riak1:1385226607.02182:20abc'))
         self.assertFalse(isNoSqlKey('HariSekhon@check_riak_write.pl'))
+        self.assertFalse(isNoSqlKey(' '))
+        self.assertFalse(isNoSqlKey(None))
 
     def test_isPathQualified(self):
         self.assertTrue(isPathQualified('./blah'))
@@ -349,6 +462,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isPathQualified('Europe/London'))
         # not supporting tilda home dirs
         self.assertFalse(isPathQualified('~blah'))
+        self.assertFalse(isPathQualified(' '))
+        self.assertFalse(isPathQualified(None))
 
     def test_isPort(self):
         self.assertTrue(isPort(1))
@@ -358,6 +473,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isPort('a'))
         self.assertFalse(isPort(-1))
         self.assertFalse(isPort(0))
+        self.assertFalse(isPort(' '))
+        self.assertFalse(isPort(None))
 
     def test_isProcessName(self):
         self.assertTrue(isProcessName('../my_program'))
@@ -365,11 +482,15 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isProcessName('sh <defunct>'))
         self.assertFalse(isProcessName('./b\@dfile'))
         self.assertFalse(isProcessName('[init] 3'))
+        self.assertFalse(isProcessName(' '))
+        self.assertFalse(isProcessName(None))
 
     def test_isPythonTraceback(self):
         self.assertTrue(isPythonTraceback('  File "/var/lib/ambari-server/resources/scripts/stack_advisor.py", line 154, in <module>'))
         self.assertTrue(isPythonTraceback('... Traceback (most recent call last):'))
         self.assertFalse(isPythonTraceback('blah'))
+        self.assertFalse(isPythonTraceback(' '))
+        self.assertFalse(isPythonTraceback(None))
 
     def test_isPythonVersion(self):
         self.assertTrue(isPythonVersion(getPythonVersion()))
@@ -377,17 +498,31 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_isPythonMinVersion(self):
         self.assertTrue(isPythonMinVersion('2.3'))
         self.assertFalse(isPythonMinVersion('10.0'))
+        try:
+            isPythonMinVersion(' ')
+            raise Exception('failed to raise exception for blank version')
+        except CodingErrorException:
+            pass
+        try:
+            isPythonMinVersion(None)
+            raise Exception('failed to raise exception for none version')
+        except CodingErrorException:
+            pass
 
     def test_isRegex(self):
         self.assertTrue(isRegex('.*'))
         self.assertTrue(isRegex('(.*)'))
         self.assertFalse(isRegex('(.*'))
+        self.assertFalse(isRegex(''))
+        self.assertFalse(isRegex(None))
 
     def test_isScientific(self):
         self.assertTrue(isScientific('1.2345E10'))
         self.assertTrue(isScientific('1e-10'))
         self.assertFalse(isScientific('-1e-10'))
         self.assertTrue(isScientific('-1e-10', True))
+        self.assertFalse(isScientific(' ', True))
+        self.assertFalse(isScientific(None, True))
 
     def test_isUrl(self):
         self.assertTrue(isUrl('www.google.com'))
@@ -396,6 +531,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isUrl(1))
         self.assertFalse(isUrl('-help'))
         self.assertTrue(isUrl('http://cdh43:50070/dfsnodelist.jsp?whatNodes=LIVE'))
+        self.assertFalse(isUrl(' '))
+        self.assertFalse(isUrl(None))
 
     def test_isUrlPathSuffix(self):
         self.assertTrue(isUrlPathSuffix('/'))
@@ -404,6 +541,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isUrlPathSuffix('/*'))
         self.assertTrue(isUrlPathSuffix('/~hari'))
         self.assertFalse(isUrlPathSuffix('hari'))
+        self.assertFalse(isUrlPathSuffix(' '))
+        self.assertFalse(isUrlPathSuffix(None))
 
     def test_isUser(self):
         self.assertTrue(isUser('hadoop'))
@@ -411,7 +550,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isUser('mysql_test'))
         self.assertTrue(isUser('cloudera-scm'))
         self.assertFalse(isUser('-hari'))
-        self.assertFalse(isUser('1983hari'))
+        self.assertFalse(isUser('9hari'))
+        self.assertFalse(isUser(' '))
+        self.assertFalse(isUser(None))
 
     def test_isVersion(self):
         self.assertTrue(isVersion(1))
@@ -422,6 +563,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isVersion('3a'))
         self.assertFalse(isVersion('1.0-2'))
         self.assertFalse(isVersion('1.0-a'))
+        self.assertFalse(isVersion(' '))
+        self.assertFalse(isVersion(None))
 
     def test_isVersionLax(self):
         self.assertTrue(isVersion(1))
@@ -433,6 +576,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isVersionLax('1.0-2'))
         self.assertTrue(isVersionLax('1.0-a'))
         self.assertFalse(isVersionLax('hari'))
+        self.assertFalse(isVersionLax(' '))
+        self.assertFalse(isVersionLax(None))
 
     # def test_isXml(self):
         # self.assertTrue(isXml('<blah></blah>'), 'isXML()');
@@ -447,13 +592,25 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isYes('n'))
         self.assertFalse(isYes('N'))
         self.assertFalse(isYes(''))
+        self.assertFalse(isYes(' '))
+        self.assertFalse(isYes(None))
 
 # ============================================================================ #
 
     def test_min_value(self):
         self.assertEquals(min_value(1, 4), 4)
         self.assertEquals(min_value(3, 1), 3)
-        self.assertEquals(min_value(3,4),  4)
+        self.assertEquals(min_value(3, 4), 4)
+        try:
+            min_value(None, 4)
+            raise Exception('failed to raise exception for none first arg')
+        except CodingErrorException:
+            pass
+        try:
+            min_value(3, None)
+            raise Exception('failed to raise exception for none second arg')
+        except CodingErrorException:
+            pass
 
     #def test_human_units(self):
         # self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
@@ -470,12 +627,17 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertEqual(perf_suffix('blah.bytes'), 'b')
         self.assertEqual(perf_suffix('blah.millis'), 'ms')
         self.assertEqual(perf_suffix('blah.blah2'), '')
+        self.assertEqual(perf_suffix(' '), '')
+        self.assertEqual(perf_suffix(None), '')
 
     # def test_pkill(self):
     #     self.assertFalse(pkill('nonexistentprogram'))
 
     def test_plural(self):
         self.assertEqual(plural(1), '')
+        self.assertEqual(plural(''), '')
+        self.assertEqual(plural(' '), '')
+        self.assertEqual(plural(None), '')
         self.assertEqual(plural(2), 's')
 
     #def test_random_alnum(self):
@@ -485,17 +647,15 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
         self.assertTrue(re.search('https://github.com/harisekhon/testrepo/issues', support_msg('testrepo')))
-
-    def test_sec2human(self):
-        self.assertEqual(sec2human(1),     '1 sec')
-        self.assertEqual(sec2human(10),    '10 secs')
-        self.assertEqual(sec2human(61),    '1 min 1 sec')
-        self.assertEqual(sec2human(3676),  '1 hour 1 min 16 secs')
+        self.assertTrue(re.search('https://github.com/harisekhon/pylib/issues', support_msg('')))
 
     def skip_java_output(self):
         self.assertTrue(skip_java_output('Class JavaLaunchHelper is implemented in both'))
         self.assertTrue(skip_java_output('SLF4J'))
         self.assertFalse(skip_java_output('aSLF4J'))
+        self.assertFalse(skip_java_output(' '))
+        self.assertFalse(skip_java_output(''))
+        self.assertFalse(skip_java_output(None))
 
     # def test_resolve_ip(self):
     #     # if not on a decent OS assume I'm somewhere lame like a bank where internal resolvers don't resolve internet addresses
@@ -508,13 +668,37 @@ class HariSekhonUtilsTest(unittest.TestCase):
         # self.assertTrue(resolve_ip('4.2.2.2'),                   '4.2.2.2',      'resolve_ip('4.2.2.2') returns 4.2.2.2');
         # self.assertTrue(validate_resolvable('4.2.2.2'),                   '4.2.2.2',      'validate_resolvable('4.2.2.2') returns 4.2.2.2');
 
+    def test_sec2human(self):
+        self.assertEqual(sec2human(1),     '1 sec')
+        self.assertEqual(sec2human(10),    '10 secs')
+        self.assertEqual(sec2human(61),    '1 min 1 sec')
+        self.assertEqual(sec2human(3676),  '1 hour 1 min 16 secs')
+        try:
+            sec2human(None)
+            raise Exception('failed to raise exception for none')
+        except CodingErrorException:
+            pass
+        try:
+            sec2human('')
+            raise Exception('failed to raise exception for blank')
+        except CodingErrorException:
+            pass
+        try:
+            sec2human(' ')
+            raise Exception('failed to raise exception for spaces')
+        except CodingErrorException:
+            pass
+
     def test_sec2min(self):
         self.assertEqual(sec2min(65),     '1:05')
         self.assertEqual(sec2min(30),     '0:30')
         self.assertEqual(sec2min(3601),   '60:01')
-        self.assertFalse(sec2min(-1))
-        self.assertFalse(sec2min('aa'))
         self.assertEqual(sec2min(0),      '0:00')
+        self.assertEqual(sec2min(-1),     '')
+        self.assertEqual(sec2min('aa'),   '')
+        self.assertEqual(sec2min(''),     '')
+        self.assertEqual(sec2min(' '),    '')
+        self.assertEqual(sec2min(None),   '')
 
 # ============================================================================ #
 #                          Validation Functions
@@ -530,6 +714,13 @@ class HariSekhonUtilsTest(unittest.TestCase):
             validate_alnum('Alnum2Test99*', 'alnum invalid')
             raise Exception('validate_alnum() failed to raise exception')
         except InvalidOptionsException:
+            pass
+
+    def test_validate_alnum_exception_noname(self):
+        try:
+            validate_alnum('Alnum2Test99*', '')
+            raise Exception('validate_alnum() failed to raise exception for no name')
+        except CodingErrorException:
             pass
 
     def test_validate_alnum_exception_none(self):
@@ -605,6 +796,13 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(validate_aws_secret_key('1' *40))
         self.assertTrue(validate_aws_secret_key('A1' * 20))
 
+    def test_validate_aws_secret_key_exception_blank(self):
+        try:
+            validate_aws_access_key('')
+            raise Exception('validate_aws_secret_key() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
     def test_validate_aws_secret_key_exception(self):
         try:
             validate_aws_access_key('A' * 41)
@@ -638,6 +836,13 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
+    def test_validate_chars_exception_noname(self):
+        try:
+            validate_chars('log_date=2015-05-23_10*', '', 'A-Za-z0-9_=-')
+            raise Exception('validate_chars() failed to raise exception for no name')
+        except CodingErrorException:
+            pass
+
     def test_validate_chars_exception_none(self):
         try:
             validate_chars(None, 'validate chars broken', 'A-Za-z0-9_=-')
@@ -656,6 +861,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_validate_collection(self):
         self.assertTrue(validate_collection('students.grades'))
+        self.assertTrue(validate_collection('students.grades', 'name'))
 
     def test_validate_collection_exception(self):
         try:
@@ -854,6 +1060,13 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
+    def test_validate_database_query_select_show_exception_embedded_delete(self):
+        try:
+            validate_database_query_select_show('select * from (delete * from myTable)', 'name')
+            raise Exception('validate_database_query_select_show() failed to raise exception for embedded delete')
+        except InvalidOptionsException:
+            pass
+
     def test_validate_database_query_select_show_exception_none(self):
         try:
             validate_database_query_select_show(None, 'name')
@@ -901,7 +1114,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_validate_directory(self):
         if isLinuxOrMac():
             self.assertTrue(validate_directory('/etc', 'name'))
-            self.assertTrue(validate_directory('/etc/'))
+            self.assertTrue(validate_dir('/etc/'))
 
     def test_validate_directory_exception(self):
         try:
@@ -1049,7 +1262,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
 # ============================================================================ #
 
     def test_validate_float(self):
@@ -1058,6 +1270,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(validate_float(2.1, 'two point one', 0, 10))
         self.assertTrue(validate_float(6.8, 'six point eight', 5, 10))
         self.assertTrue(validate_float(-6, 'minus six', -6, 0))
+
+
+    def test_validate_float_exception_noname(self):
+        try:
+            validate_float(-6, '', -6, 0)
+            raise Exception('validate_float() failed to raise exception for no name')
+        except CodingErrorException:
+            pass
+
+    def test_validate_float_exception_min(self):
+        try:
+            validate_float(-6, 'name', 'blah', 0)
+            raise Exception('validate_float() failed to raise exception for invalid min')
+        except CodingErrorException:
+            pass
+
+    def test_validate_float_exception_max(self):
+        try:
+            validate_float(-6, 'name', -6, 'blah')
+            raise Exception('validate_float() failed to raise exception for invalid max')
+        except CodingErrorException:
+            pass
 
     def test_validate_float_exception(self):
         try:
@@ -1147,7 +1381,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
 # ============================================================================ #
 
     def test_validate_hostname(self):
@@ -1195,7 +1428,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
             pass
 
 
-
 # ============================================================================ #
 
     def test_validate_int(self):
@@ -1206,6 +1438,26 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(validate_int(2,'two', 0, 10))
         self.assertTrue(validate_int(6,'six', 5, 7))
 
+    def test_validate_int_exception_noname(self):
+        try:
+            validate_int(6,'', 5, 7)
+            raise Exception('validate_int() failed to raise exception for no name')
+        except CodingErrorException:
+            pass
+
+    def test_validate_int_exception_invalid_min(self):
+        try:
+            validate_int(6, 'name', 'blah', 7)
+            raise Exception('validate_int() failed to raise exception for invalid min')
+        except CodingErrorException:
+            pass
+
+    def test_validate_int_exception_invalid_max(self):
+        try:
+            validate_int(6, 'name', 5, 'blah')
+            raise Exception('validate_int() failed to raise exception for invalid max')
+        except CodingErrorException:
+            pass
 
     def test_validate_int_exception_boundary(self):
         try:
@@ -1234,7 +1486,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
             raise Exception('validate_int() failed to raise exception for blank')
         except InvalidOptionsException:
             pass
-
 
 # ============================================================================ #
 
@@ -1273,11 +1524,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
 # ============================================================================ #
 
     def test_validate_ip(self):
-        self.assertTrue(validate_ip('10.10.10.1'))
+        self.assertTrue(validate_ip('10.10.10.1', 'name'))
         self.assertTrue(validate_ip('10.10.10.10'))
         self.assertTrue(validate_ip('10.10.10.100'))
         self.assertTrue(validate_ip('254.0.0.254'))
@@ -1314,11 +1564,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
 # ============================================================================ #
 
     def test_validate_krb5_princ(self):
-        self.assertTrue(validate_krb5_princ('tgt/HARI.COM@HARI.COM'))
+        self.assertTrue(validate_krb5_princ('tgt/HARI.COM@HARI.COM', 'name'))
         self.assertTrue(validate_krb5_princ('hari'))
         self.assertTrue(validate_krb5_princ('hari@HARI.COM'))
         self.assertTrue(validate_krb5_princ('hari/my.host.local@HARI.COM'))
@@ -1346,7 +1595,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
             raise Exception('validate_krb5_princ() failed to raise exception for blank')
         except InvalidOptionsException:
             pass
-
 
 # ============================================================================ #
 
@@ -1414,11 +1662,11 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
 # ============================================================================ #
 
     def test_validate_ldap_dn(self):
         self.assertTrue(validate_ldap_dn('uid=hari,cn=users,cn=accounts,dc=local'))
+        self.assertTrue(validate_ldap_dn('uid=hari,cn=users,cn=accounts,dc=local', 'name'))
 
     def test_validate_ldap_dn_exception(self):
         try:
@@ -1441,11 +1689,11 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
 # ============================================================================ #
 
     def test_validate_nosql_key(self):
         self.assertTrue(validate_nosql_key('HariSekhon:check_riak_write.pl:riak1:1385226607.02182:20abc'))
+        self.assertTrue(validate_nosql_key('HariSekhon:check_riak_write.pl:riak1:1385226607.02182:20abc', 'name'))
 
     def test_validate_nosql_key_exception(self):
         try:
@@ -1468,11 +1716,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
 # ============================================================================ #
 
     def test_validate_port(self):
-        self.assertTrue(validate_port(1))
+        self.assertTrue(validate_port(1, 'name'))
         self.assertTrue(validate_port(80))
         self.assertTrue(validate_port(65535))
 
@@ -1518,13 +1765,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
-
-
-
 # ============================================================================ #
 
     def test_validate_process_name(self):
-        self.assertTrue(validate_process_name('../my_program'))
+        self.assertTrue(validate_process_name('../my_program', 'name'))
         self.assertTrue(validate_process_name('ec2-run-instances'))
         self.assertTrue(validate_process_name('sh <defunct>'))
 
@@ -1559,6 +1803,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_password(self):
+        self.assertTrue(validate_password('wh@tev3r', 'name'))
         self.assertTrue(validate_password('wh@tev3r'))
 
     def test_validate_password_exception_backticks(self):
@@ -1606,7 +1851,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_units(self):
-        self.assertTrue(validate_units('s'))
+        self.assertTrue(validate_units('s', 'name'))
         self.assertTrue(validate_units('ms'))
         self.assertTrue(validate_units('us'))
         self.assertTrue(validate_units('B'))
@@ -1642,7 +1887,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_url(self):
-        self.assertTrue(validate_url('www.google.com'))
+        self.assertTrue(validate_url('www.google.com', 'name'))
         self.assertTrue(validate_url('http://www.google.com'))
         self.assertTrue(validate_url('https://gmail.com'))
         self.assertTrue(validate_url('1'))
@@ -1672,7 +1917,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_url_path_suffix(self):
-        self.assertTrue(validate_url_path_suffix('/'))
+        self.assertTrue(validate_url_path_suffix('/', 'name'))
         self.assertTrue(validate_url_path_suffix('/?var=something'))
         self.assertTrue(validate_url_path_suffix('/dir1/file.php?var=something+else&var2=more%20stuff'))
         self.assertTrue(validate_url_path_suffix('/*'))
@@ -1702,7 +1947,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_user(self):
-        self.assertTrue(validate_user('hadoop'))
+        self.assertTrue(validate_user('hadoop', 'name'))
         self.assertTrue(validate_user('hari1'))
         self.assertTrue(validate_user('mysql_test'))
         self.assertTrue(validate_user('cloudera-scm'))
@@ -1735,33 +1980,65 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
+# ============================================================================ #
+
+    def test_which(self):
+        self.assertTrue(which('/bin/sh'))
+
+    def test_which_exception_invalid_filename(self):
+        try:
+            which('b@dfile')
+            raise Exception('which() failed to raise exception for dashfirst')
+        except InvalidFilenameException:
+            pass
+
+    def test_which_exception_numfirst(self):
+        try:
+            which('9hari')
+            raise Exception('which() failed to raise exception for numfirst')
+        except FileNotFoundException:
+            pass
+
+    def test_which_exception_none(self):
+        try:
+            which(None)
+            raise Exception('which() failed to raise exception for none')
+        except InvalidFilenameException:
+            pass
+
+    def test_which_exception_blank(self):
+        try:
+            which('')
+            raise Exception('which() failed to raise exception for blank')
+        except InvalidFilenameException:
+            pass
 
 # ============================================================================ #
 
-    # def test_validate_user_exists(self):
-    #     if isLinuxOrMac():
-    #         self.assertTrue(validate_user_exists('root'))
-    #
-    # def test_validate_user_exists_exception(self):
-    #     try:
-    #         validate_user_exists('noexistentuser')
-    #         raise Exception('validate_user_exists() failed to raise exception for nonexistentuser')
-    #     except InvalidOptionsException:
-    #         pass
-    #
-    # def test_validate_user_exists_exception_none(self):
-    #     try:
-    #         validate_user_exists(None)
-    #         raise Exception('validate_user_exists() failed to raise exception for none')
-    #     except InvalidOptionsException:
-    #         pass
-    #
-    # def test_validate_user_exists_exception_blank(self):
-    #     try:
-    #         validate_user_exists('')
-    #         raise Exception('validate_user_exists() failed to raise exception for blank')
-    #     except InvalidOptionsException:
-    #         pass
+# def test_validate_user_exists(self):
+#     if isLinuxOrMac():
+#         self.assertTrue(validate_user_exists('root'))
+#
+# def test_validate_user_exists_exception(self):
+#     try:
+#         validate_user_exists('noexistentuser')
+#         raise Exception('validate_user_exists() failed to raise exception for nonexistentuser')
+#     except InvalidOptionsException:
+#         pass
+#
+# def test_validate_user_exists_exception_none(self):
+#     try:
+#         validate_user_exists(None)
+#         raise Exception('validate_user_exists() failed to raise exception for none')
+#     except InvalidOptionsException:
+#         pass
+#
+# def test_validate_user_exists_exception_blank(self):
+#     try:
+#         validate_user_exists('')
+#         raise Exception('validate_user_exists() failed to raise exception for blank')
+#     except InvalidOptionsException:
+#         pass
 
 # ============================================================================ #
 

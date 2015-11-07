@@ -43,18 +43,20 @@ valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
 
 def support_msg(repo="pytools"):
+    if isBlankOrNone(repo):
+        repo = "pylib"
     support_msg = 'Please try latest version from https:/github.com/harisekhon/%s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/harisekhon/%s/issues' % (repo, repo)
     return support_msg
 
 
-def printerr(msg, *indent):
+def printerr(msg, indent=False):
     if indent:
         print >> sys.stderr, ">>> ",
     print >> sys.stderr, "%s" % msg
 
 
 def warn(msg):
-     printerr('WARNING: ' + msg)
+     printerr('WARNING: %s' % msg)
 
 
 def die(msg, *ec):
@@ -90,6 +92,11 @@ def quit(status, msg):
 #                              Custom Exceptions
 # ============================================================================ #
 
+
+class CodingErrorException(Exception):
+    pass
+
+
 class LinuxOnlyException(Exception):
     # def __init__(self, value):
     #     self.value = value
@@ -106,7 +113,13 @@ class InvalidOptionsException(Exception):
     pass
 
 
-class CodingErrorException(Exception):
+class FileNotExecutableException(Exception):
+    pass
+
+class InvalidFilenameException(Exception):
+    pass
+
+class FileNotFoundException(Exception):
     pass
 
 
@@ -232,7 +245,7 @@ mac_regex          = r'\b[0-9A-F-af]{1,2}[:-](?:[0-9A-Fa-f]{1,2}[:-]){4}[0-9A-Fa
 host_regex         = r'\b(?:' + hostname_regex + '|' + ip_regex + r')\b'
 # I did a scan of registered running process names across several hundred linux servers of a diverse group of enterprise applications with 500 unique process names (58k individual processes) to determine that there are cases with spaces, slashes, dashes, underscores, chevrons (<defunct>), dots (script.p[ly], in.tftpd etc) to determine what this regex should be. Incidentally it appears that Linux truncates registered process names to 15 chars.
 # This is not from ps -ef etc it is the actual process registered name, hence init not [init] as it appears in ps output
-process_name_regex = r'[\w\s_\.\/\<\>-]+'
+process_name_regex = r'\s*[\w_\.\/\<\>-][\w\s_\.\/\<\>-]+'
 url_path_suffix_regex = r'/(?:[\w.,:\/%&?!=*|\[\]~+-]+)?'
 url_regex          = r'(?i)\bhttps?://' + host_regex + '(?::\d{1,5})?(?:' + url_path_suffix_regex + ')?'
 user_regex         = r'\b[A-Za-z][A-Za-z0-9_-]*[A-Za-z0-9]\b'
@@ -241,12 +254,15 @@ ldap_dn_regex      = r'\b\w+=[\w\s]+(?:,\w+=[\w\s]+)*\b'
 krb5_principal_regex = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?:\@' + domain_regex + r')?'
 threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
-version_regex      = r'\d(\.\d+)*'
+label_regex         = r'\s*[\%\(\)\/\*\w-][\%\(\)\/\*\w\s-]*'
+version_regex       = r'\d(\.\d+)*'
 version_regex_short = r'\d(\.\d+)?'
-version_regex_lax  = version_regex + r'-?.*'
+version_regex_lax   = version_regex + r'-?.*'
 
 
 def isAlNum(arg):
+    if arg == None:
+        return False
     if re.match('^[A-Za-z0-9]+$', str(arg)):
         return True
     return False
@@ -255,31 +271,47 @@ def isAlNum(arg):
 
 
 def isAwsAccessKey(arg):
+    if arg == None:
+        return False
     if re.match('^' + aws_access_key_regex + '$', str(arg)):
         return True
     return False
 
 
 def isAwsHostname(arg):
+    if arg == None:
+        return False
     if re.match('^' + aws_hostname_regex + '$', str(arg)):
         return True
     return False
 
 
 def isAwsFqdn(arg):
+    if arg == None:
+        return False
     if re.match('^' + aws_fqdn_regex + '$', str(arg)):
         return True
     return False
 
 
 def isAwsSecretKey(arg):
+    if arg == None:
+        return False
     if re.match('^' + aws_secret_key_regex + '$', str(arg)):
         return True
     return False
 
 
+def isBlankOrNone(arg):
+    if arg == None:
+        return True
+    elif str(arg).strip() == '':
+        return True
+    return False
+
+
 def isChars(arg, chars):
-    if not chars:
+    if chars == None:
         code_error('no chars passed to isChars()')
     if not isRegex("[" + chars + "]"):
         code_error('invalid char range passed to isChars')
@@ -292,6 +324,8 @@ def isChars(arg, chars):
 
 
 def isCollection(arg):
+    if arg == None:
+        return False
     if re.match('^\w(?:[\w\.]*\w)?$', str(arg)):
         return True
     return False
@@ -302,18 +336,24 @@ def isDigit(arg):
 
 
 def isDatabaseName(arg):
+    if arg == None:
+        return False
     if re.match('^\w+$', str(arg)):
         return True
     return False
 
 
 def isDatabaseColumnName(arg):
+    if arg == None:
+        return False
     if re.match('^' + column_regex + '$', str(arg)):
         return True
     return False
 
 
 def isDatabaseFieldName(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if re.match('^\d+$', arg) or re.match('^[A-Za-z][\w()*,._-]+[A-Za-z0-9)]$', arg):
         return True
@@ -321,6 +361,8 @@ def isDatabaseFieldName(arg):
 
 
 def isDatabaseTableName(arg, allow_qualified = False):
+    if arg == None:
+        return False
     arg = str(arg)
     if allow_qualified == True:
         if re.match('^[A-Za-z0-9][\w\.]*[A-Za-z0-9]$', arg):
@@ -335,7 +377,20 @@ def isDatabaseViewName(arg, allow_qualified = False):
     return isDatabaseTableName(arg, allow_qualified)
 
 
+def isDirname(arg):
+    if arg == None:
+        return False
+    arg = str(arg)
+    if re.match('^\s*$', arg):
+        return False
+    if re.match('^' + dirname_regex + '$', arg):
+        return True
+    return False
+
+
 def isDomain(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if len(arg) > 255:
         return False
@@ -345,6 +400,8 @@ def isDomain(arg):
 
 
 def isDomainStrict(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if len(arg) > 255:
         return False
@@ -354,6 +411,8 @@ def isDomainStrict(arg):
 
 
 def isDnsShortname(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if len(arg) < 3 or len(arg) > 63:
         return False
@@ -364,6 +423,8 @@ def isDnsShortname(arg):
 
 # SECURITY NOTE: this only validates the email address is valid, it's doesn't make it safe to arbitrarily pass to commands or SQL etc!
 def isEmail(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if len(arg) > 256:
         return False
@@ -373,6 +434,8 @@ def isEmail(arg):
 
 
 def isFilename(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if re.match('/$', arg) or re.match('^\s*$', arg):
         return False
@@ -381,16 +444,9 @@ def isFilename(arg):
     return False
 
 
-def isDirname(arg):
-    arg = str(arg)
-    if re.match('^\s*$', arg):
-        return False
-    if re.match('^' + dirname_regex + '$', arg):
-        return True
-    return False
-
-
 def isFloat(arg, allow_negative = False):
+    if arg == None:
+        return False
     neg = ''
     if allow_negative == True:
         neg = '-?'
@@ -400,6 +456,8 @@ def isFloat(arg, allow_negative = False):
 
 
 def isFqdn(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if len(arg) > 255:
         return False
@@ -412,12 +470,16 @@ def isFqdn(arg):
 
 
 def isHex(arg):
+    if arg == None:
+        return False
     if re.match('^(?:0x)?[A-Fa-f\d]+$', str(arg)):
         return True
     return False
 
 
 def isHost(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if len(arg) > 255:
         return False
@@ -427,6 +489,8 @@ def isHost(arg):
 
 
 def isHostname(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if len(arg) > 255:
         return False
@@ -436,6 +500,8 @@ def isHostname(arg):
 
 
 def isInt(arg, allow_negative=False):
+    if arg == None:
+        return False
     neg = ""
     if allow_negative:
         neg = "-?"
@@ -445,12 +511,16 @@ def isInt(arg, allow_negative=False):
 
 
 def isInterface(arg):
+    if arg == None:
+        return False
     if re.match('^(?:em|eth|bond|lo|docker)\d+|lo|veth[A-Fa-f0-9]+$', str(arg)):
         return True
     return False
 
 
 def isIP(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if not re.match('^' + ip_regex + '$', str(arg)):
         return False
@@ -465,6 +535,8 @@ def isIP(arg):
 
 
 def isJavaException(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if re.match('(?:^\s+at|^Caused by:)\s+\w+(?:\.\w+)+', arg):
         return True
@@ -484,24 +556,32 @@ def isJavaException(arg):
 
 
 def isKrb5Princ(arg):
+    if arg == None:
+        return False
     if re.match('^' + krb5_principal_regex + '$', str(arg)):
         return True
     return False
 
 
 def isLabel(arg):
-    if re.match('^[\%\(\)\/\*\w\s-]+$', str(arg)):
+    if arg == None:
+        return False
+    if re.match('^' + label_regex + '$', str(arg)):
         return True
     return False
 
 
 def isLdapDn(arg):
+    if arg == None:
+        return False
     if re.match('^' + ldap_dn_regex + '$', str(arg)):
         return True
     return False
 
 
 def isMinVersion(version, min):
+    if version == None:
+        return False
     if not isVersionLax(version):
         warn("'%s' is not a recognized version format" % version)
         return False
@@ -521,6 +601,8 @@ def isMinVersion(version, min):
 
 
 def isNagiosUnit(arg):
+    if arg == None:
+        return False
     arg = str(arg).lower()
     for unit in valid_nagios_units:
         if arg == unit.lower():
@@ -529,18 +611,24 @@ def isNagiosUnit(arg):
 
 
 def isNoSqlKey(arg):
+    if arg == None:
+        return False
     if re.match('^([\w\_\,\.\:\+\-]+)$', str(arg)):
         return True
     return False
 
 
 def isPathQualified(arg):
+    if arg == None:
+        return False
     if re.match('^(?:\.?\/)', str(arg)):
         return True
     return False
 
 
 def isPort(arg):
+    if arg == None:
+        return False
     if not re.match('^(\d+)$', str(arg)):
         return False
     if arg >= 1 and arg <= 65535:
@@ -549,12 +637,16 @@ def isPort(arg):
 
 
 def isProcessName(arg):
+    if arg == None:
+        return False
     if re.match('^' + process_name_regex + '$', str(arg)):
         return True
     return False
 
 
 def isPythonTraceback(arg):
+    if arg == None:
+        return False
     arg = str(arg)
     if re.search('^\s+File "' + filename_regex + '", line \d+, in (?:<module>|[A-Za-z]+)', arg):
         return True
@@ -572,18 +664,27 @@ def getPythonVersion():
 
 
 def isPythonVersion(expected):
+    if expected == None:
+        code_error('no expected version passed to isPythonVersion()')
     version = getPythonVersion()
     return version == expected
 
 
 def isPythonMinVersion(min):
+    if min == None:
+        code_error('no min version passed to isPythonMinVersion()')
     version = getPythonVersion()
     return isMinVersion(version, min)
 
 
-def isRegex(regex):
+def isRegex(arg):
+    if arg == None:
+        return False
+    arg = str(arg)
+    if arg.strip() == '':
+        return False
     try:
-        re.match(str(regex), "")
+        re.match(arg, "")
         return True
     except re.error, e:
         pass
@@ -594,6 +695,8 @@ def isRegex(regex):
 
 
 def isScientific(arg, allow_negative = False):
+    if arg == None:
+        return False
     neg = ""
     if allow_negative == True:
         neg = "-?"
@@ -602,10 +705,13 @@ def isScientific(arg, allow_negative = False):
     return False
 
 
+
 # def isThreshold
 
 
 def isUrl(arg):
+    if arg == None:
+        return False
     # checking for String yet another breakage between Python 2 and 3
     # see http://stackoverflow.com/questions/4843173/how-to-check-if-type-of-a-variable-is-string-in-python
     arg = str(arg).strip()
@@ -617,36 +723,48 @@ def isUrl(arg):
 
 
 def isUrlPathSuffix(arg):
+    if arg == None:
+        return False
     if re.match('^' + url_path_suffix_regex + '$', str(arg)):
         return True
     return False
 
 
 def isUser(arg):
+    if arg == None:
+        return False
     if re.match('^' + user_regex + '$', str(arg)):
         return True
     return False
 
 
 def isVersion(arg):
+    if arg == None:
+        return False
     if re.match('^' + version_regex + '$', str(arg)):
         return True
     return False
 
 
 def isVersionLax(arg):
+    if arg == None:
+        return False
     if re.match('^' + version_regex_lax + '$', str(arg)):
         return True
     return False
 
 
 def isYes(arg):
+    if arg == None:
+        return False
     if re.match('^\s*y(?:es)?\s*$', str(arg), re.I):
         return True
     return False
 
 
 def isOS(arg):
+    if arg == None:
+        raise code_error('no arg passed to isOS()')
     if platform.system().lower() == str(arg).lower():
         return True
     return False
@@ -702,6 +820,8 @@ def min_value(value, min):
 
 
 def perf_suffix(arg):
+    if arg == None:
+        return ''
     arg = str(arg)
     prefix = '[\b\s\._-]'
     if re.search(prefix + 'bytes', arg):
@@ -750,12 +870,14 @@ def plural(arg):
 
 def sec2min(secs):
     if not isFloat(secs):
-        return
-    return "%d:%.2d" % (int(secs / 60), secs % 60)
+        # raise CodingErrorException('non-float passed to sec2min')
+        return ''
+    return '%d:%.2d' % (int(secs / 60), secs % 60)
 
 
 def sec2human(secs):
-    isFloat(secs) or code_error('invalid non-float argument passed to sec2human')
+    if not isFloat(secs):
+        code_error('invalid non-float argument passed to sec2human')
     human_time = ''
     if secs >= 86400:
         days = int(secs / 86400)
@@ -779,6 +901,8 @@ def sec2human(secs):
 
 
 def skip_java_output(mystr):
+    if arg == None:
+        return False
     if re.search('Class JavaLaunchHelper is implemented in both|^SLF4J', str(mystr)):
         return True
     return False
@@ -791,28 +915,6 @@ def skip_java_output(mystr):
 
 
 #def user_exists(user):
-
-
-def which(bin, quit_on_err):
-    isFilename(bin) or code_error('invalid filename '%' supplied to which()' % bin)
-    if re.matches('^(?:\/|\.\/'):
-        if os.path.isfile(bin):
-            if os.access(bin, os.X_OK):
-                return bin
-            elif quit_on_err:
-                quit('UNKNOWN', "'%' is not executable")
-        elif quit_on_err:
-            quit('UNKNOWN', "'%' not found")
-    else:
-        for basepath in os.getenv('PATH', '').split(os.pathsep):
-            path = os.path.join(basepath, bin)
-            if os.path.isfile(path):
-                if os.access(path, os.X_OK):
-                    return path
-                elif quit_on_err:
-                    quit('UNKNOWN', "'%' is not executable" % path)
-        quit('UNKNOWN', "couldn't find '%' in $PATH (%s)" % (bin, os.getenv('PATH', '')))
-    return None
 
 
 # ============================================================================ #
@@ -873,7 +975,7 @@ def validate_chars(arg, name, chars):
 
 def validate_collection(arg, name=''):
     if name:
-        name =+ ' '
+        name += ' '
     if not arg:
         raise InvalidOptionsException('%scollection not defined' % name)
     if isCollection(arg):
@@ -1303,6 +1405,29 @@ def vlog3(msg):
 
 def vlog_options(name, option):
     vlog2('%-25s %s' % (name, option))
+
+
+def which(bin):
+    if not isFilename(bin):
+        raise InvalidFilenameException("invalid filename '%s' supplied to which()" % bin)
+    bin = str(bin)
+    if re.match('^.{1,2}\/', bin):
+        if os.path.isfile(bin):
+            if os.access(bin, os.X_OK):
+                return bin
+            raise FileNotExecutableException("'%' is not executable" % bin)
+        raise FileNotFoundException("'%' not found" % bin)
+    else:
+        for basepath in os.getenv('PATH', '').split(os.pathsep):
+            path = os.path.join(basepath, bin)
+            if os.path.isfile(path):
+                if os.access(path, os.X_OK):
+                    return path
+                # elif quit_on_err:
+                #     quit('UNKNOWN', "'%' is not executable" % path)
+        raise FileNotFoundException("could not find executable file '%s' in $PATH (%s)" % (bin, os.getenv('PATH', '') ) )
+    raise FileNotFoundException("'%' not found" % bin)
+
 
 # ============================================================================ #
 
