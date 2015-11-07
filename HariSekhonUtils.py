@@ -38,7 +38,7 @@ libdir = os.path.dirname(__file__) or '.'
 
 prog = inspect.getfile(inspect.currentframe().f_back)
 
-logging.config.fileConfig("logging.conf")
+logging.config.fileConfig(libdir + '/logging.conf')
 log = logging.getLogger('HariSekhonUtils')
 # Settings now controlled separately in logging.conf file
 # log.setLevel(logging.WARN)
