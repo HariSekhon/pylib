@@ -21,7 +21,7 @@ import sys
 #import signal
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.6.2'
+__version__     = '0.6.3'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -362,6 +362,7 @@ def isDnsShortname(arg):
     return False
 
 
+# SECURITY NOTE: this only validates the email address is valid, it's doesn't make it safe to arbitrarily pass to commands or SQL etc!
 def isEmail(arg):
     arg = str(arg)
     if len(arg) > 256:
@@ -434,7 +435,7 @@ def isHostname(arg):
     return False
 
 
-def isInt(arg, *allow_negative):
+def isInt(arg, allow_negative=False):
     neg = ""
     if allow_negative:
         neg = "-?"
@@ -937,7 +938,7 @@ def validate_database_query_select_show(arg, name=''):
         name += " "
     if not arg:
         raise InvalidOptionsException('%squery not defined' % name)
-    if not re.match('^\s*((?:SHOW|SELECT)\s+.+)$', str(arg)):
+    if not re.match('^\s*((?:SHOW|SELECT)\s+.+)$', str(arg), re.I):
         raise InvalidOptionsException('invalid %squery defined: may only be a SELECT or SHOW statement' % name)
     if re.search('insert|update|delete|create|drop|alter|truncate', arg, re.I):
         raise InvalidOptionsException('invalid %squery defined: found DML statement keywords!' % name)
@@ -951,7 +952,8 @@ def validate_dirname(arg, name='', nolog=False):
     if not arg:
         raise InvalidOptionsException('%sdirectory name not defined' % name)
     if isDirname(arg):
-        vlog_options('%sdirectory' % name, arg)
+        if not nolog:
+            vlog_options('%sdirectory' % name, arg)
         return True
     raise InvalidOptionsException('invalid %sdirectory name defined (does not match regex criteria)')
 
@@ -963,10 +965,13 @@ def validate_directory(arg, name='', nolog=False):
         raise InvalidOptionsException('%sdirectory not defined' % name)
     validate_dirname(arg, name, nolog)
     if os.path.isdir(arg):
-        vlog_options('%sdirectory' % name, arg)
+        if not nolog:
+            vlog_options('%sdirectory' % name, arg)
         return True
-    raise InvalidOptionsException('invalid %sdirectory defined' % name)
+    raise InvalidOptionsException("%sdirectory not found '%s'"  % (name, arg))
 
+def validate_dir(arg, name='', nolog=False):
+    return validate_directory(arg, name, nolog)
 
 def validate_domain(arg, name=''):
     if name:
@@ -979,33 +984,127 @@ def validate_domain(arg, name=''):
     raise InvalidOptionsException('invalid %sdomain name defined' % name)
 
 
+# SECURITY NOTE: this only validates the email address is valid, it's doesn't make it safe to arbitrarily pass to commands or SQL etc!
 def validate_email(arg):
     if not arg:
         raise InvalidOptionsException('email not defined')
     if isEmail(arg):
         vlog_options('email', arg)
         return True
-    raise InvalidOptionsException('invalid email address defined')
+    raise InvalidOptionsException('invalid email address defined (does not match regex criteria)')
 
 
-#    def validate_host(self):
-#        """Exits with an error if the hostname
-#        does not conform to expected format"""
-#
-#        # Input Validation - Rock my regex ;-)
-#        re_hostname = re.compile("^[a-zA-Z0-9]+[a-zA-Z0-9-]*((([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6})?$")
-#        re_ipaddr   = re.compile("^((25[0-5]|2[0-4]\d|[01]\d\d|\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]\d\d|\d?\d)$")
-#
-#        if self.server == None:
-#            end(UNKNOWN, "You must supply a server hostname or ip address. " \
-#                       + "See --help for details")
-#
-#        if not re_hostname.match(self.server) and \
-#           not re_ipaddr.match(self.server):
-#            end(UNKNOWN, "Server given does not appear to be a valid " \
-#                       + "hostname or ip address")
-#
-#
+def validate_filename(arg, name='', nolog=False):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%sfilename not defined' % name)
+    if isFilename(arg):
+        if not nolog:
+            vlog_options('%sfilename' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sfilename (does not match regex criteria)' % name)
+
+
+def validate_file(arg, name='', nolog=False):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%sfilename not defined' % name)
+    validate_filename(arg, name, nolog)
+    if os.path.isfile(arg):
+        if not nolog:
+            vlog_options('%sfilename' % name, arg)
+        return True
+    raise InvalidOptionsException("%sfile not found '%s'" % (name, arg))
+
+
+def validate_float(arg, name, min, max):
+    if not name:
+        code_error('no name passed for second arg to validate_float()')
+    if arg == None:
+        raise InvalidOptionsException('%s not defined' % name)
+    if isFloat(arg, allow_negative=True):
+        arg = float(arg)
+        try:
+            min = float(min)
+            max = float(max)
+        except ValueError, e:
+            code_error('invalid min/max (%s/%s) passed to validate_float(): %s' % (min, max, e))
+        if (arg >= min and arg <= max):
+            vlog_options(name, arg)
+            return True
+        raise InvalidOptionsException('invalid %s defined: must be real number between %s and %s' % (name, min, max))
+    raise InvalidOptionsException('invalid %s defined: must be a real number' % name)
+
+
+def validate_fqdn(arg, name=''):
+    if name:
+        name += ' '
+    if arg == None:
+        raise InvalidOptionsException('%sFQDN not defined' % name)
+    if isFqdn(arg):
+        vlog_options('%sfqdn' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sFQDN defined' % name)
+
+
+def validate_host(arg, name=''):
+    if name:
+        name += ' '
+    if arg == None:
+        raise InvalidOptionsException('%shost not defined' % name)
+    if isHost(arg):
+        vlog_options('%shost' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %shost defined: not a valid hostname or IP address' % name)
+
+# def validate_hosts
+# def validate_hostport
+
+
+def validate_hostname(arg, name=''):
+    if name:
+        name += ' '
+    if arg == None:
+        raise InvalidOptionsException('%shostname not defined' % name)
+    if isHostname(arg):
+        vlog_options('%shostname' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %shostname defined: not a valid hostname' % name)
+
+
+def validate_int(arg, name, min, max):
+    if not name:
+        code_error('no name passed for second arg to validate_int()')
+    if arg == None:
+        raise InvalidOptionsException('%s not defined' % name)
+    if isInt(arg, allow_negative=True):
+        arg = int(arg)
+        try:
+            min = int(min)
+            max = int(max)
+        except ValueError, e:
+            code_error('invalid min/max (%s/%s) passed to validate_int(): %s' % (min, max, e))
+        if (arg >= min and arg <= max):
+            vlog_options(name, arg)
+            return True
+        raise InvalidOptionsException('invalid %s defined: must be real number between %s and %s' % (name, min, max))
+    raise InvalidOptionsException('invalid %s defined: must be a real number' % name)
+
+
+
+def validate_interface(arg):
+    if arg == None:
+        raise InvalidOptionsException('interface not defined')
+    if isInterface(arg):
+        vlog_options('interface', arg)
+        return True
+    raise InvalidOptionsException('invalid interface defined: not a valid interface')
+
+
+
+
 ##    def validate_port(self):
 ##        """Exits with an error if the port is not valid"""
 ##

@@ -840,12 +840,40 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except InvalidOptionsException:
             pass
 
+
+# ============================================================================ #
+
+    def test_validate_database_query_select_show(self):
+        self.assertTrue(validate_database_query_select_show('select * from myTable', 'name'))
+        self.assertTrue(validate_database_query_select_show('select count(*) from db.myTable'))
+
+    def test_validate_database_query_select_show_exception(self):
+        try:
+            validate_database_query_select_show('drop myTable', 'name')
+            raise Exception('validate_database_query_select_show() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_database_query_select_show_exception_none(self):
+        try:
+            validate_database_query_select_show(None, 'name')
+            raise Exception('validate_database_query_select_show() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_database_query_select_show_exception_blank(self):
+        try:
+            validate_database_query_select_show('')
+            raise Exception('validate_database_query_select_show() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
 # ============================================================================ #
 
     def test_validate_dirname(self):
-        self.assertTrue(validate_dirname('test_Dir'))
+        self.assertTrue(validate_dirname('test_Dir', 'name'))
         self.assertTrue(validate_dirname('/tmp/test'))
-        self.assertTrue(validate_dirname('/nonexistentdir', None, 1))
+        self.assertTrue(validate_dirname('/nonexistentdir', None, True))
 
     def test_validate_dirname_exception(self):
         try:
@@ -872,7 +900,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_validate_directory(self):
         if isLinuxOrMac():
-            self.assertTrue(validate_directory('/etc'))
+            self.assertTrue(validate_directory('/etc', 'name'))
             self.assertTrue(validate_directory('/etc/'))
 
     def test_validate_directory_exception(self):
@@ -899,7 +927,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_domain(self):
-        self.assertTrue(validate_domain('localDomain'))
+        self.assertTrue(validate_domain('localDomain', 'name'))
         self.assertTrue(validate_domain('domain.local'))
         self.assertTrue(validate_domain('harisekhon.com'))
         self.assertTrue(validate_domain('1harisekhon.com'))
@@ -960,6 +988,288 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_email('')
             raise Exception('validate_email() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_filename(self):
+        self.assertTrue(validate_filename('HariSekhonUtils.py', 'name'))
+        self.assertTrue(validate_filename('some_File.txt'))
+        self.assertTrue(validate_filename('/tmp/te-st"'))
+        self.assertTrue(validate_filename('/tmp/test.txt"'))
+
+    def test_validate_filename_exception(self):
+        try:
+            validate_filename('\@me')
+            raise Exception('validate_filename() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_filename_exception_none(self):
+        try:
+            validate_filename(None)
+            raise Exception('validate_filename() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_filename_exception_blank(self):
+        try:
+            validate_filename('')
+            raise Exception('validate_filename() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_file(self):
+        self.assertTrue(validate_file('HariSekhonUtils.py', 'name'))
+        if isLinuxOrMac():
+            self.assertTrue(validate_file('/etc/passwd'))
+
+    def test_validate_file_exception(self):
+        try:
+            validate_file('/etc/nonexistentfile')
+            raise Exception('validate_file() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_file_exception_none(self):
+        try:
+            validate_file(None)
+            raise Exception('validate_file() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_file_exception_blank(self):
+        try:
+            validate_file('')
+            raise Exception('validate_file() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_float(self):
+        self.assertTrue(validate_float(2, 'two', 0, 10))
+        self.assertTrue(validate_float(-2, 'minus two', -10, 10))
+        self.assertTrue(validate_float(2.1, 'two point one', 0, 10))
+        self.assertTrue(validate_float(6.8, 'six point eight', 5, 10))
+        self.assertTrue(validate_float(-6, 'minus six', -6, 0))
+
+    def test_validate_float_exception(self):
+        try:
+            validate_float(2, 'two', 3, 10)
+            raise Exception('validate_float() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_float_exception_none(self):
+        try:
+            validate_float(None, 'none', 3, 10)
+            raise Exception('validate_float() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_float_exception_blank(self):
+        try:
+            validate_float('', 'blank', 3, 10)
+            raise Exception('validate_float() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_fqdn(self):
+        self.assertTrue(validate_fqdn('www.harisekhon.com', 'name'))
+        self.assertTrue(validate_fqdn('myhost.local'))
+
+    def test_validate_fqdn_exception(self):
+        try:
+            validate_fqdn('b@ddomain.local')
+            raise Exception('validate_fqdn() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_fqdn_exception_none(self):
+        try:
+            validate_fqdn(None)
+            raise Exception('validate_fqdn() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_fqdn_exception_blank(self):
+        try:
+            validate_fqdn('')
+            raise Exception('validate_fqdn() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_host(self):
+        self.assertTrue(validate_host('harisekhon.com', 'name'))
+        self.assertTrue(validate_host('harisekhon'))
+        self.assertTrue(validate_host('ip-172-31-1-1'))
+        self.assertTrue(validate_host('10.10.10.1'))
+        self.assertTrue(validate_host('10.10.10.10'))
+        self.assertTrue(validate_host('10.10.10.100'))
+        self.assertTrue(validate_host('10.10.10.0'))
+        self.assertTrue(validate_host('10.10.10.255'))
+
+    def test_validate_host_exception_ip(self):
+        try:
+            validate_host('10.10.10.256')
+            raise Exception('validate_host() failed to raise exception for 10.10.10.256')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_host_exception_a256(self):
+        try:
+            validate_host('a' * 256)
+            raise Exception('validate_host() failed to raise exception for a * 256')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_host_exception_none(self):
+        try:
+            validate_host(None)
+            raise Exception('validate_host() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_host_exception_blank(self):
+        try:
+            validate_host('')
+            raise Exception('validate_host() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_hostname(self):
+        self.assertTrue(validate_hostname('harisekhon.com', 'name'))
+        self.assertTrue(validate_hostname('harisekhon'))
+        self.assertTrue(validate_hostname('a'))
+        self.assertTrue(validate_hostname('1'))
+        self.assertTrue(validate_hostname('harisekhon1.com'))
+        self.assertTrue(validate_hostname('1harisekhon.com'))
+        self.assertTrue(validate_hostname('a' * 63))
+
+    def test_validate_hostname_exception_help(self):
+        try:
+            self.assertTrue(validate_hostname('-help'))
+            raise Exception('validate_hostname() failed to raise exception for -help')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_hostname_exception_64(self):
+        try:
+            self.assertTrue(validate_hostname('a' * 64))
+            raise Exception('validate_hostname() failed to raise exception for a * 64')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_hostname_exception_tilda(self):
+        try:
+            self.assertTrue(validate_hostname('hari~sekhon'))
+            raise Exception('validate_hostname() failed to raise exception for tilda')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_hostname_exception_none(self):
+        try:
+            validate_hostname(None)
+            raise Exception('validate_hostname() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_hostname_exception_blank(self):
+        try:
+            validate_hostname('')
+            raise Exception('validate_hostname() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+
+# ============================================================================ #
+
+    def test_validate_int(self):
+        self.assertTrue(validate_int(2, "two", 0,10))
+        self.assertTrue(validate_int(-2, "minus-two", -10,10))
+        self.assertTrue(validate_int(6,"six", 5, 10))
+        self.assertTrue(validate_int(-6,"minus-six", -6, 0))
+        self.assertTrue(validate_int(2,"two", 0, 10))
+        self.assertTrue(validate_int(6,"six", 5, 7))
+
+
+    def test_validate_int_exception_boundary(self):
+        try:
+            validate_int(3, "three", 4, 10)
+            raise Exception('validate_int() failed to raise exception for boundary')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_int_exception_float(self):
+        try:
+            validate_int(2.1, "two-float", 0, 10)
+            raise Exception('validate_int() failed to raise exception for float')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_int_exception_none(self):
+        try:
+            validate_int(None, 'blah', 0, 10)
+            raise Exception('validate_int() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_int_exception_blank(self):
+        try:
+            validate_int('', 'blah2', 1, 5)
+            raise Exception('validate_int() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_interface(self):
+        self.assertTrue(isInterface("eth0"))
+        self.assertTrue(validate_interface("bond3"))
+        self.assertTrue(validate_interface("lo"))
+        self.assertTrue(validate_interface("docker0"))
+        self.assertTrue(validate_interface("vethfa1b2c3"))
+
+    def test_validate_interface_exception_boundary(self):
+        try:
+            validate_interface("vethfa1b2z3")
+            raise Exception('validate_interface() failed to raise exception for vethfa1b2z3')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_interface_exception_float(self):
+        try:
+            validate_interface('b@interface')
+            raise Exception('validate_interface() failed to raise exception for b@interface')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_interface_exception_none(self):
+        try:
+            validate_interface(None)
+            raise Exception('validate_interface() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_interface_exception_blank(self):
+        try:
+            validate_interface('')
+            raise Exception('validate_interface() failed to raise exception for blank')
         except InvalidOptionsException:
             pass
 
