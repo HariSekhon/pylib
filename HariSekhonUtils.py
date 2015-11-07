@@ -21,7 +21,7 @@ import sys
 #import signal
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.6.3'
+__version__     = '0.7.0'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1041,7 +1041,7 @@ def validate_float(arg, name, min, max):
 def validate_fqdn(arg, name=''):
     if name:
         name += ' '
-    if arg == None:
+    if not arg:
         raise InvalidOptionsException('%sFQDN not defined' % name)
     if isFqdn(arg):
         vlog_options('%sfqdn' % name, arg)
@@ -1052,7 +1052,7 @@ def validate_fqdn(arg, name=''):
 def validate_host(arg, name=''):
     if name:
         name += ' '
-    if arg == None:
+    if not arg:
         raise InvalidOptionsException('%shost not defined' % name)
     if isHost(arg):
         vlog_options('%shost' % name, arg)
@@ -1066,7 +1066,7 @@ def validate_host(arg, name=''):
 def validate_hostname(arg, name=''):
     if name:
         name += ' '
-    if arg == None:
+    if not arg:
         raise InvalidOptionsException('%shostname not defined' % name)
     if isHostname(arg):
         vlog_options('%shostname' % name, arg)
@@ -1095,7 +1095,7 @@ def validate_int(arg, name, min, max):
 
 
 def validate_interface(arg):
-    if arg == None:
+    if not arg:
         raise InvalidOptionsException('interface not defined')
     if isInterface(arg):
         vlog_options('interface', arg)
@@ -1103,6 +1103,168 @@ def validate_interface(arg):
     raise InvalidOptionsException('invalid interface defined: not a valid interface')
 
 
+def validate_ip(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%sIP not defined' % name)
+    if isIP(arg):
+        vlog_options('%sIP' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid IP defined')
+
+
+def validate_krb5_princ(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%skrb5 principal not defined' % name)
+    if isKrb5Princ(arg):
+        vlog_options('%skrb5 principal' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid krb5 principal defined')
+
+
+def validate_krb5_realm(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%skrb5 realm not defined' % name)
+    if isDomain(arg):
+        vlog_options('%skrb5 realm' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid krb5 realm defined')
+
+
+def validate_label(arg):
+    if not arg:
+        raise InvalidOptionsException('label not defined')
+    if isLabel(arg):
+        vlog_options('label', arg)
+        return True
+    raise InvalidOptionsException('invalid label defined: must be an alphanumeric identifier')
+
+
+def validate_ldap_dn(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('ldap %sdn not defined' % name)
+    if isLdapDn(arg):
+        vlog_options('ldap %sdn' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid ldap %sdn defined' % name)
+
+
+# validate_metrics
+# validate_node_list
+# validate_nodeport_list
+
+
+def validate_nosql_key(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%skey not defined' % name)
+    if isNoSqlKey(arg):
+        vlog_options('%skey' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %skey defined: may only contain characters: alphanumeric, commas, colons, underscores, pluses, dashes' % name)
+
+
+def validate_port(arg, name=''):
+    if name:
+        name += ' '
+    if arg == None:
+        raise InvalidOptionsException('%sport not defined' % name)
+    if isPort(arg):
+        vlog_options('%sport' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sport number defined: must be a positive integer' % name)
+
+
+def validate_process_name(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%sprocess name not defined' % name)
+    if isProcessName(arg):
+        vlog_options('%sprocess name' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sprocess name defined' % name)
+
+# def validate_program_path
+# def validate_regex
+
+
+def validate_password(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%spassword not defined' % name)
+    if re.search('[`\'"]|\\$\\(', arg):
+        raise InvalidOptionsException('invalid %spassword defined, may not contain quotes, subshell escape sequences like $( ) or backticks' % name)
+    vlog_options('%spassword' % name, '<omitted>')
+    return True
+
+
+# def validate_resolvable
+
+
+def validate_units(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%sunits not defined' % name)
+    if isNagiosUnit(arg):
+        vlog_options('%sunits' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %sunits defined: must be one of: ' % name + str(valid_nagios_units))
+
+
+def validate_url(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%surl not defined' % name)
+    if isUrl(arg):
+        vlog_options('%surl' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %surl defined' % name)
+
+
+def validate_url_path_suffix(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%surl path suffix not defined' % name)
+    if isUrlPathSuffix(arg):
+        vlog_options('%surl path suffix' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %surl path suffix defined' % name)
+
+
+def validate_user(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionsException('%suser not defined' % name)
+    if isUser(arg):
+        vlog_options('%suser' % name, arg)
+        return True
+    raise InvalidOptionsException('invalid %suser defined: must be alphanumeric' % name)
+
+
+# user_exists() not implemented yet
+# def validate_user_exists(arg, name=''):
+#     if name:
+#         name += ' '
+#     if not arg:
+#         raise InvalidOptionsException('%suser not defined' % name)
+#     validate_user(arg)
+#     if user_exists(arg):
+#         return True
+#     raise InvalidOptionsException('invalid %suser defined, not found on local system' % name)
 
 
 ##    def validate_port(self):

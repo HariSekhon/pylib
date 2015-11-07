@@ -271,10 +271,10 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isInterface('eth0'))
         self.assertTrue(isInterface('bond3'))
         self.assertTrue(isInterface('lo'))
-        self.assertTrue(isInterface("docker0"))
+        self.assertTrue(isInterface('docker0'))
         self.assertTrue(isInterface('vethfa1b2c3'))
         self.assertFalse(isInterface('vethfa1b2z3'))
-        self.assertFalse(isInterface('b@interface'))
+        self.assertFalse(isInterface('b@ip'))
 
     def test_isIP(self):
         self.assertTrue(isIP('10.10.10.1'))
@@ -575,7 +575,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_aws_bucket(self):
-        self.assertTrue(validate_aws_bucket("BucKeT63"))
+        self.assertTrue(validate_aws_bucket('BucKeT63'))
 
     def test_validate_aws_bucket_exception(self):
         try:
@@ -938,15 +938,15 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_validate_domain_exception(self):
         try:
-            validate_domain('a' * 64)
-            raise Exception('validate_domain() failed to raise exception for 64 char')
+            validate_domain('harisekhon')
+            raise Exception('validate_domain() failed to raise exception')
         except InvalidOptionsException:
             pass
 
     def test_validate_domain_exception64(self):
         try:
-            validate_domain('harisekhon')
-            raise Exception('validate_domain() failed to raise exception')
+            validate_domain('a' * 64)
+            raise Exception('validate_domain() failed to raise exception for 64 char')
         except InvalidOptionsException:
             pass
 
@@ -972,7 +972,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_validate_email_exception(self):
         try:
-            validate_email("harisekhon")
+            validate_email('harisekhon')
             raise Exception('validate_email() failed to raise exception')
         except InvalidOptionsException:
             pass
@@ -996,8 +996,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_validate_filename(self):
         self.assertTrue(validate_filename('HariSekhonUtils.py', 'name'))
         self.assertTrue(validate_filename('some_File.txt'))
-        self.assertTrue(validate_filename('/tmp/te-st"'))
-        self.assertTrue(validate_filename('/tmp/test.txt"'))
+        self.assertTrue(validate_filename('/tmp/te-st'))
+        self.assertTrue(validate_filename('/tmp/test.txt'))
 
     def test_validate_filename_exception(self):
         try:
@@ -1199,24 +1199,24 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_int(self):
-        self.assertTrue(validate_int(2, "two", 0,10))
-        self.assertTrue(validate_int(-2, "minus-two", -10,10))
-        self.assertTrue(validate_int(6,"six", 5, 10))
-        self.assertTrue(validate_int(-6,"minus-six", -6, 0))
-        self.assertTrue(validate_int(2,"two", 0, 10))
-        self.assertTrue(validate_int(6,"six", 5, 7))
+        self.assertTrue(validate_int(2, 'two', 0,10))
+        self.assertTrue(validate_int(-2, 'minus-two', -10,10))
+        self.assertTrue(validate_int(6,'six', 5, 10))
+        self.assertTrue(validate_int(-6,'minus-six', -6, 0))
+        self.assertTrue(validate_int(2,'two', 0, 10))
+        self.assertTrue(validate_int(6,'six', 5, 7))
 
 
     def test_validate_int_exception_boundary(self):
         try:
-            validate_int(3, "three", 4, 10)
+            validate_int(3, 'three', 4, 10)
             raise Exception('validate_int() failed to raise exception for boundary')
         except InvalidOptionsException:
             pass
 
     def test_validate_int_exception_float(self):
         try:
-            validate_int(2.1, "two-float", 0, 10)
+            validate_int(2.1, 'two-float', 0, 10)
             raise Exception('validate_int() failed to raise exception for float')
         except InvalidOptionsException:
             pass
@@ -1239,15 +1239,15 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_interface(self):
-        self.assertTrue(isInterface("eth0"))
-        self.assertTrue(validate_interface("bond3"))
-        self.assertTrue(validate_interface("lo"))
-        self.assertTrue(validate_interface("docker0"))
-        self.assertTrue(validate_interface("vethfa1b2c3"))
+        self.assertTrue(validate_interface('eth0'))
+        self.assertTrue(validate_interface('bond3'))
+        self.assertTrue(validate_interface('lo'))
+        self.assertTrue(validate_interface('docker0'))
+        self.assertTrue(validate_interface('vethfa1b2c3'))
 
     def test_validate_interface_exception_boundary(self):
         try:
-            validate_interface("vethfa1b2z3")
+            validate_interface('vethfa1b2z3')
             raise Exception('validate_interface() failed to raise exception for vethfa1b2z3')
         except InvalidOptionsException:
             pass
@@ -1272,6 +1272,496 @@ class HariSekhonUtilsTest(unittest.TestCase):
             raise Exception('validate_interface() failed to raise exception for blank')
         except InvalidOptionsException:
             pass
+
+
+# ============================================================================ #
+
+    def test_validate_ip(self):
+        self.assertTrue(validate_ip('10.10.10.1'))
+        self.assertTrue(validate_ip('10.10.10.10'))
+        self.assertTrue(validate_ip('10.10.10.100'))
+        self.assertTrue(validate_ip('254.0.0.254'))
+        self.assertTrue(validate_ip('255.255.255.254'))
+        # may be entirely valid depending on the CIDR subnet mask
+        self.assertTrue(validate_ip('10.10.10.0'))
+        self.assertTrue(validate_ip('10.10.10.255'))
+
+    def test_validate_ip_exception_boundary(self):
+        try:
+            validate_ip('10.10.10.256')
+            raise Exception('validate_ip() failed to raise exception for 10.10.10.256')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_ip_exception_x(self):
+        try:
+            validate_ip('x.x.x.x')
+            raise Exception('validate_ip() failed to raise exception for x.x.x.x')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_ip_exception_none(self):
+        try:
+            validate_ip(None)
+            raise Exception('validate_ip() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_ip_exception_blank(self):
+        try:
+            validate_ip('')
+            raise Exception('validate_ip() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_krb5_princ(self):
+        self.assertTrue(validate_krb5_princ('tgt/HARI.COM@HARI.COM'))
+        self.assertTrue(validate_krb5_princ('hari'))
+        self.assertTrue(validate_krb5_princ('hari@HARI.COM'))
+        self.assertTrue(validate_krb5_princ('hari/my.host.local@HARI.COM'))
+        self.assertTrue(validate_krb5_princ('cloudera-scm/admin@REALM.COM'))
+        self.assertTrue(validate_krb5_princ('cloudera-scm/admin@SUB.REALM.COM'))
+        self.assertTrue(validate_krb5_princ('hari@hari.com'))
+
+    def test_validate_krb5_princ_exception(self):
+        try:
+            validate_krb5_princ('hari$HARI.COM')
+            raise Exception('validate_krb5_princ() failed to raise exception for x.x.x.x')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_krb5_princ_exception_none(self):
+        try:
+            validate_krb5_princ(None)
+            raise Exception('validate_krb5_princ() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_krb5_princ_exception_blank(self):
+        try:
+            validate_krb5_princ('')
+            raise Exception('validate_krb5_princ() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_krb5_realm(self):
+        self.assertTrue(validate_krb5_realm('localDomain', 'name'))
+        self.assertTrue(validate_krb5_realm('domain.local'))
+        self.assertTrue(validate_krb5_realm('harisekhon.com'))
+        self.assertTrue(validate_krb5_realm('1harisekhon.com'))
+        self.assertTrue(validate_krb5_realm('com'))
+        self.assertTrue(validate_krb5_realm('a' * 63 + '.com'))
+        self.assertTrue(validate_krb5_realm('compute.internal'))
+        self.assertTrue(validate_krb5_realm('eu-west-1.compute.internal'))
+
+    def test_validate_krb5_realm_exception(self):
+        try:
+            validate_krb5_realm('harisekhon')
+            raise Exception('validate_krb5_realm() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_krb5_realm_exception64(self):
+        try:
+            validate_krb5_realm('a' * 64)
+            raise Exception('validate_krb5_realm() failed to raise exception for 64 char')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_krb5_realm_exception_none(self):
+        try:
+            validate_krb5_realm(None)
+            raise Exception('validate_krb5_realm() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_krb5_realm_exception_blank(self):
+        try:
+            validate_krb5_realm('')
+            raise Exception('validate_krb5_realm() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_label(self):
+        self.assertTrue(validate_label('st4ts_used (%)'))
+
+    def test_validate_label_exception(self):
+        try:
+            validate_label('b@dlabel')
+            raise Exception('validate_label() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_label_exception_none(self):
+        try:
+            validate_label(None)
+            raise Exception('validate_label() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_label_exception_blank(self):
+        try:
+            validate_label('')
+            raise Exception('validate_label() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_ldap_dn(self):
+        self.assertTrue(validate_ldap_dn('uid=hari,cn=users,cn=accounts,dc=local'))
+
+    def test_validate_ldap_dn_exception(self):
+        try:
+            validate_ldap_dn('hari\@LOCAL')
+            raise Exception('validate_ldap_dn() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_ldap_dn_exception_none(self):
+        try:
+            validate_ldap_dn(None)
+            raise Exception('validate_ldap_dn() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_ldap_dn_exception_blank(self):
+        try:
+            validate_ldap_dn('')
+            raise Exception('validate_ldap_dn() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_nosql_key(self):
+        self.assertTrue(validate_nosql_key('HariSekhon:check_riak_write.pl:riak1:1385226607.02182:20abc'))
+
+    def test_validate_nosql_key_exception(self):
+        try:
+            validate_nosql_key('HariSekhon@check_riak_write.pl')
+            raise Exception('validate_nosql_key() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_nosql_key_exception_none(self):
+        try:
+            validate_nosql_key(None)
+            raise Exception('validate_nosql_key() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_nosql_key_exception_blank(self):
+        try:
+            validate_nosql_key('')
+            raise Exception('validate_nosql_key() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_port(self):
+        self.assertTrue(validate_port(1))
+        self.assertTrue(validate_port(80))
+        self.assertTrue(validate_port(65535))
+
+    def test_validate_port_exception_65535(self):
+        try:
+            validate_port(65536)
+            raise Exception('validate_port() failed to raise exception for 655356')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_port_exception_alpha(self):
+        try:
+            validate_port('a')
+            raise Exception('validate_port() failed to raise exception for alpha')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_port_exception_negative(self):
+        try:
+            validate_port(-1)
+            raise Exception('validate_port() failed to raise exception for negative')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_port_exception_zero(self):
+        try:
+            validate_port(0)
+            raise Exception('validate_port() failed to raise exception for zero')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_port_exception_none(self):
+        try:
+            validate_port(None)
+            raise Exception('validate_port() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_port_exception_blank(self):
+        try:
+            validate_port('')
+            raise Exception('validate_port() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+
+
+# ============================================================================ #
+
+    def test_validate_process_name(self):
+        self.assertTrue(validate_process_name('../my_program'))
+        self.assertTrue(validate_process_name('ec2-run-instances'))
+        self.assertTrue(validate_process_name('sh <defunct>'))
+
+    def test_validate_process_name_exception_init(self):
+        try:
+            validate_process_name('[init] 3')
+            raise Exception('validate_process_name() failed to raise exception for init')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_process_name_exception_badfile(self):
+        try:
+            validate_process_name('./b\@dfile')
+            raise Exception('validate_process_name() failed to raise exception for badfile')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_process_name_exception_none(self):
+        try:
+            validate_process_name(None)
+            raise Exception('validate_process_name() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_process_name_exception_blank(self):
+        try:
+            validate_process_name('')
+            raise Exception('validate_process_name() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_password(self):
+        self.assertTrue(validate_password('wh@tev3r'))
+
+    def test_validate_password_exception_backticks(self):
+        try:
+            validate_password('`danger`')
+            raise Exception('validate_password() failed to raise exception for backticks')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_password_exception_subshell(self):
+        try:
+            validate_password('$(hari)')
+            raise Exception('validate_password() failed to raise exception for subshell')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_password_exception_double_quotes(self):
+        try:
+            validate_password('"hari"')
+            raise Exception('validate_password() failed to raise exception for double quotes')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_password_exception_single_quotes(self):
+        try:
+            validate_password("O'Reilly")
+            raise Exception('validate_password() failed to raise exception for single quotes')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_password_exception_none(self):
+        try:
+            validate_password(None)
+            raise Exception('validate_password() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_password_exception_blank(self):
+        try:
+            validate_password('')
+            raise Exception('validate_password() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_units(self):
+        self.assertTrue(validate_units('s'))
+        self.assertTrue(validate_units('ms'))
+        self.assertTrue(validate_units('us'))
+        self.assertTrue(validate_units('B'))
+        self.assertTrue(validate_units('KB'))
+        self.assertTrue(validate_units('MB'))
+        self.assertTrue(validate_units('GB'))
+        self.assertTrue(validate_units('TB'))
+        self.assertTrue(validate_units('c'))
+        self.assertTrue(validate_units('%'))
+
+    def test_validate_units_exception(self):
+        try:
+            validate_units('a')
+            raise Exception('validate_units() failed to raise exception for "a"')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_units_exception_none(self):
+        try:
+            validate_units(None)
+            raise Exception('validate_units() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_units_exception_blank(self):
+        try:
+            validate_units('')
+            raise Exception('validate_units() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    def test_validate_url(self):
+        self.assertTrue(validate_url('www.google.com'))
+        self.assertTrue(validate_url('http://www.google.com'))
+        self.assertTrue(validate_url('https://gmail.com'))
+        self.assertTrue(validate_url('1'))
+        self.assertTrue(validate_url('http://cdh43:50070/dfsnodelist.jsp?whatNodes=LIVE'))
+
+    def test_validate_url_exception(self):
+        try:
+            validate_url('-help')
+            raise Exception('validate_url() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_url_exception_none(self):
+        try:
+            validate_url(None)
+            raise Exception('validate_url() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_url_exception_blank(self):
+        try:
+            validate_url('')
+            raise Exception('validate_url() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_url_path_suffix(self):
+        self.assertTrue(validate_url_path_suffix('/'))
+        self.assertTrue(validate_url_path_suffix('/?var=something'))
+        self.assertTrue(validate_url_path_suffix('/dir1/file.php?var=something+else&var2=more%20stuff'))
+        self.assertTrue(validate_url_path_suffix('/*'))
+        self.assertTrue(validate_url_path_suffix('/~hari'))
+
+    def test_validate_url_path_suffix_exception(self):
+        try:
+            validate_url_path_suffix('hari')
+            raise Exception('validate_url_path_suffix() failed to raise exception')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_url_path_suffix_exception_none(self):
+        try:
+            validate_url_path_suffix(None)
+            raise Exception('validate_url_path_suffix() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_url_path_suffix_exception_blank(self):
+        try:
+            validate_url_path_suffix('')
+            raise Exception('validate_url_path_suffix() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_user(self):
+        self.assertTrue(validate_user('hadoop'))
+        self.assertTrue(validate_user('hari1'))
+        self.assertTrue(validate_user('mysql_test'))
+        self.assertTrue(validate_user('cloudera-scm'))
+
+    def test_validate_user_exception_dashfirst(self):
+        try:
+            validate_user('-hari')
+            raise Exception('validate_user() failed to raise exception for dashfirst')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_user_exception_numfirst(self):
+        try:
+            validate_user('9hari')
+            raise Exception('validate_user() failed to raise exception for numfirst')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_user_exception_none(self):
+        try:
+            validate_user(None)
+            raise Exception('validate_user() failed to raise exception for none')
+        except InvalidOptionsException:
+            pass
+
+    def test_validate_user_exception_blank(self):
+        try:
+            validate_user('')
+            raise Exception('validate_user() failed to raise exception for blank')
+        except InvalidOptionsException:
+            pass
+
+
+# ============================================================================ #
+
+    # def test_validate_user_exists(self):
+    #     if isLinuxOrMac():
+    #         self.assertTrue(validate_user_exists('root'))
+    #
+    # def test_validate_user_exists_exception(self):
+    #     try:
+    #         validate_user_exists('noexistentuser')
+    #         raise Exception('validate_user_exists() failed to raise exception for nonexistentuser')
+    #     except InvalidOptionsException:
+    #         pass
+    #
+    # def test_validate_user_exists_exception_none(self):
+    #     try:
+    #         validate_user_exists(None)
+    #         raise Exception('validate_user_exists() failed to raise exception for none')
+    #     except InvalidOptionsException:
+    #         pass
+    #
+    # def test_validate_user_exists_exception_blank(self):
+    #     try:
+    #         validate_user_exists('')
+    #         raise Exception('validate_user_exists() failed to raise exception for blank')
+    #     except InvalidOptionsException:
+    #         pass
 
 # ============================================================================ #
 
