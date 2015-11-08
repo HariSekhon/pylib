@@ -23,7 +23,7 @@ import warnings
 # import string
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.2'
+__version__     = '0.9.3'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -221,10 +221,9 @@ RE_EMAIL          = re.compile(r'\b[A-Za-z0-9\._\'\%\+-]{1,64}@[A-Za-z0-9\.-]{1,
 BLANK_LINE = re.compile('^\s*$')
 ALNUM_DASH = re.compile('^[A-Za-z0-9-]+$')
 
-tld_regex = r'(?i)\b(?:'
-total_tld_count = 0
+_tlds = set()
 
-def load_tlds(file):
+def _load_tlds(file):
     fh = open(file)
     tld_count = 0
     global total_tld_count
@@ -235,24 +234,31 @@ def load_tlds(file):
         if BLANK_LINE.match(line):
             continue
         if(ALNUM_DASH.match(line)):
-            tld_regex += line + '|'
+            _tlds.add(line)
             tld_count += 1
         else:
             warnings.warn("TLD: '%s' from tld file '%s' not validated, skipping that TLD" % (line, file))
-    #warn("loaded %s TLDs from file '%s'" % (tld_count, file) )
-    total_tld_count += tld_count
+    log.debug("loaded %s TLDs from file '%s'" % (tld_count, file) )
+    log.debug('%s total TLDs loaded' % len(_tlds))
 
-tld_file = libdir + '/tlds-alpha-by-domain.txt'
-load_tlds(tld_file)
-if total_tld_count < 900:
-    code_error('%s tlds loaded, expected > 900' % total_tld_count)
+_tld_file = libdir + '/tlds-alpha-by-domain.txt'
+_load_tlds(_tld_file)
 
-custom_tlds = libdir + '/custom_tlds.txt'
-if(os.path.isfile(custom_tlds)):
-    load_tlds(custom_tlds)
+def _check_tldcount():
+    # must be at least this many if the IANA set loaded properly
+    if len(_tlds) < 900:
+        code_error('%s tlds loaded, expected > 900' % len(_tlds))
+    # make sure we don't double load TLD list
+    if len(_tlds) > 1800:
+        code_error('%s tlds loaded, expected < 1800' % len(_tlds))
 
-tld_regex = tld_regex.rstrip('|')
-tld_regex += r')\b'
+_check_tldcount()
+
+_custom_tlds = libdir + '/custom_tlds.txt'
+if(os.path.isfile(_custom_tlds)):
+    _load_tlds(_custom_tlds)
+
+tld_regex = r'(?i)\b(?:' + '|'.join(_tlds) + r')\b'
 
 domain_component_regex = r'\b[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\b'
 # TODO: custom TLDs generated

@@ -15,6 +15,7 @@ import os
 import sys
 import unittest
 sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])))
+import HariSekhonUtils
 from HariSekhonUtils import *
 
 class HariSekhonUtilsTest(unittest.TestCase):
@@ -107,6 +108,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
             raise Exception('code_error() failed to raise exception')
         except CodingErrorException:
             pass
+
+
+    def test_load_tlds(self):
+        print "TLDS = " + str(HariSekhonUtils._tlds)
+        HariSekhonUtils._tlds = set()
+        print "TLDS = " + str(HariSekhonUtils._tlds)
+        try:
+            HariSekhonUtils._check_tldcount()
+            raise Exception('HariSekhonUtils.check_tldcount() failed to raise exception before IANA list loaded')
+        except CodingErrorException:
+            pass
+        # check we can't accidentally double load the IANA list
+        HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
+        HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
+        HariSekhonUtils._check_tldcount()
 
 
 # ============================================================================ #
@@ -2201,5 +2217,6 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
 if __name__ == '__main__':
     # unittest.main()
+    log.setLevel(logging.DEBUG)
     suite = unittest.TestLoader().loadTestsFromTestCase(HariSekhonUtilsTest)
     unittest.TextTestRunner(verbosity=2).run(suite)
