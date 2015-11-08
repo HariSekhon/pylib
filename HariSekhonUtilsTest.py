@@ -825,7 +825,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_alnum('Alnum2Test99*', 'alnum invalid')
             raise Exception('validate_alnum() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_alnum_exception_noname(self):
@@ -839,14 +839,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_alnum(None, 'alnum invalid')
             raise Exception('validate_alnum() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_alnum_exception_blank(self):
         try:
             validate_alnum('', 'alnum invalid')
             raise Exception('validate_alnum() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -858,21 +858,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_aws_access_key('A' * 19 + '*')
             raise Exception('validate_aws_access_key() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_aws_access_key_exception_none(self):
         try:
             validate_aws_access_key(None)
             raise Exception('validate_aws_access_key() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_aws_access_key_exception_blank(self):
         try:
             validate_aws_access_key('')
             raise Exception('validate_aws_access_key() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -884,21 +884,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_aws_bucket('A' * 64)
             raise Exception('validate_aws_bucket() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_aws_bucket_exception_none(self):
         try:
             validate_aws_bucket(None)
             raise Exception('validate_aws_bucket() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_aws_bucket_exception_blank(self):
         try:
             validate_aws_bucket('')
             raise Exception('validate_aws_bucket() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -912,28 +912,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_aws_secret_key('')
             raise Exception('validate_aws_secret_key() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_aws_secret_key_exception(self):
         try:
             validate_aws_secret_key('A' * 41)
             raise Exception('validate_aws_secret_key() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_aws_secret_key_exception_none(self):
         try:
             validate_aws_secret_key(None)
             raise Exception('validate_aws_secret_key() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_aws_secret_key_exception_blank(self):
         try:
             validate_aws_secret_key('')
             raise Exception('validate_aws_secret_key() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -945,7 +945,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_chars('log_date=2015-05-23_10*', 'validate chars broken', 'A-Za-z0-9_=-')
             raise Exception('validate_chars() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_chars_exception_noname(self):
@@ -959,14 +959,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_chars(None, 'validate chars broken', 'A-Za-z0-9_=-')
             raise Exception('validate_chars() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_chars_exception_blank(self):
         try:
             validate_chars('', 'validate chars broken', 'A-Za-z0-9_=-')
             raise Exception('validate_chars() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -979,21 +979,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_collection('students.grades*')
             raise Exception('validate_collection() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_collection_exception_none(self):
         try:
             validate_collection(None)
             raise Exception('validate_collection() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_collection_exception_blank(self):
         try:
             validate_collection('')
             raise Exception('validate_collection() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1005,21 +1005,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_database('mysql*', 'MySQL')
             raise Exception('validate_database() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_exception_none(self):
         try:
             validate_database(None, 'MySQL')
             raise Exception('validate_database() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_exception_blank(self):
         try:
             validate_database('', 'MySQL')
             raise Exception('validate_database() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1031,21 +1031,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_database_columnname('myColumn_1*')
             raise Exception('validate_database_columnname() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_columnname_exception_none(self):
         try:
             validate_database_columnname(None)
             raise Exception('validate_database_columnname() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_columnname_exception_blank(self):
         try:
             validate_database_columnname('')
             raise Exception('validate_database_columnname() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1059,21 +1059,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_database_fieldname('age*')
             raise Exception('validate_database_fieldname() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_fieldname_exception_none(self):
         try:
             validate_database_fieldname(None)
             raise Exception('validate_database_fieldname() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_fieldname_exception_blank(self):
         try:
             validate_database_fieldname('')
             raise Exception('validate_database_fieldname() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1087,21 +1087,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_database_fieldname('age*')
             raise Exception('validate_database_fieldname() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_fieldname_exception_none(self):
         try:
             validate_database_fieldname(None)
             raise Exception('validate_database_fieldname() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_fieldname_exception_blank(self):
         try:
             validate_database_fieldname('')
             raise Exception('validate_database_fieldname() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1114,21 +1114,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_database_tablename('myTable*', 'Hive')
             raise Exception('validate_database_tablename() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_tablename_exception_none(self):
         try:
             validate_database_tablename(None, 'Hive')
             raise Exception('validate_database_tablename() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_tablename_exception_blank(self):
         try:
             validate_database_tablename('', 'Hive')
             raise Exception('validate_database_tablename() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1141,21 +1141,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_database_viewname('myview*', 'Hive')
             raise Exception('validate_database_viewname() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_viewname_exception_none(self):
         try:
             validate_database_viewname(None, 'Hive')
             raise Exception('validate_database_viewname() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_viewname_exception_blank(self):
         try:
             validate_database_viewname('', 'Hive')
             raise Exception('validate_database_viewname() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 
@@ -1169,28 +1169,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_database_query_select_show('drop myTable', 'name')
             raise Exception('validate_database_query_select_show() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_query_select_show_exception_embedded_delete(self):
         try:
             validate_database_query_select_show('select * from (delete * from myTable)', 'name')
             raise Exception('validate_database_query_select_show() failed to raise exception for embedded delete')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_query_select_show_exception_none(self):
         try:
             validate_database_query_select_show(None, 'name')
             raise Exception('validate_database_query_select_show() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_database_query_select_show_exception_blank(self):
         try:
             validate_database_query_select_show('')
             raise Exception('validate_database_query_select_show() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1204,21 +1204,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_dirname('b@ddir')
             raise Exception('validate_dirname() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_dirname_exception_none(self):
         try:
             validate_dirname(None)
             raise Exception('validate_dirname() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_dirname_exception_blank(self):
         try:
             validate_dirname('')
             raise Exception('validate_dirname() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1232,21 +1232,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_directory('/nonexistentdir')
             raise Exception('validate_directory() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_directory_exception_none(self):
         try:
             validate_directory(None)
             raise Exception('validate_directory() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_directory_exception_blank(self):
         try:
             validate_directory('')
             raise Exception('validate_directory() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1265,28 +1265,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_domain('harisekhon')
             raise Exception('validate_domain() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_domain_exception64(self):
         try:
             validate_domain('a' * 64)
             raise Exception('validate_domain() failed to raise exception for 64 char')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_domain_exception_none(self):
         try:
             validate_domain(None)
             raise Exception('validate_domain() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_domain_exception_blank(self):
         try:
             validate_domain('')
             raise Exception('validate_domain() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1299,21 +1299,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_email('harisekhon')
             raise Exception('validate_email() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_email_exception_none(self):
         try:
             validate_email(None)
             raise Exception('validate_email() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_email_exception_blank(self):
         try:
             validate_email('')
             raise Exception('validate_email() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1328,21 +1328,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_filename('\@me')
             raise Exception('validate_filename() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_filename_exception_none(self):
         try:
             validate_filename(None)
             raise Exception('validate_filename() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_filename_exception_blank(self):
         try:
             validate_filename('')
             raise Exception('validate_filename() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 
@@ -1357,21 +1357,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_file('/etc/nonexistentfile')
             raise Exception('validate_file() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_file_exception_none(self):
         try:
             validate_file(None)
             raise Exception('validate_file() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_file_exception_blank(self):
         try:
             validate_file('')
             raise Exception('validate_file() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1409,21 +1409,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_float(2, 'two', 3, 10)
             raise Exception('validate_float() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_float_exception_none(self):
         try:
             validate_float(None, 'none', 3, 10)
             raise Exception('validate_float() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_float_exception_blank(self):
         try:
             validate_float('', 'blank', 3, 10)
             raise Exception('validate_float() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1436,21 +1436,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_fqdn('b@ddomain.local')
             raise Exception('validate_fqdn() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_fqdn_exception_none(self):
         try:
             validate_fqdn(None)
             raise Exception('validate_fqdn() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_fqdn_exception_blank(self):
         try:
             validate_fqdn('')
             raise Exception('validate_fqdn() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1469,28 +1469,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_host('10.10.10.256')
             raise Exception('validate_host() failed to raise exception for 10.10.10.256')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_host_exception_a256(self):
         try:
             validate_host('a' * 256)
             raise Exception('validate_host() failed to raise exception for a * 256')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_host_exception_none(self):
         try:
             validate_host(None)
             raise Exception('validate_host() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_host_exception_blank(self):
         try:
             validate_host('')
             raise Exception('validate_host() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1508,35 +1508,35 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             self.assertTrue(validate_hostname('-help'))
             raise Exception('validate_hostname() failed to raise exception for -help')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_64(self):
         try:
             self.assertTrue(validate_hostname('a' * 64))
             raise Exception('validate_hostname() failed to raise exception for a * 64')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_tilda(self):
         try:
             self.assertTrue(validate_hostname('hari~sekhon'))
             raise Exception('validate_hostname() failed to raise exception for tilda')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_none(self):
         try:
             validate_hostname(None)
             raise Exception('validate_hostname() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_blank(self):
         try:
             validate_hostname('')
             raise Exception('validate_hostname() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 
@@ -1575,28 +1575,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_int(3, 'three', 4, 10)
             raise Exception('validate_int() failed to raise exception for boundary')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_int_exception_float(self):
         try:
             validate_int(2.1, 'two-float', 0, 10)
             raise Exception('validate_int() failed to raise exception for float')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_int_exception_none(self):
         try:
             validate_int(None, 'blah', 0, 10)
             raise Exception('validate_int() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_int_exception_blank(self):
         try:
             validate_int('', 'blah2', 1, 5)
             raise Exception('validate_int() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1612,28 +1612,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_interface('vethfa1b2z3')
             raise Exception('validate_interface() failed to raise exception for vethfa1b2z3')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_interface_exception_float(self):
         try:
             validate_interface('b@interface')
             raise Exception('validate_interface() failed to raise exception for b@interface')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_interface_exception_none(self):
         try:
             validate_interface(None)
             raise Exception('validate_interface() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_interface_exception_blank(self):
         try:
             validate_interface('')
             raise Exception('validate_interface() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1652,28 +1652,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_ip('10.10.10.256')
             raise Exception('validate_ip() failed to raise exception for 10.10.10.256')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_ip_exception_x(self):
         try:
             validate_ip('x.x.x.x')
             raise Exception('validate_ip() failed to raise exception for x.x.x.x')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_ip_exception_none(self):
         try:
             validate_ip(None)
             raise Exception('validate_ip() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_ip_exception_blank(self):
         try:
             validate_ip('')
             raise Exception('validate_ip() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1691,21 +1691,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_krb5_princ('hari$HARI.COM')
             raise Exception('validate_krb5_princ() failed to raise exception for x.x.x.x')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_krb5_princ_exception_none(self):
         try:
             validate_krb5_princ(None)
             raise Exception('validate_krb5_princ() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_krb5_princ_exception_blank(self):
         try:
             validate_krb5_princ('')
             raise Exception('validate_krb5_princ() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1724,28 +1724,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_krb5_realm('harisekhon')
             raise Exception('validate_krb5_realm() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_krb5_realm_exception64(self):
         try:
             validate_krb5_realm('a' * 64)
             raise Exception('validate_krb5_realm() failed to raise exception for 64 char')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_krb5_realm_exception_none(self):
         try:
             validate_krb5_realm(None)
             raise Exception('validate_krb5_realm() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_krb5_realm_exception_blank(self):
         try:
             validate_krb5_realm('')
             raise Exception('validate_krb5_realm() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1757,21 +1757,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_label('b@dlabel')
             raise Exception('validate_label() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_label_exception_none(self):
         try:
             validate_label(None)
             raise Exception('validate_label() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_label_exception_blank(self):
         try:
             validate_label('')
             raise Exception('validate_label() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1784,21 +1784,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_ldap_dn('hari\@LOCAL')
             raise Exception('validate_ldap_dn() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_ldap_dn_exception_none(self):
         try:
             validate_ldap_dn(None)
             raise Exception('validate_ldap_dn() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_ldap_dn_exception_blank(self):
         try:
             validate_ldap_dn('')
             raise Exception('validate_ldap_dn() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1811,21 +1811,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_nosql_key('HariSekhon@check_riak_write.pl')
             raise Exception('validate_nosql_key() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_nosql_key_exception_none(self):
         try:
             validate_nosql_key(None)
             raise Exception('validate_nosql_key() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_nosql_key_exception_blank(self):
         try:
             validate_nosql_key('')
             raise Exception('validate_nosql_key() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1839,42 +1839,42 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_port(65536)
             raise Exception('validate_port() failed to raise exception for 655356')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_port_exception_alpha(self):
         try:
             validate_port('a')
             raise Exception('validate_port() failed to raise exception for alpha')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_port_exception_negative(self):
         try:
             validate_port(-1)
             raise Exception('validate_port() failed to raise exception for negative')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_port_exception_zero(self):
         try:
             validate_port(0)
             raise Exception('validate_port() failed to raise exception for zero')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_port_exception_none(self):
         try:
             validate_port(None)
             raise Exception('validate_port() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_port_exception_blank(self):
         try:
             validate_port('')
             raise Exception('validate_port() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1888,28 +1888,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_process_name('[init] 3')
             raise Exception('validate_process_name() failed to raise exception for init')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_process_name_exception_badfile(self):
         try:
             validate_process_name('./b\@dfile')
             raise Exception('validate_process_name() failed to raise exception for badfile')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_process_name_exception_none(self):
         try:
             validate_process_name(None)
             raise Exception('validate_process_name() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_process_name_exception_blank(self):
         try:
             validate_process_name('')
             raise Exception('validate_process_name() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1922,42 +1922,42 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_password('`danger`')
             raise Exception('validate_password() failed to raise exception for backticks')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_password_exception_subshell(self):
         try:
             validate_password('$(hari)')
             raise Exception('validate_password() failed to raise exception for subshell')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_password_exception_double_quotes(self):
         try:
             validate_password('"hari"')
             raise Exception('validate_password() failed to raise exception for double quotes')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_password_exception_single_quotes(self):
         try:
             validate_password("O'Reilly")
             raise Exception('validate_password() failed to raise exception for single quotes')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_password_exception_none(self):
         try:
             validate_password(None)
             raise Exception('validate_password() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_password_exception_blank(self):
         try:
             validate_password('')
             raise Exception('validate_password() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -1978,21 +1978,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_units('a')
             raise Exception('validate_units() failed to raise exception for "a"')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_units_exception_none(self):
         try:
             validate_units(None)
             raise Exception('validate_units() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_units_exception_blank(self):
         try:
             validate_units('')
             raise Exception('validate_units() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 
@@ -2009,21 +2009,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_url('-help')
             raise Exception('validate_url() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_url_exception_none(self):
         try:
             validate_url(None)
             raise Exception('validate_url() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_url_exception_blank(self):
         try:
             validate_url('')
             raise Exception('validate_url() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -2039,21 +2039,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_url_path_suffix('hari')
             raise Exception('validate_url_path_suffix() failed to raise exception')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_url_path_suffix_exception_none(self):
         try:
             validate_url_path_suffix(None)
             raise Exception('validate_url_path_suffix() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_url_path_suffix_exception_blank(self):
         try:
             validate_url_path_suffix('')
             raise Exception('validate_url_path_suffix() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -2068,28 +2068,28 @@ class HariSekhonUtilsTest(unittest.TestCase):
         try:
             validate_user('-hari')
             raise Exception('validate_user() failed to raise exception for dashfirst')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_user_exception_numfirst(self):
         try:
             validate_user('9hari')
             raise Exception('validate_user() failed to raise exception for numfirst')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_user_exception_none(self):
         try:
             validate_user(None)
             raise Exception('validate_user() failed to raise exception for none')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
     def test_validate_user_exception_blank(self):
         try:
             validate_user('')
             raise Exception('validate_user() failed to raise exception for blank')
-        except InvalidOptionsException:
+        except InvalidOptionException:
             pass
 
 # ============================================================================ #
@@ -2166,21 +2166,21 @@ class HariSekhonUtilsTest(unittest.TestCase):
 #     try:
 #         validate_user_exists('noexistentuser')
 #         raise Exception('validate_user_exists() failed to raise exception for nonexistentuser')
-#     except InvalidOptionsException:
+#     except InvalidOptionException:
 #         pass
 #
 # def test_validate_user_exists_exception_none(self):
 #     try:
 #         validate_user_exists(None)
 #         raise Exception('validate_user_exists() failed to raise exception for none')
-#     except InvalidOptionsException:
+#     except InvalidOptionException:
 #         pass
 #
 # def test_validate_user_exists_exception_blank(self):
 #     try:
 #         validate_user_exists('')
 #         raise Exception('validate_user_exists() failed to raise exception for blank')
-#     except InvalidOptionsException:
+#     except InvalidOptionException:
 #         pass
 
 # ============================================================================ #
