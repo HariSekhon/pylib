@@ -223,7 +223,7 @@ _tlds = set()
 def _load_tlds(file):
     fh = open(file)
     tld_count = 0
-    re_blank      = re.compile('^[[:space:]]*$')
+    re_blank      = re.compile('^\s*$')
     re_alnum_dash = re.compile('^[A-Za-z0-9-]+$')
     for line in fh.readlines():
         line = line.split('#')[0]
