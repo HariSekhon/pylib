@@ -12,7 +12,7 @@
 #  http://www.linkedin.com/in/harisekhon
 #
 
-# Custom unoffical TLDs if you've defined your own internal TLD
+# Custom unofficial TLDs if you've defined your own internal TLD
 local
 localdomain
 intra
