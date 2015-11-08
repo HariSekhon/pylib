@@ -47,6 +47,10 @@ log = logging.getLogger('HariSekhonUtils')
 # optimization - causes TypeError: %d format: a number is required, not NoneType
 # logging.logProcesses = 0
 
+# avoid expensive info gathering when it will simply be discarded by logger anyway
+# if logger.isEnabledFor(logging.DEBUG):
+#     log.debug('msg %s %s', expensive_func1, expensive_func2)
+
 # XXX: enable for prod
 #raiseExceptions = False
 
