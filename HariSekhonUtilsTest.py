@@ -110,15 +110,17 @@ class HariSekhonUtilsTest(unittest.TestCase):
             pass
 
 
-    def test_load_tlds(self):
-        print "TLDS = " + str(HariSekhonUtils._tlds)
+    def test_check_tldcount(self):
+        HariSekhonUtils._check_tldcount()
+        log.debug('resetting _tlds to empty');
         HariSekhonUtils._tlds = set()
-        print "TLDS = " + str(HariSekhonUtils._tlds)
         try:
             HariSekhonUtils._check_tldcount()
             raise Exception('HariSekhonUtils.check_tldcount() failed to raise exception before IANA list loaded')
         except CodingErrorException:
             pass
+
+    def test_load_tlfs(self):
         # check we can't accidentally double load the IANA list
         HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
         HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
