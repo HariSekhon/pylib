@@ -14,7 +14,6 @@
 import os
 import sys
 import unittest
-
 sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])))
 from HariSekhonUtils import *
 
@@ -84,8 +83,23 @@ class HariSekhonUtilsTest(unittest.TestCase):
             raise Exception('failed to raise SystemExit exception from quit(UNKNOWN, test)')
         except SystemExit, e:
             if e.code != 3:
-                raise Exception("incorrect exit code '%s' raised by quitUNKNOWN, test)" % e.code)
+                raise Exception("incorrect exit code '%s' raised by quit(UNKNOWN, test)" % e.code)
 
+    def test_usage(self):
+        from optparse import OptionParser
+        parser = OptionParser()
+        try:
+            usage('UNKNOWN', parser)
+            raise Exception('failed to raise SystemExit exception from usage(parser)')
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
+        try:
+            usage('UNKNOWN', parser, 'msg')
+            raise Exception('failed to raise SystemExit exception from usage(parser, msg)')
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
 
     def test_code_error(self):
         try:

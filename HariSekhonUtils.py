@@ -23,7 +23,7 @@ import warnings
 # import string
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.1'
+__version__     = '0.9.2'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -111,10 +111,15 @@ def quit(status, msg):
     sys.exit(ERRORS[status])
 
 
+def usage(status, parser, msg=''):
+    if msg:
+        print('%s\n' % msg)
+    quit('UNKNOWN', parser.print_help())
+
+
 # ============================================================================ #
 #                              Custom Exceptions
 # ============================================================================ #
-
 
 class CodingErrorException(AssertionError):
     pass
