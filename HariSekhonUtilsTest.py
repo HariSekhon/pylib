@@ -112,6 +112,9 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except SystemExit:
             pass
 
+    def test_get_jython_exception(self):
+        self.assertEquals(get_jython_exception(), '')
+
     def test_print_jython_exception(self):
         print_jython_exception()
 

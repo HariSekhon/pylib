@@ -166,7 +166,7 @@ def jython_only():
 
 def get_jython_exception():
     #import traceback; traceback.print_exc()
-    if sys.exc_info()[1] != None:
+    if sys.exc_info()[1] == None:
         return ''
     else:
         return sys.exc_info()[1]
