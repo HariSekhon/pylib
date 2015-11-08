@@ -370,7 +370,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isEmail("hari'sekhon@gmail.com"))
         self.assertTrue(isEmail('hari@LOCALDOMAIN'))
         self.assertFalse(isEmail('harisekhon'))
-        self.assertFalse(isEmail('a' * 256))
+        self.assertFalse(isEmail('a' * 257))
         self.assertFalse(isEmail(' '))
         self.assertFalse(isEmail(None))
 
