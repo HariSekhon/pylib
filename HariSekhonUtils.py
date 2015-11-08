@@ -23,7 +23,7 @@ import sys
 #import signal
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.7.0'
+__version__     = '0.9.0'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -103,11 +103,11 @@ def quit(status, msg):
 # ============================================================================ #
 
 
-class CodingErrorException(Exception):
+class CodingErrorException(AssertionError):
     pass
 
 
-class LinuxOnlyException(Exception):
+class LinuxOnlyException(AssertionError):
     # def __init__(self, value):
     #     self.value = value
     # def __str__(self):
@@ -115,21 +115,21 @@ class LinuxOnlyException(Exception):
     pass
 
 
-class MacOnlyException(Exception):
+class MacOnlyException(AssertionError):
     pass
 
 
-class InvalidOptionsException(Exception):
+class InvalidOptionsException(AssertionError):
     pass
 
 
-class FileNotExecutableException(Exception):
+class FileNotExecutableException(IOError):
     pass
 
-class InvalidFilenameException(Exception):
+class InvalidFilenameException(IOError):
     pass
 
-class FileNotFoundException(Exception):
+class FileNotFoundException(IOError):
     pass
 
 
