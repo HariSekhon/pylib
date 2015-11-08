@@ -86,6 +86,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
             if e.code != 3:
                 raise Exception("incorrect exit code '%s' raised by quit(UNKNOWN, test)" % e.code)
 
+    def test_quit_wrong_status(self):
+        try:
+            quit('wrongstatus', 'test')
+            raise Exception('failed to raise SystemExit exception from quit(wrongstatus, test)')
+        except SystemExit, e:
+            if e.code != 2:
+                raise Exception("incorrect exit code '%s' raised by quit(wrongstatus, test)" % e.code)
+
     def test_usage(self):
         from optparse import OptionParser
         parser = OptionParser()

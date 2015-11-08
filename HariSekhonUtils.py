@@ -36,6 +36,13 @@ ERRORS = {
 
 libdir = os.path.dirname(__file__) or '.'
 
+def get_caller():
+    # return inspect.currentframe().f_back.f_back
+    # try:
+    return inspect.stack()[2][3]
+    # except Exception:
+    #     return '<failed to get caller function>'
+
 prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
 
 logging.config.fileConfig(libdir + '/resources/logging.conf')
@@ -107,7 +114,12 @@ def code_error(msg):
 
 def quit(status, msg):
     """ Quit with status code from ERRORS dictionary after printing given msg """
-    print(msg)
+    status = str(status)
+    msg    = str(msg)
+    if status not in ERRORS:
+        warnings.warn("invalid status '%s' passed to quit() by caller '%s', defaulting to critical" % (status, get_caller()))
+        status = 'CRITICAL'
+    print('%s: %s' % (status, msg))
     sys.exit(ERRORS[status])
 
 
