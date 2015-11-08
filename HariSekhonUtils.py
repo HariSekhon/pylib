@@ -38,7 +38,7 @@ libdir = os.path.dirname(__file__) or '.'
 
 prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
 
-logging.config.fileConfig(libdir + '/logging.conf')
+logging.config.fileConfig(libdir + '/resources/logging.conf')
 log = logging.getLogger('HariSekhonUtils')
 # optimization - gives unknown file, unknown function, line 0
 # logging._srcfile = None
@@ -232,7 +232,7 @@ def _load_tlds(file):
             warnings.warn("TLD: '%s' from tld file '%s' not validated, skipping that TLD" % (line, file))
     log.debug("loaded %s TLDs from file '%s'" % (tld_count, file) )
 
-_tld_file = libdir + '/tlds-alpha-by-domain.txt'
+_tld_file = libdir + '/resources/tlds-alpha-by-domain.txt'
 _load_tlds(_tld_file)
 
 def _check_tldcount():
@@ -246,7 +246,7 @@ def _check_tldcount():
 
 _check_tldcount()
 
-_custom_tlds = libdir + '/custom_tlds.txt'
+_custom_tlds = libdir + '/resources/custom_tlds.txt'
 if(os.path.isfile(_custom_tlds)):
     _load_tlds(_custom_tlds)
 
