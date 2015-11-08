@@ -112,7 +112,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_check_tldcount(self):
         HariSekhonUtils._check_tldcount()
-        log.debug('resetting _tlds to empty');
+        log.debug('resetting _tlds to empty')
         HariSekhonUtils._tlds = set()
         try:
             HariSekhonUtils._check_tldcount()
