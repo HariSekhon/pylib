@@ -17,10 +17,10 @@ import re
 import logging
 import logging.config
 import platform
-import string
 import sys
-#import re
-#import signal
+import warnings
+# import signal
+# import string
 
 __author__      = 'Hari Sekhon'
 __version__     = '0.9.1'
@@ -233,7 +233,7 @@ def load_tlds(file):
             tld_regex += line + '|'
             tld_count += 1
         else:
-            warn("TLD: '%s' from tld file '%s' not validated, skipping that TLD" % (line, file))
+            warnings.warn("TLD: '%s' from tld file '%s' not validated, skipping that TLD" % (line, file))
     #warn("loaded %s TLDs from file '%s'" % (tld_count, file) )
     total_tld_count += tld_count
 
