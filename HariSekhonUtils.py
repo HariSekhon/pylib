@@ -23,7 +23,7 @@ import sys
 #import signal
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.0'
+__version__     = '0.9.1'
 
 # Standard Nagios return codes
 ERRORS = {
