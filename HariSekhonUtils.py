@@ -36,7 +36,7 @@ ERRORS = {
 
 libdir = os.path.dirname(__file__) or '.'
 
-prog = inspect.getfile(inspect.currentframe().f_back)
+prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
 
 logging.config.fileConfig(libdir + '/logging.conf')
 log = logging.getLogger('HariSekhonUtils')
@@ -213,11 +213,6 @@ def read_file_without_comments(filename):
 # This also gives flexibility to work around some situations where domain names may not be quite valid (eg .local/.intranet) but still keep things quite tight
 # There are certain scenarios where other generic libraries don't help with these
 
-# XXX: TODO: remove these after migrating dependent progs to proper regex subs
-RE_NAME           = re.compile(r'^[A-Za-z\s\.\'-]+$')
-RE_DOMAIN         = re.compile(r'\b(?:[A-Za-z][A-Za-z0-9]{0,62}|[A-Za-z][A-Za-z0-9_\-]{0,61}[a-zA-Z0-9])+\.(?:\b(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])\b\.)*\b(?:[A-Za-z]{2,4}|(?:local|museum|travel))\b', re.I)
-RE_EMAIL          = re.compile(r'\b[A-Za-z0-9\._\'\%\+-]{1,64}@[A-Za-z0-9\.-]{1,251}\.[A-Za-z]{2,4}\b')
-
 _tlds = set()
 
 def _load_tlds(file):
@@ -258,7 +253,6 @@ if(os.path.isfile(_custom_tlds)):
 tld_regex = r'(?i)\b(?:' + '|'.join(_tlds) + r')\b'
 
 domain_component_regex = r'\b[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\b'
-# TODO: custom TLDs generated
 # AWS regex from http://blogs.aws.amazon.com/security/blog/tag/key+rotation
 aws_access_key_regex = r'(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])'
 aws_secret_key_regex = r'(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])'
