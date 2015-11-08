@@ -40,6 +40,12 @@ prog = inspect.getfile(inspect.currentframe().f_back)
 
 logging.config.fileConfig(libdir + '/logging.conf')
 log = logging.getLogger('HariSekhonUtils')
+# optimization - gives unknown file, unknown function, line 0
+# logging._srcfile = None
+# optimization - not tested yet
+# logging.logThreads = 0
+# optimization - causes TypeError: %d format: a number is required, not NoneType
+# logging.logProcesses = 0
 
 # XXX: enable for prod
 #raiseExceptions = False
