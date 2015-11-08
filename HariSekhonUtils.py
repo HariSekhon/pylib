@@ -85,7 +85,6 @@ def warn(msg):
 
 def die(msg, *ec):
     """ Print error message and exit program """
-
     printerr(msg)
     if ec:
         exitcode = ec[0]
@@ -153,7 +152,6 @@ class FileNotFoundException(IOError):
 
 def isJython():
     """ Returns True if running in Jython interpreter """
-
     if "JYTHON_JAR" in dir(sys):
         return True
     else:
@@ -162,35 +160,34 @@ def isJython():
 
 def jython_only():
     """ Die unless we are inside Jython """
-
     if not isJython():
         die("not running in Jython!")
 
 
 def print_jython_exception():
     """ Prints last Jython Exception """
+    if sys.exc_info()[1] != None:
+        log.error("Error: %s" % sys.exc_info()[1].toString())
+        if sys.exc_info()[1] != None and sys.exc_info()[1].toString() == java_oom:
+            printerr(java_oom_fix)
+        #import traceback; traceback.print_exc()
+    else:
+        log.error("Error but sys.exc_info[1] not populated")
 
-    printerr("Error: %s" % sys.exc_info()[1].toString())
-    if sys.exc_info()[1].toString() == java_oom:
-        printerr(java_oom_fix)
-    #import traceback; traceback.print_exc()
 
+def isJavaOOM(arg):
+    # if arg == 'java.lang.OutOfMemoryError: Java heap space':
+    if arg == None:
+        return False
+    if 'java.lang.OutOfMemoryError' in arg:
+        return True
+    return False
 
-if isJython():
-    java_oom     = "java.lang.OutOfMemoryError: Java heap space"
-    java_oom_fix = "\nAdd/Increase -J-Xmx<value> command line argument\n"
+def java_oom_fix_msg():
+    return "\nAdd/Increase -J-Xmx<value> command line argument\n"
 
 
 # ============================================================================ #
-
-verbose = 0
-
-def vprint(msg):
-    """ Print if verbose """
-
-    if verbose:
-        print msg,
-
 
 def read_file_without_comments(filename):
     return [ x.rstrip("\n").split("#")[0].strip() for x in open(filename).readlines() ]
@@ -199,6 +196,10 @@ def read_file_without_comments(filename):
 # ============================================================================ #
 #                                   REGEX
 # ============================================================================ #
+
+# years and years of Regex expertise and testing has gone in to this, do not edit!
+# This also gives flexibility to work around some situations where domain names may not be quite valid (eg .local/.intranet) but still keep things quite tight
+# There are certain scenarios where other generic libraries don't help with these
 
 # XXX: TODO: remove these after migrating dependent progs to proper regex subs
 RE_NAME           = re.compile(r'^[A-Za-z\s\.\'-]+$')

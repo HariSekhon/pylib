@@ -94,6 +94,38 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except CodingErrorException:
             pass
 
+
+# ============================================================================ #
+#                               Jython
+# ============================================================================ #
+
+    def test_isJython(self):
+        self.assertFalse(isJython())
+        sys.JYTHON_JAR = "blah"
+        self.assertTrue(isJython())
+        del sys.JYTHON_JAR
+
+    def test_jython_only(self):
+        try:
+            jython_only()
+            raise Exception('failed to exit/raise exception when calling jython_only()')
+        except SystemExit:
+            pass
+
+    def test_print_jython_exception(self):
+        print_jython_exception()
+
+    def test_isJavaOOM(self):
+        self.assertTrue(isJavaOOM('java.lang.OutOfMemoryError: Java heap space'))
+        self.assertTrue(isJavaOOM('java.lang.OutOfMemoryError'))
+        self.assertFalse(isJavaOOM('blah'))
+        self.assertFalse(isJavaOOM(''))
+        self.assertFalse(isJavaOOM(None))
+
+    def test_java_oom_fix_msg(self):
+        self.assertIn('-J', java_oom_fix_msg())
+
+
 # ============================================================================ #
 #                          OS Validation Functions
 # ============================================================================ #
