@@ -169,14 +169,16 @@ def get_jython_exception():
     if sys.exc_info()[1] == None:
         return ''
     else:
-        return sys.exc_info()[1]
+        # return sys.exc_info()[1].toString()
+        return sys.exc_info()[1].message
+
 
 def print_jython_exception():
     """ Prints last Jython Exception """
     e = get_jython_exception()
     if e:
-        log.error("Error: %s" % e.toString())
-        if isJavaOOM(e.toString()):
+        log.error("Error: %s" % e)
+        if isJavaOOM(e):
             log.error(java_oom_fix_msg())
     else:
         log.error("Error but sys.exc_info[1] not populated")
@@ -189,6 +191,7 @@ def isJavaOOM(arg):
     if 'java.lang.OutOfMemoryError' in arg:
         return True
     return False
+
 
 def java_oom_fix_msg():
     return "\nAdd/Increase -J-Xmx<value> command line argument\n"

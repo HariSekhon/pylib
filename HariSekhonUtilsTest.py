@@ -101,11 +101,14 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_isJython(self):
         self.assertFalse(isJython())
-        sys.JYTHON_JAR = "blah"
+        sys.JYTHON_JAR = 'blah'
         self.assertTrue(isJython())
         del sys.JYTHON_JAR
 
     def test_jython_only(self):
+        sys.JYTHON_JAR = 'blah'
+        jython_only()
+        del sys.JYTHON_JAR
         try:
             jython_only()
             raise Exception('failed to exit/raise exception when calling jython_only()')
