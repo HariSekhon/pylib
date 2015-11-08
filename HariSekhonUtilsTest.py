@@ -118,8 +118,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_get_jython_exception(self):
         self.assertEquals(get_jython_exception(), '')
 
-    def test_print_jython_exception(self):
-        print_jython_exception()
+    def test_log_jython_exception(self):
+        log_jython_exception()
 
     def test_isJavaOOM(self):
         self.assertTrue(isJavaOOM('java.lang.OutOfMemoryError: Java heap space'))

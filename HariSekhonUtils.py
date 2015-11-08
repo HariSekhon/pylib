@@ -173,15 +173,12 @@ def get_jython_exception():
         return sys.exc_info()[1].message
 
 
-def print_jython_exception():
-    """ Prints last Jython Exception """
+def log_jython_exception():
+    """ logs last Jython Exception """
     e = get_jython_exception()
-    if e:
-        log.error("Error: %s" % e)
-        if isJavaOOM(e):
-            log.error(java_oom_fix_msg())
-    else:
-        log.error("Error but sys.exc_info[1] not populated")
+    log.error("Error: %s" % e)
+    if isJavaOOM(e):
+        log.error(java_oom_fix_msg())
 
 
 def isJavaOOM(arg):
