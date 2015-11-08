@@ -71,6 +71,12 @@ class HariSekhonUtilsTest(unittest.TestCase):
         except SystemExit, e:
             if e.code != 3:
                 raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
+        try:
+            die('test', 'unrecognized_status')
+            raise Exception('failed to raise SystemExit exception from die(test, unrecognized_status)')
+        except SystemExit, e:
+            if e.code != 2:
+                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
 
     def test_quit(self):
         try:

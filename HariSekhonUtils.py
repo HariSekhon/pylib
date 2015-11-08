@@ -83,7 +83,7 @@ def die(msg, *ec):
         elif exitcode in ERRORS.keys():
             sys.exit(ERRORS[exitcode])
         else:
-            printerr("Code error, non-digit and non-recognized error status passed as second arg to die()")
+            log.error("Code error, non-digit and non-recognized error status passed as second arg to die()")
             sys.exit(ERRORS["CRITICAL"])
     sys.exit(ERRORS["CRITICAL"])
 
@@ -94,7 +94,7 @@ def code_error(msg):
 
 def quit(status, msg):
     """ Quit with status code from ERRORS dictionary after printing given msg """
-    printerr(msg)
+    print(msg)
     sys.exit(ERRORS[status])
 
 
