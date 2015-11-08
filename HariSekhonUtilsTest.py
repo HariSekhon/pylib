@@ -37,6 +37,50 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_warn(self):
         warn('testing')
 
+    def test_die(self):
+        try:
+            die('test')
+            raise Exception('failed to raise SystemExit exception from die(test)')
+        except SystemExit, e:
+            if e.code != 2:
+                raise Exception("incorrect exit code '%s' raised by die(test)" % e.code)
+            # also gives 2 not 'test'
+            # if e.message != 'test':
+            #     raise Exception("incorrect exit message '%s' raised by die()" % e.message)
+        try:
+            die('test', 4)
+            raise Exception('failed to raise SystemExit exception from die(test, 4)')
+        except SystemExit, e:
+            if e.code != 4:
+                raise Exception("incorrect exit code '%s' raised by die(test, 4)" % e.code)
+            # also gives 2 not 'test'
+            # if e.message != 'test':
+            #     raise Exception("incorrect exit message '%s' raised by die()" % e.message)
+        try:
+            die('test', 5 + 256)
+            raise Exception('failed to raise SystemExit exception from die(test, 5 + 256)')
+        except SystemExit, e:
+            if e.code != 5:
+                raise Exception("incorrect exit code '%s' raised by die(test, 5 + 256)" % e.code)
+            # also gives 2 not 'test'
+            # if e.message != 'test':
+            #     raise Exception("incorrect exit message '%s' raised by die()" % e.message)
+        try:
+            die('test', 'UNKNOWN')
+            raise Exception('failed to raise SystemExit exception from die(test, UNKNOWN)')
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
+
+    def test_quit(self):
+        try:
+            quit('UNKNOWN', 'test')
+            raise Exception('failed to raise SystemExit exception from quit(UNKNOWN, test)')
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception("incorrect exit code '%s' raised by quitUNKNOWN, test)" % e.code)
+
+
     def test_code_error(self):
         try:
             code_error('test')
