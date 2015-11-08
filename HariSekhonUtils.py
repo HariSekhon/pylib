@@ -218,22 +218,19 @@ RE_NAME           = re.compile(r'^[A-Za-z\s\.\'-]+$')
 RE_DOMAIN         = re.compile(r'\b(?:[A-Za-z][A-Za-z0-9]{0,62}|[A-Za-z][A-Za-z0-9_\-]{0,61}[a-zA-Z0-9])+\.(?:\b(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])\b\.)*\b(?:[A-Za-z]{2,4}|(?:local|museum|travel))\b', re.I)
 RE_EMAIL          = re.compile(r'\b[A-Za-z0-9\._\'\%\+-]{1,64}@[A-Za-z0-9\.-]{1,251}\.[A-Za-z]{2,4}\b')
 
-BLANK_LINE = re.compile('^\s*$')
-ALNUM_DASH = re.compile('^[A-Za-z0-9-]+$')
-
 _tlds = set()
 
 def _load_tlds(file):
     fh = open(file)
     tld_count = 0
-    global total_tld_count
-    global tld_regex
+    re_blank      = re.compile('^[[:space:]]*$')
+    re_alnum_dash = re.compile('^[A-Za-z0-9-]+$')
     for line in fh.readlines():
         line = line.split('#')[0]
         line = line.strip()
-        if BLANK_LINE.match(line):
+        if re_blank.match(line):
             continue
-        if(ALNUM_DASH.match(line)):
+        if(re_alnum_dash.match(line)):
             _tlds.add(line)
             tld_count += 1
         else:
