@@ -247,10 +247,10 @@ _load_tlds(_tld_file)
 def _check_tldcount():
     # must be at least this many if the IANA set loaded properly
     if len(_tlds) < 1000:
-        code_error('%s tlds loaded, expected > 1000' % len(_tlds))
+        code_error('%s tlds loaded, expected >= 1000' % len(_tlds))
     # make sure we don't double load TLD list
     if len(_tlds) > 2000:
-        code_error('%s tlds loaded, expected < 2000' % len(_tlds))
+        code_error('%s tlds loaded, expected <= 2000' % len(_tlds))
 
 _check_tldcount()
 
