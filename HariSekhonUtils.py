@@ -164,13 +164,20 @@ def jython_only():
         die("not running in Jython!")
 
 
+def get_jython_exception():
+    #import traceback; traceback.print_exc()
+    if sys.exc_info()[1] != None:
+        return ''
+    else:
+        return sys.exc_info()[1]
+
 def print_jython_exception():
     """ Prints last Jython Exception """
-    if sys.exc_info()[1] != None:
-        log.error("Error: %s" % sys.exc_info()[1].toString())
-        if sys.exc_info()[1] != None and sys.exc_info()[1].toString() == java_oom:
-            printerr(java_oom_fix)
-        #import traceback; traceback.print_exc()
+    e = get_jython_exception()
+    if e:
+        log.error("Error: %s" % e.toString())
+        if isJavaOOM(e.toString()):
+            log.error(java_oom_fix_msg())
     else:
         log.error("Error but sys.exc_info[1] not populated")
 
