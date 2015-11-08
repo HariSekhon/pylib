@@ -40,6 +40,10 @@ prog = inspect.getfile(inspect.currentframe().f_back)
 
 logging.config.fileConfig(libdir + '/logging.conf')
 log = logging.getLogger('HariSekhonUtils')
+
+# XXX: enable for prod
+#raiseExceptions = False
+
 # Settings now controlled separately in logging.conf file
 # log.setLevel(logging.WARN)
 # log_streamhandler = logging.StreamHandler()
