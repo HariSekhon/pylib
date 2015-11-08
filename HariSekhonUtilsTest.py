@@ -90,16 +90,22 @@ class HariSekhonUtilsTest(unittest.TestCase):
         from optparse import OptionParser
         parser = OptionParser()
         try:
-            usage('UNKNOWN', parser)
+            usage(parser, status='UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser)')
         except SystemExit, e:
-            if e.code != 3:
+            if e.code != ERRORS['UNKNOWN']:
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
         try:
-            usage('UNKNOWN', parser, 'msg')
+            usage(parser, '', 'WARNING')
+            raise Exception('failed to raise SystemExit exception from usage(parser)')
+        except SystemExit, e:
+            if e.code != ERRORS['WARNING']:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
+        try:
+            usage(parser, 'msg', 'UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser, msg)')
         except SystemExit, e:
-            if e.code != 3:
+            if e.code != ERRORS['UNKNOWN']:
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
 
     def test_code_error(self):

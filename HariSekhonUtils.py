@@ -111,10 +111,10 @@ def quit(status, msg):
     sys.exit(ERRORS[status])
 
 
-def usage(status, parser, msg=''):
+def usage(parser, msg='', status='UNKNOWN'):
     if msg:
         print('%s\n' % msg)
-    quit('UNKNOWN', parser.print_help())
+    quit(status, parser.print_help())
 
 
 # ============================================================================ #
