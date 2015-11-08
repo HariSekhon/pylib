@@ -24,7 +24,7 @@ make:
 	[ -x /usr/bin/apt-get ] && make apt-packages || :
 	[ -x /usr/bin/yum ]     && make yum-packages || :
 
-	git update-index --assume-unchanged custom_tlds.txt
+	git update-index --assume-unchanged resources/custom_tlds.txt
 	#yum install -y perl-DBD-MySQL
 	# this breaks in Python 3 in Travis with "ImportError: No module named ConfigParser"
 	pip install MySQL-python
