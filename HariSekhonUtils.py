@@ -673,7 +673,7 @@ def isPathQualified(arg):
 def isPort(arg):
     if arg == None:
         return False
-    if not re.match('^(\d+)$', str(arg)):
+    if not re.match('^\d+$', str(arg)):
         return False
     if arg >= 1 and arg <= 65535:
         return True
