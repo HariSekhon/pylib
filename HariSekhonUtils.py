@@ -572,7 +572,7 @@ def isIP(arg):
         return False
     for octet in octets:
         octet = int(octet)
-        if octet < 0 or octet > 255:
+        if int(octet) < 0 or int(octet) > 255:
             return False
     return True
 
@@ -675,7 +675,7 @@ def isPort(arg):
         return False
     if not re.match('^\d+$', str(arg)):
         return False
-    if arg >= 1 and arg <= 65535:
+    if int(arg) >= 1 and int(arg) <= 65535:
         return True
     return False
 

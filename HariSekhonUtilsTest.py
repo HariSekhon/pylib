@@ -613,6 +613,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_isPort(self):
         self.assertTrue(isPort(1))
         self.assertTrue(isPort(80))
+        self.assertTrue(isPort('8080'))
         self.assertTrue(isPort(65535))
         self.assertFalse(isPort(65536))
         self.assertFalse(isPort('a'))
