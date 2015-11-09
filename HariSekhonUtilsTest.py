@@ -175,7 +175,8 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertFalse(isJavaOOM(None))
 
     def test_java_oom_fix_msg(self):
-        self.assertIn('-J', java_oom_fix_msg())
+        # assertIn >= Python 2.7
+        self.assertTrue('-J' in java_oom_fix_msg())
 
 
 # ============================================================================ #
@@ -794,7 +795,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
         # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
 
     def test_read_file_without_comments(self):
-        read_file_without_comments('HariSekhonUtils.py')
+        read_file_without_comments(os.path.join(os.path.dirname(sys.argv[0]), 'HariSekhonUtils.py'))
 
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
@@ -1395,7 +1396,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_file(self):
-        self.assertTrue(validate_file('HariSekhonUtils.py', 'name'))
+        self.assertTrue(validate_file(os.path.join(os.path.dirname(sys.argv[0]), 'HariSekhonUtils.py'), 'name'))
         if isLinuxOrMac():
             self.assertTrue(validate_file('/etc/passwd'))
 

@@ -112,21 +112,22 @@ def code_error(msg):
     raise CodingErrorException(msg)
 
 
-def quit(status, msg):
+def quit(status, msg=''):
     """ Quit with status code from ERRORS dictionary after printing given msg """
     status = str(status)
-    msg    = str(msg)
     if status not in ERRORS:
         warnings.warn("invalid status '%s' passed to quit() by caller '%s', defaulting to critical" % (status, get_caller()))
         status = 'CRITICAL'
-    print('%s: %s' % (status, msg))
+    if msg:
+        print('%s: %s' % (status, msg))
     sys.exit(ERRORS[status])
 
 
 def usage(parser, msg='', status='UNKNOWN'):
     if msg:
         print('%s\n' % msg)
-    quit(status, parser.print_help())
+    parser.print_help()
+    quit(status)
 
 
 # ============================================================================ #
