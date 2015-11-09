@@ -1101,7 +1101,7 @@ def validate_dirname(arg, name='', nolog=False):
         if not nolog:
             vlog_option('%sdirectory' % name, arg)
         return True
-    raise InvalidOptionException('invalid %sdirectory name defined (does not match regex criteria)')
+    raise InvalidOptionException('invalid %sdirectory name defined (does not match regex criteria)' % name)
 
 
 def validate_directory(arg, name='', nolog=False):
