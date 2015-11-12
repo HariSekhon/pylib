@@ -565,7 +565,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_isMinVersion(self):
         self.assertTrue(isMinVersion('1.3.0', '1.3'))
         self.assertTrue(isMinVersion('1.3.0-alpha', '1.3'))
-        self.assertTrue(isMinVersion('1.3', '1.3'))
+        self.assertTrue(isMinVersion('1.3w', '1.3'))
         self.assertTrue(isMinVersion('1.4', '1.3'))
         self.assertTrue(isMinVersion('1.3.1', '1.2'))
         self.assertTrue(isMinVersion('1.3.1', 1.2))
