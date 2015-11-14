@@ -17,7 +17,9 @@ import inspect
 import os
 import sys
 import unittest
-sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])))
+# inspect.getfile(inspect.currentframe()) # filename
+libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+sys.path.append(libdir)
 import HariSekhonUtils
 from HariSekhonUtils import *
 
@@ -26,8 +28,7 @@ class test_HariSekhonUtils(unittest.TestCase):
     # XXX: must prefix with test_ in order for the tests to be called
 
     def setUp(self):
-        inspect.getfile(inspect.currentframe()) # script filename (usually with path)
-        self.libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+        self.libdir = libdir
         self.libfile = os.path.join(libdir, 'HariSekhonUtils.py')
 
     #def runTest(self):
