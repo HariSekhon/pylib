@@ -198,7 +198,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         def test_isLinux_string(self):
             self.assertEqual(platform.system(), 'Linux')
 
-        def test_isLinux(self):
+        def test_isLinux_ON_LINUX(self):
             self.assertTrue(isLinux())
 
         def test_isMac(self):
@@ -207,7 +207,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         def test_linux_only(self):
             self.assertTrue(linux_only())
 
-        def test_mac_only(self):
+        def test_mac_only_ON_LINUX(self):
             # assertRaises >= 2.7
             try:
                 mac_only()
@@ -219,7 +219,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         def test_isMac_string(self):
             self.assertEqual(platform.system(), 'Darwin')
 
-        def test_isLinux(self):
+        def test_isLinux_ON_MAC(self):
             self.assertFalse(isLinux())
 
         def test_isLinux(self):
@@ -228,7 +228,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         def test_mac_only(self):
             self.assertTrue(mac_only())
 
-        def test_linux_only(self):
+        def test_linux_only_ON_MAC(self):
             # assertRaises >= 2.7
             try:
                 linux_only()
@@ -804,7 +804,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
 
     def test_read_file_without_comments(self):
-        read_file_without_comments(os.path.join(os.path.dirname(sys.argv[0]), 'HariSekhonUtils.py'))
+        read_file_without_comments(os.path.join(os.path.dirname(sys.argv[0]), '../HariSekhonUtils.py'))
 
     def test_jsonpp(self):
         data = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
@@ -822,11 +822,13 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertTrue(skip_java_output('Class JavaLaunchHelper is implemented in both'))
         self.assertTrue(skip_java_output('SLF4J'))
         self.assertFalse(skip_java_output('aSLF4J'))
+        self.assertFalse(skip_java_output(' SLF4J '))
         self.assertFalse(skip_java_output(' '))
         self.assertFalse(skip_java_output(''))
         self.assertFalse(skip_java_output(None))
 
-    # def test_resolve_ip(self):
+
+        # def test_resolve_ip(self):
     #     # if not on a decent OS assume I'm somewhere lame like a bank where internal resolvers don't resolve internet addresses
     #     # this way my continous integration tests still run this one
     #     # still applies to Hortonworks Sandbox running on a banking VM :-/
@@ -869,11 +871,6 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertEqual(sec2min(''),     '')
         self.assertEqual(sec2min(' '),    '')
         self.assertEqual(sec2min(None),   '')
-
-    def test_skip_java_output(self):
-        self.assertTrue(skip_java_output('SLF4J '))
-        self.assertFalse(skip_java_output(' SLF4J '))
-        self.assertFalse(skip_java_output(None))
 
 # ============================================================================ #
 #                          Validation Functions
@@ -971,13 +968,6 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertTrue(validate_aws_secret_key('1' *40))
         self.assertTrue(validate_aws_secret_key('A1' * 20))
 
-    def test_validate_aws_secret_key_exception_blank(self):
-        try:
-            validate_aws_secret_key('')
-            raise Exception('validate_aws_secret_key() failed to raise exception for blank')
-        except InvalidOptionException:
-            pass
-
     def test_validate_aws_secret_key_exception(self):
         try:
             validate_aws_secret_key('A' * 41)
@@ -989,6 +979,13 @@ class test_HariSekhonUtils(unittest.TestCase):
         try:
             validate_aws_secret_key(None)
             raise Exception('validate_aws_secret_key() failed to raise exception for none')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_aws_secret_key_exception_space(self):
+        try:
+            validate_aws_secret_key(' ')
+            raise Exception('validate_aws_secret_key() failed to raise exception for space')
         except InvalidOptionException:
             pass
 
@@ -1108,34 +1105,6 @@ class test_HariSekhonUtils(unittest.TestCase):
         try:
             validate_database_columnname('')
             raise Exception('validate_database_columnname() failed to raise exception for blank')
-        except InvalidOptionException:
-            pass
-
-# ============================================================================ #
-
-    def test_validate_database_fieldname(self):
-        self.assertTrue(validate_database_fieldname('age'))
-        self.assertTrue(validate_database_fieldname(10))
-        self.assertTrue(validate_database_fieldname('count(*)'))
-
-    def test_validate_database_fieldname_exception(self):
-        try:
-            validate_database_fieldname('age*')
-            raise Exception('validate_database_fieldname() failed to raise exception')
-        except InvalidOptionException:
-            pass
-
-    def test_validate_database_fieldname_exception_none(self):
-        try:
-            validate_database_fieldname(None)
-            raise Exception('validate_database_fieldname() failed to raise exception for none')
-        except InvalidOptionException:
-            pass
-
-    def test_validate_database_fieldname_exception_blank(self):
-        try:
-            validate_database_fieldname('')
-            raise Exception('validate_database_fieldname() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1382,7 +1351,7 @@ class test_HariSekhonUtils(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_filename(self):
-        self.assertTrue(validate_filename('HariSekhonUtils.py', 'name'))
+        self.assertTrue(validate_filename('../HariSekhonUtils.py', 'name'))
         self.assertTrue(validate_filename('some_File.txt'))
         self.assertTrue(validate_filename('/tmp/te-st'))
         self.assertTrue(validate_filename('/tmp/test.txt'))
@@ -1412,7 +1381,7 @@ class test_HariSekhonUtils(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_file(self):
-        self.assertTrue(validate_file(os.path.join(os.path.dirname(sys.argv[0]), 'HariSekhonUtils.py'), 'name'))
+        self.assertTrue(validate_file(os.path.join(os.path.dirname(sys.argv[0]), '../HariSekhonUtils.py'), 'name'))
         if isLinuxOrMac():
             self.assertTrue(validate_file('/etc/passwd'))
 
