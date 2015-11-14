@@ -3,8 +3,6 @@
 #  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
 #
 
-# Library dependencies are handled in one place in calling project
-
 ifdef TRAVIS
     SUDO2 =
 else
@@ -36,6 +34,10 @@ make:
 	$(SUDO2) pip install coveralls
 	$(SUDO2) pip install mock
 
+	# Python 2.4 - 2.6 backport
+	$(SUDO2) pip install unittest2
+
+
 .PHONY: apt-packages
 apt-packages:
 	$(SUDO) apt-get install -y gcc || :
@@ -45,6 +47,7 @@ apt-packages:
 	# for mysql_config to build MySQL-python
 	$(SUDO) apt-get install -y libmysqlclient-dev || :
 	dpkg -l python-setuptools python-dev &>/dev/null || $(SUDO) apt-get install -y python-setuptools python-dev || :
+
 
 .PHONY: yum-packages
 yum-packages:
@@ -57,21 +60,26 @@ yum-packages:
 	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel || :
 	rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
 
+
 .PHONY: test
 test:
 	test/find_dup_defs.sh
 	#python test/test_HariSekhonUtils.py
 	# find all unit tests under test/
-	python -m unittest discover -v
+	# Python -m >= 2.7
+	#python -m unittest2 discover -v
+	unit2 discover -v
 
 .PHONY: install
 install:
 	@echo "No installation needed, just add '$(PWD)' to your \$$PATH"
 
+
 .PHONY: update
 update:
 	git pull
 	make
+
 
 tld:
 	wget -O resources/tlds-alpha-by-domain.txt http://data.iana.org/TLD/tlds-alpha-by-domain.txt
