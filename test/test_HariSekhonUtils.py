@@ -820,7 +820,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         data2 = '{\n    "name": {\n        "first": "Hari",\n        "last": "Sekhon"\n    }\n}'
         # print("jsonpp(data) = " + jsonpp(data))
         self.assertEqual(jsonpp(json.loads(data)), data2)
-        # self.assertEqual(jsonpp(data), data2)
+        self.assertEqual(jsonpp(data), data2)
 
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
