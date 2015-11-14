@@ -16,11 +16,11 @@
 set -euo pipefail
 srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd "$srcdir"
+cd "$srcdir/.."
 
 # sed + and \+ don't work on Mac, must use *
 # .*? also doesn't work, must use .*
-dups="$(grep '^[^#]*def ' *.py | sed 's/^[[:space:]]*def[[:space:]]*//; s/(.*$//;' | sort | uniq -d)"
+dups="$(grep '^[^#]*def ' test/*.py | sed 's/^[[:space:]]*def[[:space:]]*//; s/(.*$//;' | sort | uniq -d)"
 
 if [ -n "$dups" ]; then
     echo "WARNING: duplicate defs found (may be masking other tests via overriding):"
