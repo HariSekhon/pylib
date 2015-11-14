@@ -24,6 +24,8 @@ class test_HariSekhonUtils(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
+    #def runTest(self):
+
     # Python 2.7+
     # @unittest.skip('skipping test codes')
     def test_status_codes(self):
@@ -2218,7 +2220,8 @@ class test_HariSekhonUtils(unittest.TestCase):
 # ============================================================================ #
 
 if __name__ == '__main__':
-    # unittest.main()
-    log.setLevel(logging.DEBUG)
-    suite = unittest.TestLoader().loadTestsFromTestCase(test_HariSekhonUtils)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    # increase the verbosity
+    #log.setLevel(logging.DEBUG)
+    #suite = unittest.TestLoader().loadTestsFromTestCase(test_HariSekhonUtils)
+    #unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.main(verbosity=2)
