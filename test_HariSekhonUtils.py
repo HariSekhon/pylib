@@ -20,7 +20,7 @@ sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])))
 import HariSekhonUtils
 from HariSekhonUtils import *
 
-class HariSekhonUtilsTest(unittest.TestCase):
+class test_HariSekhonUtils(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
@@ -2251,5 +2251,5 @@ class HariSekhonUtilsTest(unittest.TestCase):
 if __name__ == '__main__':
     # unittest.main()
     log.setLevel(logging.DEBUG)
-    suite = unittest.TestLoader().loadTestsFromTestCase(HariSekhonUtilsTest)
+    suite = unittest.TestLoader().loadTestsFromTestCase(test_HariSekhonUtils)
     unittest.TextTestRunner(verbosity=2).run(suite)
