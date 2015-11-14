@@ -59,8 +59,10 @@ yum-packages:
 
 .PHONY: test
 test:
-	#python -m unittest discover
-	python test_HariSekhonUtils.py
+	test/find_dup_defs.sh
+	#python test/test_HariSekhonUtils.py
+	# find all unit tests under test/
+	python -m unittest discover -v
 
 .PHONY: install
 install:
