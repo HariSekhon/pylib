@@ -761,9 +761,12 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertFalse(isVersionLax(' '))
         self.assertFalse(isVersionLax(None))
 
-    # def test_isXml(self):
-        # self.assertTrue(isXml('<blah></blah>'), 'isXML()');
-        # self.assertTrue(!isXml('<blah>'), '!isXml()');
+    def test_isXml(self):
+        self.assertTrue(isXml('<blah></blah>'))
+        self.assertFalse(isXml('<blah>'))
+        self.assertFalse(isXml(' '))
+        self.assertFalse(isXml(''))
+        self.assertFalse(isXml(None))
 
     def test_isYes(self):
         self.assertTrue(isYes('yEs'))

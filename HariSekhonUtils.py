@@ -20,6 +20,8 @@ import logging.config
 import platform
 import sys
 import warnings
+import xml.etree.ElementTree as ET
+from xml.etree.ElementTree import ParseError
 # import signal
 # import string
 
@@ -610,7 +612,15 @@ def isJson(arg):
     return False
 
 
-# def isXml
+def isXml(arg):
+    if not isStr(arg):
+        return False
+    try:
+        ET.fromstring(arg)
+        return True
+    except ParseError:
+        pass
+    return False
 
 
 def isKrb5Princ(arg):
