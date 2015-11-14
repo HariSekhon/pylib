@@ -23,7 +23,7 @@ cd "$srcdir"
 dups="$(grep '^[^#]*def ' *.py | sed 's/^[[:space:]]*def[[:space:]]*//; s/(.*$//;' | sort | uniq -d)"
 
 if [ -n "$dups" ]; then
-    echo "WARNING: duplicate defs found:"
+    echo "WARNING: duplicate defs found (may be masking other tests via overriding):"
     echo
     echo "$dups"
     echo
