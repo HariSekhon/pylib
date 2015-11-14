@@ -11,6 +11,8 @@
 #                   PyUnit Tests for HariSekhonUtils
 # ============================================================================ #
 
+from __future__ import print_function
+
 import os
 import sys
 import unittest
@@ -565,7 +567,7 @@ class HariSekhonUtilsTest(unittest.TestCase):
     def test_isMinVersion(self):
         self.assertTrue(isMinVersion('1.3.0', '1.3'))
         self.assertTrue(isMinVersion('1.3.0-alpha', '1.3'))
-        self.assertTrue(isMinVersion('1.3w', '1.3'))
+        self.assertTrue(isMinVersion('1.3', '1.3'))
         self.assertTrue(isMinVersion('1.4', '1.3'))
         self.assertTrue(isMinVersion('1.3.1', '1.2'))
         self.assertTrue(isMinVersion('1.3.1', 1.2))
@@ -674,6 +676,12 @@ class HariSekhonUtilsTest(unittest.TestCase):
         self.assertTrue(isScientific('-1e-10', True))
         self.assertFalse(isScientific(' ', True))
         self.assertFalse(isScientific(None, True))
+
+    def test_isStr(self):
+        self.assertTrue(isStr('test'))
+        self.assertTrue(isStr(''))
+        self.assertFalse(isStr(None))
+        self.assertFalse(isStr(file))
 
     def test_isUrl(self):
         self.assertTrue(isUrl('www.google.com'))
@@ -797,6 +805,13 @@ class HariSekhonUtilsTest(unittest.TestCase):
 
     def test_read_file_without_comments(self):
         read_file_without_comments(os.path.join(os.path.dirname(sys.argv[0]), 'HariSekhonUtils.py'))
+
+    def test_jsonpp(self):
+        data = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
+        data2 = '{\n    "name": {\n        "first": "Hari",\n        "last": "Sekhon"\n    }\n}'
+        # print("jsonpp(data) = " + jsonpp(data))
+        self.assertEqual(jsonpp(json.loads(data)), data2)
+        # self.assertEqual(jsonpp(data), data2)
 
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
