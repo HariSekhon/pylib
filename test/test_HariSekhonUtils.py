@@ -549,6 +549,14 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertFalse(isJavaException(' '))
         self.assertFalse(isJavaException(None))
 
+    def test_isJson(self):
+        data = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
+        data_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } ' # missing closing brace intentionally
+        self.assertTrue(isJson(data))
+        self.assertFalse(isJson(data_broken))
+        self.assertFalse(isJson(''))
+        self.assertFalse(isJson(None))
+
     def test_isKrb5Princ(self):
         self.assertTrue(isKrb5Princ('tgt/HARI.COM@HARI.COM'))
         self.assertTrue(isKrb5Princ('hari'))
@@ -572,6 +580,12 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertFalse(isLdapDn('hari@LOCAL'))
         self.assertFalse(isLdapDn(' '))
         self.assertFalse(isLdapDn(None))
+
+    def test_isList(self):
+        self.assertTrue(isList([1,2,3]))
+        self.assertTrue(isList([]))
+        self.assertFalse(isList(None))
+        self.assertFalse(isList(file))
 
     def test_isMinVersion(self):
         self.assertTrue(isMinVersion('1.3.0', '1.3'))

@@ -321,8 +321,6 @@ def isAlNum(arg):
         return True
     return False
 
-# isArray
-
 
 def isAwsAccessKey(arg):
     if arg == None:
@@ -601,7 +599,17 @@ def isJavaException(arg):
     return False
 
 
-# def isJson
+def isJson(arg):
+    if not isStr(arg):
+        return False
+    try:
+        json.loads(arg)
+        return True
+    except ValueError, e:
+        pass
+    return False
+
+
 # def isXml
 
 
@@ -627,6 +635,10 @@ def isLdapDn(arg):
     if re.match('^' + ldap_dn_regex + '$', str(arg)):
         return True
     return False
+
+
+def isList(arg):
+    return type(arg).__name__ == 'list'
 
 
 def isMinVersion(version, min):
