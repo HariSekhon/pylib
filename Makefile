@@ -30,7 +30,7 @@ make:
 	# this breaks in Python 3 in Travis with "ImportError: No module named ConfigParser"
 	pip install MySQL-python
 
-	# in case of Python < 2.7
+	# in case Python < 2.7
 	$(SUDO2) pip install json
 
 	$(SUDO2) pip install coveralls
