@@ -13,6 +13,7 @@
 
 from __future__ import print_function
 
+import inspect
 import os
 import sys
 import unittest
@@ -23,6 +24,11 @@ from HariSekhonUtils import *
 class test_HariSekhonUtils(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
+
+    def setUp(self):
+        inspect.getfile(inspect.currentframe()) # script filename (usually with path)
+        self.libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+        self.libfile = os.path.join(libdir, 'HariSekhonUtils.py')
 
     #def runTest(self):
 
@@ -806,7 +812,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
 
     def test_read_file_without_comments(self):
-        read_file_without_comments(os.path.join(os.path.dirname(sys.argv[0]), '../HariSekhonUtils.py'))
+        read_file_without_comments(self.libfile)
 
     def test_jsonpp(self):
         data = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
@@ -1383,7 +1389,7 @@ class test_HariSekhonUtils(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_file(self):
-        self.assertTrue(validate_file(os.path.join(os.path.dirname(sys.argv[0]), '../HariSekhonUtils.py'), 'name'))
+        self.assertTrue(validate_file(self.libfile), 'name')
         if isLinuxOrMac():
             self.assertTrue(validate_file('/etc/passwd'))
 
