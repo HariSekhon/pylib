@@ -2228,7 +2228,8 @@ class test_HariSekhonUtils(unittest.TestCase):
 
 if __name__ == '__main__':
     # increase the verbosity
-    #log.setLevel(logging.DEBUG)
-    #suite = unittest.TestLoader().loadTestsFromTestCase(test_HariSekhonUtils)
-    #unittest.TextTestRunner(verbosity=2).run(suite)
-    unittest.main(verbosity=2)
+    # verbosity Python >= 2.7
+    #unittest.main(verbosity=2)
+    log.setLevel(logging.DEBUG)
+    suite = unittest.TestLoader().loadTestsFromTestCase(test_HariSekhonUtils)
+    unittest.TextTestRunner(verbosity=2).run(suite)
