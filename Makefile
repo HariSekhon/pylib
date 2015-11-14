@@ -59,7 +59,8 @@ yum-packages:
 
 .PHONY: test
 test:
-	python HariSekhonUtilsTest.py
+	#python -m unittest discover
+	python test_HariSekhonUtils.py
 
 .PHONY: install
 install:
