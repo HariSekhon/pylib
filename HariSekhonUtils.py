@@ -12,6 +12,7 @@
 """ Personal Library originally started to standardize Nagios Plugin development but superceded by Perl version """
 
 import inspect
+import json
 import os
 import re
 import logging
@@ -23,7 +24,7 @@ import warnings
 # import string
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.3'
+__version__     = '0.9.4'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -216,6 +217,12 @@ def java_oom_fix_msg():
 
 def read_file_without_comments(filename):
     return [ x.rstrip("\n").split("#")[0].strip() for x in open(filename).readlines() ]
+
+
+def jsonpp(jsonData):
+    if isStr(jsonData):
+        jsonData = json.loads(jsonData)
+    return json.dumps(jsonData, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 # ============================================================================ #
@@ -749,8 +756,11 @@ def isScientific(arg, allow_negative = False):
     return False
 
 
-
 # def isThreshold
+
+
+def isStr(arg):
+    return type(arg).__name__ == 'str'
 
 
 def isUrl(arg):
@@ -1149,7 +1159,7 @@ def validate_filename(arg, name='', nolog=False):
         if not nolog:
             vlog_option('%sfilename' % name, arg)
         return True
-    raise InvalidOptionException('invalid %sfilename (does not match regex criteria)' % name)
+    raise InvalidOptionException("invalid %sfilename ('%s' does not match regex criteria)" % (name, arg))
 
 
 def validate_file(arg, name='', nolog=False):
@@ -1157,10 +1167,10 @@ def validate_file(arg, name='', nolog=False):
         name += ' '
     if not arg:
         raise InvalidOptionException('%sfilename not defined' % name)
-    validate_filename(arg, name, nolog)
+    validate_filename(arg, name.strip(), nolog=nolog)
     if os.path.isfile(arg):
-        if not nolog:
-            vlog_option('%sfilename' % name, arg)
+        # if not nolog:
+        #     vlog_option('%sfile' % name, arg)
         return True
     raise InvalidOptionException("%sfile not found '%s'" % (name, arg))
 
