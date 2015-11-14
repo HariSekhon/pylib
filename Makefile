@@ -25,11 +25,14 @@ make:
 	[ -x /usr/bin/yum ]     && make yum-packages || :
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
+
 	#yum install -y perl-DBD-MySQL
 	# this breaks in Python 3 in Travis with "ImportError: No module named ConfigParser"
 	pip install MySQL-python
+
 	# in case of Python < 2.7
 	$(SUDO2) pip install json
+
 	$(SUDO2) pip install coveralls
 	$(SUDO2) pip install mock
 
