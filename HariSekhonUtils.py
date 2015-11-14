@@ -18,15 +18,21 @@ import re
 import logging
 import logging.config
 import platform
+# import signal
+# import string
 import sys
 import warnings
 import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import ParseError
-# import signal
-# import string
+# not available Python < 2.7
+# try:
+#     from xml.etree.ElementTree import ParseError
+# except:
+#     pass
+# Python 2.6 throws ExpatError instead of ParseError
+# from xml.parsers.expat import ExpatError
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.4'
+__version__     = '0.9.5'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -618,7 +624,8 @@ def isXml(arg):
     try:
         ET.fromstring(arg)
         return True
-    except ParseError:
+    # Python 2.7 throws xml.etree.ElementTree.ParseError, but Python 2.6 throws xml.parsers.expat.ExpatError
+    except Exception:
         pass
     return False
 
