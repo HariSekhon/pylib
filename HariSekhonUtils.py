@@ -596,13 +596,13 @@ def isJavaException(arg):
     arg = str(arg)
     if re.match('(?:^\s+at|^Caused by:)\s+\w+(?:\.\w+)+', arg):
         return True
-    elif re.match('\(.+:[\w-]+\(\d+\)\)', arg):
+    elif re.match('^Exception in thread ', arg):
         return True
-    elif re.match('(\b|_).+\.\w+Exception:', arg):
+    elif re.search('\w+(?:\.\w+)+\(\w+\.java:\d+\)', arg):
         return True
-    elif re.match('^(?:\w+\.)*\w+Exception:', arg):
+    elif re.search('\(.+:[\w]+\(\d+\)\)', arg):
         return True
-    elif re.match('\$\w+\(\w+:\d+\)', arg):
+    elif re.search(r'(?:\b|_)(\w+\.)+\w+Exception\b', arg):
         return True
     return False
 

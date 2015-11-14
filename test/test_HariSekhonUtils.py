@@ -545,6 +545,11 @@ class test_HariSekhonUtils(unittest.TestCase):
 
     def test_isJavaException(self):
         self.assertTrue(isJavaException('        at org.apache.ambari.server.api.services.stackadvisor.StackAdvisorRunner.runScript(StackAdvisorRunner.java:96)'))
+        self.assertTrue(isJavaException('java.util.HashMap.writeObject(HashMap.java:1016)'))
+        self.assertTrue(isJavaException('Exception in thread "main" java.lang.NullPointerException'))
+        self.assertTrue(isJavaException('java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.FutureTask@617d1af1 rejected from java.util.concurrent.ThreadPoolExecutor@5c73f637'))
+        self.assertTrue(isJavaException('java.lang.NullPointerException:'))
+        self.assertTrue(isJavaException(' java.lang.NullPointerException'))
         self.assertFalse(isJavaException('blah'))
         self.assertFalse(isJavaException(' '))
         self.assertFalse(isJavaException(None))
