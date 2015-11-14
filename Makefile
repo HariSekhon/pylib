@@ -28,7 +28,10 @@ make:
 	#yum install -y perl-DBD-MySQL
 	# this breaks in Python 3 in Travis with "ImportError: No module named ConfigParser"
 	pip install MySQL-python
-	pip install coveralls
+	# in case of Python < 2.7
+	$(SUDO2) pip install json
+	$(SUDO2) pip install coveralls
+	$(SUDO2) pip install mock
 
 .PHONY: apt-packages
 apt-packages:
