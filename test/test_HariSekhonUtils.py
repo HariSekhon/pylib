@@ -1468,7 +1468,7 @@ class test_HariSekhonUtils(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_file(self):
-        self.assertTrue(validate_file(self.libfile), 'name')
+        self.assertTrue(validate_file(self.libfile, 'name'))
         if isLinuxOrMac():
             self.assertTrue(validate_file('/etc/passwd'))
 
