@@ -374,6 +374,14 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertFalse(isDatabaseViewName(' '))
         self.assertFalse(isDatabaseViewName(None))
 
+    def test_isDict(self):
+        self.assertTrue(isDict({'one':1,'two':2,'three':3}))
+        self.assertTrue(isDict({}))
+        self.assertFalse(isDict([]))
+        self.assertFalse(isDict('blah'))
+        self.assertFalse(isDict(None))
+        self.assertFalse(isDict(file))
+
     def test_isDirname(self):
         self.assertTrue(isDirname('test_Dir'))
         self.assertTrue(isDirname('/tmp/test'))
@@ -843,6 +851,28 @@ class test_HariSekhonUtils(unittest.TestCase):
         # print("jsonpp(data) = " + jsonpp(data))
         self.assertEqual(jsonpp(json.loads(data)), data2)
         self.assertEqual(jsonpp(data), data2)
+
+    def test_list_sort_dicts_by_value(self):
+        myList = [ { "name": "DATANODE" }, { "name": "STORM_UI_SERVER" }, { "name": "SUPERVISOR" }, { "name": "FLUME_HANDLER" }, { "name": "HISTORYSERVER" }, { "name": "RESOURCEMANAGER" }, { "name": "HCAT" }, { "name": "OOZIE_CLIENT" }, { "name": "PIG" }, { "name": "HIVE_CLIENT" }, { "name": "HDFS_CLIENT" }, { "name": "NIMBUS" }, { "name": "APP_TIMELINE_SERVER" }, { "name": "SPARK_CLIENT"}, {"name": "FALCON_CLIENT"}, {"name": "METRICS_MONITOR"}, {"name": "ACCUMULO_TSERVER"}, {"name": "SLIDER"}, {"name": "ACCUMULO_CLIENT"}, {"name": "HBASE_CLIENT"}, {"name": "ZOOKEEPER_SERVER"}, {"name": "MAPREDUCE2_CLIENT"}, {"name": "ZOOKEEPER_CLIENT"}, {"name": "SECONDARY_NAMENODE"}, {"name": "YARN_CLIENT"}, {"name": "SQOOP"}, {"name": "DRPC_SERVER" }, { "name": "MAHOUT" }, { "name": "HBASE_REGIONSERVER" }, { "name": "NODEMANAGER" }, { "name": "TEZ_CLIENT" } ]
+        sortedList = [ {'name': 'ACCUMULO_CLIENT'}, {'name': 'ACCUMULO_TSERVER'}, {'name': 'APP_TIMELINE_SERVER'}, {'name': 'DATANODE'}, {'name': 'DRPC_SERVER'}, {'name': 'FALCON_CLIENT'}, {'name': 'FLUME_HANDLER'}, {'name': 'HBASE_CLIENT'}, {'name': 'HBASE_REGIONSERVER'}, {'name': 'HCAT'}, {'name': 'HDFS_CLIENT'}, {'name': 'HISTORYSERVER'}, {'name': 'HIVE_CLIENT'}, {'name': 'MAHOUT'}, {'name': 'MAPREDUCE2_CLIENT'}, {'name': 'METRICS_MONITOR'}, {'name': 'NIMBUS'}, {'name': 'NODEMANAGER'}, {'name': 'OOZIE_CLIENT'}, {'name': 'PIG'}, {'name': 'RESOURCEMANAGER'}, {'name': 'SECONDARY_NAMENODE'}, {'name': 'SLIDER'}, {'name': 'SPARK_CLIENT'}, {'name': 'SQOOP'}, {'name': 'STORM_UI_SERVER'}, {'name': 'SUPERVISOR'}, {'name': 'TEZ_CLIENT'}, {'name': 'YARN_CLIENT'}, {'name': 'ZOOKEEPER_CLIENT'}, {'name': 'ZOOKEEPER_SERVER'} ]
+        # print('sortedList = %s' % list_sort_dicts_by_value(myList, 'name'))
+        self.assertEquals(list_sort_dicts_by_value(myList, 'name'), sortedList)
+        self.assertEquals(list_sort_dicts_by_value([], 'name'), [])
+        try:
+            list_sort_dicts_by_value(myList, 'brokenkey')
+            raise Exception('failed to raise KeyError exception for invalid/missing key')
+        except KeyError, e:
+            pass
+        try:
+            list_sort_dicts_by_value(myList, None)
+            raise Exception('failed to raise InvalidArgumentException when passed a non-string None for key')
+        except InvalidArgumentException, e:
+            pass
+        try:
+            list_sort_dicts_by_value('notAList', 'name')
+            raise Exception('failed to raise InvalidArgumentException when passed a non-list')
+        except InvalidArgumentException, e:
+            pass
 
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7

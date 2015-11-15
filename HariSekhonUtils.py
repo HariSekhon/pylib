@@ -159,6 +159,10 @@ class MacOnlyException(AssertionError):
     pass
 
 
+class InvalidArgumentException(AssertionError):
+    pass
+
+
 class InvalidOptionException(AssertionError):
     pass
 
@@ -231,6 +235,28 @@ def jsonpp(jsonData):
     if isStr(jsonData):
         jsonData = json.loads(jsonData)
     return json.dumps(jsonData, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+def list_sort_dicts_by_value(myList, key):
+    if not isList(myList):
+        raise InvalidArgumentException('non-list passed as first arg to list_sort_dicts_by_key()')
+    if not isStr(key):
+        raise InvalidArgumentException('non-string passed as second arg to list_sort_dicts_by_key()')
+    myVals = {}
+    myReturnList = []
+    for d in myList:
+        if not isDict(d):
+            raise AssertionError("list item '%s' is not a dict" % d)
+        val = d[key]
+        if not isStr(val):
+            raise AssertionError("list key '%s' value '%s' is not a string" % (key, val))
+        myVals[val.lower()] = 1
+    for val in sorted(myVals.keys()):
+        for d in myList:
+            val2 = d[key].lower()
+            if val == val2:
+                myReturnList.append(d)
+    return myReturnList
 
 
 # ============================================================================ #
@@ -431,6 +457,10 @@ def isDatabaseTableName(arg, allow_qualified = False):
 
 def isDatabaseViewName(arg, allow_qualified = False):
     return isDatabaseTableName(arg, allow_qualified)
+
+
+def isDict(arg):
+    return type(arg).__name__ == 'dict'
 
 
 def isDirname(arg):
