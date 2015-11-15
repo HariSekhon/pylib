@@ -873,6 +873,17 @@ class test_HariSekhonUtils(unittest.TestCase):
             raise Exception('failed to raise InvalidArgumentException when passed a non-list')
         except InvalidArgumentException, e:
             pass
+        try:
+            list_sort_dicts_by_value([['test']], 'name')
+            raise Exception('failed to raise AssertionError when list contains non-dict')
+        except AssertionError, e:
+            pass
+        try:
+            list_sort_dicts_by_value([{'name':['embedded_array_should_have_been_string']}], 'name')
+            raise Exception('failed to raise AssertionError when list dict key value is not a string')
+        except AssertionError, e:
+            pass
+
 
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
