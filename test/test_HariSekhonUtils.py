@@ -150,6 +150,22 @@ class test_HariSekhonUtils(unittest.TestCase):
         HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
         HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
         HariSekhonUtils._check_tldcount()
+        os.system('echo "=" > fake_tld.txt')
+        HariSekhonUtils._load_tlds('fake_tld.txt')
+        # artifically double load tlds and check
+        tlds = HariSekhonUtils._tlds
+        HariSekhonUtils._tlds.clear()
+        for x in range(2000):
+            HariSekhonUtils._tlds.add(x)
+        HariSekhonUtils._check_tldcount()
+        HariSekhonUtils._tlds.add('2001')
+        try:
+            HariSekhonUtils._check_tldcount()
+            raise Exception('failed to raise CodingErrorException on double loaded TLDs')
+        except CodingErrorException, e:
+            pass
+        # reset the TLDs
+        HariSekhonUtils._tlds = tlds
 
 
 # ============================================================================ #
@@ -883,7 +899,6 @@ class test_HariSekhonUtils(unittest.TestCase):
             raise Exception('failed to raise AssertionError when list dict key value is not a string')
         except AssertionError, e:
             pass
-
 
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
