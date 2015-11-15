@@ -1395,7 +1395,7 @@ def validate_port(arg, name=''):
     if isPort(arg):
         vlog_option('%sport' % name, arg)
         return True
-    raise InvalidOptionException('invalid %sport number defined: must be a positive integer' % name)
+    raise InvalidOptionException('invalid %sport number defined: must be a positive integer between 1 and 65535' % name)
 
 
 def validate_process_name(arg, name=''):
@@ -1482,25 +1482,8 @@ def validate_user(arg, name=''):
 #     raise InvalidOptionException('invalid %suser defined, not found on local system' % name)
 
 
-##    def validate_port(self):
-##        """Exits with an error if the port is not valid"""
-##
-##        if self.port == None:
-##            self.port = ""
-##        else:
-##            try:
-##                self.port = int(self.port)
-##                if not 1 <= self.port <= 65535:
-##                    raise ValueError
-##            except ValueError:
-##                end(UNKNOWN, "port number must be a whole number between " \
-##                           + "1 and 65535")
-#
-
 
 # ============================================================================ #
-#
-# TODO: quick hack, replace with 'logger'
 
 def vlog(msg):
     log.warn(msg)
