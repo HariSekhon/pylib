@@ -731,6 +731,7 @@ class test_HariSekhonUtils(unittest.TestCase):
 
     def test_isStr(self):
         self.assertTrue(isStr('test'))
+        self.assertTrue(isStr(unicode('abcdef')))
         self.assertTrue(isStr(''))
         self.assertFalse(isStr(None))
         self.assertFalse(isStr(file))

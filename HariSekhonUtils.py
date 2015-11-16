@@ -819,7 +819,7 @@ def isScientific(arg, allow_negative = False):
 
 
 def isStr(arg):
-    return type(arg).__name__ == 'str'
+    return type(arg).__name__ in [ 'str', 'unicode' ]
 
 
 def isUrl(arg):
