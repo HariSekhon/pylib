@@ -152,6 +152,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         HariSekhonUtils._check_tldcount()
         os.system('echo "=" > fake_tld.txt')
         HariSekhonUtils._load_tlds('fake_tld.txt')
+        os.system('rm fake_tld.txt')
         # artifically double load tlds and check
         tlds = HariSekhonUtils._tlds
         HariSekhonUtils._tlds.clear()
