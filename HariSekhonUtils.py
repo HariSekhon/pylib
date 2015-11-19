@@ -128,6 +128,7 @@ def quit(status, msg=''):
         warnings.warn("invalid status '%s' passed to quit() by caller '%s', defaulting to critical" % (status, get_caller()))
         status = 'CRITICAL'
     if msg:
+        # log.error('%s: %s' % (status, msg))
         print('%s: %s' % (status, msg))
     sys.exit(ERRORS[status])
 
@@ -1155,7 +1156,7 @@ def validate_database_query_select_show(arg, name=''):
         raise InvalidOptionException('%squery not defined' % name)
     if not re.match('^\s*((?:SHOW|SELECT)\s+.+)$', str(arg), re.I):
         raise InvalidOptionException('invalid %squery defined: may only be a SELECT or SHOW statement' % name)
-    if re.search('insert|update|delete|create|drop|alter|truncate', arg, re.I):
+    if re.search(r'\b(?:insert|update|delete|create|drop|alter|truncate)\b', arg, re.I):
         raise InvalidOptionException('invalid %squery defined: found DML statement keywords!' % name)
     vlog_option('%squery' % name, arg)
     return True

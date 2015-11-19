@@ -145,7 +145,7 @@ class test_HariSekhonUtils(unittest.TestCase):
         except CodingErrorException:
             pass
 
-    def test_load_tlfs(self):
+    def test_load_tlds(self):
         # check we can't accidentally double load the IANA list
         HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
         HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
@@ -1285,6 +1285,8 @@ class test_HariSekhonUtils(unittest.TestCase):
     def test_validate_database_query_select_show(self):
         self.assertTrue(validate_database_query_select_show('select * from myTable', 'name'))
         self.assertTrue(validate_database_query_select_show('select count(*) from db.myTable'))
+        self.assertTrue(validate_database_query_select_show('select count(*) from db.created_date'))
+        self.assertTrue(validate_database_query_select_show('select count(*) from product_updates'))
 
     def test_validate_database_query_select_show_exception(self):
         try:
