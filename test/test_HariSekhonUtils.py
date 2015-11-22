@@ -17,12 +17,15 @@ import inspect
 import os
 import sys
 import unittest
+# unittest2 from pypi works for Python 2.4-2.6
+#import unittest2
 # inspect.getfile(inspect.currentframe()) # filename
 libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 sys.path.append(libdir)
 import HariSekhonUtils
 from HariSekhonUtils import *
 
+#class test_HariSekhonUtils(unittest2.TestCase):
 class test_HariSekhonUtils(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
@@ -2315,3 +2318,4 @@ if __name__ == '__main__':
     log.setLevel(logging.DEBUG)
     suite = unittest.TestLoader().loadTestsFromTestCase(test_HariSekhonUtils)
     unittest.TextTestRunner(verbosity=2).run(suite)
+    #unittest2.main(verbosity=2)
