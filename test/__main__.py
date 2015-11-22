@@ -21,6 +21,7 @@ __version__ = '0.1'
 import glob
 import inspect
 import os
+import subprocess
 import sys
 ## using optparse rather than argparse for servers still on Python 2.6
 #from optparse import OptionParser
@@ -39,7 +40,9 @@ def main():
     print('running unit tests')
     for x in glob.glob(libdir + "/test/test_*.py"):
         print('running %s' % x)
-        os.system('python ' + x)
+        #os.system('python ' + x)
+        if not subprocess.call(['python', x]):
+            sys.exit(2)
 
 if __name__ == '__main__':
     main()
