@@ -4,7 +4,7 @@
 #  Author: Hari Sekhon
 #  Date: 2015-11-14 12:21:54 +0000 (Sat, 14 Nov 2015)
 #
-#  https://github.com/harisekhon/pytools
+#  https://github.com/harisekhon/pylib
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
