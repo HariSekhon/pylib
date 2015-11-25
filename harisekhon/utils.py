@@ -9,7 +9,7 @@
 #  License: see accompanying LICENSE file
 #
 
-""" Personal Library originally started to standardize Nagios Plugin development but superceded by Perl version """
+""" Personal Library originally started to standardize Nagios Plugin development """
 
 import inspect
 import json
@@ -32,7 +32,7 @@ import xml.etree.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.6'
+__version__     = '0.9.7'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -43,7 +43,7 @@ ERRORS = {
     "DEPENDENT" : 4
 }
 
-libdir = os.path.dirname(__file__) or '.'
+libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 def get_caller():
     # return inspect.currentframe().f_back.f_back
@@ -54,7 +54,7 @@ def get_caller():
 
 prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
 
-logging.config.fileConfig(libdir + '/resources/logging.conf')
+logging.config.fileConfig(os.path.join(libdir, 'resources', 'logging.conf'))
 log = logging.getLogger('HariSekhonUtils')
 # optimization - gives unknown file, unknown function, line 0
 # logging._srcfile = None
