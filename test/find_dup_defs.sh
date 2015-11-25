@@ -20,6 +20,7 @@ cd "$srcdir/.."
 
 # sed + and \+ don't work on Mac, must use *
 # .*? also doesn't work, must use .*
+#dups="$(grep -hR '^[^#]*def ' test/ | sed 's/^[[:space:]]*def[[:space:]]*//; s/(.*$//;' | sort | uniq -d)"
 dups="$(grep '^[^#]*def ' test/*.py | sed 's/^[[:space:]]*def[[:space:]]*//; s/(.*$//;' | sort | uniq -d)"
 
 if [ -n "$dups" ]; then
