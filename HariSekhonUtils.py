@@ -4,7 +4,7 @@
 #  Reinstantiated Date:
 #        2013-07-04 00:08:32 +0100 (Thu, 04 Jul 2013)
 #
-#  http://github.com/harisekhon/pylib
+#  https://github.com/harisekhon/pylib
 #
 #  License: see accompanying LICENSE file
 #
