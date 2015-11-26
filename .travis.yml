@@ -20,7 +20,7 @@ install:
 
 script:
   - make test
-  - coverage run --source=HariSekhonUtils test/test_HariSekhonUtils.py
+  - coverage run --source=HariSekhonUtils test/test_utils.py
 
 after_success:
   - coveralls

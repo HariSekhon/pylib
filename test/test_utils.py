@@ -13,26 +13,32 @@
 
 from __future__ import print_function
 
-import inspect
 import os
 import sys
 import unittest
 # unittest2 from pypi works for Python 2.4-2.6
 #import unittest2
 # inspect.getfile(inspect.currentframe()) # filename
-libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+# libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
-import HariSekhonUtils
-from HariSekhonUtils import *
+from harisekhon import utils
+from harisekhon.utils import *
 
 #class test_HariSekhonUtils(unittest2.TestCase):
-class test_HariSekhonUtils(unittest.TestCase):
+class test_utils(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
+    # Class attributes - can still access via self.<attrib> as it's less typing than test_HariSekhonUtils.<attrib>
+    # libdir = libdir
+    libfile = os.path.join(libdir, 'harisekhon', 'utils.py')
+    myList  = [ 1, 2, 3 ]
+    myTuple = ( 1, 2, 3 )
+    myDict  = { 'one': 1, 'two': 2, 'three':3 }
+
     def setUp(self):
-        self.libdir = libdir
-        self.libfile = os.path.join(libdir, 'HariSekhonUtils.py')
+        pass
 
     #def runTest(self):
 
@@ -139,37 +145,37 @@ class test_HariSekhonUtils(unittest.TestCase):
 
 
     def test_check_tldcount(self):
-        HariSekhonUtils._check_tldcount()
+        utils._check_tldcount()
         log.debug('resetting _tlds to empty')
-        HariSekhonUtils._tlds = set()
+        utils._tlds = set()
         try:
-            HariSekhonUtils._check_tldcount()
-            raise Exception('HariSekhonUtils.check_tldcount() failed to raise exception before IANA list loaded')
+            utils._check_tldcount()
+            raise Exception('check_tldcount() failed to raise exception before IANA list loaded')
         except CodingErrorException:
             pass
 
     def test_load_tlds(self):
         # check we can't accidentally double load the IANA list
-        HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
-        HariSekhonUtils._load_tlds(HariSekhonUtils._tld_file)
-        HariSekhonUtils._check_tldcount()
+        utils._load_tlds(utils._tld_file)
+        utils._load_tlds(utils._tld_file)
+        utils._check_tldcount()
         os.system('echo "=" > fake_tld.txt')
-        HariSekhonUtils._load_tlds('fake_tld.txt')
+        utils._load_tlds('fake_tld.txt')
         os.system('rm fake_tld.txt')
         # artifically double load tlds and check
-        tlds = HariSekhonUtils._tlds
-        HariSekhonUtils._tlds.clear()
+        tlds = utils._tlds
+        utils._tlds.clear()
         for x in range(2000):
-            HariSekhonUtils._tlds.add(x)
-        HariSekhonUtils._check_tldcount()
-        HariSekhonUtils._tlds.add('2001')
+            utils._tlds.add(x)
+        utils._check_tldcount()
+        utils._tlds.add('2001')
         try:
-            HariSekhonUtils._check_tldcount()
+            utils._check_tldcount()
             raise Exception('failed to raise CodingErrorException on double loaded TLDs')
         except CodingErrorException, e:
             pass
         # reset the TLDs
-        HariSekhonUtils._tlds = tlds
+        utils._tlds = tlds
 
 
 # ============================================================================ #
@@ -395,10 +401,12 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertFalse(isDatabaseViewName(None))
 
     def test_isDict(self):
-        self.assertTrue(isDict({'one':1,'two':2,'three':3}))
+        self.assertTrue(isDict(self.myDict))
         self.assertTrue(isDict({}))
-        self.assertFalse(isDict([]))
+        self.assertFalse(isDict(self.myList))
+        self.assertFalse(isDict(self.myTuple))
         self.assertFalse(isDict('blah'))
+        self.assertFalse(isDict(1))
         self.assertFalse(isDict(None))
         self.assertFalse(isDict(file))
 
@@ -536,9 +544,13 @@ class test_HariSekhonUtils(unittest.TestCase):
 
     def test_isInt(self):
         self.assertTrue(isInt(0))
+        self.assertTrue(isInt('0'))
         self.assertTrue(isInt(1))
+        self.assertTrue(isInt('1'))
         self.assertFalse(isInt(-1))
+        self.assertFalse(isInt('-1'))
         self.assertFalse(isInt(1.1))
+        self.assertFalse(isInt('1.1'))
         self.assertFalse(isInt('a'))
         self.assertFalse(isInt(' '))
         self.assertFalse(isInt(''))
@@ -615,8 +627,11 @@ class test_HariSekhonUtils(unittest.TestCase):
         self.assertFalse(isLdapDn(None))
 
     def test_isList(self):
-        self.assertTrue(isList([1,2,3]))
+        self.assertTrue(isList(self.myList))
         self.assertTrue(isList([]))
+        self.assertFalse(isList(self.myDict))
+        self.assertFalse(isList(self.myTuple))
+        self.assertFalse(isList(1))
         self.assertFalse(isList(None))
         self.assertFalse(isList(file))
 
@@ -735,10 +750,38 @@ class test_HariSekhonUtils(unittest.TestCase):
 
     def test_isStr(self):
         self.assertTrue(isStr('test'))
-        self.assertTrue(isStr(unicode('abcdef')))
+        self.assertTrue(isStr(unicode('test')))
+        self.assertTrue(isStr(u'test'))
         self.assertTrue(isStr(''))
         self.assertFalse(isStr(None))
         self.assertFalse(isStr(file))
+
+    def test_isStrStrict(self):
+        self.assertTrue(isStrStrict('test'))
+        self.assertFalse(isStrStrict(unicode('test')))
+        self.assertFalse(isStrStrict(u'test'))
+        self.assertTrue(isStrStrict(''))
+        self.assertFalse(isStrStrict(None))
+        self.assertFalse(isStrStrict(file))
+
+    def test_isTuple(self):
+        self.assertTrue(isTuple(self.myTuple))
+        self.assertFalse(isTuple(self.myList))
+        self.assertFalse(isTuple(self.myDict))
+        self.assertFalse(isTuple(1))
+        self.assertFalse(isTuple(1.1))
+        self.assertFalse(isTuple(' '))
+        self.assertFalse(isTuple(''))
+        self.assertFalse(isTuple(None))
+        self.assertFalse(isTuple(file))
+
+    def test_isUnicode(self):
+        self.assertTrue(isUnicode(unicode('test')))
+        self.assertTrue(isUnicode(u'test'))
+        self.assertFalse(isUnicode('test'))
+        self.assertFalse(isUnicode(''))
+        self.assertFalse(isUnicode(None))
+        self.assertFalse(isUnicode(file))
 
     def test_isUrl(self):
         self.assertTrue(isUrl('www.google.com'))
@@ -1298,10 +1341,17 @@ class test_HariSekhonUtils(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-    def test_validate_database_query_select_show_exception_embedded_delete(self):
+    def test_validate_database_query_select_show_exception_delete(self):
         try:
-            validate_database_query_select_show('select * from (delete * from myTable)', 'name')
-            raise Exception('validate_database_query_select_show() failed to raise exception for embedded delete')
+            validate_database_query_select_show('DELETE from myTable)', 'name')
+            raise Exception('validate_database_query_select_show() failed to raise exception for delete')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_database_query_select_show_exception_embedded_drop(self):
+        try:
+            validate_database_query_select_show('select * from (DROP myTable)', 'name')
+            raise Exception('validate_database_query_select_show() failed to raise exception for embedded drop')
         except InvalidOptionException:
             pass
 
@@ -1445,7 +1495,7 @@ class test_HariSekhonUtils(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_filename(self):
-        self.assertTrue(validate_filename('../HariSekhonUtils.py', 'name'))
+        self.assertTrue(validate_filename('../utils.py', 'name'))
         self.assertTrue(validate_filename('some_File.txt'))
         self.assertTrue(validate_filename('/tmp/te-st'))
         self.assertTrue(validate_filename('/tmp/test.txt'))
@@ -2316,6 +2366,6 @@ if __name__ == '__main__':
     # verbosity Python >= 2.7
     #unittest.main(verbosity=2)
     log.setLevel(logging.DEBUG)
-    suite = unittest.TestLoader().loadTestsFromTestCase(test_HariSekhonUtils)
+    suite = unittest.TestLoader().loadTestsFromTestCase(test_utils)
     unittest.TextTestRunner(verbosity=2).run(suite)
     #unittest2.main(verbosity=2)

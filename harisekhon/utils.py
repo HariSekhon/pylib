@@ -9,7 +9,7 @@
 #  License: see accompanying LICENSE file
 #
 
-""" Personal Library originally started to standardize Nagios Plugin development but superceded by Perl version """
+""" Personal Library originally started to standardize Nagios Plugin development """
 
 import inspect
 import json
@@ -32,7 +32,7 @@ import xml.etree.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.5'
+__version__     = '0.9.7'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -43,7 +43,7 @@ ERRORS = {
     "DEPENDENT" : 4
 }
 
-libdir = os.path.dirname(__file__) or '.'
+libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 def get_caller():
     # return inspect.currentframe().f_back.f_back
@@ -54,7 +54,7 @@ def get_caller():
 
 prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
 
-logging.config.fileConfig(libdir + '/resources/logging.conf')
+logging.config.fileConfig(os.path.join(libdir, 'resources', 'logging.conf'))
 log = logging.getLogger('HariSekhonUtils')
 # optimization - gives unknown file, unknown function, line 0
 # logging._srcfile = None
@@ -109,7 +109,8 @@ def die(msg, *ec):
                 sys.exit(exitcode % 256)
             else:
                 sys.exit(exitcode)
-        elif exitcode in ERRORS.keys():
+        # elif exitcode in ERRORS.keys():
+        elif exitcode in ERRORS:
             sys.exit(ERRORS[exitcode])
         else:
             log.error("Code error, non-digit and non-recognized error status passed as second arg to die()")
@@ -132,7 +133,7 @@ def quit(status, msg=''):
         print('%s: %s' % (status, msg))
     sys.exit(ERRORS[status])
 
-
+# use CLI's self.usage() mostly instead which doesn't require passing in the parser
 def usage(parser, msg='', status='UNKNOWN'):
     if msg:
         print('%s\n' % msg)
@@ -252,7 +253,8 @@ def list_sort_dicts_by_value(myList, key):
         if not isStr(val):
             raise AssertionError("list key '%s' value '%s' is not a string" % (key, val))
         myVals[val.lower()] = 1
-    for val in sorted(myVals.keys()):
+    # for val in sorted(myVals.keys()):
+    for val in sorted(myVals):
         for d in myList:
             val2 = d[key].lower()
             if val == val2:
@@ -461,7 +463,8 @@ def isDatabaseViewName(arg, allow_qualified = False):
 
 
 def isDict(arg):
-    return type(arg).__name__ == 'dict'
+    # return type(arg).__name__ == 'dict'
+    return isinstance(arg, dict)
 
 
 def isDirname(arg):
@@ -534,6 +537,10 @@ def isFilename(arg):
 def isFloat(arg, allow_negative = False):
     if arg == None:
         return False
+    # wouldn't respect default of not allowing negative
+    # if type(arg) == 'float':
+    # if isinstance(arg, float):
+    #     return True
     neg = ''
     if allow_negative == True:
         neg = '-?'
@@ -589,6 +596,10 @@ def isHostname(arg):
 def isInt(arg, allow_negative=False):
     if arg == None:
         return False
+    # wouldn't respect default of not allowing negative
+    # if type(arg) == 'int':
+    # if isinstance(arg, int):
+    #     return True
     neg = ""
     if allow_negative:
         neg = "-?"
@@ -686,7 +697,8 @@ def isLdapDn(arg):
 
 
 def isList(arg):
-    return type(arg).__name__ == 'list'
+    # return type(arg).__name__ == 'list'
+    return isinstance(arg, list)
 
 
 def isMinVersion(version, min):
@@ -820,7 +832,23 @@ def isScientific(arg, allow_negative = False):
 
 
 def isStr(arg):
-    return type(arg).__name__ in [ 'str', 'unicode' ]
+    # return type(arg).__name__ in [ 'str', 'unicode' ]
+    return isinstance(arg, str) or isinstance(arg, unicode)
+
+
+def isStrStrict(arg):
+    # return type(arg).__name__ in [ 'str', 'unicode' ]
+    return isinstance(arg, str)
+
+
+def isTuple(arg):
+    # return type(arg).__name__ == 'tuple'
+    return isinstance(arg, tuple)
+
+
+def isUnicode(arg):
+    # return type(arg).__name__ == 'unicode'
+    return isinstance(arg, unicode)
 
 
 def isUrl(arg):

@@ -25,24 +25,22 @@ import subprocess
 import sys
 ## using optparse rather than argparse for servers still on Python 2.6
 #from optparse import OptionParser
-libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+# libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+libdir = os.path.join(os.path.dirname(__file__), '..')
 # sys.path.append(libdir)
 # try:
-#    from HariSekhonUtils import *
+#    from harisekhon.utils import *
 # except ImportError, e:
 #    print('module import failed: %s' % e)
-#    sys.exit(3)
-# except Exception, e:
-#    print('exception encountered during module import: %s' % e)
-#    sys.exit(3)
+#    sys.exit(4)
 
 def main():
     print('running unit tests')
     for x in glob.glob(libdir + "/test/test_*.py"):
         print('running %s' % x)
-        #os.system('python ' + x)
-        if not subprocess.call(['python', x]):
-            sys.exit(2)
+        # if subprocess.call(['python', x]):
+        #     sys.exit(2)
+        subprocess.check_call(['python', x])
 
 if __name__ == '__main__':
     main()
