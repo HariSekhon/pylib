@@ -41,25 +41,25 @@ make:
 
 .PHONY: apt-packages
 apt-packages:
-	$(SUDO) apt-get install -y gcc || :
+	$(SUDO) apt-get install -y gcc
 	# needed to fetch the library submodule at end of build
-	$(SUDO) apt-get install -y git || :
-	$(SUDO) apt-get install -y ipython-notebook || :
+	$(SUDO) apt-get install -y git
+	$(SUDO) apt-get install -y ipython-notebook
 	# for mysql_config to build MySQL-python
-	$(SUDO) apt-get install -y libmysqlclient-dev || :
-	dpkg -l python-setuptools python-dev &>/dev/null || $(SUDO) apt-get install -y python-setuptools python-dev || :
+	$(SUDO) apt-get install -y libmysqlclient-dev
+	dpkg -l python-setuptools python-dev &>/dev/null || $(SUDO) apt-get install -y python-setuptools python-dev
 
 
 .PHONY: yum-packages
 yum-packages:
-	rpm -q gcc || $(SUDO) yum install -y gcc || :
+	rpm -q gcc || $(SUDO) yum install -y gcc
 	# needed to fetch the library submodule and CPAN modules
 	# python-pip requires EPEL, so try to get the correct EPEL rpm - for Make must escape the $3
-	rpm -ivh "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`awk '{print substr($$3, 0, 1); exit}' /etc/*release`.noarch.rpm" || :
+	rpm -ivh "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`awk '{print substr($$3, 0, 1); exit}' /etc/*release`.noarch.rpm"
 	# for mysql_config to build MySQL-python
-	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel || :
-	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel || :
-	rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
+	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel
+	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel
+	rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook
 
 
 .PHONY: test
