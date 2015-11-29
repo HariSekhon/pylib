@@ -29,6 +29,8 @@ class test_cli(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
+    # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
+
     myDict  = { 'one': 1, 'two': 2, 'three':3 }
 
     class SubCLI(CLI):
@@ -40,12 +42,22 @@ class test_cli(unittest.TestCase):
     def test_SubCLI(self):
         c = self.SubCLI()
         c.set_default_port(80)
+        try:
+            c.set_default_port('a')
+            raise Exception('failed to throw CodingErrorException when sending invalid port to set_default_port()')
+        except CodingErrorException:
+            pass
         c.add_hostoption()
         c.add_useroption(name='Ambari')
         try:
             c.add_hostoption(name='Ambari', default_port=8080)
             raise Exception('failed to throw OptionConflictError from optparse OptionParser')
         except OptionConflictError, e:
+            pass
+        try:
+            c.add_hostoption(name='Ambari', default_port='a')
+            raise Exception('failed to throw CodingErrorException when sending invalid port to add_hostoption')
+        except CodingErrorException, e:
             pass
 
         try:

@@ -62,6 +62,8 @@ class CLI:
         # return self.parser.parse_args()
 
     def set_default_port(self, port, name=''):
+        if not isPort(port):
+            raise CodingErrorException('invalid port supplied to set_default_port()')
         self.opts[name] = self.opts.get(name, {})
         self.opts[name]['port'] = self.opts[name].get('port', {})
         self.opts[name]['port']['default'] = port
@@ -75,15 +77,17 @@ class CLI:
            myStr += ", default: %s" % default_val
         return myStr
 
-    def add_hostoption(self, name='', default_port=''):
+    def add_hostoption(self, name='', default_port=None):
         name2 = ''
         if not isBlankOrNone(name):
             name2 = "%s " % name
+        if default_port != None and not isPort(default_port):
+            raise CodingErrorException('invalid default port supplied to add_hostoption()')
         self.env_vars(name, 'HOST', prefix=True)
         self.env_vars(name, 'PORT', prefix=True)
         host_env_help = self.envs2string(name, 'host')
         port_env_help = self.envs2string(name, 'port', default_port)
-        if 'default' in self.opts[name]['port'] and not 'default_port' in locals():
+        if 'default' in self.opts[name]['port'] and default_port == None:
             default_port = self.opts[name]['port']['default']
         if default_port:
             self.opts[name]['port']['val'] = self.opts[name]['port'].get('val', default_port)

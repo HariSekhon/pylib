@@ -30,6 +30,8 @@ class test_utils(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
+    # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
+
     # Class attributes - can still access via self.<attrib> as it's less typing than test_HariSekhonUtils.<attrib>
     # libdir = libdir
     libfile = os.path.join(libdir, 'harisekhon', 'utils.py')
