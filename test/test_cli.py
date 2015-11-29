@@ -100,7 +100,13 @@ class test_cli(unittest.TestCase):
             pass
 
         try:
-            c.env_vars('test', ['test', ' '])
+            c.env_vars(None, 'test')
+            raise Exception('failed to raise a CodingErrorException in env_vars() when sending None as name var')
+        except CodingErrorException, e:
+            pass
+
+        try:
+            c.env_vars('test', ['test', None])
             raise Exception('failed to raise a CodingErrorException in env_vars() when sending array with blank var')
         except CodingErrorException, e:
             pass
