@@ -1028,7 +1028,7 @@ class test_utils(unittest.TestCase):
         self.assertEqual(uniq_list_ordered(self.myList + self.myList), self.myList)
         try:
             uniq_list_ordered(self.myDict)
-            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list()')
+            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list_ordered()')
         except CodingErrorException:
             pass
 
