@@ -1221,11 +1221,11 @@ def validate_domain(arg, name=''):
     if name:
         name += " "
     if not arg:
-        raise InvalidOptionException('%sdomain name not defined' % name)
+        raise InvalidOptionException('%sdomain not defined' % name)
     if isDomain(arg):
         vlog_option('%sdomain' % name, arg)
         return True
-    raise InvalidOptionException('invalid %sdomain name defined' % name)
+    raise InvalidOptionException("invalid %sdomain '%s' defined" % (name, arg))
 
 
 # SECURITY NOTE: this only validates the email address is valid, it's doesn't make it safe to arbitrarily pass to commands or SQL etc!
@@ -1290,7 +1290,7 @@ def validate_fqdn(arg, name=''):
     if isFqdn(arg):
         vlog_option('%sfqdn' % name, arg)
         return True
-    raise InvalidOptionException('invalid %sFQDN defined' % name)
+    raise InvalidOptionException("invalid %sFQDN '%s' defined" % (name, arg))
 
 
 def validate_host(arg, name=''):
