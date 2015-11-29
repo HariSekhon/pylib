@@ -61,10 +61,10 @@ class CLI:
         (self.options, self.args) = self.parser.parse_args()
         # return self.parser.parse_args()
 
-    def set_default_port(self, name, port):
+    def set_default_port(self, port, name=''):
         self.opts[name] = self.opts.get(name, {})
-        self.opts[name][port] = self.opts[name].get('port', {})
-        self.opts[name][port]['default'] = port
+        self.opts[name]['port'] = self.opts[name].get('port', {})
+        self.opts[name]['port']['default'] = port
         # this often happens before env_creds(), so don't set port opt since env_vars() will politely not set it then
         # if not 'port' in self.opts:
         #     self.opts['port'] = port
@@ -83,6 +83,8 @@ class CLI:
         self.env_vars(name, 'PORT', prefix=True)
         host_env_help = self.envs2string(name, 'host')
         port_env_help = self.envs2string(name, 'port', default_port)
+        if 'default' in self.opts[name]['port'] and not 'default_port' in locals():
+            default_port = self.opts[name]['port']['default']
         if default_port:
             self.opts[name]['port']['val'] = self.opts[name]['port'].get('val', default_port)
         self.parser.add_option('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_env_help), metavar='<host>')
@@ -100,14 +102,17 @@ class CLI:
         self.parser.add_option('-p', '--password', dest='port', help='%sPassword (%s)' % (name2, password_env_help), metavar='<password>')
 
     def _env_var(self, name, var, store_var=None):
+        if not isStr(name):
+            raise CodingErrorException('supplied non-string for name var arg to CLI.env_var()')
         if not isStr(var):
-            raise CodingErrorException('supplied non-string to CLI.env_var()')
+            raise CodingErrorException('supplied non-string for var arg to CLI.env_var()')
         if isBlankOrNone(var):
-            raise CodingErrorException('supplied blank string to CLI.env_var()')
-        var = str(var)
+            raise CodingErrorException('supplied blank string for var arg to CLI.env_var()')
+        name = name.strip()
+        var = str(var).strip()
         if isBlankOrNone(store_var):
             store_var = var
-        store_var = store_var.lower()
+        store_var = store_var.lower().strip()
         env_var = re.sub('[^A-Z0-9]', '_', var.upper())
         val = os.getenv(env_var, None)
         self.opts[name] = self.opts.get(name, {})

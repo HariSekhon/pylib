@@ -29,6 +29,8 @@ class test_cli(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
+    myDict  = { 'one': 1, 'two': 2, 'three':3 }
+
     class SubCLI(CLI):
         def run(self):
             print("running SubCLI()")
@@ -37,6 +39,7 @@ class test_cli(unittest.TestCase):
     # because the -v switch trips optparse
     def test_SubCLI(self):
         c = self.SubCLI()
+        c.set_default_port(80)
         c.add_hostoption(name='Ambari', default_port=8080)
         c.add_useroption(name='Ambari')
         try:
@@ -44,17 +47,69 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to throw OptionConflictError from optparse OptionParser')
         except OptionConflictError, e:
             pass
+
         try:
             c.main()
         except SystemExit, e:
             if e.code != 2:
                 raise Exception('wrong exit code != 2 when exiting main() from base class CLI')
+
         try:
             c.usage()
             raise Exception('failed to exit on CLI.usage()')
         except SystemExit, e:
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when exiting usage() from base class CLI')
+
+        try:
+            c.usage('test message')
+            raise Exception('failed to exit on CLI.usage(test message)')
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception('wrong exit code != 3 when exiting usage(test message) from base class CLI')
+
+        c._env_var('', 'test')
+        try:
+            c._env_var(None, 1)
+            raise Exception('failed to raise a CodingErrorException in _env_var when sending integer as var')
+        except CodingErrorException, e:
+            pass
+
+        try:
+            c._env_var('test', None)
+            raise Exception('failed to raise a CodingErrorException in _env_var when sending None as var')
+        except CodingErrorException, e:
+            pass
+
+        try:
+            c._env_var('test', ' ')
+            raise Exception('failed to raise a CodingErrorException in _env_var when sending blank as var')
+        except CodingErrorException, e:
+            pass
+
+        try:
+            c._env_var(None, 'test')
+            raise Exception('failed to raise a CodingErrorException in _env_var when sending None name')
+        except CodingErrorException, e:
+            pass
+
+        try:
+            c.env_vars('test', ' ')
+            raise Exception('failed to raise a CodingErrorException in env_vars() when sending blank var')
+        except CodingErrorException, e:
+            pass
+
+        try:
+            c.env_vars('test', ['test', ' '])
+            raise Exception('failed to raise a CodingErrorException in env_vars() when sending array with blank var')
+        except CodingErrorException, e:
+            pass
+
+        try:
+            c.env_vars('test', self.myDict)
+            raise Exception('failed to raise a CodingErrorException in env_vars() when sending dict for var')
+        except CodingErrorException, e:
+            pass
 
     # disabled abstract enforcement as it's Python 2.6+ only
     # but base class exits 2 in run() so can catch that too
