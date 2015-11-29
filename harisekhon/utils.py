@@ -20,6 +20,7 @@ import logging.config
 import platform
 # import signal
 # import string
+import signal
 import sys
 import warnings
 import xml.etree.ElementTree as ET
@@ -1042,6 +1043,14 @@ def sec2human(secs):
 # set_timeout
 
 
+def set_timeout(secs, handler=None):
+    if not isInt(secs):
+        raise CodingErrorException('non-integer passed for secs to set_timeout()')
+    if handler:
+        signal.signal(signal.SIGALRM, handler)
+    signal.alarm(secs)
+
+
 def skip_java_output(arg):
     if arg == None:
         return False
@@ -1049,11 +1058,24 @@ def skip_java_output(arg):
         return True
     return False
 
-# tstamp
-# tprint
-# trim_float
-# uniq_array (use set)
-# uniq_array2 (preserve order can't use set)
+
+def uniq_list(myList):
+    if not isList(myList):
+        raise CodingErrorException('non-list passed to uniq_list')
+    return list(set(myList))
+
+# collections.OrderedDict >= Python 2.7+
+def uniq_list_ordered(myList):
+    if not isList(myList):
+        raise CodingErrorException('non-list passed to uniq_list_ordered')
+    # list2 = []
+    # for x in myList:
+    #     if not x in list2:
+    #         list2.append(x)
+    # return list2
+    seen = set()
+    seen_add = seen.add
+    return [x for x in myList if not (x in seen or seen_add(x))]
 
 
 #def user_exists(user):
@@ -1545,6 +1567,35 @@ def which(bin):
                 if os.access(path, os.X_OK):
                     return path
     raise FileNotFoundException("could not find executable file '%s' in $PATH (%s)" % (bin, os.getenv('PATH', '') ) )
+
+
+# ============================================================================ #
+#                               PySpark Utils
+# ============================================================================ #
+
+# from math import pow, fabs, sqrt
+# def squaredError(label, prediction):
+#     """Calculates the the squared error for a single prediction.
+#
+#     Args:
+#         label (float): The correct value for this observation.
+#         prediction (float): The predicted value for this observation.
+#
+#     Returns:
+#         float: The difference between the `label` and `prediction` squared.
+#     """
+#     return pow(fabs(label - prediction), 2)
+#
+# def calcRMSE(labelsAndPreds):
+#     """Calculates the root mean squared error for an `RDD` of (label, prediction) tuples.
+#
+#     Args:
+#         labelsAndPred (RDD of (float, float)): An `RDD` consisting of (label, prediction) tuples.
+#
+#     Returns:
+#         float: The square root of the mean of the squared errors.
+#     """
+#     return sqrt( labelsAndPreds.map(lambda (label, prediction): squaredError(label, prediction) ).mean() )
 
 
 # ============================================================================ #

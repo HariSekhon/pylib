@@ -30,6 +30,8 @@ class test_utils(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
+    # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
+
     # Class attributes - can still access via self.<attrib> as it's less typing than test_HariSekhonUtils.<attrib>
     # libdir = libdir
     libfile = os.path.join(libdir, 'harisekhon', 'utils.py')
@@ -1006,6 +1008,31 @@ class test_utils(unittest.TestCase):
         self.assertEqual(sec2min(''),     '')
         self.assertEqual(sec2min(' '),    '')
         self.assertEqual(sec2min(None),   '')
+
+    def test_timeout(self):
+        set_timeout(5)
+        set_timeout(50, lambda x, y: x)
+        try:
+            set_timeout('a')
+            raise Exception('failed to raise CodingErrorException when passing non-integer to set_timeout()')
+        except CodingErrorException:
+            pass
+
+    def test_uniq_list(self):
+        self.assertEqual(sorted(uniq_list(self.myList + self.myList)), sorted(self.myList))
+        try:
+            uniq_list(self.myDict)
+            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list()')
+        except CodingErrorException:
+            pass
+
+    def test_uniq_list_ordered(self):
+        self.assertEqual(uniq_list_ordered(self.myList + self.myList), self.myList)
+        try:
+            uniq_list_ordered(self.myDict)
+            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list_ordered()')
+        except CodingErrorException:
+            pass
 
 # ============================================================================ #
 #                          Validation Functions
@@ -2361,7 +2388,7 @@ class test_utils(unittest.TestCase):
 
 # ============================================================================ #
 
-if __name__ == '__main__':
+def main():
     # increase the verbosity
     # verbosity Python >= 2.7
     #unittest.main(verbosity=2)
@@ -2369,3 +2396,6 @@ if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(test_utils)
     unittest.TextTestRunner(verbosity=2).run(suite)
     #unittest2.main(verbosity=2)
+
+if __name__ == '__main__':
+    test_utils.main()
