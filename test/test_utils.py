@@ -1007,6 +1007,16 @@ class test_utils(unittest.TestCase):
         self.assertEqual(sec2min(' '),    '')
         self.assertEqual(sec2min(None),   '')
 
+    def test_timeout(self):
+        set_timeout(5)
+        set_timeout(50, lambda x, y: x)
+
+    def test_uniq_list(self):
+        self.assertEqual(sorted(uniq_list(self.myList + self.myList)), sorted(self.myList))
+
+    def test_uniq_list_ordered(self):
+        self.assertEqual(uniq_list_ordered(self.myList + self.myList), self.myList)
+
 # ============================================================================ #
 #                          Validation Functions
 # ============================================================================ #
