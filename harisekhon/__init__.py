@@ -17,7 +17,7 @@
 
 from harisekhon.utils import *
 # enables 'from HariSekhon import CLI'
-#from harisekhon.cli import CLI
+from harisekhon.cli import CLI
 
 # pulls submodules in to 'from com.linkedin.harisekhon import *'
 # __all__ = [ 'submodule1', 'submodule2' ]
