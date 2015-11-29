@@ -73,10 +73,13 @@ class test_cli(unittest.TestCase):
                 raise Exception('wrong exit code != 2 when exiting main() from base class CLI')
 
 
-if __name__ == '__main__':
+def main():
     # increase the verbosity
     # verbosity Python >= 2.7
     #unittest.main(verbosity=2)
     log.setLevel(logging.DEBUG)
     suite = unittest.TestLoader().loadTestsFromTestCase(test_cli)
     unittest.TextTestRunner(verbosity=2).run(suite)
+
+if __name__ == '__main__':
+    main()

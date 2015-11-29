@@ -36,11 +36,15 @@ libdir = os.path.join(os.path.dirname(__file__), '..')
 
 def main():
     print('running unit tests')
-    for x in glob.glob(libdir + "/test/test_*.py"):
-        print('running %s' % x)
+    # this doesn't allow coverage to follow the code and see what's been covered
+    # for x in glob.glob(libdir + "/test/test_*.py"):
         # if subprocess.call(['python', x]):
         #     sys.exit(2)
-        subprocess.check_call(['python', x])
+        # subprocess.check_call(['python', x])
+    from test.test_utils import *
+    main()
+    from test.test_cli import *
+    main()
 
 if __name__ == '__main__':
     main()

@@ -2371,7 +2371,7 @@ class test_utils(unittest.TestCase):
 
 # ============================================================================ #
 
-if __name__ == '__main__':
+def main():
     # increase the verbosity
     # verbosity Python >= 2.7
     #unittest.main(verbosity=2)
@@ -2379,3 +2379,6 @@ if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(test_utils)
     unittest.TextTestRunner(verbosity=2).run(suite)
     #unittest2.main(verbosity=2)
+
+if __name__ == '__main__':
+    test_utils.main()
