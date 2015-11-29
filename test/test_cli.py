@@ -40,10 +40,10 @@ class test_cli(unittest.TestCase):
     def test_SubCLI(self):
         c = self.SubCLI()
         c.set_default_port(80)
+        c.add_hostoption()
         c.add_useroption(name='Ambari')
-        c.add_hostoption(name='Ambari', default_port=8080)
         try:
-            c.add_hostoption()
+            c.add_hostoption(name='Ambari', default_port=8080)
             raise Exception('failed to throw OptionConflictError from optparse OptionParser')
         except OptionConflictError, e:
             pass
