@@ -1010,12 +1010,27 @@ class test_utils(unittest.TestCase):
     def test_timeout(self):
         set_timeout(5)
         set_timeout(50, lambda x, y: x)
+        try:
+            set_timeout('a')
+            raise Exception('failed to raise CodingErrorException when passing non-integer to set_timeout()')
+        except CodingErrorException:
+            pass
 
     def test_uniq_list(self):
         self.assertEqual(sorted(uniq_list(self.myList + self.myList)), sorted(self.myList))
+        try:
+            uniq_list(self.myDict)
+            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list()')
+        except CodingErrorException:
+            pass
 
     def test_uniq_list_ordered(self):
         self.assertEqual(uniq_list_ordered(self.myList + self.myList), self.myList)
+        try:
+            uniq_list_ordered(self.myDict)
+            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list()')
+        except CodingErrorException:
+            pass
 
 # ============================================================================ #
 #                          Validation Functions
