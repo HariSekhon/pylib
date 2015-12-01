@@ -59,7 +59,7 @@ yum-packages:
 	# for mysql_config to build MySQL-python
 	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel
 	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel
-	rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook
+	rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
 
 
 .PHONY: test
