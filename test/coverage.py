@@ -22,23 +22,11 @@ import coverage
 import os
 import sys
 # using optparse rather than argparse for servers still on Python 2.6
-from optparse import OptionParser
-sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])) + '/lib')
+#from optparse import OptionParser
+sys.path.append(os.path.join(os.path.dirname(__file__), '/lib'))
 try:
-    from HariSekhonUtils import *
-    from HariSekhon import CLI
-    from HariSekhon import NagiosPlugin
-    spark_home = os.getenv('SPARK_HOME', None)
-    if spark_home:
-        sys.path.append(os.path.join(spark_home, 'python'))
-        # better to use build dir it's more generic as it's not tied to a specific version
-        #sys.path.append(os.path.join(spark_home, 'python/lib/py4j-0.8.2.1-src.zip'))
-        sys.path.append(os.path.join(spark_home, 'python/build'))
-    else:
-        warn("SPARK_HOME not set - probably won't find PySpark libs")
-    from pyspark import SparkContext
-    from pyspark import SparkConf
-    from pyspark.sql import SQLContext
+    from harisekhon.utils import *
+    #from harisekhon import CLI
 except ImportError, e:
     print('module import failed: %s' % e)
     sys.exit(4)
