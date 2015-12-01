@@ -317,6 +317,7 @@ aws_secret_key_regex = r'(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])
 domain_regex       = r'(?:' + domain_component_regex + '\.)*' + tld_regex
 domain_regex2      = r'(?:' + domain_component_regex + '\.)+' + tld_regex
 domain_regex_strict = domain_regex2
+# must permit numbers as valid host identifiers that are being used in the wild in FQDNs
 hostname_component = r'\b[A-Za-z0-9](?:[A-Za-z0-9_\-]{0,61}[a-zA-Z0-9])?\b'
 aws_host_component = r'ip-(?:10-\d+-\d+-\d+|172-1[6-9]-\d+-\d+|172-2[0-9]-\d+-\d+|172-3[0-1]-\d+-\d+|192-168-\d+-\d+)'
 hostname_regex     = hostname_component + r'(?:\.' + domain_regex + ')?'
