@@ -46,7 +46,7 @@ class CLI:
 
     def main(self):
         try:
-            self.parse_options()
+            self.parse_args()
             self.run()
         except KeyboardInterrupt, e:
             pass
@@ -57,7 +57,12 @@ class CLI:
         self.parser.print_help()
         quit(status)
 
-    def parse_options(self):
+    # @override this
+    def add_options(self):
+        pass
+
+    def parse_args(self):
+        self.add_options()
         (self.options, self.args) = self.parser.parse_args()
         # return self.parser.parse_args()
 
@@ -77,7 +82,7 @@ class CLI:
            myStr += ", default: %s" % default_val
         return myStr
 
-    def add_hostoption(self, name='', default_port=None):
+    def add_hostoption(self, name='', default_host=None, default_port=None):
         name2 = ''
         if not isBlankOrNone(name):
             name2 = "%s " % name
@@ -85,23 +90,29 @@ class CLI:
             raise CodingErrorException('invalid default port supplied to add_hostoption()')
         self.env_vars(name, 'HOST', prefix=True)
         self.env_vars(name, 'PORT', prefix=True)
-        host_env_help = self.envs2string(name, 'host')
-        port_env_help = self.envs2string(name, 'port', default_port)
+        host_env_help = self.envs2string(name, 'host', default_val=default_host)
+        port_env_help = self.envs2string(name, 'port', default_val=default_port)
         if 'default' in self.opts[name]['port'] and default_port == None:
             default_port = self.opts[name]['port']['default']
+        if default_host:
+            self.opts[name]['host']['val'] = self.opts[name]['host'].get('val', default_host)
         if default_port:
             self.opts[name]['port']['val'] = self.opts[name]['port'].get('val', default_port)
         self.parser.add_option('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_env_help), metavar='<host>')
         self.parser.add_option('-P', '--port', dest='port', help='%sPort (%s)' % (name2, port_env_help), metavar='<port>')
 
-    def add_useroption(self, name=''):
+    def add_useroption(self, name='', default_user=None, default_password=None):
         name2 = ''
         if not isBlankOrNone(name):
             name2 = "%s " % name
         self.env_vars(name, ['USERNAME', 'USER'], prefix=True)
         self.env_vars(name, 'PASSWORD', prefix=True)
-        user_env_help     = self.envs2string(name, 'username')
-        password_env_help = self.envs2string(name, 'password')
+        user_env_help     = self.envs2string(name, 'username', default_val=default_user)
+        password_env_help = self.envs2string(name, 'password', default_val=default_password)
+        if default_user:
+            self.opts[name]['user']['val'] = self.opts[name]['user'].get('val', default_user)
+        if default_password:
+            self.opts[name]['password']['val'] = self.opts[name]['password'].get('val', default_password)
         self.parser.add_option('-u', '--user',     dest='host', help='%sUsername (%s)' % (name2, user_env_help),     metavar='<user>')
         self.parser.add_option('-p', '--password', dest='port', help='%sPassword (%s)' % (name2, password_env_help), metavar='<password>')
 
