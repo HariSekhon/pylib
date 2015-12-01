@@ -44,7 +44,7 @@ apt-packages:
 	$(SUDO) apt-get install -y gcc
 	# needed to fetch the library submodule at end of build
 	$(SUDO) apt-get install -y git
-	$(SUDO) apt-get install -y ipython-notebook
+	#$(SUDO) apt-get install -y ipython-notebook || :
 	# for mysql_config to build MySQL-python
 	$(SUDO) apt-get install -y libmysqlclient-dev
 	dpkg -l python-setuptools python-dev &>/dev/null || $(SUDO) apt-get install -y python-setuptools python-dev
