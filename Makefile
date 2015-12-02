@@ -48,8 +48,8 @@ apt-packages:
 	$(SUDO) apt-get install -y gcc || :
 	#$(SUDO) apt-get install -y ipython-notebook || :
 	# for mysql_config to build MySQL-python
-	$(SUDO) apt-get install -y libmysqlclient-dev
-	dpkg -l python-setuptools python-dev &>/dev/null || $(SUDO) apt-get install -y python-setuptools python-dev
+	$(SUDO) apt-get install -y libmysqlclient-dev || :
+	dpkg -l python-setuptools python-dev &>/dev/null || $(SUDO) apt-get install -y python-setuptools python-dev || :
 
 
 .PHONY: yum-packages
