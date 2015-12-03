@@ -16,6 +16,7 @@
 __author__  = 'Hari Sekhon'
 __version__ = '0.1'
 
+import inspect
 import os
 import sys
 from optparse import OptionParser
@@ -28,6 +29,9 @@ sys.path.append(libdir)
 from harisekhon.utils import *
 
 class CLI:
+    """
+    HariSekhon.CLI base class
+    """
     # abstract class
     # __metaclass__ = ABCMeta
     # run() method also be annotated as @abstractmethod
@@ -52,6 +56,14 @@ class CLI:
             pass
 
     def usage(self, msg='', status='UNKNOWN'):
+        print(inspect.stack())
+        frame = inspect.stack()[-1][0]
+        topfile = inspect.getfile(frame)
+        # topfile = inspect.stack()[-1][1]
+        docstring = get_file_docstring(topfile)
+        if isStr(docstring) and docstring:
+            docstring = '\n'.join([ x.strip() for x in docstring.split('\n') if x ])
+            print('%s\n' % docstring)
         if msg:
             print('%s\n' % msg)
         self.parser.print_help()
