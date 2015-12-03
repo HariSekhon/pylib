@@ -19,7 +19,7 @@ install:
   - make
 
 script:
-  - make test2
+  - make test
   - coverage run --source=harisekhon -m test
 
 after_success:
