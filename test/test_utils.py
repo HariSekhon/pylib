@@ -7,9 +7,11 @@
 #  License: see accompanying LICENSE file
 #
 
+"""
 # ============================================================================ #
 #                   PyUnit Tests for HariSekhonUtils
 # ============================================================================ #
+"""
 
 from __future__ import print_function
 
@@ -138,13 +140,15 @@ class test_utils(unittest.TestCase):
             if e.code != ERRORS['UNKNOWN']:
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
 
+    def test_get_file_docstring(self):
+        self.assertTrue(get_file_docstring(__file__))
+
     def test_code_error(self):
         try:
             code_error('test')
             raise Exception('code_error() failed to raise exception')
         except CodingErrorException:
             pass
-
 
     def test_check_tldcount(self):
         utils._check_tldcount()
@@ -356,6 +360,15 @@ class test_utils(unittest.TestCase):
             raise Exception('failed to coding raise exception for invalid char range')
         except CodingErrorException:
             pass
+
+    def test_isCode(self):
+        self.assertTrue(isCode(compile('print(test)', 'test', 'exec')))
+        self.assertFalse(isCode(file))
+
+    def test_isCodeStr(self):
+        self.assertTrue(isCodeStr('print(test)'))
+        self.assertFalse(isCodeStr('print(test'))
+        self.assertFalse(isCodeStr(file))
 
     def test_isCollection(self):
         self.assertTrue(isCollection('students.grades'))
@@ -636,6 +649,16 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isList(1))
         self.assertFalse(isList(None))
         self.assertFalse(isList(file))
+
+    def test_isListOrTuple(self):
+        self.assertTrue(isList(self.myList))
+        self.assertTrue(isListOrTuple(self.myTuple))
+        self.assertTrue(isListOrTuple([]))
+        self.assertTrue(isListOrTuple(()))
+        self.assertFalse(isListOrTuple(self.myDict))
+        self.assertFalse(isListOrTuple(1))
+        self.assertFalse(isListOrTuple(None))
+        self.assertFalse(isListOrTuple(file))
 
     def test_isMinVersion(self):
         self.assertTrue(isMinVersion('1.3.0', '1.3'))
