@@ -71,12 +71,13 @@ test:
 	#python test/test_HariSekhonUtils.py
 	# find all unit tests under test/
 	# Python -m >= 2.7
-	python -m unittest discover -v
+	#python -m unittest discover -v
+	unit2 discover -v
 
-.PHONY: test
+.PHONY: test2
 test2:
 	test/find_dup_defs.sh
-	unit2 discover -v
+	python -m unittest discover -v
 
 .PHONY: install
 install:
