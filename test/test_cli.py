@@ -8,9 +8,11 @@
 #  License: see accompanying LICENSE file
 #
 
+"""
 # ============================================================================ #
 #                   PyUnit Tests for HariSekhon.CLI
 # ============================================================================ #
+"""
 
 from __future__ import print_function
 
