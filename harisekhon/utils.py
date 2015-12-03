@@ -11,6 +11,8 @@
 
 """ Personal Library originally started to standardize Nagios Plugin development """
 
+from __future__ import print_function
+
 import inspect
 import json
 import os
@@ -33,7 +35,7 @@ import xml.etree.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.7'
+__version__     = '0.9.8'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -92,8 +94,8 @@ def support_msg(repo="pytools"):
 
 def printerr(msg, indent=False):
     if indent:
-        print >> sys.stderr, ">>> ",
-    print >> sys.stderr, "%s" % msg
+        print(">>> ", end='', file=sys.stderr)
+    print("%s" % msg, file=sys.stderr)
 
 
 def warn(msg):
@@ -134,12 +136,33 @@ def quit(status, msg=''):
         print('%s: %s' % (status, msg))
     sys.exit(ERRORS[status])
 
+
 # use CLI's self.usage() mostly instead which doesn't require passing in the parser
+# and also gets the file docstring at the top of the stack
 def usage(parser, msg='', status='UNKNOWN'):
     if msg:
         print('%s\n' % msg)
     parser.print_help()
     quit(status)
+
+
+def get_file_docstring(filename):
+    assert isStr(filename)
+    # .pyc files cause the following error:
+    # TypeError: compile() expected string without null bytes
+    filename = re.sub('.pyc$', '.py', filename)
+    assert isFilename(filename)
+    # returns a code object
+    co = compile(open(filename).read(), filename, 'exec')
+    assert isCode(co)
+    # just let it traceback if something is not as expected so I know if something changes, otherwise will silently start dropping usage descriptions
+    # if isListOrTuple(code.co_consts) and len(code.co_consts) > 0 and isStr(code.co_consts[0]):
+    # assert hasattr(code, 'co_consts')
+    # code.co_consts is a tuple
+    assert isListOrTuple(co.co_consts)
+    assert len(co.co_consts) > 0
+    assert isStr(co.co_consts[0])
+    return co.co_consts[0]
 
 
 # ============================================================================ #
@@ -352,6 +375,13 @@ version_regex       = r'\d(\.\d+)*'
 version_regex_short = r'\d(\.\d+)?'
 version_regex_lax   = version_regex + r'-?.*'
 
+##################
+#
+# see also inspect.isclass(obj)
+#                 .ismethod(obj)
+#                 .ismodule(obj)
+#                 .isfunction(obj)
+#                 .istraceback(obj)
 
 def isAlNum(arg):
     if arg == None:
@@ -410,8 +440,20 @@ def isChars(arg, chars):
         return True
     return False
 
+# because 'code' isn't an accessible keyword
+from types import CodeType
+def isCode(arg):
+    return isinstance(arg, CodeType)
 
-# isCode
+
+def isCodeStr(arg):
+    if not isStr(arg):
+        return False
+    try:
+        co = compile(arg, 'test', 'exec')
+    except SyntaxError:
+        return False
+    return isCode(co)
 
 
 def isCollection(arg):
@@ -703,6 +745,10 @@ def isList(arg):
     return isinstance(arg, list)
 
 
+def isListOrTuple(arg):
+    return isList(arg) or isTuple(arg)
+
+
 def isMinVersion(version, min):
     if version == None:
         log.warn("'%s' is not a recognized version format" % version)
@@ -835,7 +881,9 @@ def isScientific(arg, allow_negative = False):
 
 def isStr(arg):
     # return type(arg).__name__ in [ 'str', 'unicode' ]
-    return isinstance(arg, str) or isinstance(arg, unicode)
+    # return isinstance(arg, str) or isinstance(arg, unicode)
+    # basestring is abstract superclass of both str and unicode
+    return isinstance(arg, basestring)
 
 
 def isStrStrict(arg):
@@ -946,15 +994,13 @@ def linux_mac_only():
         raise Exception(supported_os_msg % 'Linux or Mac/Darwin')
     return True
 
-
-def min_value(value, min):
-    if not isFloat(value):
+# a little extra assertion that the values we're comparing are in fact ints/floats
+def min_value(val, min_val):
+    if not isFloat(val):
         code_error('invalid first arg passed to min_value(), must be float')
-    if not isFloat(min):
+    if not isFloat(min_val):
         code_error('invalid second arg passed to min_value(), must be float')
-    if (value < min):
-        return min
-    return value
+    return max(val, min_val)
 
 
 # msg_perf_thresholds
