@@ -50,18 +50,22 @@ class test_cli(unittest.TestCase):
         except CodingErrorException:
             pass
         c.add_hostoption()
-        c.add_useroption(name='Ambari')
+        c.add_useroption(name='Ambari', default_user='admin', default_password='mysecret')
         try:
-            c.add_hostoption(name='Ambari', default_port=8080)
-            raise Exception('failed to throw OptionConflictError from optparse OptionParser')
+            c.add_hostoption()
+            raise Exception('failed to throw OptionConflictError from optparse OptionParser when duplicating add_hostoption')
         except OptionConflictError, e:
             pass
         try:
-            c.add_hostoption(name='Ambari', default_port='a')
+            c.add_hostoption(default_port='error')
             raise Exception('failed to throw CodingErrorException when sending invalid port to add_hostoption')
         except CodingErrorException, e:
             pass
-
+        try:
+            c.add_useroption()
+            raise Exception('failed to throw OptionConflictError from optparse OptionParser when duplicating add_useroption')
+        except OptionConflictError, e:
+            pass
         try:
             c.main()
         except SystemExit, e:
