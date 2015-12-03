@@ -161,8 +161,9 @@ def get_file_docstring(filename):
     # code.co_consts is a tuple
     assert isListOrTuple(co.co_consts)
     assert len(co.co_consts) > 0
-    assert isStr(co.co_consts[0])
-    return co.co_consts[0]
+    if isStr(co.co_consts[0]):
+        return co.co_consts[0]
+    return None
 
 
 # ============================================================================ #
