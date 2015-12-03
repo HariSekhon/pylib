@@ -39,7 +39,8 @@ make:
 	$(SUDO2) pip install coveralls
 	$(SUDO2) pip install mock
 
-	# Python 2.4 - 2.6 backport
+	# Python 2.4 - 2.6 backports
+	$(SUDO2) pip install argparse
 	$(SUDO2) pip install unittest2
 
 
