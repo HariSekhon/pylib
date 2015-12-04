@@ -49,7 +49,7 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to throw CodingErrorException when sending invalid port to set_default_port()')
         except CodingErrorException:
             pass
-        c.add_hostoption()
+        c.add_hostoption(name='Ambari', default_host='localhost', default_port=8080)
         c.add_useroption(name='Ambari', default_user='admin', default_password='mysecret')
         try:
             c.add_hostoption()
