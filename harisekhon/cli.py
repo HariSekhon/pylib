@@ -122,7 +122,7 @@ class CLI:
         user_env_help     = self.envs2string(name, 'username', default_val=default_user)
         password_env_help = self.envs2string(name, 'password', default_val=default_password)
         if default_user:
-            self.opts[name]['user']['val'] = self.opts[name]['user'].get('val', default_user)
+            self.opts[name]['username']['val'] = self.opts[name]['username'].get('val', default_user)
         if default_password:
             self.opts[name]['password']['val'] = self.opts[name]['password'].get('val', default_password)
         self.parser.add_option('-u', '--user',     dest='host', help='%sUsername (%s)' % (name2, user_env_help),     metavar='<user>')
