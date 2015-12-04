@@ -56,7 +56,6 @@ class CLI:
             pass
 
     def usage(self, msg='', status='UNKNOWN'):
-        print(inspect.stack())
         frame = inspect.stack()[-1][0]
         topfile = inspect.getfile(frame)
         # topfile = inspect.stack()[-1][1]
