@@ -22,6 +22,7 @@ import unittest
 #import unittest2
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
+
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 from harisekhon import utils
@@ -598,6 +599,28 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isIP(' '))
         self.assertFalse(isIP(None))
 
+    def test_isIterable(self):
+        self.assertTrue(isIterable(self.myList))
+        self.assertTrue(isIterable(self.myDict))
+        self.assertTrue(isIterable(self.myTuple))
+        self.assertTrue(isIterable([]))
+        self.assertTrue(isIterable({}))
+        self.assertTrue(isIterable(()))
+        self.assertTrue(isIterable('test'))
+        self.assertFalse(isIterable(1))
+        self.assertFalse(isIterable(1.1))
+
+    def test_isIterableNotStr(self):
+        self.assertTrue(isIterableNotStr(self.myList))
+        self.assertTrue(isIterableNotStr(self.myDict))
+        self.assertTrue(isIterableNotStr(self.myTuple))
+        self.assertTrue(isIterableNotStr([]))
+        self.assertTrue(isIterableNotStr({}))
+        self.assertTrue(isIterableNotStr(()))
+        self.assertFalse(isIterableNotStr('test'))
+        self.assertFalse(isIterableNotStr(1))
+        self.assertFalse(isIterableNotStr(1.1))
+
     def test_isJavaException(self):
         self.assertTrue(isJavaException('        at org.apache.ambari.server.api.services.stackadvisor.StackAdvisorRunner.runScript(StackAdvisorRunner.java:96)'))
         self.assertTrue(isJavaException('java.util.HashMap.writeObject(HashMap.java:1016)'))
@@ -930,6 +953,18 @@ class test_utils(unittest.TestCase):
     #def test_random_alnum(self):
         # like(random_alnum(20),  qr/^[A-Za-z0-9]{20}$/,                      'random_alnum(20)');
         # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
+
+    def test_flatten(self):
+        self.assertEqual(list(flatten([[1, 2], 3, '4', [[5]]])), [1, 2, 3, '4', 5]) # list  => list
+        self.assertEqual(list(flatten(([1, 2], 3, '4', [[5]]))), [1, 2, 3, '4', 5]) # tuple => list
+        self.assertEqual(list(flatten(['/etc/passwd', ['/etc/hosts', '/etc/nsswitch.conf']])),
+                                      ['/etc/passwd', '/etc/hosts', '/etc/nsswitch.conf'])
+        self.assertEqual(list(flatten(1)), [1])
+        # try:
+        #     flatten(1)
+        #     raise Exception('failed to raise exception for non-iterable integer passed to flatten()')
+        # except CodingErrorException:
+        #     pass
 
     def test_read_file_without_comments(self):
         read_file_without_comments(self.libfile)
@@ -1597,6 +1632,37 @@ class test_utils(unittest.TestCase):
         try:
             validate_file('')
             raise Exception('validate_file() failed to raise exception for blank')
+        except InvalidOptionException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_files(self):
+        self.assertTrue(validate_file(self.libfile, 'name'))
+        if isLinuxOrMac():
+            self.assertTrue(validate_files('/etc/passwd'))
+            self.assertTrue(validate_files('/etc/passwd', '/etc/hosts'))
+            self.assertEqual(list(validate_files(['/etc/passwd', ['/etc/hosts']])),
+                                                 ['/etc/passwd', '/etc/hosts'])
+
+    def test_validate_files_exception(self):
+        try:
+            validate_files('/etc/nonexistentfile')
+            raise Exception('validate_files() failed to raise exception')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_files_exception_none(self):
+        try:
+            validate_files(None)
+            raise Exception('validate_files() failed to raise exception for none')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_files_exception_blank(self):
+        try:
+            validate_files('')
+            raise Exception('validate_files() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 

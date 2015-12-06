@@ -13,7 +13,9 @@
 
 from __future__ import print_function
 
+import collections
 import inspect
+import itertools
 import json
 import os
 import re
@@ -253,6 +255,22 @@ def java_oom_fix_msg():
 
 
 # ============================================================================ #
+
+def flatten(arg):
+    if not isIterableNotStr(arg):
+        yield arg
+        return
+    #     raise CodingErrorException('passed non-iterable to flatten()')
+    # if isInt(arg) or isFloat(arg):
+    #     yield arg
+    # else:
+    for x in arg:
+        if isIterableNotStr(x):
+            for sub in flatten(x):
+                yield sub
+        else:
+            yield x
+
 
 def read_file_without_comments(filename):
     return [ x.rstrip("\n").split("#")[0].strip() for x in open(filename).readlines() ]
@@ -677,6 +695,16 @@ def isIP(arg):
     return True
 
 
+def isIterable(arg):
+    # collections.Iterable Python 2.6+
+    return isinstance(arg, collections.Iterable)
+
+
+def isIterableNotStr(arg):
+    # collections.Iterable Python 2.6+
+    return isinstance(arg, collections.Iterable) and not isStr(arg)
+
+
 def isJavaException(arg):
     if arg == None:
         return False
@@ -882,9 +910,10 @@ def isScientific(arg, allow_negative = False):
 
 def isStr(arg):
     # return type(arg).__name__ in [ 'str', 'unicode' ]
-    # return isinstance(arg, str) or isinstance(arg, unicode)
+    return isinstance(arg, str) or isinstance(arg, unicode)
     # basestring is abstract superclass of both str and unicode
-    return isinstance(arg, basestring)
+    # update: looks like this is removed in Python 3
+    # return isinstance(arg, basestring)
 
 
 def isStrStrict(arg):
@@ -1107,6 +1136,12 @@ def skip_java_output(arg):
     return False
 
 
+def split_if_str(arg, sep):
+    if isStr(arg):
+        return arg.split(sep)
+    return arg
+
+
 def uniq_list(myList):
     if not isList(myList):
         raise CodingErrorException('non-list passed to uniq_list')
@@ -1323,14 +1358,43 @@ def validate_filename(arg, name='', nolog=False):
 def validate_file(arg, name='', nolog=False):
     if name:
         name += ' '
-    if not arg:
-        raise InvalidOptionException('%sfilename not defined' % name)
-    validate_filename(arg, name.strip(), nolog=nolog)
+    # if not arg:
+    #     raise InvalidOptionException('%sfilename not defined' % name)
+    validate_filename(arg, name, nolog=nolog)
     if os.path.isfile(arg):
         # if not nolog:
         #     vlog_option('%sfile' % name, arg)
         return True
     raise InvalidOptionException("%sfile not found '%s'" % (name, arg))
+
+
+def validate_files(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionException('%sfiles not defined' % name)
+    files = []
+    if isStr(arg):
+        files = [x.strip() for x in arg.split(',')]
+    elif isListOrTuple(arg):
+        files = arg
+    else:
+        raise CodingErrorException('non-list/tuple passed to parse_file_option')
+    # not flexible enough
+    # list(itertools.chain(*files))
+    # list(itertools.chain.from_iterable(files))
+    # files = [ str(x).split(',').strip() for x in files ]
+    # files = list(itertools.chain(*[str(x).split(',') for x in files]))
+    # custom flatten def
+    # consider def to split if isStr
+    files = flatten([split_if_str(x, ',') for x in files])
+    files = list(files)
+    print("FILES = %s" % list(files))
+    for f in files:
+        print('f=%s' % f)
+        validate_file(f, name, False)
+    vlog_option('files', files)
+    return files
 
 
 def validate_float(arg, name, min, max):
