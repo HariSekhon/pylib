@@ -28,7 +28,7 @@ libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 from harisekhon.utils import *
 
-class CLI:
+class CLI (object):
     """
     HariSekhon.CLI base class
     """

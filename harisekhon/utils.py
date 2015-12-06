@@ -402,12 +402,14 @@ version_regex_lax   = version_regex + r'-?.*'
 #                 .isfunction(obj)
 #                 .istraceback(obj)
 
+# see also .isalpha()
 def isAlNum(arg):
     if arg == None:
         return False
-    if re.match('^[A-Za-z0-9]+$', str(arg)):
-        return True
-    return False
+    return str(arg).isalnum()
+    # if re.match('^[A-Za-z0-9]+$', str(arg)):
+    #     return True
+    # return False
 
 
 def isAwsAccessKey(arg):
