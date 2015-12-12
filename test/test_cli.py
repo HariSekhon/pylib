@@ -43,12 +43,12 @@ class test_cli(unittest.TestCase):
     # because the -v switch trips optparse
     def test_SubCLI(self):
         c = self.SubCLI()
-        c.set_default_port(80)
-        try:
-            c.set_default_port('a')
-            raise Exception('failed to throw CodingErrorException when sending invalid port to set_default_port()')
-        except CodingErrorException:
-            pass
+        # c.set_default_port(80)
+        # try:
+        #     c.set_default_port('a')
+        #     raise Exception('failed to throw CodingErrorException when sending invalid port to set_default_port()')
+        # except CodingErrorException:
+        #     pass
         c.add_hostoption(name='Ambari', default_host='localhost', default_port=8080)
         c.add_useroption(name='Ambari', default_user='admin', default_password='mysecret')
         try:
@@ -86,54 +86,57 @@ class test_cli(unittest.TestCase):
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when exiting usage(test message) from base class CLI')
 
-        c._env_var('', 'test')
-        try:
-            c._env_var(None, 1)
-            raise Exception('failed to raise a CodingErrorException in _env_var when sending integer as var')
-        except CodingErrorException, e:
-            pass
+        print('parser version = %s' % c.parser.get_version())
+        self.assertTrue(re.search('\.py version (?:None|%(version_regex)s), CLI version %(version_regex)s, Utils version %(version_regex)s' % globals(), c.parser.get_version()))
 
-        try:
-            c._env_var('test', None)
-            raise Exception('failed to raise a CodingErrorException in _env_var when sending None as var')
-        except CodingErrorException, e:
-            pass
-
-        try:
-            c._env_var('test', ' ')
-            raise Exception('failed to raise a CodingErrorException in _env_var when sending blank as var')
-        except CodingErrorException, e:
-            pass
-
-        try:
-            c._env_var(None, 'test')
-            raise Exception('failed to raise a CodingErrorException in _env_var when sending None name')
-        except CodingErrorException, e:
-            pass
-
-        try:
-            c.env_vars('test', ' ')
-            raise Exception('failed to raise a CodingErrorException in env_vars() when sending blank var')
-        except CodingErrorException, e:
-            pass
-
-        try:
-            c.env_vars(None, 'test')
-            raise Exception('failed to raise a CodingErrorException in env_vars() when sending None as name var')
-        except CodingErrorException, e:
-            pass
-
-        try:
-            c.env_vars('test', ['test', None])
-            raise Exception('failed to raise a CodingErrorException in env_vars() when sending array with blank var')
-        except CodingErrorException, e:
-            pass
-
-        try:
-            c.env_vars('test', self.myDict)
-            raise Exception('failed to raise a CodingErrorException in env_vars() when sending dict for var')
-        except CodingErrorException, e:
-            pass
+        # c._env_var('', 'test')
+        # try:
+        #     c._env_var(None, 1)
+        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending integer as var')
+        # except CodingErrorException, e:
+        #     pass
+        #
+        # try:
+        #     c._env_var('test', None)
+        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending None as var')
+        # except CodingErrorException, e:
+        #     pass
+        #
+        # try:
+        #     c._env_var('test', ' ')
+        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending blank as var')
+        # except CodingErrorException, e:
+        #     pass
+        #
+        # try:
+        #     c._env_var(None, 'test')
+        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending None name')
+        # except CodingErrorException, e:
+        #     pass
+        #
+        # try:
+        #     c.env_vars('test', ' ')
+        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending blank var')
+        # except CodingErrorException, e:
+        #     pass
+        #
+        # try:
+        #     c.env_vars(None, 'test')
+        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending None as name var')
+        # except CodingErrorException, e:
+        #     pass
+        #
+        # try:
+        #     c.env_vars('test', ['test', None])
+        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending array with blank var')
+        # except CodingErrorException, e:
+        #     pass
+        #
+        # try:
+        #     c.env_vars('test', self.myDict)
+        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending dict for var')
+        # except CodingErrorException, e:
+        #     pass
 
     # disabled abstract enforcement as it's Python 2.6+ only
     # but base class exits 2 in run() so can catch that too
@@ -145,7 +148,7 @@ class test_cli(unittest.TestCase):
         except TypeError:
             pass
         except CodingErrorException, e:
-            if not re.search('abstract', e.message):
+            if not re.search('abstract', str(e)):
                 raise Exception('raised CodingErrorException from CLI.main() but message mismatch')
         except SystemExit, e:
             if e.code != 2:
