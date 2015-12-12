@@ -140,20 +140,39 @@ def quit(status, msg=''):
 
 
 # use CLI's self.usage() mostly instead which doesn't require passing in the parser
-# and also gets the file docstring at the top of the stack
+# and also gets the file docstring at the top of the stack, as well as the version
 def usage(parser, msg='', status='UNKNOWN'):
     if msg:
         print('%s\n' % msg)
+    # else:
+        # topfile = get_topfile()
+        # docstring = get_file_docstring(topfile)
+        # if isStr(docstring) and docstring:
+        #     docstring = '\n'.join([ x.strip() for x in docstring.split('\n') if x ])
+        #     print('%s\n' % docstring)
     parser.print_help()
     quit(status)
 
 
+def get_topfile():
+    # frame = inspect.stack()[-1][0]
+    # filename = inspect.stack()[-1][1]
+    # filename = inspect.getfile(frame)
+    filename = sys.argv[0]
+    # filename = os.path.splitext(filename)[0] + '.py'
+    filename = re.sub('.pyc$', '.py', filename)
+    assert isStr(filename)
+    assert isFilename(filename)
+    return filename
+
+
 def get_file_docstring(filename):
     assert isStr(filename)
+    assert isFilename(filename)
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
-    assert isFilename(filename)
+    # TODO: XXX: what bout using ast.get_docstring for this? or inspect.getdoc
     # returns a code object
     co = compile(open(filename).read(), filename, 'exec')
     assert isCode(co)
@@ -166,6 +185,132 @@ def get_file_docstring(filename):
     if isStr(co.co_consts[0]):
         return co.co_consts[0]
     return None
+
+
+def get_file_version(filename):
+    assert isStr(filename)
+    assert isFilename(filename)
+    # .pyc files cause the following error:
+    # TypeError: compile() expected string without null bytes
+    filename = re.sub('.pyc$', '.py', filename)
+    # TODO: XXX: what bout using ast.get_docstring for this? or inspect.getdoc
+    # returns a code object
+    co = compile(open(filename).read(), filename, 'exec')
+    assert isCode(co)
+    # just let it traceback if something is not as expected so I know if something changes, otherwise will silently start dropping usage descriptions
+    # if isListOrTuple(code.co_consts) and len(code.co_consts) > 0 and isStr(code.co_consts[0]):
+    # assert hasattr(code, 'co_consts')
+    # code.co_consts is a tuple
+    assert isListOrTuple(co.co_consts)
+    assert len(co.co_consts) > 3
+    if isStr(co.co_consts[3]):
+        return co.co_consts[3]
+    return None
+
+
+def get_file_github_repo(filename):
+    assert isStr(filename)
+    assert isFilename(filename)
+    # .pyc files cause the following error:
+    # TypeError: compile() expected string without null bytes
+    filename = re.sub('.pyc$', '.py', filename)
+    # TODO: XXX: what bout using ast.get_docstring for this? or inspect.getdoc
+    # returns a code object
+    f = open(filename)
+    for line in f:
+        if 'https://github.com/harisekhon' in line:
+            f.close()
+            return line.lstrip('#').strip()
+    f.close()
+    return ''
+
+
+def gen_prefixes(prefixes, names, sort_by_names=False):
+    if isStr(prefixes):
+        prefixes = [prefixes]
+    if isStr(names):
+        names = [names]
+    if not isIterableNotStr(prefixes):
+        raise CodingErrorException('non-iterable passed for prefixes to prefix()')
+    if not isIterableNotStr(names):
+        raise CodingErrorException('non-iterable passed for names to prefix()')
+    # Python 2.6+ only
+    # for pair in itertools.product(prefixes, names):
+    if sort_by_names:
+        pairs = [(x,y) for y in names for x in prefixes]
+    else:
+        pairs = [(x,y) for x in prefixes for y in names]
+    for pair in pairs:
+        result = '_'.join(str(z) for z in pair if z)
+        # result = result.lstrip('_') # handled by 'if z' now
+        if result:
+            yield result
+
+
+def getenv(var, default=None):
+    if not isStr(var):
+        raise CodingErrorException('supplied non-string for var arg to getenv()')
+    if isBlankOrNone(var):
+        raise CodingErrorException('supplied blank string for var arg to getenv()')
+    log.debug('checking for environment variable: %s' % var)
+    var = str(var).strip()
+    # env_var = re.sub('[^A-Z0-9]', '_', var.upper())
+    return os.getenv(var, default)
+
+
+def getenvs2(vars, default=None, prefix=''):
+    log.setLevel(logging.DEBUG)
+    assert isStr(prefix)
+    assert prefix is not None
+    # if not isStr(prefix):
+    #     raise CodingErrorException('non-string passed for prefix to getenvs()')
+    # if isBlankOrNone(prefix):
+    #     raise CodingErrorException('blank/none prefix passed to getenvs()')
+    result = None
+    assert isStr(vars) or isList(vars)
+    if isStr(vars):
+        for var in gen_prefixes(prefix, vars, True):
+            result = getenv(var)
+            if result is None:
+                break
+    elif isList(vars):
+        for var in vars:
+            assert isStr(var)
+            # if not isStr(var):
+            #     raise CodingErrorException('non-string passed in array to getenvs()')
+        for var in gen_prefixes(prefix, vars, True):
+            result = getenv(var)
+            if result is not None:
+                break
+    if result is None:
+        result = default
+    return result
+
+
+def getenvs(name, vars, default):
+    if not isStr(name):
+        raise CodingErrorException('passed non-string for name to getenvs2()')
+    name = name.upper()
+    assert isStr(vars) or isList(vars)
+    # exclude showing the default for sensitive options
+    is_sensitive = False
+    sensitive_regex = re.compile('password|passphrase|secret', re.I)
+    if isStr(vars):
+        vars = vars.upper()
+        if sensitive_regex.search(vars):
+            is_sensitive = True
+    elif isList(vars):
+        for v in vars:
+            assert isStr(v)
+        for v in vars:
+            if sensitive_regex.search(v):
+                is_sensitive = True
+                break
+        vars = [v.upper() for v in vars]
+    help = ', '.join(gen_prefixes([name, ''], vars)).upper()
+    if default != None and not is_sensitive:
+        help += ', default: %(default)s' % locals()
+    return help, getenvs2(vars, default, name)
 
 
 # ============================================================================ #

@@ -43,7 +43,9 @@ class test_utils(unittest.TestCase):
     myDict  = { 'one': 1, 'two': 2, 'three':3 }
 
     def setUp(self):
-        pass
+        # TODO: XXX: review if needed
+        log.setLevel(logging.DEBUG)
+        # pass
 
     #def runTest(self):
 
@@ -141,8 +143,20 @@ class test_utils(unittest.TestCase):
             if e.code != ERRORS['UNKNOWN']:
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
 
+    def test_get_topfile(self):
+        self.assertEqual(get_topfile(), sys.argv[0])
+
+    def test_get_file_version(self):
+        filename = os.path.join(libdir, 'harisekhon', 'cli.py')
+        version = get_file_version(filename)
+        # print('file version for %(filename)s is %(version)s' % locals())
+        self.assertTrue(get_file_version(os.path.join(libdir, 'harisekhon', 'cli.py')))
+
     def test_get_file_docstring(self):
         self.assertTrue(get_file_docstring(__file__))
+
+    def test_get_file_github_repo(self):
+        self.assertEqual(get_file_github_repo(__file__), 'https://github.com/harisekhon/pylib')
 
     def test_code_error(self):
         try:
@@ -150,6 +164,25 @@ class test_utils(unittest.TestCase):
             raise Exception('code_error() failed to raise exception')
         except CodingErrorException:
             pass
+
+    def test_gen_prefix(self):
+        self.assertEqual(list(gen_prefixes(['Ambari',''], ['host', 'port'])), ['Ambari_host', 'Ambari_port', 'host', 'port'])
+        self.assertEqual(list(gen_prefixes(['Ambari',''], ['host', 'port'], True)), ['Ambari_host', 'host', 'Ambari_port', 'port'])
+        self.assertEqual(list(gen_prefixes('Ambari', ['host', 'port'])), ['Ambari_host', 'Ambari_port'])
+        self.assertEqual(list(gen_prefixes('Ambari', 'host')), ['Ambari_host'])
+        self.assertEqual(list(gen_prefixes('', 'host')), ['host'])
+        self.assertEqual(list(gen_prefixes('', ['user', 'username'])), ['user', 'username'])
+        self.assertEqual(list(gen_prefixes('', '')), [])
+
+    def test_getenv(self):
+        self.assertTrue(libdir in getenv('PYTHONPATH'))
+        self.assertEqual(getenv('nonexistent', 'myDefault'), 'myDefault')
+
+    def test_getenvs2(self):
+        self.assertTrue(libdir in getenvs2('PYTHONPATH', 'default'))
+        self.assertTrue(libdir in getenvs2(['PYTHONPATH', 'USER']))
+        self.assertEqual(getenvs2(['nonexistent', 'USER']), os.getenv('USER'))
+        self.assertEqual(getenvs2('nonexistent', 'myDefault', 'nonexistentprefix'), 'myDefault')
 
     def test_check_tldcount(self):
         utils._check_tldcount()
