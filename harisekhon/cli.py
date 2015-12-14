@@ -56,8 +56,9 @@ class CLI (object):
         topfile_version = get_file_version(topfile)
         cli_version = self.__version__
         utils_version = harisekhon.utils.__version__
-        prog = os.path.basename(sys.argv[0])
-        version = '%(prog)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % locals()
+        # returns 'python -m unittest' :-/
+        # prog = os.path.basename(sys.argv[0])
+        version = '%(topfile)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % locals()
         self.usagemsg = 'Hari Sekhon\n\n%(version)s\n%(usage)s' % locals()
         # self.parser = OptionParser(usage=self.usagemsg, version=version)
         self.parser = OptionParser(version=version)

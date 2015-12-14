@@ -13,6 +13,7 @@
 
 from __future__ import print_function
 
+import ast
 import collections
 import inspect
 import itertools
@@ -155,10 +156,13 @@ def usage(parser, msg='', status='UNKNOWN'):
 
 
 def get_topfile():
-    # frame = inspect.stack()[-1][0]
+    # this gets 'python -m unittest' as filename
+    # filename = sys.argv[0]
+    print('inspect.stack()=',end='')
+    print(inspect.stack())
+    frame = inspect.stack()[-1][0]
     # filename = inspect.stack()[-1][1]
-    # filename = inspect.getfile(frame)
-    filename = sys.argv[0]
+    filename = inspect.getfile(frame)
     # filename = os.path.splitext(filename)[0] + '.py'
     filename = re.sub('.pyc$', '.py', filename)
     assert isStr(filename)
@@ -172,19 +176,22 @@ def get_file_docstring(filename):
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
-    # TODO: XXX: what bout using ast.get_docstring for this? or inspect.getdoc
-    # returns a code object
-    co = compile(open(filename).read(), filename, 'exec')
-    assert isCode(co)
-    # just let it traceback if something is not as expected so I know if something changes, otherwise will silently start dropping usage descriptions
-    # if isListOrTuple(code.co_consts) and len(code.co_consts) > 0 and isStr(code.co_consts[0]):
-    # assert hasattr(code, 'co_consts')
-    # code.co_consts is a tuple
-    assert isListOrTuple(co.co_consts)
-    assert len(co.co_consts) > 0
-    if isStr(co.co_consts[0]):
-        return co.co_consts[0]
-    return None
+    c = ast.parse(open(filename).read(), filename=filename, mode='exec')
+    return ast.get_docstring(c)
+    # inspect.getdoc is another option but looks like it'll only get docstring of object, we want file/module
+###### old way #####
+#    # returns a code object
+#    co = compile(open(filename).read(), filename, 'exec')
+#    assert isCode(co)
+#    # just let it traceback if something is not as expected so I know if something changes, otherwise will silently start dropping usage descriptions
+#    # if isListOrTuple(code.co_consts) and len(code.co_consts) > 0 and isStr(code.co_consts[0]):
+#    # assert hasattr(code, 'co_consts')
+#    # code.co_consts is a tuple
+#    assert isListOrTuple(co.co_consts)
+#    assert len(co.co_consts) > 0
+#    if isStr(co.co_consts[0]):
+#        return co.co_consts[0]
+#    return None
 
 
 def get_file_version(filename):
@@ -193,18 +200,17 @@ def get_file_version(filename):
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
-    # TODO: XXX: what bout using ast.get_docstring for this? or inspect.getdoc
-    # returns a code object
-    co = compile(open(filename).read(), filename, 'exec')
-    assert isCode(co)
-    # just let it traceback if something is not as expected so I know if something changes, otherwise will silently start dropping usage descriptions
-    # if isListOrTuple(code.co_consts) and len(code.co_consts) > 0 and isStr(code.co_consts[0]):
-    # assert hasattr(code, 'co_consts')
-    # code.co_consts is a tuple
-    assert isListOrTuple(co.co_consts)
-    assert len(co.co_consts) > 3
-    if isStr(co.co_consts[3]):
-        return co.co_consts[3]
+    if re.search('\.py$', filename):
+        tree = ast.parse(open(filename).read(), filename=filename, mode='exec')
+        # print(ast.dump(tree))
+        # print(dir(tree._fields))
+        for node in (n for n in tree.body if isinstance(n, ast.Assign)):
+            if len(node.targets) == 1:
+                name = node.targets[0]
+                if isinstance(name, ast.Name) and name.id == '__version__':
+                    v = node.value
+                    if isinstance(v, ast.Str):
+                        return v.s
     return None
 
 
@@ -357,7 +363,7 @@ class FileNotFoundException(IOError):
 
 def isJython():
     """ Returns True if running in Jython interpreter """
-    if "JYTHON_JAR" in dir(sys):
+    if 'JYTHON_JAR' in dir(sys):
         return True
     else:
         return False
@@ -366,7 +372,7 @@ def isJython():
 def jython_only():
     """ Die unless we are inside Jython """
     if not isJython():
-        die("not running in Jython!")
+        die('not running in Jython!')
 
 
 def get_jython_exception():
@@ -381,7 +387,7 @@ def get_jython_exception():
 def log_jython_exception():
     """ logs last Jython Exception """
     e = get_jython_exception()
-    log.error("Error: %s" % e)
+    log.error('Error: %s' % e)
     if isJavaOOM(e):
         log.error(java_oom_fix_msg())
 
@@ -396,7 +402,7 @@ def isJavaOOM(arg):
 
 
 def java_oom_fix_msg():
-    return "\nAdd/Increase -J-Xmx<value> command line argument\n"
+    return '\nAdd/Increase -J-Xmx<value> command line argument\n'
 
 
 # ============================================================================ #
@@ -535,9 +541,9 @@ krb5_principal_regex = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?
 threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
 label_regex         = r'\s*[\%\(\)\/\*\w-][\%\(\)\/\*\w\s-]*'
-version_regex       = r'\d(\.\d+)*'
-version_regex_short = r'\d(\.\d+)?'
-version_regex_lax   = version_regex + r'-?.*'
+version_regex       = r'\d+(\.\d+)*'
+version_regex_short = r'\d+(\.\d+)?'
+version_regex_lax   = version_regex + r'-?.+\b'
 
 ##################
 #
@@ -1536,9 +1542,7 @@ def validate_files(arg, name=''):
     # consider def to split if isStr
     files = flatten([split_if_str(x, ',') for x in files])
     files = list(files)
-    print("FILES = %s" % list(files))
     for f in files:
-        print('f=%s' % f)
         validate_file(f, name, False)
     vlog_option('files', files)
     return files

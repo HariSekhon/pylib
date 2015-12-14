@@ -144,13 +144,15 @@ class test_utils(unittest.TestCase):
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
 
     def test_get_topfile(self):
-        self.assertEqual(get_topfile(), sys.argv[0])
+        self.assertTrue(re.search('.py$', get_topfile()))
+        # comes out as utrunner.py in IDE or python2.7/runpy.py
+        # self.assertEqual('test_utils.py', get_topfile())
 
     def test_get_file_version(self):
-        filename = os.path.join(libdir, 'harisekhon', 'cli.py')
+        filename = os.path.join(libdir, 'harisekhon', 'utils.py')
         version = get_file_version(filename)
-        # print('file version for %(filename)s is %(version)s' % locals())
-        self.assertTrue(get_file_version(os.path.join(libdir, 'harisekhon', 'cli.py')))
+        print('version=%s' % version)
+        self.assertTrue(isVersion(version))
 
     def test_get_file_docstring(self):
         self.assertTrue(get_file_docstring(__file__))
@@ -175,12 +177,16 @@ class test_utils(unittest.TestCase):
         self.assertEqual(list(gen_prefixes('', '')), [])
 
     def test_getenv(self):
-        self.assertTrue(libdir in getenv('PYTHONPATH'))
+        # PYTHONPATH is set in debugger but not in unittest/unit2 discover
+        # self.assertTrue(libdir in getenv('PYTHONPATH'))
+        self.assertTrue(':' in getenv('PATH'))
         self.assertEqual(getenv('nonexistent', 'myDefault'), 'myDefault')
 
     def test_getenvs2(self):
-        self.assertTrue(libdir in getenvs2('PYTHONPATH', 'default'))
-        self.assertTrue(libdir in getenvs2(['PYTHONPATH', 'USER']))
+        # PYTHONPATH is set in debugger but not in unittest/unit2 discover
+        # self.assertTrue(libdir in getenvs2('PYTHONPATH', 'default'))
+        self.assertTrue(':' in getenvs2('PATH', 'default'))
+        self.assertTrue(':' in getenvs2(['PATH', 'USER']))
         self.assertEqual(getenvs2(['nonexistent', 'USER']), os.getenv('USER'))
         self.assertEqual(getenvs2('nonexistent', 'myDefault', 'nonexistentprefix'), 'myDefault')
 
