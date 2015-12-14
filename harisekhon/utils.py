@@ -158,8 +158,6 @@ def usage(parser, msg='', status='UNKNOWN'):
 def get_topfile():
     # this gets 'python -m unittest' as filename
     # filename = sys.argv[0]
-    print('inspect.stack()=',end='')
-    print(inspect.stack())
     frame = inspect.stack()[-1][0]
     # filename = inspect.stack()[-1][1]
     filename = inspect.getfile(frame)
