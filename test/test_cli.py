@@ -87,7 +87,7 @@ class test_cli(unittest.TestCase):
                 raise Exception('wrong exit code != 3 when exiting usage(test message) from base class CLI')
 
         print('parser version = %s' % c.parser.get_version())
-        self.assertTrue(re.search('\.py version (?:None|%(version_regex)s), CLI version %(version_regex)s, Utils version %(version_regex)s' % globals(), c.parser.get_version()))
+        self.assertTrue(re.search(' version (?:None|%(version_regex)s), CLI version %(version_regex)s, Utils version %(version_regex)s' % globals(), c.parser.get_version()))
 
         # c._env_var('', 'test')
         # try:
