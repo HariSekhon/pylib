@@ -144,7 +144,9 @@ class test_utils(unittest.TestCase):
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
 
     def test_get_topfile(self):
-        self.assertTrue(re.search('.py$', get_topfile()))
+        topfile = get_topfile()
+        print('topfile=%s' % topfile)
+        self.assertTrue(re.search('.py$', topfile))
         # comes out as utrunner.py in IDE or python2.7/runpy.py
         # self.assertEqual('test_utils.py', get_topfile())
 
