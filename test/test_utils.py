@@ -146,7 +146,7 @@ class test_utils(unittest.TestCase):
     def test_get_topfile(self):
         topfile = get_topfile()
         print('topfile=%s' % topfile)
-        self.assertTrue(re.search('(\bunit2|\.py)$', topfile))
+        self.assertTrue(re.search(r'(\bunit2|\.py)$', topfile))
         # comes out as utrunner.py in IDE or python2.7/runpy.py
         # self.assertEqual('test_utils.py', get_topfile())
 
