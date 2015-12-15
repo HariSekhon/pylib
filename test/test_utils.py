@@ -177,20 +177,63 @@ class test_utils(unittest.TestCase):
         self.assertEqual(list(gen_prefixes('', 'host')), ['host'])
         self.assertEqual(list(gen_prefixes('', ['user', 'username'])), ['user', 'username'])
         self.assertEqual(list(gen_prefixes('', '')), [])
+        try:
+            # without list() the generator is created but not executed so the CodingErrorException doesn't get raised
+            list(gen_prefixes(1, 'test'))
+            raise Exception('gen_prefixes() failed to raise CodingErrorException on non-iterable prefixes')
+        except CodingErrorException:
+            pass
+        try:
+            list(gen_prefixes('test', 1))
+            raise Exception('gen_prefixes() failed to raise CodingErrorException on non-iterable names')
+        except CodingErrorException:
+            pass
 
     def test_getenv(self):
         # PYTHONPATH is set in debugger but not in unittest/unit2 discover
         # self.assertTrue(libdir in getenv('PYTHONPATH'))
         self.assertTrue(':' in getenv('PATH'))
         self.assertEqual(getenv('nonexistent', 'myDefault'), 'myDefault')
+        try:
+            getenv(1)
+            raise Exception('getenv failed to raise CodingErrorException for non-string var')
+        except CodingErrorException:
+            pass
+        try:
+            getenv(None)
+            raise Exception('getenv failed to raise CodingErrorException for None var')
+        except CodingErrorException:
+            pass
+        try:
+            getenv('')
+            raise Exception('getenv failed to raise CodingErrorException for blank var')
+        except CodingErrorException:
+            pass
+
+    def test_getenvs(self):
+        # PYTHONPATH is set in debugger but not in unittest/unit2 discover
+        # self.assertTrue(libdir in getenvs('PYTHONPATH', 'default'))
+        self.assertTrue(':' in getenvs('PATH', 'default'))
+        self.assertTrue(':' in getenvs(['PATH', 'USER']))
+        self.assertEqual(getenvs('nonexistent'), None)
+        self.assertEqual(getenvs(['nonexistent', 'USER']), os.getenv('USER'))
+        self.assertEqual(getenvs('nonexistent', 'myDefault', 'prefix'), 'myDefault')
+        try:
+            getenvs(['test', 1])
+            raise Exception('getenvs failed to raise CodingErrorException for non-string var')
+        except CodingErrorException:
+            pass
+        try:
+            getenvs('PATH', '', None)
+            raise Exception('getenvs failed to raise CodingErrorException for None prefix')
+        except CodingErrorException:
+            pass
 
     def test_getenvs2(self):
-        # PYTHONPATH is set in debugger but not in unittest/unit2 discover
-        # self.assertTrue(libdir in getenvs2('PYTHONPATH', 'default'))
-        self.assertTrue(':' in getenvs2('PATH', 'default'))
-        self.assertTrue(':' in getenvs2(['PATH', 'USER']))
-        self.assertEqual(getenvs2(['nonexistent', 'USER']), os.getenv('USER'))
-        self.assertEqual(getenvs2('nonexistent', 'myDefault', 'nonexistentprefix'), 'myDefault')
+        (helpstring, result) = getenvs2('HOST', 'myDefault', 'NonExistent')
+        self.assertEqual(helpstring, 'NONEXISTENT_HOST, HOST, default: myDefault')
+        self.assertEqual(result, 'myDefault')
+        # self.assert
 
     def test_check_tldcount(self):
         utils._check_tldcount()

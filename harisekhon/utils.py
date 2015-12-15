@@ -260,14 +260,11 @@ def getenv(var, default=None):
     return os.getenv(var, default)
 
 
-def getenvs2(vars, default=None, prefix=''):
-    log.setLevel(logging.DEBUG)
-    assert isStr(prefix)
-    assert prefix is not None
-    # if not isStr(prefix):
-    #     raise CodingErrorException('non-string passed for prefix to getenvs()')
-    # if isBlankOrNone(prefix):
-    #     raise CodingErrorException('blank/none prefix passed to getenvs()')
+def getenvs(vars, default=None, prefix=''):
+    if prefix is None:
+        raise CodingErrorException('None prefix passed for prefix to getenvs()')
+    if not isStr(prefix):
+        raise CodingErrorException('non-string passed for prefix to getenvs()')
     result = None
     assert isStr(vars) or isList(vars)
     if isStr(vars):
@@ -277,9 +274,8 @@ def getenvs2(vars, default=None, prefix=''):
                 break
     elif isList(vars):
         for var in vars:
-            assert isStr(var)
-            # if not isStr(var):
-            #     raise CodingErrorException('non-string passed in array to getenvs()')
+            if not isStr(var):
+                raise CodingErrorException('non-string passed in array to getenvs()')
         for var in gen_prefixes(prefix, vars, True):
             result = getenv(var)
             if result is not None:
@@ -288,8 +284,8 @@ def getenvs2(vars, default=None, prefix=''):
         result = default
     return result
 
-
-def getenvs(name, vars, default):
+# wrapper to getenvs to also return the generated string to use in option help
+def getenvs2(vars, default, name):
     if not isStr(name):
         raise CodingErrorException('passed non-string for name to getenvs2()')
     name = name.upper()
@@ -312,7 +308,7 @@ def getenvs(name, vars, default):
     help = ', '.join(gen_prefixes([name, ''], vars)).upper()
     if default != None and not is_sensitive:
         help += ', default: %(default)s' % locals()
-    return help, getenvs2(vars, default, name)
+    return help, getenvs(vars, default, name)
 
 
 # ============================================================================ #

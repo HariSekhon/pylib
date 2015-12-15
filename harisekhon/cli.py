@@ -47,23 +47,26 @@ class CLI (object):
         # instance attributes, feels safer
         self.options = None
         self.args    = None
-        topfile   = get_topfile()
-        docstring = get_file_docstring(topfile)
+        self.topfile   = get_topfile()
+        self.docstring = get_file_docstring(self.topfile)
         self.usagemsg = ''
-        if docstring:
-            '\n' + docstring.strip() + '\n'
-        self.topfile_version = get_file_version(topfile)
+        if self.docstring:
+            self.docstring = '\n' + self.docstring.strip() + '\n'
+        self.topfile_version = get_file_version(self.topfile)
         self.cli_version = self.__version__
         self.utils_version = harisekhon.utils.__version__
         # returns 'python -m unittest' :-/
         # prog = os.path.basename(sys.argv[0])
-        self.prog = os.path.basename(topfile)
-        self.github_repo = get_file_github_repo(topfile)
+        self.prog = os.path.basename(self.topfile)
+        self.github_repo = get_file_github_repo(self.topfile)
         if self.github_repo:
             self.github_repo = ' - ' + self.github_repo
         self.version = '%(prog)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % self.__dict__
         self.usagemsg = 'Hari Sekhon%(github_repo)s\n\n%(prog)s\n%(usagemsg)s' % self.__dict__
-        # self.parser = OptionParser(usage=self.usagemsg, version=self.version)
+        self.usagemsg_full = '\n\nHari Sekhon%(github_repo)s\n\n%(prog)s\n%(docstring)s\n%(prog)s [options]' % self.__dict__
+        self.usagemsg_short = '\n\nHari Sekhon%(github_repo)s\n\n%(prog)s [options]' % self.__dict__
+        # set this in simpler client programs when you don't want to exclude
+        # self.parser = OptionParser(usage=self.usagemsg_short, version=self.version)
         self.parser = OptionParser(version=self.version)
         # duplicate key error or duplicate options, sucks
         # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
@@ -76,7 +79,7 @@ class CLI (object):
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
         except KeyboardInterrupt, e:
-            pass
+            print('Caught control-c...')
 
     def usage(self, msg='', status='UNKNOWN'):
         if msg:
@@ -103,8 +106,8 @@ class CLI (object):
             # assert isPort(default_port)
             if not isPort(default_port):
               raise CodingErrorException('invalid default port supplied to add_hostoption()')
-        (host_envs, default_host) = getenvs(name, 'HOST', default_host)
-        (port_envs, default_port) = getenvs(name, 'PORT', default_port)
+        (host_envs, default_host) = getenvs2('HOST', default_host, name)
+        (port_envs, default_port) = getenvs2('PORT', default_port, name)
         self.parser.add_option('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs),
                                default=default_host)
         self.parser.add_option('-P', '--port', dest='port', help='%sPort (%s)' % (name2, port_envs),
@@ -114,8 +117,8 @@ class CLI (object):
         name2 = ''
         if not isBlankOrNone(name):
             name2 = "%s " % name
-        (user_envs, default_user)   = getenvs(name, ['USERNAME','USER'], default_user)
-        (pw_envs, default_password) = getenvs(name, 'PASSWORD', default_password)
+        (user_envs, default_user)   = getenvs2(['USERNAME', 'USER'], default_user, name)
+        (pw_envs, default_password) = getenvs2('PASSWORD', default_password, name)
         self.parser.add_option('-u', '--user',     dest='user', help='%sUsername (%s)' % (name2, user_envs),
                                default=default_user)
         self.parser.add_option('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
@@ -124,5 +127,5 @@ class CLI (object):
 
     # @abstractmethod
     def run(self):
-        raise CodingErrorException('running HariSekhon.CLI() - this should be abstract and non-runnable!')
+        raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!')
         # sys.exit(2)
