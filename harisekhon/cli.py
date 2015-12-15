@@ -49,9 +49,9 @@ class CLI (object):
         self.args    = None
         topfile   = get_topfile()
         docstring = get_file_docstring(topfile)
-        self.usagemsg = '\n' + docstring.strip() + '\n'
-        # if isStr(docstring) and docstring:
-        #     usage = '\n'.join([ x.strip() for x in docstring.split('\n') if x ])
+        self.usagemsg = ''
+        if docstring:
+            '\n' + docstring.strip() + '\n'
         self.topfile_version = get_file_version(topfile)
         self.cli_version = self.__version__
         self.utils_version = harisekhon.utils.__version__
