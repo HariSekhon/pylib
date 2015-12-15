@@ -47,25 +47,33 @@ class CLI (object):
         # instance attributes, feels safer
         self.options = None
         self.args    = None
-        self.opts    = {}
         topfile   = get_topfile()
         docstring = get_file_docstring(topfile)
-        usage = ''
-        if isStr(docstring) and docstring:
-            usage = '\n'.join([ x.strip() for x in docstring.split('\n') if x ])
-        topfile_version = get_file_version(topfile)
-        cli_version = self.__version__
-        utils_version = harisekhon.utils.__version__
+        self.usagemsg = '\n' + docstring.strip() + '\n'
+        # if isStr(docstring) and docstring:
+        #     usage = '\n'.join([ x.strip() for x in docstring.split('\n') if x ])
+        self.topfile_version = get_file_version(topfile)
+        self.cli_version = self.__version__
+        self.utils_version = harisekhon.utils.__version__
         # returns 'python -m unittest' :-/
         # prog = os.path.basename(sys.argv[0])
-        version = '%(topfile)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % locals()
-        self.usagemsg = 'Hari Sekhon\n\n%(version)s\n%(usage)s' % locals()
-        # self.parser = OptionParser(usage=self.usagemsg, version=version)
-        self.parser = OptionParser(version=version)
+        self.prog = os.path.basename(topfile)
+        self.github_repo = get_file_github_repo(topfile)
+        if self.github_repo:
+            self.github_repo = ' - ' + self.github_repo
+        self.version = '%(prog)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % self.__dict__
+        self.usagemsg = 'Hari Sekhon%(github_repo)s\n\n%(prog)s\n%(usagemsg)s' % self.__dict__
+        # self.parser = OptionParser(usage=self.usagemsg, version=self.version)
+        self.parser = OptionParser(version=self.version)
+        # duplicate key error or duplicate options, sucks
+        # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
 
     def main(self):
         try:
             self.parse_args()
+            # if self.options.version:
+            #     print(self.version)
+            #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
         except KeyboardInterrupt, e:
             pass

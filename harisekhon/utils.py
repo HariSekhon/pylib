@@ -218,8 +218,6 @@ def get_file_github_repo(filename):
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
-    # TODO: XXX: what bout using ast.get_docstring for this? or inspect.getdoc
-    # returns a code object
     f = open(filename)
     for line in f:
         if 'https://github.com/harisekhon' in line:
