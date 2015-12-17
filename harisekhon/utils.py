@@ -1833,6 +1833,26 @@ def which(bin):
 #                               PySpark Utils
 # ============================================================================ #
 
+def import_pyspark():
+    spark_home = os.getenv('SPARK_HOME', None)
+    if spark_home:
+        # doesn't contain py4j may as well just use the already unpacked version
+        #sys.path.append(os.path.join(spark_home, 'python/lib/pyspark.zip'))
+        sys.path.append(os.path.join(spark_home, 'python'))
+        # more abstract without version number but not available in spark bin download
+        #sys.path.append(os.path.join(spark_home, 'python/build'))
+        for x in glob.glob(os.path.join(spark_home, 'python/lib/py4j-*-src.zip')):
+            sys.path.append(x)
+    else:
+        warn("SPARK_HOME not set - probably won't find PySpark libs")
+    try:
+        from pyspark import SparkContext
+        from pyspark import SparkConf
+        from pyspark.sql import SQLContext
+    except ImportError, e:
+        print('module import failed: %s' % e, file=sys.stderr)
+        sys.exit(ERRORS['UNKNOWN'])
+
 # from math import pow, fabs, sqrt
 # def squaredError(label, prediction):
 #     """Calculates the the squared error for a single prediction.

@@ -270,6 +270,26 @@ class test_utils(unittest.TestCase):
 
 
 # ============================================================================ #
+#                               PySpark
+# ============================================================================ #
+
+    # can't really test successful import because spark is so long to download
+    def test_import_pyspark(self):
+        os.environ['SPARK_HOME'] = None
+        try:
+            import_pyspark()
+            raise Exception('failed to raise import error when importing pyspark without SPARK_HOME set')
+        except ImportError:
+            pass
+        os.environ['SPARK_HOME'] = 'nonexistentdir'
+        try:
+            import_pyspark()
+            raise Exception('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
+        except ImportError:
+            pass
+
+
+# ============================================================================ #
 #                               Jython
 # ============================================================================ #
 
