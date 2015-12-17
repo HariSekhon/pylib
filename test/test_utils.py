@@ -233,7 +233,14 @@ class test_utils(unittest.TestCase):
         (helpstring, result) = getenvs2('HOST', 'myDefault', 'NonExistent')
         self.assertEqual(helpstring, '$NONEXISTENT_HOST, $HOST, default: myDefault')
         self.assertEqual(result, 'myDefault')
-        # self.assert
+        (helpstring, result) = getenvs2('PASSWORD', 'mysecret', 'NonExistent')
+        self.assertEqual(helpstring, '$NONEXISTENT_PASSWORD, $PASSWORD')
+        self.assertEqual(result, 'mysecret')
+        try:
+            getenvs2('HOST', 'myDefault', None)
+            raise Exception('failed to raise CodingErrorException for name=None for getenvs2')
+        except CodingErrorException:
+            pass
 
     def test_check_tldcount(self):
         utils._check_tldcount()

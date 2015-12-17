@@ -67,11 +67,12 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to throw OptionConflictError from optparse OptionParser when duplicating add_useroption')
         except OptionConflictError, e:
             pass
-        try:
-            c.main()
-        except SystemExit, e:
-            if e.code != 2:
-                raise Exception('wrong exit code != 2 when exiting main() from base class CLI')
+
+        c.main()
+        c.options.verbose = 1
+        c.main()
+        c.options.verbose = 2
+        c.main()
 
         try:
             c.usage()
@@ -95,6 +96,7 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to raise CodingErrorException for CLU.set_timeout(None)')
         except CodingErrorException:
             pass
+        c.main()
 
         try:
             c.set_timeout('a')
@@ -104,6 +106,7 @@ class test_cli(unittest.TestCase):
 
         c.set_timeout_default(9)
         c.set_timeout_default(None)
+        c.main()
         try:
             c.set_timeout_default('a')
             raise Exception('failed to raise CodingErrorException for CLI.set_timeout_default(a)')
@@ -114,8 +117,9 @@ class test_cli(unittest.TestCase):
         try:
             c.main()
             raise Exception('failed to self-timeout')
-        except SystemExit:
-            pass
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception('wrong exit code != 3 when self timing out CLI')
 
         # c._env_var('', 'test')
         # try:

@@ -110,7 +110,7 @@ class CLI (object):
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
         except KeyboardInterrupt, e:
-            log.debug('Caught control-c...')
+            # log.debug('Caught control-c...')
             print('Caught control-c...')
 
     def usage(self, msg='', status='UNKNOWN'):
