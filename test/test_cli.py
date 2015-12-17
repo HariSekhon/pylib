@@ -102,6 +102,13 @@ class test_cli(unittest.TestCase):
         except CodingErrorException:
             pass
 
+        c.set_timeout_default(9)
+        c.set_timeout_default(None)
+        try:
+            c.set_timeout_default('a')
+            raise Exception('failed to raise CodingErrorException for CLI.set_timeout_default(a)')
+        except CodingErrorException:
+            pass
         c.set_timeout(1)
         c.run = lambda: time.sleep(3)
         try:
