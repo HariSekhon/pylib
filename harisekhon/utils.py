@@ -94,6 +94,11 @@ def support_msg(repo="pytools"):
     support_msg = 'Please try latest version from https:/github.com/harisekhon/%s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/harisekhon/%s/issues' % (repo, repo)
     return support_msg
 
+# also doesn't work in Py3K
+# def autoflush():
+    # this line causes instant exit code 1
+    # unbuffered = os.fdopen(sys.stdout.fileno(), 'w', 0)
+    # sys.stdout = unbuffered
 
 def printerr(msg, indent=False):
     if indent:
@@ -305,7 +310,7 @@ def getenvs2(vars, default, name):
                 is_sensitive = True
                 break
         vars = [v.upper() for v in vars]
-    help = ', '.join(gen_prefixes([name, ''], vars)).upper()
+    help = '$' + ', $'.join(gen_prefixes([name, ''], vars)).upper()
     if default != None and not is_sensitive:
         help += ', default: %(default)s' % locals()
     return help, getenvs(vars, default, name)

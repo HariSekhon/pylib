@@ -231,7 +231,7 @@ class test_utils(unittest.TestCase):
 
     def test_getenvs2(self):
         (helpstring, result) = getenvs2('HOST', 'myDefault', 'NonExistent')
-        self.assertEqual(helpstring, 'NONEXISTENT_HOST, HOST, default: myDefault')
+        self.assertEqual(helpstring, '$NONEXISTENT_HOST, $HOST, default: myDefault')
         self.assertEqual(result, 'myDefault')
         # self.assert
 
