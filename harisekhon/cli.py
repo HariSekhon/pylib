@@ -18,6 +18,7 @@ __version__ = '0.1'
 
 import inspect
 import os
+import signal
 import sys
 from optparse import OptionParser
 # Python 2.6+ only
@@ -41,15 +42,19 @@ class CLI (object):
     # class level attributes go here, can still use self
     # should only be 1 CLI per program
 
-    # do this to make sure the super constructor runs
-    # super(B, self).__init__()
+    # make sure to call this super constructor from subclasses if extending __init__():
+    # Python 2.x
+    # super(SubCLI, self).__init__()
+    # Python 3.x
+    # super().__init__()
     def __init__(self):
         # instance attributes, feels safer
         self.options = None
-        self.args    = None
-        self.topfile   = get_topfile()
+        self.args = None
+        self.timeout = None
+        self.timeout_default = 1
+        self.topfile = get_topfile()
         self.docstring = get_file_docstring(self.topfile)
-        self.usagemsg = ''
         if self.docstring:
             self.docstring = '\n' + self.docstring.strip() + '\n'
         self.topfile_version = get_file_version(self.topfile)
@@ -62,8 +67,7 @@ class CLI (object):
         if self.github_repo:
             self.github_repo = ' - ' + self.github_repo
         self.version = '%(prog)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % self.__dict__
-        self.usagemsg = 'Hari Sekhon%(github_repo)s\n\n%(prog)s\n%(usagemsg)s' % self.__dict__
-        self.usagemsg_full = '\n\nHari Sekhon%(github_repo)s\n\n%(prog)s\n%(docstring)s\n%(prog)s [options]' % self.__dict__
+        self.usagemsg = '\n\nHari Sekhon%(github_repo)s\n\n%(prog)s\n%(docstring)s\n%(prog)s [options]' % self.__dict__
         self.usagemsg_short = '\n\nHari Sekhon%(github_repo)s\n\n%(prog)s [options]' % self.__dict__
         # set this in simpler client programs when you don't want to exclude
         # self.parser = OptionParser(usage=self.usagemsg_short, version=self.version)
@@ -71,14 +75,40 @@ class CLI (object):
         # duplicate key error or duplicate options, sucks
         # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
 
+    def timeout_handler(self):
+        quit('UNKNOWN', 'self timed out after %d seconds' % self.timeout)
+
     def main(self):
+        log.debug('running main()')
         try:
             self.parse_args()
+            # broken
+            # autoflush()
+            # too late
+            # os.environ['PYTHONUNBUFFERED'] = "anything"
+            # move this to NagiosPlugin class
+            # if re.match('check_', prog):
+            #     sys.stderr = sys.stdin
+            # careful causes bad file descriptor for die(), jython_only() and printerr() unit tests
+            # sys.stderr = sys.stdin
+            log.setLevel(logging.WARN)
+            verbose = self.options.verbose
+            if verbose > 1:
+                log.setLevel(logging.DEBUG)
+            elif verbose:
+                log.setLevel(logging.INFO)
+            log.info('verbose level: %s' % verbose)
+
+            if self.timeout is not None:
+                log.debug('setting timeout alarm (%s)' % self.timeout)
+                signal.signal(signal.SIGALRM, timeout_handler)
+                signal.alarm(self.timeout)
             # if self.options.version:
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
         except KeyboardInterrupt, e:
+            log.debug('Caught control-c...')
             print('Caught control-c...')
 
     def usage(self, msg='', status='UNKNOWN'):
@@ -93,8 +123,26 @@ class CLI (object):
     def add_options(self):
         pass
 
+    def set_timeout(self, secs):
+        if not isInt(secs):
+            raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds')
+        log.debug('setting timeout to %s secs' % secs)
+        self.timeout = secs
+
+    # None prevents --timeout switch becoming exposed, whereas 0 will allow
+    def set_timeout_default(self, secs):
+        if secs is not None and not isInt(secs):
+            raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds')
+        log.debug('setting default timeout to %s secs' % secs)
+        self.timeout_default = secs
+
     def parse_args(self):
         self.add_options()
+        if self.timeout_default is not None:
+            self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.timeout_default,
+                                   metavar='secs', default=self.timeout_default)
+        self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv ...)',
+                               action='count', default=0)
         (self.options, self.args) = self.parser.parse_args()
         return self.options, self.args
 
@@ -117,15 +165,15 @@ class CLI (object):
         name2 = ''
         if not isBlankOrNone(name):
             name2 = "%s " % name
-        (user_envs, default_user)   = getenvs2(['USERNAME', 'USER'], default_user, name)
+        (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
         (pw_envs, default_password) = getenvs2('PASSWORD', default_password, name)
         self.parser.add_option('-u', '--user',     dest='user', help='%sUsername (%s)' % (name2, user_envs),
                                default=default_user)
         self.parser.add_option('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
                                default=default_password)
 
-
     # @abstractmethod
     def run(self):
-        raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!')
+        raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
+                                   ' You should have overridden this run() method in the client code')
         # sys.exit(2)
