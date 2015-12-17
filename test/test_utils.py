@@ -275,19 +275,24 @@ class test_utils(unittest.TestCase):
 
     # can't really test successful import because spark is so long to download
     def test_import_pyspark(self):
-        os.environ['SPARK_HOME'] = None
+        os.environ['SPARK_HOME'] = ''
         try:
             import_pyspark()
             raise Exception('failed to raise import error when importing pyspark without SPARK_HOME set')
-        except ImportError:
-            pass
+        # except ImportError:
+        #    pass
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception("incorrect exit code '%s' raised by import_pyspark" % e.code)
         os.environ['SPARK_HOME'] = 'nonexistentdir'
         try:
             import_pyspark()
             raise Exception('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
-        except ImportError:
-            pass
-
+        # except ImportError:
+        #     pass
+        except SystemExit, e:
+            if e.code != 3:
+                raise Exception("incorrect exit code '%s' raised by import_pyspark" % e.code)
 
 # ============================================================================ #
 #                               Jython
