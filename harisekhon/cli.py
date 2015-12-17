@@ -51,6 +51,7 @@ class CLI (object):
         # instance attributes, feels safer
         self.options = None
         self.args = None
+        self.__default_opts = None
         self.timeout = None
         self.timeout_default = 1
         self.topfile = get_topfile()
@@ -64,6 +65,8 @@ class CLI (object):
         # prog = os.path.basename(sys.argv[0])
         self.prog = os.path.basename(self.topfile)
         self.github_repo = get_file_github_repo(self.topfile)
+        # if not self.github_repo:
+        #     self.github_repo = 'https://github.com/harisekhon/pytools'
         if self.github_repo:
             self.github_repo = ' - ' + self.github_repo
         self.version = '%(prog)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % self.__dict__
@@ -75,7 +78,7 @@ class CLI (object):
         # duplicate key error or duplicate options, sucks
         # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
 
-    def timeout_handler(self):
+    def timeout_handler(self, signum, frame):
         quit('UNKNOWN', 'self timed out after %d seconds' % self.timeout)
 
     def main(self):
@@ -98,10 +101,9 @@ class CLI (object):
             elif verbose:
                 log.setLevel(logging.INFO)
             log.info('verbose level: %s' % verbose)
-
             if self.timeout is not None:
                 log.debug('setting timeout alarm (%s)' % self.timeout)
-                signal.signal(signal.SIGALRM, timeout_handler)
+                signal.signal(signal.SIGALRM, self.timeout_handler)
                 signal.alarm(self.timeout)
             # if self.options.version:
             #     print(self.version)
@@ -136,13 +138,19 @@ class CLI (object):
         log.debug('setting default timeout to %s secs' % secs)
         self.timeout_default = secs
 
-    def parse_args(self):
-        self.add_options()
+    def add_default_opts(self):
+        if self.__default_opts:
+            return
         if self.timeout_default is not None:
             self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.timeout_default,
                                    metavar='secs', default=self.timeout_default)
         self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv ...)',
                                action='count', default=0)
+        self.__default_opts = 1
+
+    def parse_args(self):
+        self.add_options()
+        self.add_default_opts()
         (self.options, self.args) = self.parser.parse_args()
         return self.options, self.args
 

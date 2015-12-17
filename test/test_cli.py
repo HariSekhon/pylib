@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+import time
 import unittest
 from optparse import OptionConflictError
 # inspect.getfile(inspect.currentframe()) # filename
@@ -88,6 +89,26 @@ class test_cli(unittest.TestCase):
 
         print('parser version = %s' % c.parser.get_version())
         self.assertTrue(re.search(' version (?:None|%(version_regex)s), CLI version %(version_regex)s, Utils version %(version_regex)s' % globals(), c.parser.get_version()))
+
+        try:
+            c.set_timeout(None)
+            raise Exception('failed to raise CodingErrorException for CLU.set_timeout(None)')
+        except CodingErrorException:
+            pass
+
+        try:
+            c.set_timeout('a')
+            raise Exception('failed to raise CodingErrorException for CLU.set_timeout(a)')
+        except CodingErrorException:
+            pass
+
+        c.set_timeout(1)
+        c.run = lambda: time.sleep(3)
+        try:
+            c.main()
+            raise Exception('failed to self-timeout')
+        except SystemExit:
+            pass
 
         # c._env_var('', 'test')
         # try:
