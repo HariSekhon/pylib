@@ -1834,7 +1834,7 @@ def which(bin):
 #                               PySpark Utils
 # ============================================================================ #
 
-def import_pyspark():
+def pyspark_path():
     spark_home = os.getenv('SPARK_HOME', None)
     if spark_home:
         # doesn't contain py4j may as well just use the already unpacked version
@@ -1846,13 +1846,32 @@ def import_pyspark():
             sys.path.append(x)
     else:
         warn("SPARK_HOME not set - probably won't find PySpark libs")
-    try:
-        from pyspark import SparkContext
-        from pyspark import SparkConf
-        from pyspark.sql import SQLContext
-    except ImportError, e:
-        print('module import failed: %s' % e, file=sys.stderr)
-        sys.exit(ERRORS['UNKNOWN'])
+
+# TODO: XXX: review
+# def import_pyspark():
+    #pyspark_path()
+    # doesn't seem to import properly using 'from module import blah' style
+    # seems to only work for complete module imports
+    # try:
+    #     global SparkContext
+    #     global SparkConf
+    #     global SQLContext
+    #     import pyspark
+    #     from pyspark import SparkContext as a
+    #     from pyspark import SparkConf as b
+    #     from pyspark.sql import SQLContext as c
+    #     print(a)
+    #     print(b)
+    #     print(c)
+    #     global SparkContext
+    #     global SparkConf
+    #     global SQLContext
+    #     SparkContext = a
+    #     SparkConf = b
+    #     SQLContext = c
+    # except ImportError, e:
+    #     print('module import failed: %s' % e, file=sys.stderr)
+    #     sys.exit(ERRORS['UNKNOWN'])
 
 # from math import pow, fabs, sqrt
 # def squaredError(label, prediction):
