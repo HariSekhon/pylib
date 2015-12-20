@@ -13,6 +13,12 @@
 #  http://www.linkedin.com/in/harisekhon/pylib
 #
 
+"""
+# =========================================================================== #
+#                           HariSekhon.CLI
+# =========================================================================== #
+"""
+
 __author__  = 'Hari Sekhon'
 __version__ = '0.1'
 
@@ -52,9 +58,12 @@ class CLI (object):
         self.options = None
         self.args = None
         self.__default_opts = None
+        self.verbose_default = 0
         self.timeout = None
         self.timeout_default = 1
         self.topfile = get_topfile()
+        # this gets utrunner.py in PyCharm and runpy.py
+        # print('topfile = %s' % self.topfile)
         self.docstring = get_file_docstring(self.topfile)
         if self.docstring:
             self.docstring = '\n' + self.docstring.strip() + '\n'
@@ -96,9 +105,9 @@ class CLI (object):
             # sys.stderr = sys.stdin
             log.setLevel(logging.WARN)
             verbose = self.options.verbose
-            if verbose > 1:
+            if verbose > 2:
                 log.setLevel(logging.DEBUG)
-            elif verbose:
+            elif verbose > 1:
                 log.setLevel(logging.INFO)
             log.info('verbose level: %s' % verbose)
             if self.timeout is not None:
@@ -134,9 +143,21 @@ class CLI (object):
     # None prevents --timeout switch becoming exposed, whereas 0 will allow
     def set_timeout_default(self, secs):
         if secs is not None and not isInt(secs):
-            raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds')
+            raise CodingErrorException('invalid timeout passed to set_timeout_default(), must be an integer representing seconds')
         log.debug('setting default timeout to %s secs' % secs)
         self.timeout_default = secs
+
+    def set_verbose(self, arg):
+        if not isInt(arg):
+            raise CodingErrorException('invalid verbose level passed to set_verbose(), must be an integer')
+        log.debug('setting verbose to %s' % arg)
+        self.verbose = arg
+
+    def set_verbose_default(self, arg):
+        if not isInt(arg):
+            raise CodingErrorException('invalid verbose level passed to set_verbose_default(), must be an integer')
+        log.debug('setting default verbose to %s' % arg)
+        self.verbose_default = arg
 
     def add_default_opts(self):
         if self.__default_opts:
@@ -145,7 +166,7 @@ class CLI (object):
             self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.timeout_default,
                                    metavar='secs', default=self.timeout_default)
         self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv ...)',
-                               action='count', default=0)
+                               action='count', default=self.verbose_default)
         self.__default_opts = 1
 
     def parse_args(self):

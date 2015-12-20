@@ -68,10 +68,11 @@ class test_cli(unittest.TestCase):
         except OptionConflictError, e:
             pass
 
+        # this won't work because parse args resets it so we change verbose_default instead
         c.main()
-        c.options.verbose = 1
+        c.set_verbose_default(2)
         c.main()
-        c.options.verbose = 2
+        c.set_verbose_default(3)
         c.main()
 
         try:
