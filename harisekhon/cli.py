@@ -67,6 +67,8 @@ class CLI (object):
         self._docstring = get_file_docstring(self.topfile)
         if self._docstring:
             self._docstring = '\n' + self._docstring.strip() + '\n'
+        if self._docstring is None:
+            self._docstring = ''
         self._topfile_version = get_file_version(self.topfile)
         # this doesn't work in unit tests
         # if not self._topfile_version:
