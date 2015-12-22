@@ -61,6 +61,17 @@ def get_caller():
 
 prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
 
+# ============================================
+# add a trace log level for sub tracing
+TRACE = 5
+logging.addLevelName(TRACE, 'TRACE')
+
+def trace(self, message, *args, **kwargs):
+    self.log(TRACE, message, *args, **kwargs)
+
+logging.Logger.trace = trace
+# =============================================
+
 logging.config.fileConfig(os.path.join(libdir, 'resources', 'logging.conf'))
 log = logging.getLogger('HariSekhonUtils')
 # optimization - gives unknown file, unknown function, line 0
