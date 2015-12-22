@@ -90,7 +90,8 @@ class test_cli(unittest.TestCase):
                 raise Exception('wrong exit code != 3 when exiting usage(test message) from base class CLI')
 
         print('parser version = %s' % c.parser.get_version())
-        self.assertTrue(re.search(' version (?:None|%(version_regex)s), CLI version %(version_regex)s, Utils version %(version_regex)s' % globals(), c.parser.get_version()))
+        # I don't populate version in OptionParser now as it creates the switch too high in the option order
+        # self.assertTrue(re.search(' version (?:None|%(version_regex)s), CLI version %(version_regex)s, Utils version %(version_regex)s' % globals(), c.parser.get_version()))
 
         try:
             c.set_timeout(None)
@@ -184,8 +185,8 @@ class test_cli(unittest.TestCase):
             if not re.search('abstract', str(e)):
                 raise Exception('raised CodingErrorException from CLI.main() but message mismatch')
         except SystemExit, e:
-            if e.code != 2:
-                raise Exception('wrong exit code != 2 when exiting main() from base class CLI')
+            if e.code != 3:
+                raise Exception('wrong exit code != 3 when exiting main() from base class CLI')
 
 
 def main():
