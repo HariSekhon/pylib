@@ -182,7 +182,7 @@ class CLI (object):
         self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv ...)',
                                action='count', default=self.verbose_default)
         try:
-            self.parser.remove_option('-v')
+            self.parser.remove_option('-V')
         except ValueError:
             pass
         try:
