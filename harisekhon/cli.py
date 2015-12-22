@@ -20,7 +20,7 @@
 """
 
 __author__  = 'Hari Sekhon'
-__version__ = '0.1'
+__version__ = '0.4'
 
 import inspect
 import os
@@ -60,32 +60,44 @@ class CLI (object):
         self.__default_opts = None
         self.verbose_default = 0
         self.timeout = None
-        self.timeout_default = 1
+        self.timeout_default = 10
         self.topfile = get_topfile()
         # this gets utrunner.py in PyCharm and runpy.py
         # print('topfile = %s' % self.topfile)
-        self.docstring = get_file_docstring(self.topfile)
-        if self.docstring:
-            self.docstring = '\n' + self.docstring.strip() + '\n'
-        self.topfile_version = get_file_version(self.topfile)
-        self.cli_version = self.__version__
-        self.utils_version = harisekhon.utils.__version__
+        self._docstring = get_file_docstring(self.topfile)
+        if self._docstring:
+            self._docstring = '\n' + self._docstring.strip() + '\n'
+        self._topfile_version = get_file_version(self.topfile)
+        # this doesn't work in unit tests
+        # if not self._topfile_version:
+        #     raise CodingErrorException('failed to get topfile version - did you set a __version__ in top cli program?')
+        self._cli_version = self.__version__
+        self._utils_version = harisekhon.utils.__version__
         # returns 'python -m unittest' :-/
         # prog = os.path.basename(sys.argv[0])
-        self.prog = os.path.basename(self.topfile)
-        self.github_repo = get_file_github_repo(self.topfile)
+        self._prog = os.path.basename(self.topfile)
+        self._github_repo = get_file_github_repo(self.topfile)
         # if not self.github_repo:
         #     self.github_repo = 'https://github.com/harisekhon/pytools'
-        if self.github_repo:
-            self.github_repo = ' - ' + self.github_repo
-        self.version = '%(prog)s version %(topfile_version)s, CLI version %(cli_version)s, Utils version %(utils_version)s' % self.__dict__
-        self.usagemsg = '\n\nHari Sekhon%(github_repo)s\n\n%(prog)s\n%(docstring)s\n%(prog)s [options]' % self.__dict__
-        self.usagemsg_short = '\n\nHari Sekhon%(github_repo)s\n\n%(prog)s [options]' % self.__dict__
+        if self._github_repo:
+            self._github_repo = ' - ' + self._github_repo
+        # _hidden attributes are shown in __dict__
+        self.version = '%(_prog)s version %(_topfile_version)s  =>  CLI version %(_cli_version)s  =>  Utils version %(_utils_version)s' % self.__dict__
+        self.usagemsg = 'Hari Sekhon%(_github_repo)s\n\n%(_prog)s version %(_topfile_version)s\n%(_docstring)s\n' % self.__dict__
+        self.usagemsg_short = 'Hari Sekhon%(_github_repo)s\n\n' % self.__dict__
         # set this in simpler client programs when you don't want to exclude
         # self.parser = OptionParser(usage=self.usagemsg_short, version=self.version)
-        self.parser = OptionParser(version=self.version)
+        # self.parser = OptionParser(version=self.version)
+        # will be added by default_opts later so that it's not annoyingly at the top of the option help
+        # also this allows us to print full docstring for a complete description and not just the cli switches
+        self.parser = OptionParser(add_help_option=False)
         # duplicate key error or duplicate options, sucks
         # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
+        # self.setup()
+
+    # @abstractmethod
+    # def setup(self):
+    #     pass
 
     def timeout_handler(self, signum, frame):
         quit('UNKNOWN', 'self timed out after %d seconds' % self.timeout)
@@ -130,7 +142,7 @@ class CLI (object):
         self.parser.print_help()
         quit(status)
 
-    # @override this
+    # @abstractmethod
     def add_options(self):
         pass
 
@@ -167,12 +179,39 @@ class CLI (object):
                                    metavar='secs', default=self.timeout_default)
         self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv ...)',
                                action='count', default=self.verbose_default)
+        try:
+            self.parser.remove_option('-v')
+        except ValueError:
+            pass
+        try:
+            self.parser.remove_option('-h')
+        except ValueError:
+            pass
+        try:
+            self.parser.remove_option('--version')
+        except ValueError:
+            pass
+        self.parser.add_option('-V', '--version', action='store_true', help='Show version and exit')
+        # this would intercept and return exit code 0
+        # self.parser.add_option('-h', '--help', action='help')
+        self.parser.add_option('-h', '--help', action='store_true', help='Show full help and exit')
+        # from optparse import SUPPRESS_HELP
+        # self.parser.add_option('--secret-mode', help=SUPPRESS_HELP)
         self.__default_opts = 1
 
     def parse_args(self):
         self.add_options()
         self.add_default_opts()
-        (self.options, self.args) = self.parser.parse_args()
+        try:
+            (self.options, self.args) = self.parser.parse_args()
+        # I don't agree with zero exit code from OptionParser for help/usage, and want UNKNOWN not CRITICAL(2) for switch misusage...
+        except SystemExit:
+            sys.exit(ERRORS['UNKNOWN'])
+        if self.options.help:
+            self.usage()
+        if self.options.version:
+            print('%(version)s' % self.__dict__)
+            sys.exit(ERRORS['UNKNOWN'])
         return self.options, self.args
 
     def add_hostoption(self, name='', default_host=None, default_port=None):
@@ -205,4 +244,3 @@ class CLI (object):
     def run(self):
         raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                                    ' You should have overridden this run() method in the client code')
-        # sys.exit(2)
