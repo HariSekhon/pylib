@@ -105,6 +105,8 @@ class CLI (object):
 
     def main(self):
         log.debug('running main()')
+        self.add_options()
+        self.add_default_opts()
         try:
             self.parse_args()
             # broken
@@ -192,8 +194,6 @@ class CLI (object):
         # self.parser.add_option('--secret-mode', help=SUPPRESS_HELP)
 
     def parse_args(self):
-        self.add_options()
-        self.add_default_opts()
         try:
             (self.options, self.args) = self.parser.parse_args()
         # I don't agree with zero exit code from OptionParser for help/usage, and want UNKNOWN not CRITICAL(2) for switch misusage...
