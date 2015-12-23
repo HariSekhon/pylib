@@ -238,7 +238,7 @@ class test_utils(unittest.TestCase):
         self.assertEqual(helpstring, '$NONEXISTENT_HOST, $HOST, default: myDefault')
         self.assertEqual(result, 'myDefault')
         (helpstring, result) = getenvs2('PASSWORD', 'mysecret', 'NonExistent')
-        self.assertEqual(helpstring, '$NONEXISTENT_PASSWORD, $PASSWORD')
+        self.assertEqual(helpstring, '$NONEXISTENT_PASSWORD, $PASSWORD, default: ******')
         self.assertEqual(result, 'mysecret')
         try:
             getenvs2('HOST', 'myDefault', None)

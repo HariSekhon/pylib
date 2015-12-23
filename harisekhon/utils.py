@@ -323,8 +323,11 @@ def getenvs2(vars, default, name):
                 break
         vars = [v.upper() for v in vars]
     help = '$' + ', $'.join(gen_prefixes([name, ''], vars)).upper()
-    if default != None and not is_sensitive:
-        help += ', default: %(default)s' % locals()
+    if default != None:
+        if is_sensitive:
+            help += ', default: ******'
+        else:
+            help += ', default: %(default)s' % locals()
     return help, getenvs(vars, default, name)
 
 
