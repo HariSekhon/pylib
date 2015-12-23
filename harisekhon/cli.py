@@ -127,7 +127,7 @@ class CLI (object):
             if self.timeout is not None:
                 log.debug('setting timeout alarm (%s)' % self.timeout)
                 signal.signal(signal.SIGALRM, self.timeout_handler)
-                signal.alarm(self.timeout)
+                signal.alarm(int(self.timeout))
             # if self.options.version:
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
@@ -214,6 +214,7 @@ class CLI (object):
         if self.options.version:
             print('%(version)s' % self.__dict__)
             sys.exit(ERRORS['UNKNOWN'])
+        self.timeout = self.options.timeout
         return self.options, self.args
 
     def add_hostoption(self, name='', default_host=None, default_port=None):
