@@ -1818,7 +1818,8 @@ def vlog3(msg):
     log.debug(msg)
 
 def vlog_option(name, option):
-    vlog2('%-25s %s' % (name + ':', option))
+    # vlog2('%-25s %s' % (name + ':', option))
+    vlog2('%s:  %s' % (name, option))
 
 
 def which(bin):
