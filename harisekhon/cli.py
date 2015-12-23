@@ -57,7 +57,6 @@ class CLI (object):
         # instance attributes, feels safer
         self.options = None
         self.args = None
-        self.__default_opts = None
         self.verbose_default = 0
         self.timeout = None
         self.timeout_default = 10
@@ -165,41 +164,32 @@ class CLI (object):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose(), must be an integer')
         log.debug('setting verbose to %s' % arg)
-        self.verbose = arg
+        self.verbose = int(arg)
 
     def set_verbose_default(self, arg):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose_default(), must be an integer')
         log.debug('setting default verbose to %s' % arg)
-        self.verbose_default = arg
+        self.verbose_default = int(arg)
 
     def add_default_opts(self):
-        if self.__default_opts:
-            return
+        for o in ('--help', '--version', '--timeout', '--verbose'):
+            try:
+                self.parser.remove_option(o)
+            except ValueError:
+                pass
+
         if self.timeout_default is not None:
             self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.timeout_default,
                                    metavar='secs', default=self.timeout_default)
         self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv ...)',
                                action='count', default=self.verbose_default)
-        try:
-            self.parser.remove_option('-V')
-        except ValueError:
-            pass
-        try:
-            self.parser.remove_option('-h')
-        except ValueError:
-            pass
-        try:
-            self.parser.remove_option('--version')
-        except ValueError:
-            pass
         self.parser.add_option('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
         # self.parser.add_option('-h', '--help', action='help')
         self.parser.add_option('-h', '--help', action='store_true', help='Show full help and exit')
         # from optparse import SUPPRESS_HELP
         # self.parser.add_option('--secret-mode', help=SUPPRESS_HELP)
-        self.__default_opts = 1
 
     def parse_args(self):
         self.add_options()
