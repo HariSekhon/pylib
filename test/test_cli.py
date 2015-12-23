@@ -68,7 +68,7 @@ class test_cli(unittest.TestCase):
         except OptionConflictError, e:
             pass
 
-        # this won't work because parse args resets it so we change verbose_default instead
+        # set_verbose() won't work because parse args resets it so we change verbose_default instead
         c.main()
         c.set_verbose_default(2)
         c.main()
@@ -114,11 +114,11 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to raise CodingErrorException for CLI.set_timeout_default(a)')
         except CodingErrorException:
             pass
-        c.set_timeout(1)
+        c.set_timeout_default(1)
         c.run = lambda: time.sleep(3)
         try:
             c.main()
-            raise Exception('failed to self-timeout')
+            raise Exception('failed to self-timeout after 1 second')
         except SystemExit, e:
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when self timing out CLI')
