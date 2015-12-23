@@ -49,6 +49,10 @@ class test_utils(unittest.TestCase):
 
     #def runTest(self):
 
+    def test_logger_trace(self):
+        log.setLevel(TRACE)
+        log.trace("TRACE test")
+
     # Python 2.7+
     # @unittest.skip('skipping test codes')
     def test_status_codes(self):
@@ -1785,6 +1789,13 @@ class test_utils(unittest.TestCase):
         try:
             validate_files('')
             raise Exception('validate_files() failed to raise exception for blank')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_files_exception_nonlist(self):
+        try:
+            validate_files(set())
+            raise Exception('validate_files() failed to raise exception for set()')
         except InvalidOptionException:
             pass
 
