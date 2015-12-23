@@ -74,6 +74,25 @@ class test_cli(unittest.TestCase):
         c.main()
         c.set_verbose_default(3)
         c.main()
+        c.set_verbose(0)
+        try:
+            c.set_verbose(None)
+            raise Exception('failed to raise CodingErrorException when calling set_verbose(None)')
+        except CodingErrorException:
+            pass
+        try:
+            c.set_verbose_default(None)
+            raise Exception('failed to raise CodingErrorException when calling set_verbose_default(None)')
+        except CodingErrorException:
+            pass
+
+        # would need to inject c.options.help / c.options.version to trigger those code branches
+        # try:
+        #     c.main()
+        #     raise Exception('failed to raise CodingErrorException when calling main() after setting self.options.help')
+        # except SystemExit, e:
+        #     if e.code != 3:
+        #         raise Exception('wrong exit code != 3 when triggering usage via self.options.help')
 
         try:
             c.usage()
