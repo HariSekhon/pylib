@@ -17,6 +17,7 @@ python:
 
 install:
   - make
+  - pip install codecov
 
 script:
   - make test
@@ -24,5 +25,6 @@ script:
 
 after_success:
   - coveralls
+  - codecov
 
 sudo: required
