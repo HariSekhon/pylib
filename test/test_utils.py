@@ -1031,6 +1031,13 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isYes(' '))
         self.assertFalse(isYes(None))
 
+    def test_isYaml(self):
+        data_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } ' # missing closing brace intentionally
+        self.assertTrue(isYaml(open(os.path.join(libdir, 'test', 'test.yaml')).read()))
+        self.assertTrue(isYaml(''))
+        self.assertFalse(isYaml(data_broken))
+        self.assertFalse(isYaml(None))
+
 # ============================================================================ #
 
     def test_min_value(self):

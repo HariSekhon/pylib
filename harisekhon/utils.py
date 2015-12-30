@@ -24,12 +24,13 @@ import re
 import logging
 import logging.config
 import platform
-# import signal
-# import string
 import signal
+#import six
+#import string
 import sys
 import warnings
 import xml.etree.ElementTree as ET
+import yaml
 # not available Python < 2.7
 # try:
 #     from xml.etree.ElementTree import ParseError
@@ -894,6 +895,17 @@ def isJson(arg):
         json.loads(arg)
         return True
     except ValueError, e:
+        pass
+    return False
+
+
+def isYaml(arg):
+    if not isStr(arg):
+        return False
+    try:
+        yaml.load(arg)
+        return True
+    except yaml.parser.ParserError:
         pass
     return False
 
