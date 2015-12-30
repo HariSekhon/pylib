@@ -907,6 +907,8 @@ def isYaml(arg):
         return True
     except yaml.parser.ParserError:
         pass
+    except yaml.scanner.ScannerError:
+        pass
     return False
 
 
