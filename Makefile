@@ -36,7 +36,7 @@ make:
 	# json module built-in to Python >= 2.6, backport not available via pypi
 	#$(SUDO2) pip install json
 
-	$(SUDO2) pip install coveralls
+	$(SUDO2) pip install PyYAML
 	$(SUDO2) pip install mock
 
 	# Python 2.4 - 2.6 backports
