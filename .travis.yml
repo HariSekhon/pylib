@@ -18,6 +18,7 @@ python:
 install:
   - make
   - pip install codecov
+  - pip install coveralls
 
 script:
   - make test
