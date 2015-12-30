@@ -26,13 +26,9 @@ endif
 make:
 	if [ -x /usr/bin/apt-get ]; then make apt-packages; fi
 	if [ -x /usr/bin/yum ];     then make yum-packages; fi
-
+	
 	git update-index --assume-unchanged resources/custom_tlds.txt
-
-	#yum install -y perl-DBD-MySQL
-	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
-	pip install MySQL-python || :
-
+	
 	#$(SUDO2) pip install mock
 	pip install -r requirements.txt
 	# Python 2.4 - 2.6 backports
@@ -40,6 +36,10 @@ make:
 	#$(SUDO2) pip install unittest2
 	# json module built-in to Python >= 2.6, backport not available via pypi
 	#$(SUDO2) pip install json
+	
+	#yum install -y perl-DBD-MySQL
+	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
+	pip install MySQL-python || :
 
 
 .PHONY: apt-packages
