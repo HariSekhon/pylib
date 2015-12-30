@@ -41,6 +41,11 @@ class test_utils(unittest.TestCase):
     myList  = [ 1, 2, 3 ]
     myTuple = ( 1, 2, 3 )
     myDict  = { 'one': 1, 'two': 2, 'three':3 }
+    jsondata = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
+    jsondata_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } ' # missing closing brace intentionally
+    yamldata = open(os.path.join(libdir, 'test', 'test.yaml')).read()
+    yamldata_simple     = 'name:    Hari Sekhon'
+    yamldata_broken_tab = 'name:\tHari Sekhon'
 
     def setUp(self):
         # TODO: XXX: review if needed
@@ -759,10 +764,8 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isJavaException(None))
 
     def test_isJson(self):
-        data = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
-        data_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } ' # missing closing brace intentionally
-        self.assertTrue(isJson(data))
-        self.assertFalse(isJson(data_broken))
+        self.assertTrue(isJson(self.jsondata))
+        self.assertFalse(isJson(self.jsondata_broken))
         self.assertFalse(isJson(''))
         self.assertFalse(isJson(None))
 
@@ -1032,10 +1035,11 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isYes(None))
 
     def test_isYaml(self):
-        data_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } ' # missing closing brace intentionally
-        self.assertTrue(isYaml(open(os.path.join(libdir, 'test', 'test.yaml')).read()))
+        self.assertTrue(isYaml(self.yamldata))
         self.assertTrue(isYaml(''))
-        self.assertFalse(isYaml(data_broken))
+        self.assertTrue(isYaml(self.yamldata_simple))
+        self.assertFalse(isYaml(self.yamldata_broken_tab))
+        self.assertFalse(isYaml(self.jsondata_broken))
         self.assertFalse(isYaml(None))
 
 # ============================================================================ #
