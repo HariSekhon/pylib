@@ -73,7 +73,8 @@ test:
 	# find all unit tests under test/
 	# Python -m >= 2.7
 	#python -m unittest discover -v
-	unit2 discover -v
+	#unit2 discover -v
+	nosetests
 
 .PHONY: test2
 test2:
