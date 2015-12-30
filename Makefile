@@ -40,6 +40,9 @@ make:
 	#yum install -y perl-DBD-MySQL
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
 	pip install MySQL-python || :
+	
+	@echo
+	@echo PyLib BUILD SUCCESSFUL
 
 
 .PHONY: apt-packages
