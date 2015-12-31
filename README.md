@@ -1,6 +1,6 @@
 Hari Sekhon Python / Jython Library
 ==========================
-[![Build Status](https://travis-ci.org/harisekhon/pylib.svg?branch=master)](https://travis-ci.org/harisekhon/pylib) [![Coverage Status](https://coveralls.io/repos/harisekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/harisekhon/pylib?branch=master)
+[![Build Status](https://travis-ci.org/HariSekhon/pylib.svg?branch=master)](https://travis-ci.org/HariSekhon/pylib) [![Coverage Status](https://coveralls.io/repos/HariSekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/HariSekhon/pylib?branch=master)
 
 My personal Python library, full of lots of validation code and utility functions.
 
