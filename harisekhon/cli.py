@@ -19,8 +19,10 @@
 # =========================================================================== #
 """
 
+from __future__ import print_function
+
 __author__  = 'Hari Sekhon'
-__version__ = '0.4'
+__version__ = '0.5'
 
 import inspect
 import os
@@ -133,7 +135,7 @@ class CLI (object):
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
-        except KeyboardInterrupt, e:
+        except KeyboardInterrupt as e:
             # log.debug('Caught control-c...')
             print('Caught control-c...')
 
