@@ -55,17 +55,17 @@ class test_cli(unittest.TestCase):
         try:
             c.add_hostoption()
             raise Exception('failed to throw OptionConflictError from optparse OptionParser when duplicating add_hostoption')
-        except OptionConflictError, e:
+        except OptionConflictError as e:
             pass
         try:
             c.add_hostoption(default_port='error')
             raise Exception('failed to throw CodingErrorException when sending invalid port to add_hostoption')
-        except CodingErrorException, e:
+        except CodingErrorException as e:
             pass
         try:
             c.add_useroption()
             raise Exception('failed to throw OptionConflictError from optparse OptionParser when duplicating add_useroption')
-        except OptionConflictError, e:
+        except OptionConflictError as e:
             pass
 
         # set_verbose() won't work because parse args resets it so we change verbose_default instead
@@ -97,14 +97,14 @@ class test_cli(unittest.TestCase):
         try:
             c.usage()
             raise Exception('failed to exit on CLI.usage()')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when exiting usage() from base class CLI')
 
         try:
             c.usage('test message')
             raise Exception('failed to exit on CLI.usage(test message)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when exiting usage(test message) from base class CLI')
 
@@ -138,7 +138,7 @@ class test_cli(unittest.TestCase):
         try:
             c.main()
             raise Exception('failed to self-timeout after 1 second')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when self timing out CLI')
 
@@ -200,10 +200,10 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to raise a TypeError when attempting to instantiate abstract class CLI')
         except TypeError:
             pass
-        except CodingErrorException, e:
+        except CodingErrorException as e:
             if not re.search('abstract', str(e)):
                 raise Exception('raised CodingErrorException from CLI.main() but message mismatch')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when exiting main() from base class CLI')
 
