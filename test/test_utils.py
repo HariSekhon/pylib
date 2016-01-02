@@ -77,7 +77,7 @@ class test_utils(unittest.TestCase):
         try:
             die('test')
             raise Exception('failed to raise SystemExit exception from die(test)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 2:
                 raise Exception("incorrect exit code '%s' raised by die(test)" % e.code)
             # also gives 2 not 'test'
@@ -86,7 +86,7 @@ class test_utils(unittest.TestCase):
         try:
             die('test', 4)
             raise Exception('failed to raise SystemExit exception from die(test, 4)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 4:
                 raise Exception("incorrect exit code '%s' raised by die(test, 4)" % e.code)
             # also gives 2 not 'test'
@@ -95,7 +95,7 @@ class test_utils(unittest.TestCase):
         try:
             die('test', 5 + 256)
             raise Exception('failed to raise SystemExit exception from die(test, 5 + 256)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 5:
                 raise Exception("incorrect exit code '%s' raised by die(test, 5 + 256)" % e.code)
             # also gives 2 not 'test'
@@ -104,13 +104,13 @@ class test_utils(unittest.TestCase):
         try:
             die('test', 'UNKNOWN')
             raise Exception('failed to raise SystemExit exception from die(test, UNKNOWN)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 3:
                 raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
         try:
             die('test', 'unrecognized_status')
             raise Exception('failed to raise SystemExit exception from die(test, unrecognized_status)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 2:
                 raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
 
@@ -118,7 +118,7 @@ class test_utils(unittest.TestCase):
         try:
             quit('UNKNOWN', 'test')
             raise Exception('failed to raise SystemExit exception from quit(UNKNOWN, test)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 3:
                 raise Exception("incorrect exit code '%s' raised by quit(UNKNOWN, test)" % e.code)
 
@@ -126,7 +126,7 @@ class test_utils(unittest.TestCase):
         try:
             quit('wrongstatus', 'test')
             raise Exception('failed to raise SystemExit exception from quit(wrongstatus, test)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != 2:
                 raise Exception("incorrect exit code '%s' raised by quit(wrongstatus, test)" % e.code)
 
@@ -136,19 +136,19 @@ class test_utils(unittest.TestCase):
         try:
             usage(parser, status='UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != ERRORS['UNKNOWN']:
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
         try:
             usage(parser, '', 'WARNING')
             raise Exception('failed to raise SystemExit exception from usage(parser)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != ERRORS['WARNING']:
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
         try:
             usage(parser, 'msg', 'UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser, msg)')
-        except SystemExit, e:
+        except SystemExit as e:
             if e.code != ERRORS['UNKNOWN']:
                 raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
 
@@ -279,7 +279,7 @@ class test_utils(unittest.TestCase):
         try:
             utils._check_tldcount()
             raise Exception('failed to raise CodingErrorException on double loaded TLDs')
-        except CodingErrorException, e:
+        except CodingErrorException as e:
             pass
         # reset the TLDs
         utils._tlds = tlds
@@ -337,7 +337,7 @@ class test_utils(unittest.TestCase):
             pass
 
     def test_get_jython_exception(self):
-        self.assertEquals(get_jython_exception(), '')
+        self.assertEqual(get_jython_exception(), '')
 
     def test_log_jython_exception(self):
         log_jython_exception()
@@ -495,12 +495,12 @@ class test_utils(unittest.TestCase):
 
     def test_isCode(self):
         self.assertTrue(isCode(compile('print(test)', 'test', 'exec')))
-        self.assertFalse(isCode(file))
+        self.assertFalse(isCode('test'))
+        self.assertFalse(isCode(None))
 
     def test_isCodeStr(self):
         self.assertTrue(isCodeStr('print(test)'))
         self.assertFalse(isCodeStr('print(test'))
-        self.assertFalse(isCodeStr(file))
 
     def test_isCollection(self):
         self.assertTrue(isCollection('students.grades'))
@@ -555,7 +555,6 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isDict('blah'))
         self.assertFalse(isDict(1))
         self.assertFalse(isDict(None))
-        self.assertFalse(isDict(file))
 
     def test_isDirname(self):
         self.assertTrue(isDirname('test_Dir'))
@@ -800,7 +799,6 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isList(self.myTuple))
         self.assertFalse(isList(1))
         self.assertFalse(isList(None))
-        self.assertFalse(isList(file))
 
     def test_isListOrTuple(self):
         self.assertTrue(isList(self.myList))
@@ -810,7 +808,6 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isListOrTuple(self.myDict))
         self.assertFalse(isListOrTuple(1))
         self.assertFalse(isListOrTuple(None))
-        self.assertFalse(isListOrTuple(file))
 
     def test_isMinVersion(self):
         self.assertTrue(isMinVersion('1.3.0', '1.3'))
@@ -927,19 +924,16 @@ class test_utils(unittest.TestCase):
 
     def test_isStr(self):
         self.assertTrue(isStr('test'))
-        self.assertTrue(isStr(unicode('test')))
-        self.assertTrue(isStr(u'test'))
         self.assertTrue(isStr(''))
+        if not isPythonMinVersion(3):
+            self.assertTrue(isStr(unicode('test')))
+            self.assertTrue(isStr(u'test'))
         self.assertFalse(isStr(None))
-        self.assertFalse(isStr(file))
 
     def test_isStrStrict(self):
         self.assertTrue(isStrStrict('test'))
-        self.assertFalse(isStrStrict(unicode('test')))
-        self.assertFalse(isStrStrict(u'test'))
         self.assertTrue(isStrStrict(''))
         self.assertFalse(isStrStrict(None))
-        self.assertFalse(isStrStrict(file))
 
     def test_isTuple(self):
         self.assertTrue(isTuple(self.myTuple))
@@ -950,15 +944,17 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isTuple(' '))
         self.assertFalse(isTuple(''))
         self.assertFalse(isTuple(None))
-        self.assertFalse(isTuple(file))
 
     def test_isUnicode(self):
-        self.assertTrue(isUnicode(unicode('test')))
-        self.assertTrue(isUnicode(u'test'))
-        self.assertFalse(isUnicode('test'))
-        self.assertFalse(isUnicode(''))
+        if isPythonMinVersion(3):
+            self.assertTrue(isUnicode('test'))
+        else:
+            self.assertTrue(isUnicode(unicode('test')))
+            self.assertFalse(isUnicode('test'))
+            # no longer true in Python 3
+            self.assertFalse(isUnicode(str('test')))
+            self.assertFalse(isUnicode(''))
         self.assertFalse(isUnicode(None))
-        self.assertFalse(isUnicode(file))
 
     def test_isUrl(self):
         self.assertTrue(isUrl('www.google.com'))
@@ -1045,9 +1041,9 @@ class test_utils(unittest.TestCase):
 # ============================================================================ #
 
     def test_min_value(self):
-        self.assertEquals(min_value(1, 4), 4)
-        self.assertEquals(min_value(3, 1), 3)
-        self.assertEquals(min_value(3, 4), 4)
+        self.assertEqual(min_value(1, 4), 4)
+        self.assertEqual(min_value(3, 1), 3)
+        self.assertEqual(min_value(3, 4), 4)
         try:
             min_value(None, 4)
             raise Exception('failed to raise exception for none first arg')
@@ -1117,32 +1113,32 @@ class test_utils(unittest.TestCase):
         myList = [ { "name": "DATANODE" }, { "name": "STORM_UI_SERVER" }, { "name": "SUPERVISOR" }, { "name": "FLUME_HANDLER" }, { "name": "HISTORYSERVER" }, { "name": "RESOURCEMANAGER" }, { "name": "HCAT" }, { "name": "OOZIE_CLIENT" }, { "name": "PIG" }, { "name": "HIVE_CLIENT" }, { "name": "HDFS_CLIENT" }, { "name": "NIMBUS" }, { "name": "APP_TIMELINE_SERVER" }, { "name": "SPARK_CLIENT"}, {"name": "FALCON_CLIENT"}, {"name": "METRICS_MONITOR"}, {"name": "ACCUMULO_TSERVER"}, {"name": "SLIDER"}, {"name": "ACCUMULO_CLIENT"}, {"name": "HBASE_CLIENT"}, {"name": "ZOOKEEPER_SERVER"}, {"name": "MAPREDUCE2_CLIENT"}, {"name": "ZOOKEEPER_CLIENT"}, {"name": "SECONDARY_NAMENODE"}, {"name": "YARN_CLIENT"}, {"name": "SQOOP"}, {"name": "DRPC_SERVER" }, { "name": "MAHOUT" }, { "name": "HBASE_REGIONSERVER" }, { "name": "NODEMANAGER" }, { "name": "TEZ_CLIENT" } ]
         sortedList = [ {'name': 'ACCUMULO_CLIENT'}, {'name': 'ACCUMULO_TSERVER'}, {'name': 'APP_TIMELINE_SERVER'}, {'name': 'DATANODE'}, {'name': 'DRPC_SERVER'}, {'name': 'FALCON_CLIENT'}, {'name': 'FLUME_HANDLER'}, {'name': 'HBASE_CLIENT'}, {'name': 'HBASE_REGIONSERVER'}, {'name': 'HCAT'}, {'name': 'HDFS_CLIENT'}, {'name': 'HISTORYSERVER'}, {'name': 'HIVE_CLIENT'}, {'name': 'MAHOUT'}, {'name': 'MAPREDUCE2_CLIENT'}, {'name': 'METRICS_MONITOR'}, {'name': 'NIMBUS'}, {'name': 'NODEMANAGER'}, {'name': 'OOZIE_CLIENT'}, {'name': 'PIG'}, {'name': 'RESOURCEMANAGER'}, {'name': 'SECONDARY_NAMENODE'}, {'name': 'SLIDER'}, {'name': 'SPARK_CLIENT'}, {'name': 'SQOOP'}, {'name': 'STORM_UI_SERVER'}, {'name': 'SUPERVISOR'}, {'name': 'TEZ_CLIENT'}, {'name': 'YARN_CLIENT'}, {'name': 'ZOOKEEPER_CLIENT'}, {'name': 'ZOOKEEPER_SERVER'} ]
         # print('sortedList = %s' % list_sort_dicts_by_value(myList, 'name'))
-        self.assertEquals(list_sort_dicts_by_value(myList, 'name'), sortedList)
-        self.assertEquals(list_sort_dicts_by_value([], 'name'), [])
+        self.assertEqual(list_sort_dicts_by_value(myList, 'name'), sortedList)
+        self.assertEqual(list_sort_dicts_by_value([], 'name'), [])
         try:
             list_sort_dicts_by_value(myList, 'brokenkey')
             raise Exception('failed to raise KeyError exception for invalid/missing key')
-        except KeyError, e:
+        except KeyError as e:
             pass
         try:
             list_sort_dicts_by_value(myList, None)
             raise Exception('failed to raise InvalidArgumentException when passed a non-string None for key')
-        except InvalidArgumentException, e:
+        except InvalidArgumentException as e:
             pass
         try:
             list_sort_dicts_by_value('notAList', 'name')
             raise Exception('failed to raise InvalidArgumentException when passed a non-list')
-        except InvalidArgumentException, e:
+        except InvalidArgumentException as e:
             pass
         try:
             list_sort_dicts_by_value([['test']], 'name')
             raise Exception('failed to raise AssertionError when list contains non-dict')
-        except AssertionError, e:
+        except AssertionError as e:
             pass
         try:
             list_sort_dicts_by_value([{'name':['embedded_array_should_have_been_string']}], 'name')
             raise Exception('failed to raise AssertionError when list dict key value is not a string')
-        except AssertionError, e:
+        except AssertionError as e:
             pass
 
     def test_support_msg(self):
