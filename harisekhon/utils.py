@@ -40,7 +40,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__      = 'Hari Sekhon'
-__version__     = '0.9.8'
+__version__     = '0.9.9'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -894,7 +894,7 @@ def isJson(arg):
     try:
         json.loads(arg)
         return True
-    except ValueError, e:
+    except ValueError as e:
         pass
     return False
 
@@ -1063,7 +1063,7 @@ def isRegex(arg):
     try:
         re.match(arg, "")
         return True
-    except re.error, e:
+    except re.error as e:
         pass
     return False
 
@@ -1087,7 +1087,10 @@ def isScientific(arg, allow_negative = False):
 
 def isStr(arg):
     # return type(arg).__name__ in [ 'str', 'unicode' ]
-    return isinstance(arg, str) or isinstance(arg, unicode)
+    if isPythonMinVersion(3):
+        return isinstance(arg, str)
+    else:
+        return isinstance(arg, str) or isinstance(arg, unicode)
     # basestring is abstract superclass of both str and unicode
     # update: looks like this is removed in Python 3
     # return isinstance(arg, basestring)
@@ -1105,7 +1108,10 @@ def isTuple(arg):
 
 def isUnicode(arg):
     # return type(arg).__name__ == 'unicode'
-    return isinstance(arg, unicode)
+    if isPythonMinVersion(3):
+        return isinstance(arg, str)
+    else:
+        return isinstance(arg, unicode)
 
 
 def isUrl(arg):
@@ -1582,7 +1588,7 @@ def validate_float(arg, name, min, max):
         try:
             min = float(min)
             max = float(max)
-        except ValueError, e:
+        except ValueError as e:
             code_error('invalid min/max (%s/%s) passed to validate_float(): %s' % (min, max, e))
         if (arg >= min and arg <= max):
             vlog_option(name, arg)
@@ -1637,7 +1643,7 @@ def validate_int(arg, name, min, max):
         try:
             min = int(min)
             max = int(max)
-        except ValueError, e:
+        except ValueError as e:
             code_error('invalid min/max (%s/%s) passed to validate_int(): %s' % (min, max, e))
         if (arg >= min and arg <= max):
             vlog_option(name, arg)
