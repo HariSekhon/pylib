@@ -75,11 +75,13 @@ test:
 	#python -m unittest discover -v
 	#unit2 discover -v
 	nosetests
+	tests/all.sh
 
 .PHONY: test2
 test2:
 	test/find_dup_defs.sh
 	python -m unittest discover -v
+	tests/all.sh
 
 .PHONY: install
 install:
