@@ -96,3 +96,8 @@ update:
 
 tld:
 	wget -O resources/tlds-alpha-by-domain.txt http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+
+
+PHONY: clean
+clean:
+	@find . -iname '*.pyc' -o -iname '*.jyc' | xargs rm -v
