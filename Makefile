@@ -100,4 +100,4 @@ tld:
 
 PHONY: clean
 clean:
-	@find . -iname '*.pyc' -o -iname '*.jyc' | xargs rm -v
+	@find . -maxdepth 3 -iname '*.pyc' -o -iname '*.jyc' | xargs rm -v
