@@ -15,6 +15,11 @@
 
 # Would make this package com.linkedin.harisekhon like my Java library but it goes against convention in Python
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 from harisekhon.utils import *
 # enables 'from HariSekhon import CLI'
 from harisekhon.cli import CLI

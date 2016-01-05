@@ -13,7 +13,10 @@
 # ============================================================================ #
 """
 
+from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
+from __future__ import unicode_literals
 
 import os
 import sys
@@ -931,8 +934,12 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isStr(None))
 
     def test_isStrStrict(self):
-        self.assertTrue(isStrStrict('test'))
-        self.assertTrue(isStrStrict(''))
+        if not isPythonMinVersion(3) and 'unicode_literals' in globals():
+            self.assertFalse(isStrStrict('test'))
+            self.assertFalse(isStrStrict(''))
+        else:
+            self.assertTrue(isStrStrict('test'))
+            self.assertTrue(isStrStrict(''))
         self.assertFalse(isStrStrict(None))
 
     def test_isTuple(self):
@@ -946,7 +953,7 @@ class test_utils(unittest.TestCase):
         self.assertFalse(isTuple(None))
 
     def test_isUnicode(self):
-        if isPythonMinVersion(3):
+        if isPythonMinVersion(3) or 'unicode_literals' in globals():
             self.assertTrue(isUnicode('test'))
         else:
             self.assertTrue(isUnicode(unicode('test')))
