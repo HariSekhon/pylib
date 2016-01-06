@@ -193,7 +193,7 @@ class CLI (object):
         if self.timeout_default is not None:
             self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.timeout_default,
                                    metavar='secs', default=self.timeout_default)
-        self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv ...)',
+        self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv)',
                                action='count', default=self.verbose_default)
         self.parser.add_option('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
