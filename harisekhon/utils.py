@@ -150,11 +150,13 @@ def code_error(msg):
     raise CodingErrorException(msg)
 
 
-def quit(status, msg=''): # pylint: disable=redefined-builtin
+# must be named differently to qquit() built-in to avoid overriding the built-in
+# overriding the built-in can lead to confusing errors with wrong exit code if forgetting to import this function
+def qquit(status, msg=''):
     """ Quit with status code from ERRORS dictionary after printing given msg """
     status = str(status).upper()
     if status not in ERRORS:
-        warnings.warn("invalid status '%s' passed to quit() by caller '%s', defaulting to critical" \
+        warnings.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical" \
                       % (status, get_caller()))
         status = 'CRITICAL'
     if msg:
@@ -175,7 +177,7 @@ def usage(parser, msg='', status='UNKNOWN'):
         #     docstring = '\n'.join([ x.strip() for x in docstring.split('\n') if x ])
         #     print('%s\n' % docstring)
     parser.print_help()
-    quit(status)
+    qquit(status)
 
 
 def get_topfile():
@@ -477,8 +479,8 @@ def list_sort_dicts_by_value(my_list, key):
 # ============================================================================ #
 
 # years and years of Regex expertise and testing has gone in to this, do not edit!
-# This also gives flexibility to work around some situations where domain names may not be quite valid
-# (eg .local/.intranet) but still keep things quite tight
+# This also gives flexibility to work around some situations where domain names may not be qquite valid
+# (eg .local/.intranet) but still keep things qquite tight
 # There are certain scenarios where other generic libraries don't help with these
 
 _tlds = set()

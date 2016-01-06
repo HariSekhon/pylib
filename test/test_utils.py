@@ -117,21 +117,21 @@ class test_utils(unittest.TestCase):
             if e.code != 2:
                 raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
 
-    def test_quit(self):
+    def test_qquit(self):
         try:
-            quit('UNKNOWN', 'test')
-            raise Exception('failed to raise SystemExit exception from quit(UNKNOWN, test)')
+            qquit('UNKNOWN', 'test')
+            raise Exception('failed to raise SystemExit exception from qquit(UNKNOWN, test)')
         except SystemExit as e:
             if e.code != 3:
-                raise Exception("incorrect exit code '%s' raised by quit(UNKNOWN, test)" % e.code)
+                raise Exception("incorrect exit code '%s' raised by qquit(UNKNOWN, test)" % e.code)
 
-    def test_quit_wrong_status(self):
+    def test_qquit_wrong_status(self):
         try:
-            quit('wrongstatus', 'test')
-            raise Exception('failed to raise SystemExit exception from quit(wrongstatus, test)')
+            qquit('wrongstatus', 'test')
+            raise Exception('failed to raise SystemExit exception from qquit(wrongstatus, test)')
         except SystemExit as e:
             if e.code != 2:
-                raise Exception("incorrect exit code '%s' raised by quit(wrongstatus, test)" % e.code)
+                raise Exception("incorrect exit code '%s' raised by qquit(wrongstatus, test)" % e.code)
 
     def test_usage(self):
         from optparse import OptionParser

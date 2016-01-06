@@ -39,7 +39,7 @@ from optparse import SUPPRESS_HELP
 LIBDIR = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(LIBDIR)
 import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, CodingErrorException, ERRORS, quit # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, CodingErrorException, ERRORS, qquit # pylint: disable=wrong-import-position
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
@@ -113,7 +113,7 @@ class CLI(object):
     #     pass
 
     def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
-        quit('UNKNOWN', 'self timed out after %d seconds' % self.timeout)
+        qquit('UNKNOWN', 'self timed out after %d seconds' % self.timeout)
 
     def main(self):
         log.debug('running main()')
@@ -157,7 +157,7 @@ class CLI(object):
         else:
             print(self.usagemsg)
         self.parser.print_help()
-        quit(status)
+        qquit(status)
 
     # @abstractmethod
     def add_options(self):
