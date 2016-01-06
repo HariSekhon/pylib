@@ -102,7 +102,7 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to exit on CLI.usage()')
         except SystemExit as e:
             if e.code != 3:
-                raise Exception('wrong exit code != 3 when exiting usage() from base class CLI')
+                raise Exception('wrong exit code %s != 3 when exiting usage() from base class CLI' % e.code)
 
         try:
             c.usage('test message')
