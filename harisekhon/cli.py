@@ -8,7 +8,8 @@
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
-#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help improve or steer this or other code I publish
+#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
+#  to help improve or steer this or other code I publish
 #
 #  http://www.linkedin.com/in/harisekhon/pylib
 #
@@ -24,10 +25,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-__author__  = 'Hari Sekhon'
-__version__ = '0.6.0'
-
-import inspect
+# import inspect
+import logging
 import os
 import signal
 import sys
@@ -37,12 +36,16 @@ from optparse import SUPPRESS_HELP
 # from abc import ABCMeta, abstractmethod
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
-libdir = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(libdir)
-import harisekhon
-from harisekhon.utils import *
+LIBDIR = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(LIBDIR)
+import harisekhon # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, CodingErrorException, ERRORS # pylint: disable=wrong-import-position
+from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
-class CLI (object):
+__author__ = 'Hari Sekhon'
+__version__ = '0.7.0'
+
+class CLI(object):
     """
     HariSekhon.CLI base class
     """
@@ -63,6 +66,7 @@ class CLI (object):
         # instance attributes, feels safer
         self.options = None
         self.args = None
+        self.verbose = None
         self.verbose_default = 0
         self.timeout = None
         self.timeout_default = 10
@@ -77,7 +81,7 @@ class CLI (object):
         self._topfile_version = get_file_version(self.topfile)
         # this doesn't work in unit tests
         # if not self._topfile_version:
-        #     raise CodingErrorException('failed to get topfile version - did you set a __version__ in top cli program?')
+        #     raise CodingErrorException('failed to get topfile version - did you set a __version__ in top cli program?') # pylint: disable=line-too-long
         self._cli_version = self.__version__
         self._utils_version = harisekhon.utils.__version__
         # returns 'python -m unittest' :-/
@@ -89,8 +93,10 @@ class CLI (object):
         if self._github_repo:
             self._github_repo = ' - ' + self._github_repo
         # _hidden attributes are shown in __dict__
-        self.version = '%(_prog)s version %(_topfile_version)s  =>  CLI version %(_cli_version)s  =>  Utils version %(_utils_version)s' % self.__dict__
-        self.usagemsg = 'Hari Sekhon%(_github_repo)s\n\n%(_prog)s version %(_topfile_version)s\n%(_docstring)s\n' % self.__dict__
+        self.version = '%(_prog)s version %(_topfile_version)s ' % self.__dict__ + \
+                       '=>  CLI version %(_cli_version)s  =>  Utils version %(_utils_version)s' % self.__dict__
+        self.usagemsg = 'Hari Sekhon%(_github_repo)s\n\n%(_prog)s version %(_topfile_version)s\n%(_docstring)s\n' \
+                        % self.__dict__
         self.usagemsg_short = 'Hari Sekhon%(_github_repo)s\n\n' % self.__dict__
         # set this in simpler client programs when you don't want to exclude
         # self.parser = OptionParser(usage=self.usagemsg_short, version=self.version)
@@ -106,7 +112,7 @@ class CLI (object):
     # def setup(self):
     #     pass
 
-    def timeout_handler(self, signum, frame):
+    def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
         quit('UNKNOWN', 'self timed out after %d seconds' % self.timeout)
 
     def main(self):
@@ -132,16 +138,16 @@ class CLI (object):
                 log.setLevel(logging.INFO)
             if self.options.debug:
                 log.setLevel(logging.DEBUG)
-            log.info('verbose level: %s' % verbose)
+            log.info('verbose level: %s', verbose)
             if self.timeout is not None:
-                log.debug('setting timeout alarm (%s)' % self.timeout)
+                log.debug('setting timeout alarm (%s)', self.timeout)
                 signal.signal(signal.SIGALRM, self.timeout_handler)
                 signal.alarm(int(self.timeout))
             # if self.options.version:
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
-        except KeyboardInterrupt as e:
+        except KeyboardInterrupt:
             # log.debug('Caught control-c...')
             print('Caught control-c...')
 
@@ -159,34 +165,34 @@ class CLI (object):
 
     def set_timeout(self, secs):
         if not isInt(secs):
-            raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds')
-        log.debug('setting timeout to %s secs' % secs)
+            raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
+        log.debug('setting timeout to %s secs', secs)
         self.timeout = secs
 
     # None prevents --timeout switch becoming exposed, whereas 0 will allow
     def set_timeout_default(self, secs):
         if secs is not None and not isInt(secs):
-            raise CodingErrorException('invalid timeout passed to set_timeout_default(), must be an integer representing seconds')
-        log.debug('setting default timeout to %s secs' % secs)
+            raise CodingErrorException('invalid timeout passed to set_timeout_default(), must be an integer representing seconds') # pylint: disable=line-too-long
+        log.debug('setting default timeout to %s secs', secs)
         self.timeout_default = secs
 
     def set_verbose(self, arg):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose(), must be an integer')
-        log.debug('setting verbose to %s' % arg)
+        log.debug('setting verbose to %s', arg)
         self.verbose = int(arg)
 
     def set_verbose_default(self, arg):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose_default(), must be an integer')
-        log.debug('setting default verbose to %s' % arg)
+        log.debug('setting default verbose to %s', arg)
         self.verbose_default = int(arg)
 
     def add_default_opts(self):
         # TODO: why is this called twice to result in a problem without first removing flags?
-        for o in ('--help', '--version', '--timeout', '--verbose', '--debug'):
+        for _ in ('--help', '--version', '--timeout', '--verbose', '--debug'):
             try:
-                self.parser.remove_option(o)
+                self.parser.remove_option(_)
             except ValueError:
                 pass
 
@@ -204,7 +210,8 @@ class CLI (object):
     def parse_args(self):
         try:
             (self.options, self.args) = self.parser.parse_args()
-        # I don't agree with zero exit code from OptionParser for help/usage, and want UNKNOWN not CRITICAL(2) for switch misusage...
+        # I don't agree with zero exit code from OptionParser for help/usage,
+        # and want UNKNOWN not CRITICAL(2) for switch mis-usage...
         except SystemExit:
             sys.exit(ERRORS['UNKNOWN'])
         if self.options.help:
@@ -222,7 +229,7 @@ class CLI (object):
         if default_port != None:
             # assert isPort(default_port)
             if not isPort(default_port):
-              raise CodingErrorException('invalid default port supplied to add_hostoption()')
+                raise CodingErrorException('invalid default port supplied to add_hostoption()')
         (host_envs, default_host) = getenvs2('HOST', default_host, name)
         (port_envs, default_port) = getenvs2('PORT', default_port, name)
         self.parser.add_option('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs),
@@ -236,12 +243,12 @@ class CLI (object):
             name2 = "%s " % name
         (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
         (pw_envs, default_password) = getenvs2('PASSWORD', default_password, name)
-        self.parser.add_option('-u', '--user',     dest='user', help='%sUsername (%s)' % (name2, user_envs),
+        self.parser.add_option('-u', '--user', dest='user', help='%sUsername (%s)' % (name2, user_envs),
                                default=default_user)
         self.parser.add_option('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
                                default=default_password)
 
     # @abstractmethod
-    def run(self):
+    def run(self): # pylint: disable=no-self-use
         raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                                    ' You should have overridden this run() method in the client code')
