@@ -32,6 +32,7 @@ import os
 import signal
 import sys
 from optparse import OptionParser
+from optparse import SUPPRESS_HELP
 # Python 2.6+ only
 # from abc import ABCMeta, abstractmethod
 # inspect.getfile(inspect.currentframe()) # filename
@@ -129,6 +130,8 @@ class CLI (object):
                 log.setLevel(logging.DEBUG)
             elif verbose > 1:
                 log.setLevel(logging.INFO)
+            if self.options.debug:
+                log.setLevel(logging.DEBUG)
             log.info('verbose level: %s' % verbose)
             if self.timeout is not None:
                 log.debug('setting timeout alarm (%s)' % self.timeout)
@@ -180,7 +183,8 @@ class CLI (object):
         self.verbose_default = int(arg)
 
     def add_default_opts(self):
-        for o in ('--help', '--version', '--timeout', '--verbose'):
+        # TODO: why is this called twice to result in a problem without first removing flags?
+        for o in ('--help', '--version', '--timeout', '--verbose', '--debug'):
             try:
                 self.parser.remove_option(o)
             except ValueError:
@@ -195,8 +199,7 @@ class CLI (object):
         # this would intercept and return exit code 0
         # self.parser.add_option('-h', '--help', action='help')
         self.parser.add_option('-h', '--help', action='store_true', help='Show full help and exit')
-        # from optparse import SUPPRESS_HELP
-        # self.parser.add_option('--secret-mode', help=SUPPRESS_HELP)
+        self.parser.add_option('-D', '--debug', help=SUPPRESS_HELP)
 
     def parse_args(self):
         try:
