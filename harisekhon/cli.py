@@ -39,7 +39,7 @@ from optparse import SUPPRESS_HELP
 LIBDIR = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(LIBDIR)
 import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, CodingErrorException, ERRORS # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, CodingErrorException, ERRORS, quit # pylint: disable=wrong-import-position
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'

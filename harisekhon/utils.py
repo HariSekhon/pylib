@@ -152,7 +152,7 @@ def code_error(msg):
 
 def quit(status, msg=''): # pylint: disable=redefined-builtin
     """ Quit with status code from ERRORS dictionary after printing given msg """
-    status = str(status)
+    status = str(status).upper()
     if status not in ERRORS:
         warnings.warn("invalid status '%s' passed to quit() by caller '%s', defaulting to critical" \
                       % (status, get_caller()))
