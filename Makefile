@@ -30,7 +30,7 @@ make:
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
 	#$(SUDO2) pip install mock
-	pip install -r requirements.txt
+	$(SUDO2) pip install -r requirements.txt
 	# Python 2.4 - 2.6 backports
 	#$(SUDO2) pip install argparse
 	#$(SUDO2) pip install unittest2
@@ -39,7 +39,7 @@ make:
 	
 	#yum install -y perl-DBD-MySQL
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
-	pip install MySQL-python || :
+	$(SUDO2) pip install MySQL-python || :
 	
 	@echo
 	@echo PyLib BUILD SUCCESSFUL
