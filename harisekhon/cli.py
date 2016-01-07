@@ -205,7 +205,7 @@ class CLI(object):
         # this would intercept and return exit code 0
         # self.parser.add_option('-h', '--help', action='help')
         self.parser.add_option('-h', '--help', action='store_true', help='Show full help and exit')
-        self.parser.add_option('-D', '--debug', help=SUPPRESS_HELP)
+        self.parser.add_option('-D', '--debug', action='store_true', help=SUPPRESS_HELP)
 
     def parse_args(self):
         try:
