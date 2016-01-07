@@ -149,7 +149,7 @@ class CLI(object):
             self.run()
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
-            print('Caught control-c...')
+            print('Caught control-c...') # pragma: no cover
 
     def usage(self, msg='', status='UNKNOWN'):
         if msg:

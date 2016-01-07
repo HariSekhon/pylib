@@ -74,10 +74,12 @@ class test_cli(unittest.TestCase):
         # set_verbose() won't work because parse args resets it so we change verbose_default instead
         c.main()
         c.set_verbose_default(2)
+        self.assertEqual(c.get_verbose_default(), 2)
         c.main()
         c.set_verbose_default(3)
         c.main()
         c.set_verbose(0)
+        self.assertEqual(c.get_verbose(), 0)
         try:
             c.set_verbose(None)
             raise Exception('failed to raise CodingErrorException when calling set_verbose(None)')
@@ -122,6 +124,8 @@ class test_cli(unittest.TestCase):
             pass
         c.main()
 
+        c.set_timeout(22)
+        self.assertEqual(c.get_timeout(), 22)
         try:
             c.set_timeout('a')
             raise Exception('failed to raise CodingErrorException for CLU.set_timeout(a)')
@@ -129,6 +133,7 @@ class test_cli(unittest.TestCase):
             pass
 
         c.set_timeout_default(9)
+        self.assertEqual(c.get_timeout_default(), 9)
         c.set_timeout_default(None)
         c.main()
         try:
