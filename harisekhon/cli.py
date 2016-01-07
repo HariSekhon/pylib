@@ -23,7 +23,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
+# from __future__ import unicode_literals
 
 # import inspect
 import logging
@@ -163,11 +163,17 @@ class CLI(object):
     def add_options(self):
         pass
 
+    def get_timeout(self):
+        return self.timeout
+
     def set_timeout(self, secs):
         if not isInt(secs):
             raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
         log.debug('setting timeout to %s secs', secs)
         self.timeout = secs
+
+    def get_timeout_default(self):
+        return self.timeout_default
 
     # None prevents --timeout switch becoming exposed, whereas 0 will allow
     def set_timeout_default(self, secs):
@@ -176,11 +182,17 @@ class CLI(object):
         log.debug('setting default timeout to %s secs', secs)
         self.timeout_default = secs
 
+    def get_verbose(self):
+        return self.verbose
+
     def set_verbose(self, arg):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose(), must be an integer')
         log.debug('setting verbose to %s', arg)
         self.verbose = int(arg)
+
+    def get_verbose_default(self):
+        return self.verbose_default
 
     def set_verbose_default(self, arg):
         if not isInt(arg):
