@@ -20,7 +20,7 @@ cd "$srcdir/..";
 
 . ./tests/utils.sh
 
-for x in $(find . -iname '*.py' -o -iname '*.jy'); do
+for x in ${@:-$(find . -iname '*.py' -o -iname '*.jy')}; do
     isExcluded "$x" && continue
     if which pylint &>/dev/null; then
         echo "pylint -E $x"
