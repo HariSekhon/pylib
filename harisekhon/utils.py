@@ -407,7 +407,7 @@ def log_jython_exception():
     _ = get_jython_exception()
     log.error('Error: %s', _)
     if isJavaOOM(_):
-        log.error(java_oom_fix_msg())
+        log.error(java_oom_fix_msg()) # pragma: nocover
 
 
 def isJavaOOM(arg):
@@ -870,7 +870,7 @@ def isIP(arg):
     for octet in octets:
         octet = int(octet)
         if int(octet) < 0 or int(octet) > 255:
-            return False
+            return False # pragma: no cover
     return True
 
 
@@ -1051,7 +1051,7 @@ def getPythonVersion():
     if _:
         # regex matched so no NumberFormatException on float cast
         return float(_.group(1))
-    raise Exception("couldn't determine Python version!")
+    raise Exception("couldn't determine Python version!") # pragma: no cover
 
 
 def isPythonVersion(expected):
@@ -1897,7 +1897,7 @@ def pyspark_path():
         # more abstract without version number but not available in spark bin download
         #sys.path.append(os.path.join(spark_home, 'python/build'))
         for _ in glob.glob(os.path.join(spark_home, 'python/lib/py4j-*-src.zip')):
-            sys.path.append(_)
+            sys.path.append(_) # pragma: no cover
     else:
         warn("SPARK_HOME not set - probably won't find PySpark libs")
 

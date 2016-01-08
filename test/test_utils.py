@@ -504,6 +504,7 @@ class test_utils(unittest.TestCase):
     def test_isCodeStr(self):
         self.assertTrue(isCodeStr('print(test)'))
         self.assertFalse(isCodeStr('print(test'))
+        self.assertFalse(isCodeStr(None))
 
     def test_isCollection(self):
         self.assertTrue(isCollection('students.grades'))
@@ -1806,11 +1807,25 @@ class test_utils(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-    def test_validate_files_exception_nonlist(self):
+    def test_validate_files_exception_empty(self):
         try:
             validate_files(set())
             raise Exception('validate_files() failed to raise exception for set()')
         except InvalidOptionException:
+            pass
+
+    def test_validate_files_exception_nonlist(self):
+        try:
+            validate_files(set([1,2,3]))
+            raise Exception('validate_files() failed to raise exception for set(1,2,3)')
+        except CodingErrorException:
+            pass
+
+    def test_validate_files_exception_int(self):
+        try:
+            validate_files(1)
+            raise Exception('validate_files(1) failed to raise exception')
+        except CodingErrorException:
             pass
 
 # ============================================================================ #
