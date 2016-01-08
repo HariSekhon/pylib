@@ -14,7 +14,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
+# from __future__ import unicode_literals
 
 import ast
 import collections
@@ -485,8 +485,8 @@ def list_sort_dicts_by_value(my_list, key):
 
 _tlds = set()
 
-def _load_tlds(file):
-    _ = open(file)
+def _load_tlds(filename):
+    _ = open(filename)
     tld_count = 0
     re_blank = re.compile(r'^\s*$')
     re_alnum_dash = re.compile('^[A-Za-z0-9-]+$')
@@ -499,8 +499,8 @@ def _load_tlds(file):
             _tlds.add(line)
             tld_count += 1
         else:
-            warnings.warn("TLD: '%s' from tld file '%s' not validated, skipping that TLD" % (line, file))
-    log.debug("loaded %s TLDs from file '%s'", tld_count, file)
+            warnings.warn("TLD: '%(line)s' from tld file '%(filename)s' not validated, skipping that TLD" % locals())
+    log.debug("loaded %(tld_count)s TLDs from file '%(filename)s'")
 
 _tld_file = libdir + '/resources/tlds-alpha-by-domain.txt'
 _load_tlds(_tld_file)
@@ -1589,8 +1589,8 @@ def validate_files(arg, name=''):
     # files = list(itertools.chain(*[str(x).split(',') for x in files]))
     # custom flatten def
     # consider def to split if isStr
-    files = flatten([split_if_str(x, ',') for x in files])
-    files = list(files)
+    files2 = flatten([split_if_str(x, ',') for x in files])
+    files = list(files2)
     for _ in files:
         validate_file(_, name, False)
     vlog_option('files', files)
@@ -1601,7 +1601,7 @@ def validate_float(arg, name, my_min, my_max):
     if not name:
         code_error('no name passed for second arg to validate_float()')
     if arg is None:
-        raise InvalidOptionException('%s not defined' % name)
+        raise InvalidOptionException('%(name)s not defined' % locals())
     if isFloat(arg, allow_negative=True):
         arg = float(arg)
         try:
@@ -1612,8 +1612,9 @@ def validate_float(arg, name, my_min, my_max):
         if arg >= my_min and arg <= my_max:
             vlog_option(name, arg)
             return True
-        raise InvalidOptionException('invalid %s defined: must be real number between %s and %s' % (name, my_min, my_max))
-    raise InvalidOptionException('invalid %s defined: must be a real number' % name)
+        raise InvalidOptionException('invalid %(name)s defined: must be real number between %(my_min)s and %(my_max)s' \
+                                     % locals())
+    raise InvalidOptionException('invalid %(name)s defined: must be a real number' % locals())
 
 
 def validate_fqdn(arg, name=''):
@@ -1986,31 +1987,6 @@ def pyspark_path():
 #class NagiosTester(object):
 #    """Holds state for the Nagios test"""
 #
-#    def __init__(self):
-#        """Initializes all variables to their default states"""
-#
-#        try:
-#            from subprocess import Popen, PIPE, STDOUT
-#        except ImportError:
-#            print "UNKNOWN: Failed to import python subprocess module.",
-#            print "Perhaps you are using a version of python older than 2.4?"
-#            sys.exit(CRITICAL)
-#
-#        self.server     = ""
-#        self.timeout    = DEFAULT_TIMEOUT
-#        self.verbosity  = 0
-#
-#
-#    def validate_variables(self):
-#        """Runs through the validation of all test variables
-#        Should be called before the main test to perform a sanity check
-#        on the environment and settings"""
-#
-#        self.validate_host()
-#        self.validate_timeout()
-#
-#
-#
 #    def validate_timeout(self):
 #        """Exits with an error if the timeout is not valid"""
 #
@@ -2026,75 +2002,3 @@ def pyspark_path():
 #
 #        if self.verbosity is None:
 #            self.verbosity = 0
-#
-#
-#    def run(self, cmd):
-#        """runs a system command and returns a tuple containing
-#        the return code and the output as a single text block"""
-#
-#        if cmd == "" or cmd is None:
-#            end(UNKNOWN, "Internal python error - " \
-#                       + "no cmd supplied for run function")
-#
-#        self.vprint(3, "running command: %s" % cmd)
-#
-#        try:
-#            process = Popen( cmd.split(),
-#                             shell=False,
-#                             stdin=PIPE,
-#                             stdout=PIPE,
-#                             stderr=STDOUT )
-#        except OSError, error:
-#            error = str(error)
-#            if error == "No such file or directory":
-#                end(UNKNOWN, "Cannot find utility '%s'" % cmd.split()[0])
-#            else:
-#                end(UNKNOWN, "Error trying to run utility '%s' - %s" \
-#                                                      % (cmd.split()[0], error))
-#
-#        stdout, stderr = process.communicate()
-#
-#        if stderr is None:
-#            pass
-#
-#        returncode = process.returncode
-#        self.vprint(3, "Returncode: '%s'\nOutput: '%s'" % (returncode, stdout))
-#
-#        if stdout is None or stdout == "":
-#            end(UNKNOWN, "No output from utility '%s'" % cmd.split()[0])
-#
-#        return (returncode, str(stdout))
-#
-#
-#    def set_timeout(self):
-#        """Sets an alarm to time out the test"""
-#
-#        if self.timeout == 1:
-#            self.vprint(2, "setting plugin timeout to 1 second")
-#        else:
-#            self.vprint(2, "setting plugin timeout to %s seconds"\
-#                                                                % self.timeout)
-#
-#        signal.signal(signal.SIGALRM, self.sighandler)
-#        signal.alarm(self.timeout)
-#
-#
-#    def sighandler(self, discarded, discarded2):
-#        """Function to be called by signal.alarm to kill the plugin"""
-#
-#        # Nop for these variables
-#        discarded = discarded2
-#        discarded2 = discarded
-#
-#        if self.timeout == 1:
-#            timeout = "(1 second)"
-#        else:
-#            timeout = "(%s seconds)" % self.timeout
-#
-#        if CHECK_NAME == "" or CHECK_NAME is None:
-#            check_name = ""
-#        else:
-#            check_name = CHECK_NAME.lower().strip() + " "
-#
-#        end(CRITICAL, "%splugin has self terminated after " % check_name
-#                    + "exceeding the timeout %s" % timeout)

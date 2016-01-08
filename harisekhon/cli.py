@@ -40,7 +40,7 @@ libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 import harisekhon # pylint: disable=wrong-import-position
 from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, CodingErrorException, ERRORS, qquit # pylint: disable=wrong-import-position
-from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
+from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version, plural  # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.7.0'
@@ -112,9 +112,6 @@ class CLI(object):
     # def setup(self):
     #     pass
 
-    def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
-        qquit('UNKNOWN', 'self timed out after %d seconds' % self.timeout)
-
     def main(self):
         log.debug('running main()')
         self.add_options()
@@ -162,6 +159,9 @@ class CLI(object):
     # @abstractmethod
     def add_options(self):
         pass
+
+    def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
+        qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
 
     def get_timeout(self):
         return self.timeout
