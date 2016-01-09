@@ -132,9 +132,24 @@ class test_cli(unittest.TestCase):
         except CodingErrorException:
             pass
 
+        c.set_timeout_max(5)
+        try:
+            c.set_timeout(6)
+            raise Exception('failed to raise InvalidOptionException when setting timeout higher than max')
+        except InvalidOptionException:
+            pass
+        c.set_timeout_max(None)
+        c.set_timeout_default(999999)
         c.set_timeout_default(9)
         self.assertEqual(c.get_timeout_default(), 9)
         c.set_timeout_default(None)
+        c.set_timeout_max(10)
+        try:
+            c.set_timeout_default(11)
+            raise Exception('failed to raise exception on CLI.set_timeout_default() > max')
+        except CodingErrorException:
+            pass
+        self.assertEqual(c.get_timeout_default(), None)
         c.main()
         try:
             c.set_timeout_default('a')
