@@ -39,8 +39,9 @@ from optparse import SUPPRESS_HELP
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, CodingErrorException, ERRORS, qquit # pylint: disable=wrong-import-position
-from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version, plural  # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, plural                     # pylint: disable=wrong-import-position
+from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit             # pylint: disable=wrong-import-position
+from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.7.0'
@@ -144,6 +145,8 @@ class CLI(object):
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
+        except InvalidOptionException as _:
+            self.usage(_)
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
             print('Caught control-c...') # pragma: no cover
