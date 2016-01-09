@@ -44,7 +44,7 @@ from harisekhon.utils import CodingErrorException, InvalidOptionException, ERROR
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.7.0'
+__version__ = '0.7.1'
 
 class CLI(object):
     """
@@ -70,6 +70,7 @@ class CLI(object):
         self.verbose_default = 0
         self.timeout = None
         self.timeout_default = 10
+        self.timeout_max = 86400
         self.topfile = get_topfile()
         # this gets utrunner.py in PyCharm and runpy.py
         # print('topfile = %s' % self.topfile)
@@ -114,8 +115,11 @@ class CLI(object):
 
     def main(self):
         log.debug('running main()')
-        self.add_options()
-        self.add_default_opts()
+        try:
+            self.add_options()
+            self.add_default_opts()
+        except InvalidOptionException as _:
+            self.usage(_)
         try:
             self.parse_args()
             # broken
@@ -137,7 +141,7 @@ class CLI(object):
                 log.setLevel(logging.DEBUG)
             log.info('verbose level: %s', verbose)
             if self.timeout is not None:
-                validate_int(self.timeout, 'timeout', 0, 86400)
+                validate_int(self.timeout, 'timeout', 0, self.timeout_max)
                 log.debug('setting timeout alarm (%s)', self.timeout)
                 signal.signal(signal.SIGALRM, self.timeout_handler)
                 signal.alarm(int(self.timeout))
@@ -173,6 +177,7 @@ class CLI(object):
     def set_timeout(self, secs):
         if not isInt(secs):
             raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
+        validate_int(secs, 'timeout', 0, self.get_timeout_max())
         log.debug('setting timeout to %s secs', secs)
         self.timeout = secs
 
@@ -181,10 +186,25 @@ class CLI(object):
 
     # None prevents --timeout switch becoming exposed, whereas 0 will allow
     def set_timeout_default(self, secs):
-        if secs is not None and not isInt(secs):
-            raise CodingErrorException('invalid timeout passed to set_timeout_default(), must be an integer representing seconds') # pylint: disable=line-too-long
+        if secs is not None:
+            if not isInt(secs):
+                raise CodingErrorException('invalid timeout passed to set_timeout_default(), must be an integer representing seconds') # pylint: disable=line-too-long
+            # validate_int(secs, 'timeout default', 0, self.timeout_max)
+            if self.get_timeout_max() is not None and secs > self.get_timeout_max():
+                raise CodingErrorException('set default timeout > timeout max')
         log.debug('setting default timeout to %s secs', secs)
         self.timeout_default = secs
+
+    def get_timeout_max(self):
+        return self.timeout_max
+
+    def set_timeout_max(self, secs):
+        if secs is not None and not isInt(secs):
+            raise CodingErrorException('invalid timeout max passed to set_timeout_max(), must be an integer representing seconds') # pylint: disable=line-too-long
+        # leave this to be able to set max to any amount
+        # validate_int(secs, 'timeout default', 0, self.timeout_max)
+        log.debug('setting max timeout to %s secs', secs)
+        self.timeout_max = secs
 
     def get_verbose(self):
         return self.verbose
