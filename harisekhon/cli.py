@@ -138,7 +138,7 @@ class CLI(object):
             elif verbose > 1:
                 log.setLevel(logging.INFO)
             if self.options.debug:
-                log.setLevel(logging.DEBUG)
+                log.setLevel(logging.DEBUG) # pragma: no cover
             log.info('verbose level: %s', verbose)
             if self.timeout is not None:
                 validate_int(self.timeout, 'timeout', 0, self.timeout_max)
@@ -150,7 +150,7 @@ class CLI(object):
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
         except InvalidOptionException as _:
-            self.usage(_)
+            self.usage(_) # pragma: no cover
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
             print('Caught control-c...') # pragma: no cover
