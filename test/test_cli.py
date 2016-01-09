@@ -138,6 +138,11 @@ class test_cli(unittest.TestCase):
             raise Exception('failed to raise InvalidOptionException when setting timeout higher than max')
         except InvalidOptionException:
             pass
+        try:
+            c.set_timeout_max('a')
+            raise Exception('failed to raise CodingErrorException for set_timeout_max(a)')
+        except CodingErrorException:
+            pass
         c.set_timeout_max(None)
         c.set_timeout_default(999999)
         c.set_timeout_default(9)
