@@ -38,7 +38,7 @@ def main():
     cov = coverage.Coverage()
     cov.start()
 
-    
+
 
     cov.stop()
     cov.save()
