@@ -285,6 +285,6 @@ class CLI(object):
                                default=default_password)
 
     @abstractmethod
-    def run(self): # pylint: disable=no-self-use
+    def run(self): # pragma: no cover
         raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                                    ' You should have overridden this run() method in the client code')
