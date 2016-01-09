@@ -228,21 +228,21 @@ class test_cli(unittest.TestCase):
         # except CodingErrorException, e:
         #     pass
 
-    # disabled abstract enforcement as it's Python 2.6+ only
-    # but base class exits 2 in run() so can catch that too
     def test_CLI_abstract(self):
         try:
             c = CLI()
-            c.main()
             raise Exception('failed to raise a TypeError when attempting to instantiate abstract class CLI')
-        except TypeError:
+        except TypeError as _:
+            # print('caught TypeError when running CLI.main(): %s' % _)
             pass
-        except CodingErrorException as e:
-            if not re.search('abstract', str(e)):
-                raise Exception('raised CodingErrorException from CLI.main() but message mismatch')
-        except SystemExit as e:
-            if e.code != 3:
-                raise Exception('wrong exit code != 3 when exiting main() from base class CLI')
+        # except CodingErrorException as _:
+        #     if not re.search('abstract', str(_)):
+        #         raise Exception('raised CodingErrorException from CLI.main() but message mismatch')
+        # disabled abstract enforcement as it's Python 2.6+ only
+        # but base class exits 3 in run() so can catch that too
+        # except SystemExit as e:
+        #     if e.code != 3:
+        #         raise Exception('wrong exit code != 3 when exiting main() from base class CLI')
 
 
 def main():
