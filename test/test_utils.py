@@ -240,12 +240,18 @@ class test_utils(unittest.TestCase):
             raise Exception('getenvs failed to raise CodingErrorException for None prefix')
         except CodingErrorException:
             pass
+        try:
+            getenvs('PATH', '', prefix=1)
+            raise Exception('getenvs failed to raise CodingErrorException for prefix=1')
+        except CodingErrorException:
+            pass
 
     def test_getenvs2(self):
         (helpstring, result) = getenvs2('HOST', 'myDefault', 'NonExistent')
         self.assertEqual(helpstring, '$NONEXISTENT_HOST, $HOST, default: myDefault')
         self.assertEqual(result, 'myDefault')
         (helpstring, result) = getenvs2('PASSWORD', 'mysecret', 'NonExistent')
+        (helpstring, result) = getenvs2(['PASS', 'PASSWORD'], 'mysecret', 'NonExistent')
         self.assertEqual(helpstring, '$NONEXISTENT_PASSWORD, $PASSWORD, default: ******')
         self.assertEqual(result, 'mysecret')
         try:
