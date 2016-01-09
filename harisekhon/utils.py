@@ -44,7 +44,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.0'
+__version__ = '0.10.1'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1663,15 +1663,18 @@ def validate_int(arg, name, my_min, my_max):
     if isInt(arg, allow_negative=True):
         arg = int(arg)
         try:
-            my_min = int(my_min)
-            my_max = int(my_max)
+            if my_min is not None:
+                my_min = int(my_min)
+            if my_max is not None:
+                my_max = int(my_max)
         except ValueError as _:
             code_error('invalid my_min/my_max (%(my_min)s/%(my_max)s) passed to validate_int(): %(_)s' % locals())
-        if arg >= my_min and arg <= my_max:
-            vlog_option(name, arg)
-            return True
-        raise InvalidOptionException('invalid %(name)s defined: must be real number between %(my_min)s and %(my_max)s'\
-                                     % locals())
+        if my_min is not None and arg < my_min:
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(arg)s" % locals())
+        if my_max is not None and arg > my_max:
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be greater than %(arg)s" % locals()) # pylint: disable=line-too-long
+        vlog_option(name, arg)
+        return True
     raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be a real number" % locals())
 
 
