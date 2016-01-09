@@ -248,11 +248,11 @@ class CLI(object):
             (self.options, self.args) = self.parser.parse_args()
         # I don't agree with zero exit code from OptionParser for help/usage,
         # and want UNKNOWN not CRITICAL(2) for switch mis-usage...
-        except SystemExit:
+        except SystemExit: # pragma: no cover
             sys.exit(ERRORS['UNKNOWN'])
-        if self.options.help:
+        if self.options.help: # pragma: no cover
             self.usage()
-        if self.options.version:
+        if self.options.version: # pragma: no cover
             print('%(version)s' % self.__dict__)
             sys.exit(ERRORS['UNKNOWN'])
         self.timeout = self.options.timeout
