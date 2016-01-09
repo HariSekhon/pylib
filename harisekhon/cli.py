@@ -39,7 +39,7 @@ from optparse import SUPPRESS_HELP
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, plural                     # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, validate_int, plural       # pylint: disable=wrong-import-position
 from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit             # pylint: disable=wrong-import-position
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
@@ -138,6 +138,7 @@ class CLI(object):
                 log.setLevel(logging.DEBUG)
             log.info('verbose level: %s', verbose)
             if self.timeout is not None:
+                validate_int(self.timeout, 'timeout', 0, 86400)
                 log.debug('setting timeout alarm (%s)', self.timeout)
                 signal.signal(signal.SIGALRM, self.timeout_handler)
                 signal.alarm(int(self.timeout))
