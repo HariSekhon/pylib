@@ -170,6 +170,15 @@ class test_cli(unittest.TestCase):
             if e.code != 3:
                 raise Exception('wrong exit code != 3 when self timing out CLI')
 
+        def raise_invalidoptionexception():
+            raise InvalidOptionException('test')
+        c.add_options = raise_invalidoptionexception
+        try:
+            c.main()
+        except SystemExit as _:
+            if _.code != 3:
+                raise Exception('failed to trap and re-throw InvalidOptionException in CLI main as SystemExit (usage)')
+
         # c._env_var('', 'test')
         # try:
         #     c._env_var(None, 1)
