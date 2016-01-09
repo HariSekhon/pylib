@@ -33,7 +33,7 @@ import sys
 from optparse import OptionParser
 from optparse import SUPPRESS_HELP
 # Python 2.6+ only
-# from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 libdir = os.path.join(os.path.dirname(__file__), '..')
@@ -52,8 +52,7 @@ class CLI(object):
     """
     __version__ = __version__
     # abstract class
-    # __metaclass__ = ABCMeta
-    # run() method also be annotated as @abstractmethod
+    __metaclass__ = ABCMeta
 
     # class level attributes go here, can still use self
     # should only be 1 CLI per program
@@ -160,6 +159,7 @@ class CLI(object):
         self.parser.print_help()
         qquit(status)
 
+    # leave this as optional as some cli tools may not need to add additional options
     # @abstractmethod
     def add_options(self):
         pass
@@ -264,7 +264,7 @@ class CLI(object):
         self.parser.add_option('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
                                default=default_password)
 
-    # @abstractmethod
+    @abstractmethod
     def run(self): # pylint: disable=no-self-use
         raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                                    ' You should have overridden this run() method in the client code')
