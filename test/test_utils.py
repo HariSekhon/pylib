@@ -2003,6 +2003,8 @@ class test_utils(unittest.TestCase):
         self.assertTrue(validate_int(-6,'minus-six', -6, 0))
         self.assertTrue(validate_int(2,'two', 0, 10))
         self.assertTrue(validate_int(6,'six', 5, 7))
+        self.assertTrue(validate_int(90000,'big positive with None boundary', 9999, None))
+        self.assertTrue(validate_int(-100000,'big negative with None boundary', None, -9999))
 
     def test_validate_int_exception_noname(self):
         try:
@@ -2649,4 +2651,4 @@ def main():
     #unittest2.main(verbosity=2)
 
 if __name__ == '__main__':
-    test_utils.main()
+    main()
