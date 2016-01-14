@@ -40,10 +40,8 @@ make:
 	#yum install -y perl-DBD-MySQL
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
 	$(SUDO2) pip install MySQL-python || :
-	
 	@echo
 	@echo PyLib BUILD SUCCESSFUL
-
 
 .PHONY: apt-packages
 apt-packages:
@@ -52,7 +50,6 @@ apt-packages:
 	# for mysql_config to build MySQL-python
 	$(SUDO) apt-get install -y libmysqlclient-dev || :
 	dpkg -l python-setuptools python-dev &>/dev/null || $(SUDO) apt-get install -y python-setuptools python-dev || :
-
 
 .PHONY: yum-packages
 yum-packages:
@@ -64,7 +61,6 @@ yum-packages:
 	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel
 	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel
 	#rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
-
 
 .PHONY: test
 test:
@@ -87,17 +83,15 @@ test2:
 install:
 	@echo "No installation needed, just add '$(PWD)' to your \$$PATH"
 
-
 .PHONY: update
 update:
 	git pull
 	make
 
-
+.PHONY: tld
 tld:
 	wget -O resources/tlds-alpha-by-domain.txt http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 
-
-PHONY: clean
+.PHONY: clean
 clean:
 	@find . -maxdepth 3 -iname '*.pyc' -o -iname '*.jyc' | xargs rm -v
