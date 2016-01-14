@@ -25,8 +25,7 @@ import time
 import unittest
 from optparse import OptionConflictError
 # inspect.getfile(inspect.currentframe()) # filename
-# libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../'))
-libdir = os.path.dirname(__file__).rsplit('test')[0]
+libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 from harisekhon.utils import *
 from harisekhon import CLI

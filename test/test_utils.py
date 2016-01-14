@@ -25,8 +25,7 @@ import unittest
 #import unittest2
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
-
-libdir = os.path.join(os.path.dirname(__file__), '..')
+libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 from harisekhon import utils
 from harisekhon.utils import *
