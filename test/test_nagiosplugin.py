@@ -76,10 +76,11 @@ class test_NagiosPlugin(unittest.TestCase):
         self.assertFalse(c.is_unknown())
 
         try:
+            c.critical()
             c.main()
         except SystemExit as _:
-            if _.code != 3:
-                raise Exception('NagiosPlugin failed to exit UNKNOWN')
+            if _.code != 2:
+                raise Exception('NagiosPlugin failed to exit CRITICAL')
 
     def test_NagiosPlugin_abstract(self):
         try:

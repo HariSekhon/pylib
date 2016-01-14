@@ -83,4 +83,4 @@ class NagiosPlugin(CLI):
         pass
 
     def end(self):
-        qquit('UNKNOWN', '%s (FELL OFF END OF PLUGIN)' % self.msg)
+        qquit(self.status, self.msg)
