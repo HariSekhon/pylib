@@ -8,7 +8,8 @@
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
-#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help improve or steer this or other code I publish
+#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
+#  to help improve or steer this or other code I publish
 #
 #  http://www.linkedin.com/in/harisekhon
 #
@@ -20,9 +21,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from harisekhon.utils import *
-# enables 'from HariSekhon import CLI'
+# from harisekhon.utils import *
+# enables 'from harisekhon import CLI'
 from harisekhon.cli import CLI
+# enables 'from harisekhon import NagiosPlugin'
+from harisekhon.nagiosplugin import NagiosPlugin
 
-# pulls submodules in to 'from com.linkedin.harisekhon import *'
+# pulls submodules in to 'from harisekhon import *'
 # __all__ = [ 'submodule1', 'submodule2' ]
