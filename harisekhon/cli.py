@@ -109,12 +109,12 @@ class CLI(object):
         # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
         # self.setup()
 
-    # @abstractmethod
-    # def setup(self):
-    #     pass
+    def setup(self):
+        pass
 
     def main(self):
         log.debug('running main()')
+        self.setup()
         try:
             self.add_options()
             self.add_default_opts()
@@ -149,6 +149,7 @@ class CLI(object):
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
+            self.end()
         except InvalidOptionException as _:
             self.usage(_) # pragma: no cover
         except KeyboardInterrupt:
@@ -288,3 +289,6 @@ class CLI(object):
     def run(self): # pragma: no cover
         raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                                    ' You should have overridden this run() method in the client code')
+
+    def end(self):
+        pass
