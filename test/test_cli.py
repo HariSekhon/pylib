@@ -230,7 +230,7 @@ class test_cli(unittest.TestCase):
 
     def test_CLI_abstract(self):
         try:
-            c = CLI()
+            c = CLI() # pylint: disable=abstract-class-instantiated
             raise Exception('failed to raise a TypeError when attempting to instantiate abstract class CLI')
         except TypeError as _:
             # print('caught TypeError when running CLI.main(): %s' % _)
