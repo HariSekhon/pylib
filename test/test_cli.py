@@ -253,7 +253,7 @@ def main():
     # verbosity Python >= 2.7
     #unittest.main(verbosity=2)
     log.setLevel(logging.DEBUG)
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestCLI)
+    suite = unittest.TestLoader().loadTestsFromTestCase(CLITester)
     unittest.TextTestRunner(verbosity=2).run(suite)
 
 if __name__ == '__main__':
