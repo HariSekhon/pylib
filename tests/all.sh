@@ -38,3 +38,5 @@ for script in $(find . -name 'test*.sh'); do
 done
 
 #./help.sh
+
+./travis.sh
