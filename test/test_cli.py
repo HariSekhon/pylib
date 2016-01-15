@@ -33,7 +33,7 @@ from harisekhon import CLI # pylint: disable=wrong-import-position
 
 class TestCLI(unittest.TestCase):
 
-    # XXX: must prefix with test_ in order for the tests to be called
+    # must prefix with test_ in order for the tests to be called
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
