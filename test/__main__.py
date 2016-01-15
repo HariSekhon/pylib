@@ -44,9 +44,9 @@ def main():
         # if subprocess.call(['python', x]):
         #     sys.exit(2)
         # subprocess.check_call(['python', x])
-    from test.test_utils import *
+    from test.test_utils import main
     main()
-    from test.test_cli import *
+    from test.test_cli import main
     main()
 
 if __name__ == '__main__':
