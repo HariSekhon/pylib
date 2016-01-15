@@ -31,7 +31,7 @@ sys.path.append(libdir)
 from harisekhon.utils import CodingErrorException, InvalidOptionException, log # pylint: disable=wrong-import-position
 from harisekhon import CLI # pylint: disable=wrong-import-position
 
-class TestCLI(unittest.TestCase):
+class CLITester(unittest.TestCase):
 
     # must prefix with test_ in order for the tests to be called
 
