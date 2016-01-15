@@ -25,7 +25,7 @@ import sys
 import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon.utils import ERRORS, log
+from harisekhon.utils import ERRORS, log, CodingErrorException
 from harisekhon import NagiosPlugin
 
 class test_NagiosPlugin(unittest.TestCase):
@@ -44,7 +44,7 @@ class test_NagiosPlugin(unittest.TestCase):
         c = self.SubNagiosPlugin()
 
         self.assertTrue(c.is_unknown())
-        c.status = 'OK'
+        c.ok()
         self.assertTrue(c.is_ok())
         self.assertFalse(c.is_warning())
         self.assertFalse(c.is_critical())
@@ -74,6 +74,11 @@ class test_NagiosPlugin(unittest.TestCase):
         self.assertFalse(c.is_ok())
         self.assertFalse(c.is_warning())
         self.assertFalse(c.is_unknown())
+
+        try:
+            c.set_status('invalidstatus')
+        except CodingErrorException:
+            pass
 
         try:
             c.critical()
