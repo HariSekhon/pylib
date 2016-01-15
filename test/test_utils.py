@@ -23,19 +23,19 @@ import os
 import sys
 import unittest
 # unittest2 from pypi works for Python 2.4-2.6
-#import unittest2
+# import unittest2
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon import utils # pylint: disable=wrong-import-position
-from harisekhon.utils import * # pylint: disable=wrong-import-position,wildcard-import,unused-wildcard-import
+from harisekhon import utils  # pylint: disable=wrong-import-position
+from harisekhon.utils import *  # pylint: disable=wrong-import-position,wildcard-import,unused-wildcard-import
+
 
 # pylint: disable=invalid-name,no-self-use
 
-#class test_HariSekhonUtils(unittest2.TestCase):
+# class test_HariSekhonUtils(unittest2.TestCase):
 class UtilsTester(unittest.TestCase):
-
     # must prefix with test_ in order for the tests to be called
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
@@ -45,9 +45,9 @@ class UtilsTester(unittest.TestCase):
     libfile = os.path.join(libdir, 'harisekhon', 'utils.py')
     myList = [1, 2, 3]
     myTuple = (1, 2, 3)
-    myDict = {'one': 1, 'two': 2, 'three':3}
+    myDict = {'one': 1, 'two': 2, 'three': 3}
     jsondata = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
-    jsondata_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } ' # missing closing brace intentionally
+    jsondata_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } '  # missing closing brace intentionally
     yamldata = open(os.path.join(libdir, 'test', 'test.yaml')).read()
     yamldata_simple = 'name:    Hari Sekhon'
     yamldata_broken_tab = 'name:\tHari Sekhon'
@@ -57,7 +57,7 @@ class UtilsTester(unittest.TestCase):
         log.setLevel(logging.DEBUG)
         # pass
 
-    #def runTest(self):
+    # def runTest(self):
 
     def test_logger_trace(self):
         log.setLevel(TRACE)
@@ -83,57 +83,57 @@ class UtilsTester(unittest.TestCase):
             die('test')
             raise Exception('failed to raise SystemExit exception from die(test)')
         except SystemExit as _:
-            if  _.code != 2:
-                raise Exception("incorrect exit code '%s' raised by die(test)" %  _.code)
-            # also gives 2 not 'test'
-            # if  _.message != 'test':
-            #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
+            if _.code != 2:
+                raise Exception("incorrect exit code '%s' raised by die(test)" % _.code)
+                # also gives 2 not 'test'
+                # if  _.message != 'test':
+                #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 4)
             raise Exception('failed to raise SystemExit exception from die(test, 4)')
         except SystemExit as _:
-            if  _.code != 4:
-                raise Exception("incorrect exit code '%s' raised by die(test, 4)" %  _.code)
-            # also gives 2 not 'test'
-            # if  _.message != 'test':
-            #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
+            if _.code != 4:
+                raise Exception("incorrect exit code '%s' raised by die(test, 4)" % _.code)
+                # also gives 2 not 'test'
+                # if  _.message != 'test':
+                #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 5 + 256)
             raise Exception('failed to raise SystemExit exception from die(test, 5 + 256)')
         except SystemExit as _:
-            if  _.code != 5:
-                raise Exception("incorrect exit code '%s' raised by die(test, 5 + 256)" %  _.code)
-            # also gives 2 not 'test'
-            # if  _.message != 'test':
-            #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
+            if _.code != 5:
+                raise Exception("incorrect exit code '%s' raised by die(test, 5 + 256)" % _.code)
+                # also gives 2 not 'test'
+                # if  _.message != 'test':
+                #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 'UNKNOWN')
             raise Exception('failed to raise SystemExit exception from die(test, UNKNOWN)')
         except SystemExit as _:
-            if  _.code != 3:
-                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" %  _.code)
+            if _.code != 3:
+                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % _.code)
         try:
             die('test', 'unrecognized_status')
             raise Exception('failed to raise SystemExit exception from die(test, unrecognized_status)')
         except SystemExit as _:
-            if  _.code != 2:
-                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" %  _.code)
+            if _.code != 2:
+                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % _.code)
 
     def test_qquit(self):
         try:
             qquit('UNKNOWN', 'test')
             raise Exception('failed to raise SystemExit exception from qquit(UNKNOWN, test)')
         except SystemExit as _:
-            if  _.code != 3:
-                raise Exception("incorrect exit code '%s' raised by qquit(UNKNOWN, test)" %  _.code)
+            if _.code != 3:
+                raise Exception("incorrect exit code '%s' raised by qquit(UNKNOWN, test)" % _.code)
 
     def test_qquit_wrong_status(self):
         try:
             qquit('wrongstatus', 'test')
             raise Exception('failed to raise SystemExit exception from qquit(wrongstatus, test)')
         except SystemExit as _:
-            if  _.code != 2:
-                raise Exception("incorrect exit code '%s' raised by qquit(wrongstatus, test)" %  _.code)
+            if _.code != 2:
+                raise Exception("incorrect exit code '%s' raised by qquit(wrongstatus, test)" % _.code)
 
     def test_usage(self):
         from optparse import OptionParser
@@ -142,20 +142,20 @@ class UtilsTester(unittest.TestCase):
             usage(parser, status='UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser)')
         except SystemExit as _:
-            if  _.code != ERRORS['UNKNOWN']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" %  _.code)
+            if _.code != ERRORS['UNKNOWN']:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" % _.code)
         try:
             usage(parser, '', 'WARNING')
             raise Exception('failed to raise SystemExit exception from usage(parser)')
         except SystemExit as _:
-            if  _.code != ERRORS['WARNING']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" %  _.code)
+            if _.code != ERRORS['WARNING']:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" % _.code)
         try:
             usage(parser, 'msg', 'UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser, msg)')
         except SystemExit as _:
-            if  _.code != ERRORS['UNKNOWN']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" %  _.code)
+            if _.code != ERRORS['UNKNOWN']:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" % _.code)
 
     def test_get_topfile(self):
         topfile = get_topfile()
@@ -299,10 +299,9 @@ class UtilsTester(unittest.TestCase):
         # reset the TLDs
         utils._tlds = tlds
 
-
-# ============================================================================ #
-#                               PySpark
-# ============================================================================ #
+    # ============================================================================ #
+    #                               PySpark
+    # ============================================================================ #
 
     def test_pyspark_path(self):
         os.environ['SPARK_HOME'] = ''
@@ -310,30 +309,30 @@ class UtilsTester(unittest.TestCase):
         os.environ['SPARK_HOME'] = 'nonexistentdir'
         pyspark_path()
 
-    # can't really test successful import because spark is so long to download
-    # def test_import_pyspark(self):
-    #     os.environ['SPARK_HOME'] = ''
-    #     try:
-    #         import_pyspark()
-    #         raise Exception('failed to raise import error when importing pyspark without SPARK_HOME set')
-    #     # except ImportError:
-    #     #    pass
-    #     except SystemExit, e:
-    #         if  _.code != 3:
-    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
-    #     os.environ['SPARK_HOME'] = 'nonexistentdir'
-    #     try:
-    #         import_pyspark()
-    #         raise Exception('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
-    #     # except ImportError:
-    #     #     pass
-    #     except SystemExit, e:
-    #         if  _.code != 3:
-    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
+        # can't really test successful import because spark is so long to download
+        # def test_import_pyspark(self):
+        #     os.environ['SPARK_HOME'] = ''
+        #     try:
+        #         import_pyspark()
+        #         raise Exception('failed to raise import error when importing pyspark without SPARK_HOME set')
+        #     # except ImportError:
+        #     #    pass
+        #     except SystemExit, e:
+        #         if  _.code != 3:
+        #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
+        #     os.environ['SPARK_HOME'] = 'nonexistentdir'
+        #     try:
+        #         import_pyspark()
+        #         raise Exception('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
+        #     # except ImportError:
+        #     #     pass
+        #     except SystemExit, e:
+        #         if  _.code != 3:
+        #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
 
-# ============================================================================ #
-#                               Jython
-# ============================================================================ #
+    # ============================================================================ #
+    #                               Jython
+    # ============================================================================ #
 
     def test_isJython(self):
         self.assertFalse(isJython())
@@ -368,10 +367,9 @@ class UtilsTester(unittest.TestCase):
         # assertIn >= Python 2.7
         self.assertTrue('-J' in java_oom_fix_msg())
 
-
-# ============================================================================ #
-#                          OS Validation Functions
-# ============================================================================ #
+    # ============================================================================ #
+    #                          OS Validation Functions
+    # ============================================================================ #
 
     def test_isOS(self):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
@@ -380,7 +378,6 @@ class UtilsTester(unittest.TestCase):
             raise Exception('failed to raise exception for none arg')
         except CodingErrorException:
             pass
-
 
     if isLinux():
         def test_isLinux_string(self):
@@ -427,12 +424,13 @@ class UtilsTester(unittest.TestCase):
     if isLinux() or isMac():
         def test_isLinuxOrMac(self):
             self.assertTrue(isLinuxOrMac())
+
         def test_linux_mac_only(self):
             self.assertTrue(linux_mac_only())
 
-# ============================================================================ #
-#                          Validation Functions
-# ============================================================================ #
+        # ============================================================================ #
+        #                          Validation Functions
+        # ============================================================================ #
 
     def test_isAlNum(self):
         self.assertTrue(isAlNum('ABC123efg'))
@@ -768,10 +766,12 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isIterableNotStr(1.1))
 
     def test_isJavaException(self):
-        self.assertTrue(isJavaException('        at org.apache.ambari.server.api.services.stackadvisor.StackAdvisorRunner.runScript(StackAdvisorRunner.java:96)')) # pylint: disable=line-too-long
+        self.assertTrue(isJavaException(
+            '        at org.apache.ambari.server.api.services.stackadvisor.StackAdvisorRunner.runScript(StackAdvisorRunner.java:96)'))  # pylint: disable=line-too-long
         self.assertTrue(isJavaException('java.util.HashMap.writeObject(HashMap.java:1016)'))
         self.assertTrue(isJavaException('Exception in thread "main" java.lang.NullPointerException'))
-        self.assertTrue(isJavaException('java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.FutureTask@617d1af1 rejected from java.util.concurrent.ThreadPoolExecutor@5c73f637')) # pylint: disable=line-too-long
+        self.assertTrue(isJavaException(
+            'java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.FutureTask@617d1af1 rejected from java.util.concurrent.ThreadPoolExecutor@5c73f637'))  # pylint: disable=line-too-long
         self.assertTrue(isJavaException('java.lang.NullPointerException:'))
         self.assertTrue(isJavaException(' java.lang.NullPointerException'))
         self.assertFalse(isJavaException('blah'))
@@ -895,7 +895,8 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isProcessName(None))
 
     def test_isPythonTraceback(self):
-        self.assertTrue(isPythonTraceback('  File "/var/lib/ambari-server/resources/scripts/stack_advisor.py", line 154, in <module>')) # pylint: disable=line-too-long
+        self.assertTrue(isPythonTraceback(
+            '  File "/var/lib/ambari-server/resources/scripts/stack_advisor.py", line 154, in <module>'))  # pylint: disable=line-too-long
         self.assertTrue(isPythonTraceback('... Traceback (most recent call last):'))
         self.assertFalse(isPythonTraceback('blah'))
         self.assertFalse(isPythonTraceback(' '))
@@ -1058,7 +1059,7 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isYaml(self.jsondata_broken))
         self.assertFalse(isYaml(None))
 
-# ============================================================================ #
+    # ============================================================================ #
 
     def test_min_value(self):
         self.assertEqual(min_value(1, 4), 4)
@@ -1075,14 +1076,14 @@ class UtilsTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
-    #def test_human_units(self):
-        # self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
-        # self.assertTrue(human_units(1023*(1024**1)),     '1023KB',       'human_units KB');
-        # self.assertTrue(human_units(1023.1*(1024**2)),   '1023.1MB',    'human_units MB');
-        # self.assertTrue(human_units(1023.2*(1024**3)),   '1023.2GB',    'human_units GB');
-        # self.assertTrue(human_units(1023.31*(1024**4)),  '1023.31TB',    'human_units TB');
-        # self.assertTrue(human_units(1023.012*(1024**5)), '1023.01PB',    'human_units PB');
-        # self.assertTrue(human_units(1023*(1024**6)), '1023EB', 'human_units EB'');
+            # def test_human_units(self):
+            # self.assertTrue(human_units(1023),               '1023 bytes',   'human_units(1023) eq '1023 bytes'');
+            # self.assertTrue(human_units(1023*(1024**1)),     '1023KB',       'human_units KB');
+            # self.assertTrue(human_units(1023.1*(1024**2)),   '1023.1MB',    'human_units MB');
+            # self.assertTrue(human_units(1023.2*(1024**3)),   '1023.2GB',    'human_units GB');
+            # self.assertTrue(human_units(1023.31*(1024**4)),  '1023.31TB',    'human_units TB');
+            # self.assertTrue(human_units(1023.012*(1024**5)), '1023.01PB',    'human_units PB');
+            # self.assertTrue(human_units(1023*(1024**6)), '1023EB', 'human_units EB'');
 
     def test_perf_suffix(self):
         self.assertEqual(perf_suffix('blah_in_bytes'), 'b')
@@ -1103,13 +1104,13 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(plural(None), '')
         self.assertEqual(plural(2), 's')
 
-    #def test_random_alnum(self):
+        # def test_random_alnum(self):
         # like(random_alnum(20),  qr/^[A-Za-z0-9]{20}$/,                      'random_alnum(20)');
         # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
 
     def test_flatten(self):
-        self.assertEqual(list(flatten([[1, 2], 3, '4', [[5]]])), [1, 2, 3, '4', 5]) # list  => list
-        self.assertEqual(list(flatten(([1, 2], 3, '4', [[5]]))), [1, 2, 3, '4', 5]) # tuple => list
+        self.assertEqual(list(flatten([[1, 2], 3, '4', [[5]]])), [1, 2, 3, '4', 5])  # list  => list
+        self.assertEqual(list(flatten(([1, 2], 3, '4', [[5]]))), [1, 2, 3, '4', 5])  # tuple => list
         self.assertEqual(list(flatten(['/etc/passwd', ['/etc/hosts', '/etc/nsswitch.conf']])),
                          ['/etc/passwd', '/etc/hosts', '/etc/nsswitch.conf'])
         self.assertEqual(list(flatten(1)), [1])
@@ -1130,8 +1131,25 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(jsonpp(data), data2)
 
     def test_list_sort_dicts_by_value(self):
-        myList = [{"name": "DATANODE"}, {"name": "STORM_UI_SERVER"}, {"name": "SUPERVISOR"}, {"name": "FLUME_HANDLER"}, {"name": "HISTORYSERVER"}, {"name": "RESOURCEMANAGER"}, {"name": "HCAT"}, {"name": "OOZIE_CLIENT"}, {"name": "PIG"}, {"name": "HIVE_CLIENT"}, {"name": "HDFS_CLIENT"}, {"name": "NIMBUS"}, {"name": "APP_TIMELINE_SERVER"}, {"name": "SPARK_CLIENT"}, {"name": "FALCON_CLIENT"}, {"name": "METRICS_MONITOR"}, {"name": "ACCUMULO_TSERVER"}, {"name": "SLIDER"}, {"name": "ACCUMULO_CLIENT"}, {"name": "HBASE_CLIENT"}, {"name": "ZOOKEEPER_SERVER"}, {"name": "MAPREDUCE2_CLIENT"}, {"name": "ZOOKEEPER_CLIENT"}, {"name": "SECONDARY_NAMENODE"}, {"name": "YARN_CLIENT"}, {"name": "SQOOP"}, {"name": "DRPC_SERVER"}, {"name": "MAHOUT"}, {"name": "HBASE_REGIONSERVER"}, {"name": "NODEMANAGER"}, {"name": "TEZ_CLIENT"}]
-        sortedList = [{'name': 'ACCUMULO_CLIENT'}, {'name': 'ACCUMULO_TSERVER'}, {'name': 'APP_TIMELINE_SERVER'}, {'name': 'DATANODE'}, {'name': 'DRPC_SERVER'}, {'name': 'FALCON_CLIENT'}, {'name': 'FLUME_HANDLER'}, {'name': 'HBASE_CLIENT'}, {'name': 'HBASE_REGIONSERVER'}, {'name': 'HCAT'}, {'name': 'HDFS_CLIENT'}, {'name': 'HISTORYSERVER'}, {'name': 'HIVE_CLIENT'}, {'name': 'MAHOUT'}, {'name': 'MAPREDUCE2_CLIENT'}, {'name': 'METRICS_MONITOR'}, {'name': 'NIMBUS'}, {'name': 'NODEMANAGER'}, {'name': 'OOZIE_CLIENT'}, {'name': 'PIG'}, {'name': 'RESOURCEMANAGER'}, {'name': 'SECONDARY_NAMENODE'}, {'name': 'SLIDER'}, {'name': 'SPARK_CLIENT'}, {'name': 'SQOOP'}, {'name': 'STORM_UI_SERVER'}, {'name': 'SUPERVISOR'}, {'name': 'TEZ_CLIENT'}, {'name': 'YARN_CLIENT'}, {'name': 'ZOOKEEPER_CLIENT'}, {'name': 'ZOOKEEPER_SERVER'}]
+        myList = [{"name": "DATANODE"}, {"name": "STORM_UI_SERVER"}, {"name": "SUPERVISOR"}, {"name": "FLUME_HANDLER"},
+                  {"name": "HISTORYSERVER"}, {"name": "RESOURCEMANAGER"}, {"name": "HCAT"}, {"name": "OOZIE_CLIENT"},
+                  {"name": "PIG"}, {"name": "HIVE_CLIENT"}, {"name": "HDFS_CLIENT"}, {"name": "NIMBUS"},
+                  {"name": "APP_TIMELINE_SERVER"}, {"name": "SPARK_CLIENT"}, {"name": "FALCON_CLIENT"},
+                  {"name": "METRICS_MONITOR"}, {"name": "ACCUMULO_TSERVER"}, {"name": "SLIDER"},
+                  {"name": "ACCUMULO_CLIENT"}, {"name": "HBASE_CLIENT"}, {"name": "ZOOKEEPER_SERVER"},
+                  {"name": "MAPREDUCE2_CLIENT"}, {"name": "ZOOKEEPER_CLIENT"}, {"name": "SECONDARY_NAMENODE"},
+                  {"name": "YARN_CLIENT"}, {"name": "SQOOP"}, {"name": "DRPC_SERVER"}, {"name": "MAHOUT"},
+                  {"name": "HBASE_REGIONSERVER"}, {"name": "NODEMANAGER"}, {"name": "TEZ_CLIENT"}]
+        sortedList = [{'name': 'ACCUMULO_CLIENT'}, {'name': 'ACCUMULO_TSERVER'}, {'name': 'APP_TIMELINE_SERVER'},
+                      {'name': 'DATANODE'}, {'name': 'DRPC_SERVER'}, {'name': 'FALCON_CLIENT'},
+                      {'name': 'FLUME_HANDLER'}, {'name': 'HBASE_CLIENT'}, {'name': 'HBASE_REGIONSERVER'},
+                      {'name': 'HCAT'}, {'name': 'HDFS_CLIENT'}, {'name': 'HISTORYSERVER'}, {'name': 'HIVE_CLIENT'},
+                      {'name': 'MAHOUT'}, {'name': 'MAPREDUCE2_CLIENT'}, {'name': 'METRICS_MONITOR'},
+                      {'name': 'NIMBUS'}, {'name': 'NODEMANAGER'}, {'name': 'OOZIE_CLIENT'}, {'name': 'PIG'},
+                      {'name': 'RESOURCEMANAGER'}, {'name': 'SECONDARY_NAMENODE'}, {'name': 'SLIDER'},
+                      {'name': 'SPARK_CLIENT'}, {'name': 'SQOOP'}, {'name': 'STORM_UI_SERVER'}, {'name': 'SUPERVISOR'},
+                      {'name': 'TEZ_CLIENT'}, {'name': 'YARN_CLIENT'}, {'name': 'ZOOKEEPER_CLIENT'},
+                      {'name': 'ZOOKEEPER_SERVER'}]
         # print('sortedList = %s' % list_sort_dicts_by_value(myList, 'name'))
         self.assertEqual(list_sort_dicts_by_value(myList, 'name'), sortedList)
         self.assertEqual(list_sort_dicts_by_value([], 'name'), [])
@@ -1156,7 +1174,7 @@ class UtilsTester(unittest.TestCase):
         except AssertionError as _:
             pass
         try:
-            list_sort_dicts_by_value([{'name':['embedded_array_should_have_been_string']}], 'name')
+            list_sort_dicts_by_value([{'name': ['embedded_array_should_have_been_string']}], 'name')
             raise Exception('failed to raise AssertionError when list dict key value is not a string')
         except AssertionError as _:
             pass
@@ -1177,16 +1195,16 @@ class UtilsTester(unittest.TestCase):
 
 
         # def test_resolve_ip(self):
-    #     # if not on a decent OS assume I'm somewhere lame like a bank
-    #     # where internal resolvers don't resolve internet addresses
-    #     # this way my continous integration tests still run this one
-    #     # still applies to Hortonworks Sandbox running on a banking VM :-/
-    #     if(isLinuxOrMac()):
-    #         if(os.getenv('TRAVIS', None) or
-    #            os.popen('PATH=$PATH:/usr/sbin dmidecode | grep -i virtual').read().strip() == ''):
-    #             self.assertEqual(resolve_ip('a.resolvers.level3.net'),    '4.2.2.1')
-    #             # self.assertEqual(validate_resolvable('a.resolvers.level3.net'),
-    #                                '4.2.2.1', 'validate_resolvable('a.resolvers.level3.net')');
+        #     # if not on a decent OS assume I'm somewhere lame like a bank
+        #     # where internal resolvers don't resolve internet addresses
+        #     # this way my continous integration tests still run this one
+        #     # still applies to Hortonworks Sandbox running on a banking VM :-/
+        #     if(isLinuxOrMac()):
+        #         if(os.getenv('TRAVIS', None) or
+        #            os.popen('PATH=$PATH:/usr/sbin dmidecode | grep -i virtual').read().strip() == ''):
+        #             self.assertEqual(resolve_ip('a.resolvers.level3.net'),    '4.2.2.1')
+        #             # self.assertEqual(validate_resolvable('a.resolvers.level3.net'),
+        #                                '4.2.2.1', 'validate_resolvable('a.resolvers.level3.net')');
         # self.assertTrue(resolve_ip('4.2.2.2'), '4.2.2.2', 'resolve_ip('4.2.2.2') returns 4.2.2.2');
         # self.assertTrue(validate_resolvable('4.2.2.2'), '4.2.2.2', 'validate_resolvable('4.2.2.2') returns 4.2.2.2');
 
@@ -1248,9 +1266,9 @@ class UtilsTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
-# ============================================================================ #
-#                          Validation Functions
-# ============================================================================ #
+        # ============================================================================ #
+        #                          Validation Functions
+        # ============================================================================ #
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
     def test_validate_alnum(self):
@@ -1285,7 +1303,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_aws_access_key(self):
         self.assertTrue(validate_aws_access_key('A' * 20))
@@ -1311,7 +1329,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_aws_bucket(self):
         self.assertTrue(validate_aws_bucket('BucKeT63'))
@@ -1337,11 +1355,11 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_aws_secret_key(self):
         self.assertTrue(validate_aws_secret_key('A' * 40))
-        self.assertTrue(validate_aws_secret_key('1' *40))
+        self.assertTrue(validate_aws_secret_key('1' * 40))
         self.assertTrue(validate_aws_secret_key('A1' * 20))
 
     def test_validate_aws_secret_key_exception(self):
@@ -1372,7 +1390,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_chars(self):
         self.assertTrue(validate_chars('log_date=2015-05-23_10', 'validate chars', 'A-Za-z0-9_=-'))
@@ -1405,7 +1423,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_collection(self):
         self.assertTrue(validate_collection('students.grades'))
@@ -1432,7 +1450,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_database(self):
         self.assertTrue(validate_database('mysql', 'MySQL'))
@@ -1458,7 +1476,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_database_columnname(self):
         self.assertTrue(validate_database_columnname('myColumn_1'))
@@ -1484,7 +1502,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_database_fieldname(self):
         self.assertTrue(validate_database_fieldname('age'))
@@ -1512,7 +1530,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_database_tablename(self):
         self.assertTrue(validate_database_tablename('myTable', 'Hive'))
@@ -1539,7 +1557,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_database_viewname(self):
         self.assertTrue(validate_database_viewname('myview', 'Hive'))
@@ -1567,7 +1585,7 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_database_query_select_show(self):
         self.assertTrue(validate_database_query_select_show('select * from myTable', 'name'))
@@ -1610,7 +1628,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_dirname(self):
         self.assertTrue(validate_dirname('test_Dir', 'name'))
@@ -1638,7 +1656,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_directory(self):
         if isLinuxOrMac():
@@ -1666,7 +1684,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_domain(self):
         self.assertTrue(validate_domain('localDomain', 'name'))
@@ -1706,7 +1724,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_email(self):
         self.assertTrue(validate_email('hari\'sekhon@gmail.com'))
@@ -1733,7 +1751,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_filename(self):
         self.assertTrue(validate_filename('../utils.py', 'name'))
@@ -1763,7 +1781,7 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_file(self):
         self.assertTrue(validate_file(self.libfile, 'name'))
@@ -1791,7 +1809,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_files(self):
         self.assertTrue(validate_file(self.libfile, 'name'))
@@ -1843,7 +1861,7 @@ class UtilsTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_float(self):
         self.assertTrue(validate_float(2, 'two', 0, 10))
@@ -1851,7 +1869,6 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_float(2.1, 'two point one', 0, 10))
         self.assertTrue(validate_float(6.8, 'six point eight', 5, 10))
         self.assertTrue(validate_float(-6, 'minus six', -6, 0))
-
 
     def test_validate_float_exception_noname(self):
         try:
@@ -1895,7 +1912,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_fqdn(self):
         self.assertTrue(validate_fqdn('www.harisekhon.com', 'name'))
@@ -1922,7 +1939,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_host(self):
         self.assertTrue(validate_host('harisekhon.com', 'name'))
@@ -1962,7 +1979,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_hostname(self):
         self.assertTrue(validate_hostname('harisekhon.com', 'name'))
@@ -2009,7 +2026,7 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_int(self):
         self.assertTrue(validate_int(2, 'two', 0, 10))
@@ -2070,7 +2087,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_interface(self):
         self.assertTrue(validate_interface('eth0'))
@@ -2107,7 +2124,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_ip(self):
         self.assertTrue(validate_ip('10.10.10.1', 'name'))
@@ -2147,7 +2164,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_krb5_princ(self):
         self.assertTrue(validate_krb5_princ('tgt/HARI.COM@HARI.COM', 'name'))
@@ -2179,7 +2196,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_krb5_realm(self):
         self.assertTrue(validate_krb5_realm('localDomain', 'name'))
@@ -2219,7 +2236,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_label(self):
         self.assertTrue(validate_label('st4ts_used (%)'))
@@ -2245,7 +2262,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_ldap_dn(self):
         self.assertTrue(validate_ldap_dn('uid=hari,cn=users,cn=accounts,dc=local'))
@@ -2272,7 +2289,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_nosql_key(self):
         self.assertTrue(validate_nosql_key('HariSekhon:check_riak_write.pl:riak1:1385226607.02182:20abc'))
@@ -2299,7 +2316,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_port(self):
         self.assertTrue(validate_port(1, 'name'))
@@ -2348,7 +2365,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_process_name(self):
         self.assertTrue(validate_process_name('../my_program', 'name'))
@@ -2383,7 +2400,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_password(self):
         self.assertTrue(validate_password('wh@tev3r', 'name'))
@@ -2431,7 +2448,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_units(self):
         self.assertTrue(validate_units('s', 'name'))
@@ -2467,7 +2484,7 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_url(self):
         self.assertTrue(validate_url('www.google.com', 'name'))
@@ -2497,7 +2514,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_url_path_suffix(self):
         self.assertTrue(validate_url_path_suffix('/', 'name'))
@@ -2527,7 +2544,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_validate_user(self):
         self.assertTrue(validate_user('hadoop', 'name'))
@@ -2563,7 +2580,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-# ============================================================================ #
+        # ============================================================================ #
 
     def test_vlog(self):
         vlog('vlog test')
@@ -2577,8 +2594,7 @@ class UtilsTester(unittest.TestCase):
     def test_vlog_option(self):
         vlog_option('vlog_option', 'test')
 
-
-# ============================================================================ #
+    # ============================================================================ #
 
     if isLinuxOrMac():
         def test_which(self):
@@ -2627,6 +2643,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidFilenameException:
             pass
 
+
 # ============================================================================ #
 
 # def test_validate_user_exists(self):
@@ -2659,11 +2676,12 @@ class UtilsTester(unittest.TestCase):
 def main():
     # increase the verbosity
     # verbosity Python >= 2.7
-    #unittest.main(verbosity=2)
+    # unittest.main(verbosity=2)
     log.setLevel(logging.DEBUG)
     suite = unittest.TestLoader().loadTestsFromTestCase(UtilsTester)
     unittest.TextTestRunner(verbosity=2).run(suite)
-    #unittest2.main(verbosity=2)
+    # unittest2.main(verbosity=2)
+
 
 if __name__ == '__main__':
     main()
