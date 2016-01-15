@@ -31,7 +31,7 @@ from harisekhon import utils
 from harisekhon.utils import *
 
 #class test_HariSekhonUtils(unittest2.TestCase):
-class test_utils(unittest.TestCase):
+class UtilsTester(unittest.TestCase):
 
     # XXX: must prefix with test_ in order for the tests to be called
 
@@ -2653,7 +2653,7 @@ def main():
     # verbosity Python >= 2.7
     #unittest.main(verbosity=2)
     log.setLevel(logging.DEBUG)
-    suite = unittest.TestLoader().loadTestsFromTestCase(test_utils)
+    suite = unittest.TestLoader().loadTestsFromTestCase(UtilsTester)
     unittest.TextTestRunner(verbosity=2).run(suite)
     #unittest2.main(verbosity=2)
 
