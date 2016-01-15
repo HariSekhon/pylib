@@ -25,12 +25,12 @@ import sys
 import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon.utils import ERRORS, log, CodingErrorException
-from harisekhon import NagiosPlugin
+from harisekhon.utils import log, CodingErrorException # pylint: disable=wrong-import-position
+from harisekhon import NagiosPlugin # pylint: disable=wrong-import-position
 
-class test_NagiosPlugin(unittest.TestCase):
+class NagiosPluginTester(unittest.TestCase):
 
-    # XXX: must prefix with test_ in order for the tests to be called
+    # must prefix with test_ in order for the tests to be called
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
@@ -38,59 +38,59 @@ class test_NagiosPlugin(unittest.TestCase):
         def run(self):
             print("running SubNagiosPlugin()")
 
-        def test_SubNagiosPlugin(self):
-            obj = self.SubNagiosPlugin()
+    def test_subnagiosplugin(self):
+        obj = self.SubNagiosPlugin()
 
-            self.assertTrue(c.is_unknown())
-            obj.ok()
-            self.assertTrue(c.is_ok())
-            self.assertFalse(c.is_warning())
-            self.assertFalse(c.is_critical())
-            self.assertFalse(c.is_unknown())
-            obj.unknown()
-            self.assertTrue(c.is_unknown())
-            self.assertFalse(c.is_ok())
-            self.assertFalse(c.is_warning())
-            self.assertFalse(c.is_critical())
-            obj.warning()
-            self.assertTrue(c.is_warning())
-            self.assertFalse(c.is_ok())
-            self.assertFalse(c.is_critical())
-            self.assertFalse(c.is_unknown())
-            obj.unknown()
-            self.assertTrue(c.is_warning())
-            self.assertFalse(c.is_ok())
-            self.assertFalse(c.is_critical())
-            self.assertFalse(c.is_unknown())
+        self.assertTrue(obj.is_unknown())
+        obj.ok()
+        self.assertTrue(obj.is_ok())
+        self.assertFalse(obj.is_warning())
+        self.assertFalse(obj.is_critical())
+        self.assertFalse(obj.is_unknown())
+        obj.unknown()
+        self.assertTrue(obj.is_unknown())
+        self.assertFalse(obj.is_ok())
+        self.assertFalse(obj.is_warning())
+        self.assertFalse(obj.is_critical())
+        obj.warning()
+        self.assertTrue(obj.is_warning())
+        self.assertFalse(obj.is_ok())
+        self.assertFalse(obj.is_critical())
+        self.assertFalse(obj.is_unknown())
+        obj.unknown()
+        self.assertTrue(obj.is_warning())
+        self.assertFalse(obj.is_ok())
+        self.assertFalse(obj.is_critical())
+        self.assertFalse(obj.is_unknown())
+        obj.critical()
+        self.assertTrue(obj.is_critical())
+        self.assertFalse(obj.is_ok())
+        self.assertFalse(obj.is_warning())
+        self.assertFalse(obj.is_unknown())
+        obj.warning()
+        self.assertTrue(obj.is_critical())
+        self.assertFalse(obj.is_ok())
+        self.assertFalse(obj.is_warning())
+        self.assertFalse(obj.is_unknown())
+
+        try:
+            obj.set_status('invalidstatus')
+        except CodingErrorException:
+            pass
+
+        try:
             obj.critical()
-            self.assertTrue(c.is_critical())
-            self.assertFalse(c.is_ok())
-            self.assertFalse(c.is_warning())
-            self.assertFalse(c.is_unknown())
-            obj.warning()
-            self.assertTrue(c.is_critical())
-            self.assertFalse(c.is_ok())
-            self.assertFalse(c.is_warning())
-            self.assertFalse(c.is_unknown())
+            obj.main()
+        except SystemExit as _:
+            if _.code != 2:
+                raise Exception('NagiosPlugin failed to exit CRITICAL')
 
-            try:
-                obj.set_status('invalidstatus')
-            except CodingErrorException:
-                pass
-
-            try:
-                obj.critical()
-                obj.main()
-            except SystemExit as _:
-                if _.code != 2:
-                    raise Exception('NagiosPlugin failed to exit CRITICAL')
-
-        def test_NagiosPlugin_abstract(self):
-            try:
-                NagiosPlugin() # pylint: disable=abstract-class-instantiated
-                raise Exception('failed to raise a TypeError when attempting to instantiate abstract class NagiosPlugin')
-            except TypeError as _:
-                pass
+    def test_nagiosplugin_abstract(self): # pylint: disable=no-self-use
+        try:
+            NagiosPlugin() # pylint: disable=abstract-class-instantiated
+            raise Exception('failed to raise a TypeError when attempting to instantiate abstract class NagiosPlugin')
+        except TypeError as _:
+            pass
 
 
 def main():
@@ -98,7 +98,7 @@ def main():
     # verbosity Python >= 2.7
     #unittest.main(verbosity=2)
     log.setLevel(logging.DEBUG)
-    suite = unittest.TestLoader().loadTestsFromTestCase(test_NagiosPlugin)
+    suite = unittest.TestLoader().loadTestsFromTestCase(NagiosPluginTester)
     unittest.TextTestRunner(verbosity=2).run(suite)
 
 if __name__ == '__main__':
