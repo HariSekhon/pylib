@@ -21,11 +21,11 @@ import sys
 from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
-from harisekhon.utils import qquit  # pylint: disable=wrong-import-position
-from harisekhon import CLI          # pylint: disable=wrong-import-position
+from harisekhon.utils import ERRORS, qquit, CodingErrorException # pylint: disable=wrong-import-position
+from harisekhon import CLI # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.1'
+__version__ = '0.2'
 
 class NagiosPlugin(CLI):
     """
@@ -41,7 +41,7 @@ class NagiosPlugin(CLI):
         # Python 3.x
         # super().__init__()
         # redirect_stderr_stdout()
-        self.status = 'UNKNOWN'
+        self.__status__ = 'UNKNOWN'
         self.msg = 'MESSAGE NOT DEFINED'
 
     # ============================================================================ #
@@ -52,29 +52,40 @@ class NagiosPlugin(CLI):
 
     # there is no ok() since that behaviour needs to be determined by scenario
 
-    def unknown(self):
-        if self.status == 'OK':
-            self.status = 'UNKNOWN'
+    def get_status(self):
+        return self.__status__
+
+    def set_status(self, status):
+        if not ERRORS.has_key(status):
+            raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.set_status()")
+        self.__status__ = status
+
+    def ok(self): # pylint: disable=invalid-name
+        self.set_status('OK')
 
     def warning(self):
-        if self.status != 'CRITICAL':
-            self.status = 'WARNING'
+        if self.get_status() != 'CRITICAL':
+            self.set_status('WARNING')
 
     def critical(self):
-        self.status = 'CRITICAL'
+        self.set_status('CRITICAL')
+
+    def unknown(self):
+        if self.get_status() == 'OK':
+            self.set_status('UNKNOWN')
 
     ############################
     def is_ok(self):
-        return self.status == 'OK'
+        return self.get_status() == 'OK'
 
     def is_warning(self):
-        return self.status == 'WARNING'
+        return self.get_status() == 'WARNING'
 
     def is_critical(self):
-        return self.status == 'CRITICAL'
+        return self.get_status() == 'CRITICAL'
 
     def is_unknown(self):
-        return self.status == 'UNKNOWN'
+        return self.get_status() == 'UNKNOWN'
 
     # ============================================================================ #
 
@@ -83,4 +94,4 @@ class NagiosPlugin(CLI):
         pass
 
     def end(self):
-        qquit(self.status, self.msg)
+        qquit(self.get_status(), self.msg)
