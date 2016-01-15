@@ -18,6 +18,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import logging
 import os
 import sys
 import unittest
@@ -27,26 +28,28 @@ import unittest
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon import utils
-from harisekhon.utils import *
+from harisekhon import utils # pylint: disable=wrong-import-position
+from harisekhon.utils import * # pylint: disable=wrong-import-position,wildcard-import,unused-wildcard-import
+
+# pylint: disable=invalid-name,no-self-use
 
 #class test_HariSekhonUtils(unittest2.TestCase):
 class UtilsTester(unittest.TestCase):
 
-    # XXX: must prefix with test_ in order for the tests to be called
+    # must prefix with test_ in order for the tests to be called
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
     # Class attributes - can still access via self.<attrib> as it's less typing than test_HariSekhonUtils.<attrib>
     # libdir = libdir
     libfile = os.path.join(libdir, 'harisekhon', 'utils.py')
-    myList  = [ 1, 2, 3 ]
-    myTuple = ( 1, 2, 3 )
-    myDict  = { 'one': 1, 'two': 2, 'three':3 }
+    myList = [1, 2, 3]
+    myTuple = (1, 2, 3)
+    myDict = {'one': 1, 'two': 2, 'three':3}
     jsondata = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
     jsondata_broken = '{ "name": { "first": "Hari", "last": "Sekhon" } ' # missing closing brace intentionally
     yamldata = open(os.path.join(libdir, 'test', 'test.yaml')).read()
-    yamldata_simple     = 'name:    Hari Sekhon'
+    yamldata_simple = 'name:    Hari Sekhon'
     yamldata_broken_tab = 'name:\tHari Sekhon'
 
     def setUp(self):
@@ -63,10 +66,10 @@ class UtilsTester(unittest.TestCase):
     # Python 2.7+
     # @unittest.skip('skipping test codes')
     def test_status_codes(self):
-        self.assertEqual(ERRORS['OK'],       0)
-        self.assertEqual(ERRORS['WARNING'],  1)
+        self.assertEqual(ERRORS['OK'], 0)
+        self.assertEqual(ERRORS['WARNING'], 1)
         self.assertEqual(ERRORS['CRITICAL'], 2)
-        self.assertEqual(ERRORS['UNKNOWN'],  3)
+        self.assertEqual(ERRORS['UNKNOWN'], 3)
 
     def test_printerr(self):
         printerr('testing')
@@ -79,58 +82,58 @@ class UtilsTester(unittest.TestCase):
         try:
             die('test')
             raise Exception('failed to raise SystemExit exception from die(test)')
-        except SystemExit as e:
-            if e.code != 2:
-                raise Exception("incorrect exit code '%s' raised by die(test)" % e.code)
+        except SystemExit as _:
+            if  _.code != 2:
+                raise Exception("incorrect exit code '%s' raised by die(test)" %  _.code)
             # also gives 2 not 'test'
-            # if e.message != 'test':
-            #     raise Exception("incorrect exit message '%s' raised by die()" % e.message)
+            # if  _.message != 'test':
+            #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 4)
             raise Exception('failed to raise SystemExit exception from die(test, 4)')
-        except SystemExit as e:
-            if e.code != 4:
-                raise Exception("incorrect exit code '%s' raised by die(test, 4)" % e.code)
+        except SystemExit as _:
+            if  _.code != 4:
+                raise Exception("incorrect exit code '%s' raised by die(test, 4)" %  _.code)
             # also gives 2 not 'test'
-            # if e.message != 'test':
-            #     raise Exception("incorrect exit message '%s' raised by die()" % e.message)
+            # if  _.message != 'test':
+            #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 5 + 256)
             raise Exception('failed to raise SystemExit exception from die(test, 5 + 256)')
-        except SystemExit as e:
-            if e.code != 5:
-                raise Exception("incorrect exit code '%s' raised by die(test, 5 + 256)" % e.code)
+        except SystemExit as _:
+            if  _.code != 5:
+                raise Exception("incorrect exit code '%s' raised by die(test, 5 + 256)" %  _.code)
             # also gives 2 not 'test'
-            # if e.message != 'test':
-            #     raise Exception("incorrect exit message '%s' raised by die()" % e.message)
+            # if  _.message != 'test':
+            #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 'UNKNOWN')
             raise Exception('failed to raise SystemExit exception from die(test, UNKNOWN)')
-        except SystemExit as e:
-            if e.code != 3:
-                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
+        except SystemExit as _:
+            if  _.code != 3:
+                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" %  _.code)
         try:
             die('test', 'unrecognized_status')
             raise Exception('failed to raise SystemExit exception from die(test, unrecognized_status)')
-        except SystemExit as e:
-            if e.code != 2:
-                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % e.code)
+        except SystemExit as _:
+            if  _.code != 2:
+                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" %  _.code)
 
     def test_qquit(self):
         try:
             qquit('UNKNOWN', 'test')
             raise Exception('failed to raise SystemExit exception from qquit(UNKNOWN, test)')
-        except SystemExit as e:
-            if e.code != 3:
-                raise Exception("incorrect exit code '%s' raised by qquit(UNKNOWN, test)" % e.code)
+        except SystemExit as _:
+            if  _.code != 3:
+                raise Exception("incorrect exit code '%s' raised by qquit(UNKNOWN, test)" %  _.code)
 
     def test_qquit_wrong_status(self):
         try:
             qquit('wrongstatus', 'test')
             raise Exception('failed to raise SystemExit exception from qquit(wrongstatus, test)')
-        except SystemExit as e:
-            if e.code != 2:
-                raise Exception("incorrect exit code '%s' raised by qquit(wrongstatus, test)" % e.code)
+        except SystemExit as _:
+            if  _.code != 2:
+                raise Exception("incorrect exit code '%s' raised by qquit(wrongstatus, test)" %  _.code)
 
     def test_usage(self):
         from optparse import OptionParser
@@ -138,21 +141,21 @@ class UtilsTester(unittest.TestCase):
         try:
             usage(parser, status='UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser)')
-        except SystemExit as e:
-            if e.code != ERRORS['UNKNOWN']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
+        except SystemExit as _:
+            if  _.code != ERRORS['UNKNOWN']:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" %  _.code)
         try:
             usage(parser, '', 'WARNING')
             raise Exception('failed to raise SystemExit exception from usage(parser)')
-        except SystemExit as e:
-            if e.code != ERRORS['WARNING']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
+        except SystemExit as _:
+            if  _.code != ERRORS['WARNING']:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" %  _.code)
         try:
             usage(parser, 'msg', 'UNKNOWN')
             raise Exception('failed to raise SystemExit exception from usage(parser, msg)')
-        except SystemExit as e:
-            if e.code != ERRORS['UNKNOWN']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" % e.code)
+        except SystemExit as _:
+            if  _.code != ERRORS['UNKNOWN']:
+                raise Exception("incorrect exit code '%s' raised by usage(parser)" %  _.code)
 
     def test_get_topfile(self):
         topfile = get_topfile()
@@ -181,8 +184,10 @@ class UtilsTester(unittest.TestCase):
             pass
 
     def test_gen_prefix(self):
-        self.assertEqual(list(gen_prefixes(['Ambari',''], ['host', 'port'])), ['Ambari_host', 'Ambari_port', 'host', 'port'])
-        self.assertEqual(list(gen_prefixes(['Ambari',''], ['host', 'port'], True)), ['Ambari_host', 'host', 'Ambari_port', 'port'])
+        self.assertEqual(list(gen_prefixes(['Ambari', ''], ['host', 'port'])),
+                         ['Ambari_host', 'Ambari_port', 'host', 'port'])
+        self.assertEqual(list(gen_prefixes(['Ambari', ''], ['host', 'port'], True)),
+                         ['Ambari_host', 'host', 'Ambari_port', 'port'])
         self.assertEqual(list(gen_prefixes('Ambari', ['host', 'port'])), ['Ambari_host', 'Ambari_port'])
         self.assertEqual(list(gen_prefixes('Ambari', 'host')), ['Ambari_host'])
         self.assertEqual(list(gen_prefixes('', 'host')), ['host'])
@@ -289,7 +294,7 @@ class UtilsTester(unittest.TestCase):
         try:
             utils._check_tldcount()
             raise Exception('failed to raise CodingErrorException on double loaded TLDs')
-        except CodingErrorException as e:
+        except CodingErrorException as _:
             pass
         # reset the TLDs
         utils._tlds = tlds
@@ -314,8 +319,8 @@ class UtilsTester(unittest.TestCase):
     #     # except ImportError:
     #     #    pass
     #     except SystemExit, e:
-    #         if e.code != 3:
-    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" % e.code)
+    #         if  _.code != 3:
+    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
     #     os.environ['SPARK_HOME'] = 'nonexistentdir'
     #     try:
     #         import_pyspark()
@@ -323,8 +328,8 @@ class UtilsTester(unittest.TestCase):
     #     # except ImportError:
     #     #     pass
     #     except SystemExit, e:
-    #         if e.code != 3:
-    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" % e.code)
+    #         if  _.code != 3:
+    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
 
 # ============================================================================ #
 #                               Jython
@@ -434,7 +439,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isAlNum('0'))
         self.assertFalse(isAlNum('1.2'))
         self.assertFalse(isAlNum(' '))
-        self.assertFalse(isAlNum('hari\@domain.com'))
+        self.assertFalse(isAlNum(r'hari\@domain.com'))
         self.assertFalse(isAlNum(None))
 
     def test_isAwsAccessKey(self):
@@ -515,7 +520,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_isCollection(self):
         self.assertTrue(isCollection('students.grades'))
-        self.assertFalse(isCollection('wrong\@.grades'))
+        self.assertFalse(isCollection(r'wrong\@.grades'))
         self.assertFalse(isCollection(' '))
         self.assertFalse(isCollection(None))
 
@@ -536,7 +541,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isDatabaseFieldName('age'))
         self.assertTrue(isDatabaseFieldName(2))
         self.assertTrue(isDatabaseFieldName('count(*)'))
-        self.assertFalse(isDatabaseFieldName('\@something'))
+        self.assertFalse(isDatabaseFieldName(r'\@something'))
         self.assertFalse(isDatabaseFieldName(' '))
         self.assertFalse(isDatabaseFieldName(None))
 
@@ -571,7 +576,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isDirname('test_Dir'))
         self.assertTrue(isDirname('/tmp/test'))
         self.assertTrue(isDirname('./test'))
-        self.assertFalse(isDirname('\@me'))
+        self.assertFalse(isDirname(r'\@me'))
         self.assertFalse(isDirname(' '))
         self.assertFalse(isDirname(None))
 
@@ -763,10 +768,10 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isIterableNotStr(1.1))
 
     def test_isJavaException(self):
-        self.assertTrue(isJavaException('        at org.apache.ambari.server.api.services.stackadvisor.StackAdvisorRunner.runScript(StackAdvisorRunner.java:96)'))
+        self.assertTrue(isJavaException('        at org.apache.ambari.server.api.services.stackadvisor.StackAdvisorRunner.runScript(StackAdvisorRunner.java:96)')) # pylint: disable=line-too-long
         self.assertTrue(isJavaException('java.util.HashMap.writeObject(HashMap.java:1016)'))
         self.assertTrue(isJavaException('Exception in thread "main" java.lang.NullPointerException'))
-        self.assertTrue(isJavaException('java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.FutureTask@617d1af1 rejected from java.util.concurrent.ThreadPoolExecutor@5c73f637'))
+        self.assertTrue(isJavaException('java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.FutureTask@617d1af1 rejected from java.util.concurrent.ThreadPoolExecutor@5c73f637')) # pylint: disable=line-too-long
         self.assertTrue(isJavaException('java.lang.NullPointerException:'))
         self.assertTrue(isJavaException(' java.lang.NullPointerException'))
         self.assertFalse(isJavaException('blah'))
@@ -884,13 +889,13 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isProcessName('../my_program'))
         self.assertTrue(isProcessName('ec2-run-instances'))
         self.assertTrue(isProcessName('sh <defunct>'))
-        self.assertFalse(isProcessName('./b\@dfile'))
+        self.assertFalse(isProcessName(r'./b\@dfile'))
         self.assertFalse(isProcessName('[init] 3'))
         self.assertFalse(isProcessName(' '))
         self.assertFalse(isProcessName(None))
 
     def test_isPythonTraceback(self):
-        self.assertTrue(isPythonTraceback('  File "/var/lib/ambari-server/resources/scripts/stack_advisor.py", line 154, in <module>'))
+        self.assertTrue(isPythonTraceback('  File "/var/lib/ambari-server/resources/scripts/stack_advisor.py", line 154, in <module>')) # pylint: disable=line-too-long
         self.assertTrue(isPythonTraceback('... Traceback (most recent call last):'))
         self.assertFalse(isPythonTraceback('blah'))
         self.assertFalse(isPythonTraceback(' '))
@@ -1106,7 +1111,7 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(list(flatten([[1, 2], 3, '4', [[5]]])), [1, 2, 3, '4', 5]) # list  => list
         self.assertEqual(list(flatten(([1, 2], 3, '4', [[5]]))), [1, 2, 3, '4', 5]) # tuple => list
         self.assertEqual(list(flatten(['/etc/passwd', ['/etc/hosts', '/etc/nsswitch.conf']])),
-                                      ['/etc/passwd', '/etc/hosts', '/etc/nsswitch.conf'])
+                         ['/etc/passwd', '/etc/hosts', '/etc/nsswitch.conf'])
         self.assertEqual(list(flatten(1)), [1])
         # try:
         #     flatten(1)
@@ -1125,35 +1130,35 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(jsonpp(data), data2)
 
     def test_list_sort_dicts_by_value(self):
-        myList = [ { "name": "DATANODE" }, { "name": "STORM_UI_SERVER" }, { "name": "SUPERVISOR" }, { "name": "FLUME_HANDLER" }, { "name": "HISTORYSERVER" }, { "name": "RESOURCEMANAGER" }, { "name": "HCAT" }, { "name": "OOZIE_CLIENT" }, { "name": "PIG" }, { "name": "HIVE_CLIENT" }, { "name": "HDFS_CLIENT" }, { "name": "NIMBUS" }, { "name": "APP_TIMELINE_SERVER" }, { "name": "SPARK_CLIENT"}, {"name": "FALCON_CLIENT"}, {"name": "METRICS_MONITOR"}, {"name": "ACCUMULO_TSERVER"}, {"name": "SLIDER"}, {"name": "ACCUMULO_CLIENT"}, {"name": "HBASE_CLIENT"}, {"name": "ZOOKEEPER_SERVER"}, {"name": "MAPREDUCE2_CLIENT"}, {"name": "ZOOKEEPER_CLIENT"}, {"name": "SECONDARY_NAMENODE"}, {"name": "YARN_CLIENT"}, {"name": "SQOOP"}, {"name": "DRPC_SERVER" }, { "name": "MAHOUT" }, { "name": "HBASE_REGIONSERVER" }, { "name": "NODEMANAGER" }, { "name": "TEZ_CLIENT" } ]
-        sortedList = [ {'name': 'ACCUMULO_CLIENT'}, {'name': 'ACCUMULO_TSERVER'}, {'name': 'APP_TIMELINE_SERVER'}, {'name': 'DATANODE'}, {'name': 'DRPC_SERVER'}, {'name': 'FALCON_CLIENT'}, {'name': 'FLUME_HANDLER'}, {'name': 'HBASE_CLIENT'}, {'name': 'HBASE_REGIONSERVER'}, {'name': 'HCAT'}, {'name': 'HDFS_CLIENT'}, {'name': 'HISTORYSERVER'}, {'name': 'HIVE_CLIENT'}, {'name': 'MAHOUT'}, {'name': 'MAPREDUCE2_CLIENT'}, {'name': 'METRICS_MONITOR'}, {'name': 'NIMBUS'}, {'name': 'NODEMANAGER'}, {'name': 'OOZIE_CLIENT'}, {'name': 'PIG'}, {'name': 'RESOURCEMANAGER'}, {'name': 'SECONDARY_NAMENODE'}, {'name': 'SLIDER'}, {'name': 'SPARK_CLIENT'}, {'name': 'SQOOP'}, {'name': 'STORM_UI_SERVER'}, {'name': 'SUPERVISOR'}, {'name': 'TEZ_CLIENT'}, {'name': 'YARN_CLIENT'}, {'name': 'ZOOKEEPER_CLIENT'}, {'name': 'ZOOKEEPER_SERVER'} ]
+        myList = [{"name": "DATANODE"}, {"name": "STORM_UI_SERVER"}, {"name": "SUPERVISOR"}, {"name": "FLUME_HANDLER"}, {"name": "HISTORYSERVER"}, {"name": "RESOURCEMANAGER"}, {"name": "HCAT"}, {"name": "OOZIE_CLIENT"}, {"name": "PIG"}, {"name": "HIVE_CLIENT"}, {"name": "HDFS_CLIENT"}, {"name": "NIMBUS"}, {"name": "APP_TIMELINE_SERVER"}, {"name": "SPARK_CLIENT"}, {"name": "FALCON_CLIENT"}, {"name": "METRICS_MONITOR"}, {"name": "ACCUMULO_TSERVER"}, {"name": "SLIDER"}, {"name": "ACCUMULO_CLIENT"}, {"name": "HBASE_CLIENT"}, {"name": "ZOOKEEPER_SERVER"}, {"name": "MAPREDUCE2_CLIENT"}, {"name": "ZOOKEEPER_CLIENT"}, {"name": "SECONDARY_NAMENODE"}, {"name": "YARN_CLIENT"}, {"name": "SQOOP"}, {"name": "DRPC_SERVER"}, {"name": "MAHOUT"}, {"name": "HBASE_REGIONSERVER"}, {"name": "NODEMANAGER"}, {"name": "TEZ_CLIENT"}]
+        sortedList = [{'name': 'ACCUMULO_CLIENT'}, {'name': 'ACCUMULO_TSERVER'}, {'name': 'APP_TIMELINE_SERVER'}, {'name': 'DATANODE'}, {'name': 'DRPC_SERVER'}, {'name': 'FALCON_CLIENT'}, {'name': 'FLUME_HANDLER'}, {'name': 'HBASE_CLIENT'}, {'name': 'HBASE_REGIONSERVER'}, {'name': 'HCAT'}, {'name': 'HDFS_CLIENT'}, {'name': 'HISTORYSERVER'}, {'name': 'HIVE_CLIENT'}, {'name': 'MAHOUT'}, {'name': 'MAPREDUCE2_CLIENT'}, {'name': 'METRICS_MONITOR'}, {'name': 'NIMBUS'}, {'name': 'NODEMANAGER'}, {'name': 'OOZIE_CLIENT'}, {'name': 'PIG'}, {'name': 'RESOURCEMANAGER'}, {'name': 'SECONDARY_NAMENODE'}, {'name': 'SLIDER'}, {'name': 'SPARK_CLIENT'}, {'name': 'SQOOP'}, {'name': 'STORM_UI_SERVER'}, {'name': 'SUPERVISOR'}, {'name': 'TEZ_CLIENT'}, {'name': 'YARN_CLIENT'}, {'name': 'ZOOKEEPER_CLIENT'}, {'name': 'ZOOKEEPER_SERVER'}]
         # print('sortedList = %s' % list_sort_dicts_by_value(myList, 'name'))
         self.assertEqual(list_sort_dicts_by_value(myList, 'name'), sortedList)
         self.assertEqual(list_sort_dicts_by_value([], 'name'), [])
         try:
             list_sort_dicts_by_value(myList, 'brokenkey')
             raise Exception('failed to raise KeyError exception for invalid/missing key')
-        except KeyError as e:
+        except KeyError as _:
             pass
         try:
             list_sort_dicts_by_value(myList, None)
             raise Exception('failed to raise InvalidArgumentException when passed a non-string None for key')
-        except InvalidArgumentException as e:
+        except InvalidArgumentException as _:
             pass
         try:
             list_sort_dicts_by_value('notAList', 'name')
             raise Exception('failed to raise InvalidArgumentException when passed a non-list')
-        except InvalidArgumentException as e:
+        except InvalidArgumentException as _:
             pass
         try:
             list_sort_dicts_by_value([['test']], 'name')
             raise Exception('failed to raise AssertionError when list contains non-dict')
-        except AssertionError as e:
+        except AssertionError as _:
             pass
         try:
             list_sort_dicts_by_value([{'name':['embedded_array_should_have_been_string']}], 'name')
             raise Exception('failed to raise AssertionError when list dict key value is not a string')
-        except AssertionError as e:
+        except AssertionError as _:
             pass
 
     def test_support_msg(self):
@@ -1172,21 +1177,24 @@ class UtilsTester(unittest.TestCase):
 
 
         # def test_resolve_ip(self):
-    #     # if not on a decent OS assume I'm somewhere lame like a bank where internal resolvers don't resolve internet addresses
+    #     # if not on a decent OS assume I'm somewhere lame like a bank
+    #     # where internal resolvers don't resolve internet addresses
     #     # this way my continous integration tests still run this one
     #     # still applies to Hortonworks Sandbox running on a banking VM :-/
     #     if(isLinuxOrMac()):
-    #         if(os.getenv('TRAVIS', None) or os.popen('PATH=$PATH:/usr/sbin dmidecode | grep -i virtual').read().strip() == '' ):
+    #         if(os.getenv('TRAVIS', None) or
+    #            os.popen('PATH=$PATH:/usr/sbin dmidecode | grep -i virtual').read().strip() == ''):
     #             self.assertEqual(resolve_ip('a.resolvers.level3.net'),    '4.2.2.1')
-    #             # self.assertEqual(validate_resolvable('a.resolvers.level3.net'),    '4.2.2.1',      'validate_resolvable('a.resolvers.level3.net')');
-        # self.assertTrue(resolve_ip('4.2.2.2'),                   '4.2.2.2',      'resolve_ip('4.2.2.2') returns 4.2.2.2');
-        # self.assertTrue(validate_resolvable('4.2.2.2'),                   '4.2.2.2',      'validate_resolvable('4.2.2.2') returns 4.2.2.2');
+    #             # self.assertEqual(validate_resolvable('a.resolvers.level3.net'),
+    #                                '4.2.2.1', 'validate_resolvable('a.resolvers.level3.net')');
+        # self.assertTrue(resolve_ip('4.2.2.2'), '4.2.2.2', 'resolve_ip('4.2.2.2') returns 4.2.2.2');
+        # self.assertTrue(validate_resolvable('4.2.2.2'), '4.2.2.2', 'validate_resolvable('4.2.2.2') returns 4.2.2.2');
 
     def test_sec2human(self):
-        self.assertEqual(sec2human(1),     '1 sec')
-        self.assertEqual(sec2human(10),    '10 secs')
-        self.assertEqual(sec2human(61),    '1 min 1 sec')
-        self.assertEqual(sec2human(3676),  '1 hour 1 min 16 secs')
+        self.assertEqual(sec2human(1), '1 sec')
+        self.assertEqual(sec2human(10), '10 secs')
+        self.assertEqual(sec2human(61), '1 min 1 sec')
+        self.assertEqual(sec2human(3676), '1 hour 1 min 16 secs')
         self.assertEqual(sec2human(100000), '1 day 3 hours 46 mins 40 secs')
         try:
             sec2human(None)
@@ -1205,15 +1213,15 @@ class UtilsTester(unittest.TestCase):
             pass
 
     def test_sec2min(self):
-        self.assertEqual(sec2min(65),     '1:05')
-        self.assertEqual(sec2min(30),     '0:30')
-        self.assertEqual(sec2min(3601),   '60:01')
-        self.assertEqual(sec2min(0),      '0:00')
-        self.assertEqual(sec2min(-1),     '')
-        self.assertEqual(sec2min('aa'),   '')
-        self.assertEqual(sec2min(''),     '')
-        self.assertEqual(sec2min(' '),    '')
-        self.assertEqual(sec2min(None),   '')
+        self.assertEqual(sec2min(65), '1:05')
+        self.assertEqual(sec2min(30), '0:30')
+        self.assertEqual(sec2min(3601), '60:01')
+        self.assertEqual(sec2min(0), '0:00')
+        self.assertEqual(sec2min(-1), '')
+        self.assertEqual(sec2min('aa'), '')
+        self.assertEqual(sec2min(''), '')
+        self.assertEqual(sec2min(' '), '')
+        self.assertEqual(sec2min(None), '')
 
     def test_timeout(self):
         set_timeout(5)
@@ -1735,7 +1743,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_validate_filename_exception(self):
         try:
-            validate_filename('\@me')
+            validate_filename(r'\@me')
             raise Exception('validate_filename() failed to raise exception')
         except InvalidOptionException:
             pass
@@ -1791,7 +1799,7 @@ class UtilsTester(unittest.TestCase):
             self.assertTrue(validate_files('/etc/passwd'))
             self.assertTrue(validate_files('/etc/passwd', '/etc/hosts'))
             self.assertEqual(list(validate_files(['/etc/passwd', ['/etc/hosts']])),
-                                                 ['/etc/passwd', '/etc/hosts'])
+                             ['/etc/passwd', '/etc/hosts'])
 
     def test_validate_files_exception(self):
         try:
@@ -1823,7 +1831,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_validate_files_exception_nonlist(self):
         try:
-            validate_files(set([1,2,3]))
+            validate_files(set([1, 2, 3]))
             raise Exception('validate_files() failed to raise exception for set(1,2,3)')
         except CodingErrorException:
             pass
@@ -2004,18 +2012,18 @@ class UtilsTester(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_int(self):
-        self.assertTrue(validate_int(2, 'two', 0,10))
-        self.assertTrue(validate_int(-2, 'minus-two', -10,10))
-        self.assertTrue(validate_int(6,'six', 5, 10))
-        self.assertTrue(validate_int(-6,'minus-six', -6, 0))
-        self.assertTrue(validate_int(2,'two', 0, 10))
-        self.assertTrue(validate_int(6,'six', 5, 7))
-        self.assertTrue(validate_int(90000,'big positive with None boundary', 9999, None))
-        self.assertTrue(validate_int(-100000,'big negative with None boundary', None, -9999))
+        self.assertTrue(validate_int(2, 'two', 0, 10))
+        self.assertTrue(validate_int(-2, 'minus-two', -10, 10))
+        self.assertTrue(validate_int(6, 'six', 5, 10))
+        self.assertTrue(validate_int(-6, 'minus-six', -6, 0))
+        self.assertTrue(validate_int(2, 'two', 0, 10))
+        self.assertTrue(validate_int(6, 'six', 5, 7))
+        self.assertTrue(validate_int(90000, 'big positive with None boundary', 9999, None))
+        self.assertTrue(validate_int(-100000, 'big negative with None boundary', None, -9999))
 
     def test_validate_int_exception_noname(self):
         try:
-            validate_int(6,'', 5, 7)
+            validate_int(6, '', 5, 7)
             raise Exception('validate_int() failed to raise exception for no name')
         except CodingErrorException:
             pass
@@ -2245,7 +2253,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_validate_ldap_dn_exception(self):
         try:
-            validate_ldap_dn('hari\@LOCAL')
+            validate_ldap_dn(r'hari\@LOCAL')
             raise Exception('validate_ldap_dn() failed to raise exception')
         except InvalidOptionException:
             pass
@@ -2356,7 +2364,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_validate_process_name_exception_badfile(self):
         try:
-            validate_process_name('./b\@dfile')
+            validate_process_name(r'./b\@dfile')
             raise Exception('validate_process_name() failed to raise exception for badfile')
         except InvalidOptionException:
             pass
@@ -2589,7 +2597,7 @@ class UtilsTester(unittest.TestCase):
             which('/etc/nonexistent')
             raise Exception('which() failed to raise exception for nonexistent file')
         except FileNotFoundException:
-                pass
+            pass
 
     def test_which_exception_invalid_filename(self):
         try:
