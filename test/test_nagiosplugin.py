@@ -38,61 +38,59 @@ class test_NagiosPlugin(unittest.TestCase):
         def run(self):
             print("running SubNagiosPlugin()")
 
-    # bails on unit2 discover -v / python -m unittest discover -v
-    # because the -v switch trips optparse
-    def test_SubNagiosPlugin(self):
-        c = self.SubNagiosPlugin()
+        def test_SubNagiosPlugin(self):
+            obj = self.SubNagiosPlugin()
 
-        self.assertTrue(c.is_unknown())
-        c.ok()
-        self.assertTrue(c.is_ok())
-        self.assertFalse(c.is_warning())
-        self.assertFalse(c.is_critical())
-        self.assertFalse(c.is_unknown())
-        c.unknown()
-        self.assertTrue(c.is_unknown())
-        self.assertFalse(c.is_ok())
-        self.assertFalse(c.is_warning())
-        self.assertFalse(c.is_critical())
-        c.warning()
-        self.assertTrue(c.is_warning())
-        self.assertFalse(c.is_ok())
-        self.assertFalse(c.is_critical())
-        self.assertFalse(c.is_unknown())
-        c.unknown()
-        self.assertTrue(c.is_warning())
-        self.assertFalse(c.is_ok())
-        self.assertFalse(c.is_critical())
-        self.assertFalse(c.is_unknown())
-        c.critical()
-        self.assertTrue(c.is_critical())
-        self.assertFalse(c.is_ok())
-        self.assertFalse(c.is_warning())
-        self.assertFalse(c.is_unknown())
-        c.warning()
-        self.assertTrue(c.is_critical())
-        self.assertFalse(c.is_ok())
-        self.assertFalse(c.is_warning())
-        self.assertFalse(c.is_unknown())
+            self.assertTrue(c.is_unknown())
+            obj.ok()
+            self.assertTrue(c.is_ok())
+            self.assertFalse(c.is_warning())
+            self.assertFalse(c.is_critical())
+            self.assertFalse(c.is_unknown())
+            obj.unknown()
+            self.assertTrue(c.is_unknown())
+            self.assertFalse(c.is_ok())
+            self.assertFalse(c.is_warning())
+            self.assertFalse(c.is_critical())
+            obj.warning()
+            self.assertTrue(c.is_warning())
+            self.assertFalse(c.is_ok())
+            self.assertFalse(c.is_critical())
+            self.assertFalse(c.is_unknown())
+            obj.unknown()
+            self.assertTrue(c.is_warning())
+            self.assertFalse(c.is_ok())
+            self.assertFalse(c.is_critical())
+            self.assertFalse(c.is_unknown())
+            obj.critical()
+            self.assertTrue(c.is_critical())
+            self.assertFalse(c.is_ok())
+            self.assertFalse(c.is_warning())
+            self.assertFalse(c.is_unknown())
+            obj.warning()
+            self.assertTrue(c.is_critical())
+            self.assertFalse(c.is_ok())
+            self.assertFalse(c.is_warning())
+            self.assertFalse(c.is_unknown())
 
-        try:
-            c.set_status('invalidstatus')
-        except CodingErrorException:
-            pass
+            try:
+                obj.set_status('invalidstatus')
+            except CodingErrorException:
+                pass
 
-        try:
-            c.critical()
-            c.main()
-        except SystemExit as _:
-            if _.code != 2:
-                raise Exception('NagiosPlugin failed to exit CRITICAL')
+            try:
+                obj.critical()
+                obj.main()
+            except SystemExit as _:
+                if _.code != 2:
+                    raise Exception('NagiosPlugin failed to exit CRITICAL')
 
-    def test_NagiosPlugin_abstract(self):
-        try:
-            c = NagiosPlugin() # pylint: disable=abstract-class-instantiated
-            raise Exception('failed to raise a TypeError when attempting to instantiate abstract class NagiosPlugin')
-        except TypeError as _:
-            pass
+        def test_NagiosPlugin_abstract(self):
+            try:
+                NagiosPlugin() # pylint: disable=abstract-class-instantiated
+                raise Exception('failed to raise a TypeError when attempting to instantiate abstract class NagiosPlugin')
+            except TypeError as _:
+                pass
 
 
 def main():
