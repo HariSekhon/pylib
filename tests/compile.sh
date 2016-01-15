@@ -20,7 +20,7 @@ cd "$srcdir/..";
 
 . ./tests/utils.sh
 
-for x in $(find . -type f -iname *.py -o -iname *.jy); do
+for x in $(find . -type f -iname '*.py' -o -iname '*.jy'); do
     isExcluded "$x" && continue
     echo "compiling $x"
     python -m py_compile $x
