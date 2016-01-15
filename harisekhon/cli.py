@@ -263,7 +263,7 @@ class CLI(object):
         name2 = ''
         if not isBlankOrNone(name):
             name2 = "%s " % name
-        if default_port != None:
+        if default_port is not None:
             # assert isPort(default_port)
             if not isPort(default_port):
                 raise CodingErrorException('invalid default port supplied to add_hostoption()')
