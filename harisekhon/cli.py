@@ -44,7 +44,7 @@ from harisekhon.utils import CodingErrorException, InvalidOptionException, ERROR
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.7.1'
+__version__ = '0.7.2'
 
 class CLI(object):
     """
@@ -256,7 +256,8 @@ class CLI(object):
         if self.options.version: # pragma: no cover
             print('%(version)s' % self.__dict__)
             sys.exit(ERRORS['UNKNOWN'])
-        self.timeout = self.options.timeout
+        if 'timeout' in dir(self.options):
+            self.timeout = self.options.timeout
         return self.options, self.args
 
     def add_hostoption(self, name='', default_host=None, default_port=None):
