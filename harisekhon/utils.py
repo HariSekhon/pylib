@@ -341,7 +341,7 @@ def getenvs2(my_vars, default, name):
 
 
 def envs2str():
-    return '\n'.join(('%s=%s' % (key, value) for (key, value) in os.environ.iteritems()))
+    return '\n'.join(('%s=%s' % (key, value) for (key, value) in sorted(os.environ.iteritems())))
 
 
 # ============================================================================ #
