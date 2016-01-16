@@ -340,6 +340,10 @@ def getenvs2(my_vars, default, name):
     return my_help, getenvs(my_vars, default, name)
 
 
+def envs2str():
+    return '\n'.join(('%s=%s' % (key, value) for (key, value) in os.environ.iteritems()))
+
+
 # ============================================================================ #
 #                              Custom Exceptions
 # ============================================================================ #

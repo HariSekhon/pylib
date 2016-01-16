@@ -266,6 +266,10 @@ class UtilsTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
+    def test_envs2str(self):
+        print(envs2str())
+        self.assertTrue(re.search('\n\w+=\w+\n', envs2str()))
+
     def test_check_tldcount(self):
         utils._check_tldcount()
         log.debug('resetting _tlds to empty')
