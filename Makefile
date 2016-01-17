@@ -89,6 +89,7 @@ install:
 .PHONY: update
 update:
 	git pull
+	git submodule update --init --remote --recursive
 	make
 
 .PHONY: tld
