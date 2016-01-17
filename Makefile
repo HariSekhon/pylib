@@ -65,7 +65,9 @@ yum-packages:
 	rpm -q epel-release || yum install -y epel-release || { wget -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
 	# for mysql_config to build MySQL-python
 	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel
-	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel
+	rpm -q python-setuptools || $(SUDO) yum install -y python-setuptools
+	rpm -q python-pip        || $(SUDO) yum install -y python-pip
+	rpm -q python-devel      || $(SUDO) yum install -y python-devel
 	#rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
 
 .PHONY: test
