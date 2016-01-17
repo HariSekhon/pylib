@@ -2454,6 +2454,33 @@ class UtilsTester(unittest.TestCase):
 
         # ============================================================================ #
 
+    def test_validate_regex(self):
+        self.assertTrue(validate_regex('.*'))
+        self.assertTrue(validate_regex('(.*)'))
+
+    def test_validate_regex_exception_none(self):
+        try:
+            validate_regex('(.*')
+            raise Exception('validate_regex() failed to raise exception for missing closing brace')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_regex_exception_none(self):
+        try:
+            validate_regex(None)
+            raise Exception('validate_regex() failed to raise exception for none')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_regex_exception_blank(self):
+        try:
+            validate_regex('')
+            raise Exception('validate_regex() failed to raise exception for blank')
+        except InvalidOptionException:
+            pass
+
+        # ============================================================================ #
+
     def test_validate_units(self):
         self.assertTrue(validate_units('s', 'name'))
         self.assertTrue(validate_units('ms'))

@@ -1784,8 +1784,8 @@ def validate_process_name(arg, name=''):
         return True
     raise InvalidOptionException("invalid %(name)sprocess name '%(arg)s' defined" % locals())
 
+
 # def validate_program_path
-# def validate_regex
 
 
 def validate_password(arg, name=''):
@@ -1798,6 +1798,14 @@ def validate_password(arg, name=''):
                                      'subshell escape sequences like $( ) or backticks')
     vlog_option('%(name)spassword' % locals(), '<omitted>')
     return True
+
+
+def validate_regex(arg, name=''):
+    if name:
+        name += ' '
+    if isRegex(arg):
+        return True
+    raise InvalidOptionException("invalid %(name)sregex '%(arg)s' defined" % locals())
 
 
 # def validate_resolvable
