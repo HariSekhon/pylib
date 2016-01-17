@@ -111,4 +111,4 @@ tld:
 .PHONY: clean
 clean:
 	# the xargs option to ignore blank input doesn't work on Mac
-	@find . -maxdepth 3 -iname '*.pyc' -o -iname '*.jyc' | xargs rm -v || :
+	@find . -maxdepth 3 -iname '*.pyc' -o -iname '*.jyc' | xargs rm -fv || :
