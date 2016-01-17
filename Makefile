@@ -41,7 +41,7 @@ make:
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
 	$(SUDO2) pip install MySQL-python || :
 	@echo
-	@echo BUILD SUCCESSFUL (pylib)
+	@echo 'BUILD SUCCESSFUL (pylib)'
 
 .PHONY: apt-packages
 apt-packages:
