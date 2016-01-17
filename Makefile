@@ -52,9 +52,9 @@ apt-packages:
 	$(SUDO) apt-get install -y build-essential
 	#$(SUDO) apt-get install -y ipython-notebook || :
 	# for mysql_config to build MySQL-python
-	$(SUDO) apt-get install -y libmysqlclient-dev
 	$(SUDO) apt-get install -y python-pip
 	$(SUDO) apt-get install -y python-dev
+	#$(SUDO) apt-get install -y libmysqlclient-dev || :
 
 .PHONY: yum-packages
 yum-packages:
