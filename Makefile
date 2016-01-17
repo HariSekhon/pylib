@@ -42,7 +42,7 @@ make:
 	
 	#yum install -y perl-DBD-MySQL
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
-	$(SUDO2) pip install MySQL-python || :
+	#$(SUDO2) pip install MySQL-python || :
 	@echo
 	@echo 'BUILD SUCCESSFUL (pylib)'
 
@@ -54,6 +54,10 @@ apt-packages:
 	$(SUDO) apt-get install -y python-dev
 	$(SUDO) apt-get install -y python-setuptools
 	$(SUDO) apt-get install -y python-pip
+	# IPython Notebook fails and leave apt broken
+	# The following packages have unmet dependencies:
+	#  python-zmq : Depends: libzmq1 but it is not going to be installed
+	#  E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
 	#$(SUDO) apt-get install -y ipython-notebook || :
 	# for mysql_config to build MySQL-python
 	#$(SUDO) apt-get install -y libmysqlclient-dev || :
