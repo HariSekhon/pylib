@@ -39,4 +39,5 @@ done
 
 #./help.sh
 
-./travis.sh
+cd "$srcdir/.."
+./bash-tools/travis.sh
