@@ -49,7 +49,7 @@ apt-packages:
 	#$(SUDO) apt-get install -y ipython-notebook || :
 	# for mysql_config to build MySQL-python
 	$(SUDO) apt-get install -y libmysqlclient-dev || :
-	$(SUDO) apt-get install -y python-setuptools python-pip python-dev || :
+	$(SUDO) apt-get install -y python-setuptools python-pip python-dev
 
 .PHONY: yum-packages
 yum-packages:
