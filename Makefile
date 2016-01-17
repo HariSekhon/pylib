@@ -55,8 +55,8 @@ apt-packages:
 yum-packages:
 	rpm -q gcc wget || $(SUDO) yum install -y gcc wget
 	# needed to fetch the library submodule and CPAN modules
-	# python-pip requires EPEL, so try to get the correct EPEL rpm - for Make must escape the $3
-	rpm -q epel-release || rpm -ivh "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`awk '{print substr($$3, 0, 1); exit}' /etc/*release`.noarch.rpm"
+	# python-pip requires EPEL, so try to get the correct EPEL rpm
+	rpm -q epel-release || yum install -y epel-release || { wget -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
 	# for mysql_config to build MySQL-python
 	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel
 	rpm -q python-setuptools python-pip python-devel || $(SUDO) yum install -y python-setuptools python-pip python-devel
