@@ -27,6 +27,9 @@ make:
 	if [ -x /usr/bin/apt-get ]; then make apt-packages; fi
 	if [ -x /usr/bin/yum ];     then make yum-packages; fi
 	
+	git submodule init
+	git submodule update --remote --recursive
+
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
 	#$(SUDO2) pip install mock
