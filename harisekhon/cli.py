@@ -44,7 +44,7 @@ from harisekhon.utils import CodingErrorException, InvalidOptionException, ERROR
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.7.2'
+__version__ = '0.7.3'
 
 class CLI(object):
     """
@@ -132,14 +132,14 @@ class CLI(object):
             # careful causes bad file descriptor for die(), jython_only() and printerr() unit tests
             # sys.stderr = sys.stdin
             log.setLevel(logging.WARN)
-            verbose = self.options.verbose
-            if verbose > 2:
+            self.set_verbose(self.options.verbose)
+            if self.get_verbose() > 2:
                 log.setLevel(logging.DEBUG)
-            elif verbose > 1:
+            elif self.get_verbose() > 1:
                 log.setLevel(logging.INFO)
             if self.options.debug:
                 log.setLevel(logging.DEBUG) # pragma: no cover
-            log.info('verbose level: %s', verbose)
+            log.info('verbose level: %s', self.get_verbose())
             if self.timeout is not None:
                 validate_int(self.timeout, 'timeout', 0, self.timeout_max)
                 log.debug('setting timeout alarm (%s)', self.timeout)
