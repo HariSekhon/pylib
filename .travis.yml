@@ -15,7 +15,7 @@ python:
   - "pypy"
   #- "pypy3"
 
-sudo: true
+sudo: required
 
 notifications:
   email: false
@@ -32,5 +32,3 @@ script:
 after_success:
   - coveralls
 #  - codecov
-
-sudo: required
