@@ -2471,7 +2471,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_regex('.*'))
         self.assertTrue(validate_regex('(.*)'))
 
-    def test_validate_regex_exception_none(self):
+    def test_validate_regex_exception_unmatched_bracket(self):
         try:
             validate_regex('(.*')
             raise Exception('validate_regex() failed to raise exception for missing closing brace')
