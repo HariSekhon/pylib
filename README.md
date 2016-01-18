@@ -13,7 +13,7 @@ make &&
 make test
 ```
 
-Continuous Integration is run on this repo to build and unit test it (PyUnit).
+Continuous Integration is run on this repo to build and unit test it.
 
 #### Configuration ####
 
