@@ -28,6 +28,7 @@ import unittest
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
+import harisekhon
 from harisekhon import utils  # pylint: disable=wrong-import-position
 from harisekhon.utils import *  # pylint: disable=wrong-import-position,wildcard-import,unused-wildcard-import
 
@@ -1185,8 +1186,20 @@ class UtilsTester(unittest.TestCase):
 
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
-        self.assertTrue(re.search('https://github.com/harisekhon/testrepo/issues', support_msg('testrepo')))
-        self.assertTrue(re.search('https://github.com/harisekhon/pylib/issues', support_msg('')))
+        self.assertTrue(re.search('https://github.com/HariSekhon/testrepo/issues', support_msg('testrepo')))
+        self.assertTrue(re.search('https://github.com/HariSekhon/pytools/issues', support_msg('')))
+        self.assertTrue(re.search('https://github.com/HariSekhon/pytools/issues', support_msg(None)))
+        self.assertTrue(re.search('https://github.com/HariSekhon/pytools/issues', support_msg()))
+        prog2 = harisekhon.utils.prog
+        harisekhon.utils.prog = 'check_test'
+        self.assertTrue(re.search('https://github.com/HariSekhon/nagios-plugins/issues', support_msg(None)))
+        harisekhon.utils.prog = prog2
+
+    def test_support_msg_api(self):
+        print(support_msg_api())
+        # avoid assertRegexpMatches as it's only available >= 2.7
+        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/testrepo/issues', support_msg_api('testrepo')))
+        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/pytools/issues', support_msg_api()))
 
     def test_skip_java_output(self):
         self.assertTrue(skip_java_output('Class JavaLaunchHelper is implemented in both'))

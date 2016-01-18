@@ -105,11 +105,19 @@ log = logging.getLogger('HariSekhonUtils')
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
-def support_msg(repo="pytools"):
+
+def support_msg(repo=None):
     if isBlankOrNone(repo):
-        repo = "pylib"
-    _ = 'Please try latest version from https:/github.com/harisekhon/%(repo)s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/harisekhon/%(repo)s/issues' % locals() # pylint: disable=line-too-long
+        if prog.startswith('check_'):
+            repo = 'nagios-plugins'
+        else:
+            repo = 'pytools'
+    _ = 'Please try latest version from https:/github.com/HariSekhon/%(repo)s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/HariSekhon/%(repo)s/issues' % locals() # pylint: disable=line-too-long
     return _
+
+def support_msg_api(repo=None):
+    return 'API may have changed. ' + support_msg(repo)
+
 
 # also doesn't work in Py3K
 # def autoflush():
