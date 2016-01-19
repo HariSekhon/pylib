@@ -164,6 +164,10 @@ class CLI(object):
         self.parser.print_help()
         qquit(status)
 
+    def no_args(self):
+        if self.args:
+            self.usage('invalid non-switch arguments supplied on command line')
+
     # leave this as optional as some cli tools may not need to add additional options
     # @abstractmethod
     def add_options(self):
@@ -197,7 +201,7 @@ class CLI(object):
         self.__timeout_default__ = secs
 
     def get_timeout_max(self):
-        return self.__timeout_max__ 
+        return self.__timeout_max__
 
     def set_timeout_max(self, secs):
         if secs is not None and not isInt(secs):
