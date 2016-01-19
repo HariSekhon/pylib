@@ -17,7 +17,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
+# from __future__ import unicode_literals
 
 import logging
 import os
@@ -181,6 +181,14 @@ class CLITester(unittest.TestCase):
         except SystemExit as _:
             if _.code != 3:
                 raise Exception('failed to trap and re-throw InvalidOptionException in CLI main as SystemExit (usage)')
+
+        try:
+            obj.args = "blah"
+            obj.no_args()
+            raise Exception('failed to exit via no_args()')
+        except SystemExit as _:
+            if _.code != 3:
+                raise Exception('wrong exit code for no_args()')
 
         # obj._env_var('', 'test')
         # try:
