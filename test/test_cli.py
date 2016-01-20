@@ -75,11 +75,14 @@ class CLITester(unittest.TestCase):
 
         # set_verbose() won't work because parse args resets it so we change verbose_default instead
         obj.main()
+        obj.__init__()
         obj.set_verbose_default(2)
         self.assertEqual(obj.get_verbose_default(), 2)
         obj.main()
+        obj.__init__()
         obj.set_verbose_default(3)
         obj.main()
+        obj.__init__()
         obj.set_verbose(0)
         self.assertEqual(obj.get_verbose(), 0)
         try:
@@ -100,6 +103,7 @@ class CLITester(unittest.TestCase):
         # except SystemExit as _:
         #     if _.code != 3:
         #         raise Exception('wrong exit code != 3 when triggering usage via self.options.help')
+        obj.__init__()
 
         try:
             obj.usage()
@@ -126,9 +130,8 @@ class CLITester(unittest.TestCase):
         except CodingErrorException:
             pass
         obj.main()
+        obj.__init__()
 
-        obj.set_timeout(22)
-        self.assertEqual(obj.get_timeout(), 22)
         try:
             obj.set_timeout('a')
             raise Exception('failed to raise CodingErrorException for CLU.set_timeout(a)')
@@ -158,7 +161,11 @@ class CLITester(unittest.TestCase):
         except CodingErrorException:
             pass
         self.assertEqual(obj.get_timeout_default(), None)
+        obj.set_timeout_max(30)
+        obj.set_timeout(22)
+        self.assertEqual(obj.get_timeout(), 22)
         obj.main()
+        obj.__init__()
         try:
             obj.set_timeout_default('a')
             raise Exception('failed to raise CodingErrorException for CLI.set_timeout_default(a)')
@@ -172,6 +179,7 @@ class CLITester(unittest.TestCase):
         except SystemExit as _:
             if _.code != 3:
                 raise Exception('wrong exit code != 3 when self timing out CLI')
+        obj.__init__()
 
         def raise_invalidoptionexception():
             raise InvalidOptionException('test')
@@ -181,6 +189,7 @@ class CLITester(unittest.TestCase):
         except SystemExit as _:
             if _.code != 3:
                 raise Exception('failed to trap and re-throw InvalidOptionException in CLI main as SystemExit (usage)')
+        obj.__init__()
 
         # obj._env_var('', 'test')
         # try:
