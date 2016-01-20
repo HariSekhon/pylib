@@ -166,6 +166,10 @@ class CLI(object):
         self.parser.print_help()
         qquit(status)
 
+    def no_args(self):
+        if self.args:
+            self.usage('invalid non-switch arguments supplied on command line')
+
     # leave this as optional as some cli tools may not need to add additional options
     # @abstractmethod
     def add_options(self):
