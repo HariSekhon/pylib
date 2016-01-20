@@ -141,8 +141,6 @@ class CLI(object):
                 log.setLevel(logging.DEBUG) # pragma: no cover
             log.info('verbose level: %s', self.get_verbose())
             if self.get_timeout() is not None:
-                print('timeout = %s' % self.get_timeout())
-                print('timeout max = %s' % self.get_timeout_max())
                 validate_int(self.get_timeout(), 'timeout', 0, self.get_timeout_max())
                 log.debug('setting timeout alarm (%s)', self.get_timeout())
                 signal.signal(signal.SIGALRM, self.timeout_handler)
