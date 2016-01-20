@@ -44,7 +44,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.1'
+__version__ = '0.10.2'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1887,7 +1887,7 @@ def vlog2(msg):
 def vlog3(msg):
     log.debug(msg)
 
-def vlog_option(name, option):
+def vlog_option(name, option): # pylint: disable=unused-argument
     # vlog2('%-25s %s' % (name + ':', option))
     vlog2('%(name)s:  %(option)s' % locals())
 
@@ -1928,6 +1928,11 @@ def pyspark_path():
             sys.path.append(_) # pragma: no cover
     else:
         warn("SPARK_HOME not set - probably won't find PySpark libs")
+    # needed for Spark 1.4+
+    _ = os.environ.get('PYSPARK_SUBMIT_ARGS', '')
+    if 'pyspark-shell' not in _:
+        _ += ' pyspark-shell'
+    os.environ["PYSPARK_SUBMIT_ARGS"] = _
 
 # TODO: XXX: review
 # def import_pyspark():
