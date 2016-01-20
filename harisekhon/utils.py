@@ -1682,9 +1682,9 @@ def validate_int(arg, name, my_min, my_max):
         except ValueError as _:
             code_error('invalid my_min/my_max (%(my_min)s/%(my_max)s) passed to validate_int(): %(_)s' % locals())
         if my_min is not None and arg < my_min:
-            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(arg)s" % locals())
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(my_min)s" % locals())
         if my_max is not None and arg > my_max:
-            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be greater than %(arg)s" % locals()) # pylint: disable=line-too-long
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be greater than %(my_max)s" % locals()) # pylint: disable=line-too-long
         vlog_option(name, arg)
         return True
     raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be a real number" % locals())
