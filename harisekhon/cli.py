@@ -67,10 +67,10 @@ class CLI(object):
         self.options = None
         self.args = None
         self.__verbose__ = None
-        self.__verbose_default__  = 0
-        self.__timeout__  = None
+        self.__verbose_default__ = 0
+        self.__timeout__ = None
         self.__timeout_default__ = 10
-        self.__timeout_max__  = 86400
+        self.__timeout_max__ = 86400
         self.topfile = get_topfile()
         # this gets utrunner.py in PyCharm and runpy.py
         # print('topfile = %s' % self.topfile)
@@ -141,6 +141,8 @@ class CLI(object):
                 log.setLevel(logging.DEBUG) # pragma: no cover
             log.info('verbose level: %s', self.get_verbose())
             if self.get_timeout() is not None:
+                print('timeout = %s' % self.get_timeout())
+                print('timeout max = %s' % self.get_timeout_max())
                 validate_int(self.get_timeout(), 'timeout', 0, self.get_timeout_max())
                 log.debug('setting timeout alarm (%s)', self.get_timeout())
                 signal.signal(signal.SIGALRM, self.timeout_handler)
@@ -197,7 +199,7 @@ class CLI(object):
         self.__timeout_default__ = secs
 
     def get_timeout_max(self):
-        return self.__timeout_max__ 
+        return self.__timeout_max__
 
     def set_timeout_max(self, secs):
         if secs is not None and not isInt(secs):
@@ -205,7 +207,7 @@ class CLI(object):
         # leave this to be able to set max to any amount
         # validate_int(secs, 'timeout default', 0, self.__timeout_max__ )
         log.debug('setting max timeout to %s secs', secs)
-        self.__timeout_max__  = secs
+        self.__timeout_max__ = secs
 
     def get_verbose(self):
         return self.__verbose__
@@ -217,27 +219,28 @@ class CLI(object):
         self.__verbose__ = int(arg)
 
     def get_verbose_default(self):
-        return self.__verbose_default__ 
+        return self.__verbose_default__
 
     def set_verbose_default(self, arg):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose_default(), must be an integer')
         log.debug('setting default verbose to %s', arg)
-        self.__verbose_default__  = int(arg)
+        self.__verbose_default__ = int(arg)
 
     def add_default_opts(self):
-        # TODO: why is this called twice to result in a problem without first removing flags?
-        for _ in ('--help', '--version', '--timeout', '--verbose', '--debug'):
-            try:
-                self.parser.remove_option(_)
-            except ValueError:
-                pass
+        # This was a hack because main() was called more than once resulting in this being called more than once
+        # use separate objects in future
+        # for _ in ('--help', '--version', '--timeout', '--verbose', '--debug'):
+        #     try:
+        #         self.parser.remove_option(_)
+        #     except ValueError:
+        #         pass
 
         if self.__timeout_default__ is not None:
             self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.__timeout_default__,
                                    metavar='secs', default=self.__timeout_default__)
         self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv)',
-                               action='count', default=self.__verbose_default__ )
+                               action='count', default=self.__verbose_default__)
         self.parser.add_option('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
         # self.parser.add_option('-h', '--help', action='help')
