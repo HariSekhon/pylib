@@ -2644,6 +2644,8 @@ class UtilsTester(unittest.TestCase):
         def test_which(self):
             self.assertTrue(which('/bin/sh'))
             self.assertTrue(which('sh'))
+            self.assertEqual(which('/etc/nonexistent'), None)
+            self.assertEqual(which('9hari'), None)
 
         def test_which_exception_non_executable(self):
             try:
@@ -2652,12 +2654,12 @@ class UtilsTester(unittest.TestCase):
             except FileNotExecutableException:
                 pass
 
-    def test_which_exception_non_found(self):
-        try:
-            which('/etc/nonexistent')
-            raise Exception('which() failed to raise exception for nonexistent file')
-        except FileNotFoundException:
-            pass
+    # def test_which_exception_non_found(self):
+    #     try:
+    #         which('/etc/nonexistent')
+    #         raise Exception('which() failed to raise exception for nonexistent file')
+    #     except FileNotFoundException:
+    #         pass
 
     def test_which_exception_invalid_filename(self):
         try:
@@ -2666,12 +2668,12 @@ class UtilsTester(unittest.TestCase):
         except InvalidFilenameException:
             pass
 
-    def test_which_exception_numfirst(self):
-        try:
-            which('9hari')
-            raise Exception('which() failed to raise exception for numfirst')
-        except FileNotFoundException:
-            pass
+    # def test_which_exception_numfirst(self):
+    #     try:
+    #         which('9hari')
+    #         raise Exception('which() failed to raise exception for numfirst')
+    #     except FileNotFoundException:
+    #         pass
 
     def test_which_exception_none(self):
         try:

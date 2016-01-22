@@ -1902,15 +1902,20 @@ def which(my_bin):
                 return my_bin
             raise FileNotExecutableException("'%(my_bin)s' is not executable" % locals())
         else:
-            raise FileNotFoundException("'%s' not found" % my_bin)
+            # flows nicer in client code to just return None and use as part of "if" tests etc rather than needing
+            # exception blocks
+            # raise FileNotFoundException("'%s' not found" % my_bin)
+            return None
     else:
         for basepath in os.getenv('PATH', '').split(os.pathsep):
             path = os.path.join(basepath, my_bin)
             if os.path.isfile(path):
                 if os.access(path, os.X_OK):
                     return path
-    raise FileNotFoundException("could not find executable file '%s' in $PATH (%s)" % (my_bin, os.getenv('PATH', '')))
-
+    # flows nicer in client code to just return None and use as part of "if" tests etc rather than needing
+    # exception blocks
+    # raise FileNotFoundException("could not find executable file '%s' in $PATH (%s)" % (my_bin, os.getenv('PATH', '')))
+    return None
 
 # ============================================================================ #
 #                               PySpark Utils
