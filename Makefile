@@ -44,6 +44,8 @@ build:
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
 	#$(SUDO2) pip install MySQL-python || :
 	@echo
+	bash-tools/python-compile.sh
+	@echo
 	@echo 'BUILD SUCCESSFUL (pylib)'
 
 .PHONY: apt-packages
@@ -111,4 +113,4 @@ tld:
 .PHONY: clean
 clean:
 	# the xargs option to ignore blank input doesn't work on Mac
-	@find . -maxdepth 3 -iname '*.pyc' -o -iname '*.jyc' | xargs rm -fv || :
+	@find . -maxdepth 3 -iname '*.py[co]' -o -iname '*.jy[co]' -delete
