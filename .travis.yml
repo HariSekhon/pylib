@@ -20,6 +20,10 @@ sudo: required
 notifications:
   email: false
 
+branches:
+  only:
+    - master
+
 install:
   - make
   - pip install codecov
