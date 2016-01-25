@@ -28,7 +28,7 @@ build:
 	if [ -x /usr/bin/yum ];     then make yum-packages; fi
 	
 	git submodule init
-	git submodule update --remote --recursive
+	git submodule update --recursive
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
@@ -103,7 +103,7 @@ install:
 .PHONY: update
 update:
 	git pull
-	git submodule update --init --remote --recursive
+	git submodule update --init --recursive
 	make
 
 .PHONY: tld
