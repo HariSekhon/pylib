@@ -66,11 +66,11 @@ class CLI(object):
         # instance attributes, feels safer
         self.options = None
         self.args = None
-        self.__verbose__ = None
-        self.__verbose_default__ = 0
-        self.__timeout__ = None
-        self.__timeout_default__ = 10
-        self.__timeout_max__ = 86400
+        self.__verbose = None
+        self.__verbose_default = 0
+        self.__timeout = None
+        self.__timeout_default = 10
+        self.__timeout_max = 86400
         self.topfile = get_topfile()
         # this gets utrunner.py in PyCharm and runpy.py
         # print('topfile = %s' % self.topfile)
@@ -177,57 +177,57 @@ class CLI(object):
         qquit('UNKNOWN', 'self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
 
     def get_timeout(self):
-        return self.__timeout__
+        return self.__timeout
 
     def set_timeout(self, secs):
         if not isInt(secs):
             raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
         validate_int(secs, 'timeout', 0, self.get_timeout_max())
         log.debug('setting timeout to %s secs', secs)
-        self.__timeout__ = secs
+        self.__timeout = secs
 
     def get_timeout_default(self):
-        return self.__timeout_default__
+        return self.__timeout_default
 
     # None prevents --timeout switch becoming exposed, whereas 0 will allow
     def set_timeout_default(self, secs):
         if secs is not None:
             if not isInt(secs):
                 raise CodingErrorException('invalid timeout passed to set_timeout_default(), must be an integer representing seconds') # pylint: disable=line-too-long
-            # validate_int(secs, 'timeout default', 0, self.__timeout_max__ )
+            # validate_int(secs, 'timeout default', 0, self.__timeout_max )
             if self.get_timeout_max() is not None and secs > self.get_timeout_max():
                 raise CodingErrorException('set default timeout > timeout max')
         log.debug('setting default timeout to %s secs', secs)
-        self.__timeout_default__ = secs
+        self.__timeout_default = secs
 
     def get_timeout_max(self):
-        return self.__timeout_max__
+        return self.__timeout_max
 
     def set_timeout_max(self, secs):
         if secs is not None and not isInt(secs):
             raise CodingErrorException('invalid timeout max passed to set_timeout_max(), must be an integer representing seconds') # pylint: disable=line-too-long
         # leave this to be able to set max to any amount
-        # validate_int(secs, 'timeout default', 0, self.__timeout_max__ )
+        # validate_int(secs, 'timeout default', 0, self.__timeout_max )
         log.debug('setting max timeout to %s secs', secs)
-        self.__timeout_max__ = secs
+        self.__timeout_max = secs
 
     def get_verbose(self):
-        return self.__verbose__
+        return self.__verbose
 
     def set_verbose(self, arg):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose(), must be an integer')
         log.debug('setting verbose to %s', arg)
-        self.__verbose__ = int(arg)
+        self.__verbose = int(arg)
 
     def get_verbose_default(self):
-        return self.__verbose_default__
+        return self.__verbose_default
 
     def set_verbose_default(self, arg):
         if not isInt(arg):
             raise CodingErrorException('invalid verbose level passed to set_verbose_default(), must be an integer')
         log.debug('setting default verbose to %s', arg)
-        self.__verbose_default__ = int(arg)
+        self.__verbose_default = int(arg)
 
     def add_default_opts(self):
         # This was a hack because main() was called more than once resulting in this being called more than once
@@ -238,11 +238,11 @@ class CLI(object):
         #     except ValueError:
         #         pass
 
-        if self.__timeout_default__ is not None:
-            self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.__timeout_default__,
-                                   metavar='secs', default=self.__timeout_default__)
+        if self.__timeout_default is not None:
+            self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.__timeout_default,
+                                   metavar='secs', default=self.__timeout_default)
         self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv)',
-                               action='count', default=self.__verbose_default__)
+                               action='count', default=self.__verbose_default)
         self.parser.add_option('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
         # self.parser.add_option('-h', '--help', action='help')
@@ -263,6 +263,13 @@ class CLI(object):
             sys.exit(ERRORS['UNKNOWN'])
         if 'timeout' in dir(self.options):
             self.set_timeout(self.options.timeout)
+        env_verbose = os.getenv('VERBOSE')
+        if isInt(env_verbose):
+            if env_verbose > self.get_verbose():
+                log.debug('environment variable $VERBOSE = %s, increasing verbosity' % env_verbose)
+                self.set_verbose(env_verbose)
+        else:
+            log.warn("$VERBOSE environment variable is not an integer ('%s')" % env_verbose)
         self.parse_args()
         return self.options, self.args
 
