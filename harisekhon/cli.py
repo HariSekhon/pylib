@@ -268,6 +268,8 @@ class CLI(object):
             if env_verbose > self.get_verbose():
                 log.debug('environment variable $VERBOSE = %s, increasing verbosity' % env_verbose)
                 self.set_verbose(env_verbose)
+        elif env_verbose is None:
+            pass
         else:
             log.warn("$VERBOSE environment variable is not an integer ('%s')" % env_verbose)
         self.parse_args()
