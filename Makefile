@@ -79,22 +79,25 @@ yum-packages:
 	rpm -q python-devel      || $(SUDO) yum install -y python-devel
 	#rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
 
+.PHONY: test-common
+test-common:
+	test/find_dup_defs.sh
+	tests/all.sh
+
 .PHONY: test
 test:
-	test/find_dup_defs.sh
 	#python test/test_HariSekhonUtils.py
 	# find all unit tests under test/
 	# Python -m >= 2.7
 	#python -m unittest discover -v
 	#unit2 discover -v
 	nosetests
-	tests/all.sh
+	make test-common
 
 .PHONY: test2
 test2:
-	test/find_dup_defs.sh
 	python -m unittest discover -v
-	tests/all.sh
+	make test-common
 
 .PHONY: install
 install:
@@ -105,6 +108,15 @@ update:
 	git pull
 	git submodule update --init --recursive
 	make
+
+.PHONY: update2
+update2:
+	make update-no-recompile
+
+.PHONY: update-no-recompile
+update-no-recompile:
+	git pull
+	git submodule update --init --recursive
 
 .PHONY: tld
 tld:
