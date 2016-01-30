@@ -41,3 +41,5 @@ done
 
 cd "$srcdir/.."
 bash-tools/all.sh
+
+bash-tools/python_compile.sh
