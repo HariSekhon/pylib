@@ -31,15 +31,11 @@ cd "$srcdir";
 
 #./python3.sh
 
-../bash-tools/python-compile.sh
+../bash-tools/python_compile.sh
 
-for script in $(find . -name 'test*.sh'); do
-    ./$script -vvv
-done
+../bash-tools/run_scripts.sh
 
 #./help.sh
 
 cd "$srcdir/.."
 bash-tools/all.sh
-
-bash-tools/python_compile.sh
