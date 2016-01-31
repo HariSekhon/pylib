@@ -112,8 +112,6 @@ class NagiosPlugin(CLI):
                                        "invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
     def validate_threshold(self, arg, **kwargs): # pylint: disable=no-self-use
-        #if name not in ('warning', 'critical'):
-        #    code_error('Invalid %s threshold defined, must be one of: %s' % ', '.join(('warning', 'critical')))
         try:
             return Threshold(arg, **kwargs)
         except InvalidThresholdException as _:
@@ -122,8 +120,8 @@ class NagiosPlugin(CLI):
     def validate_thresholds(self, **kwargs):
         # pylint is reading this wrong
         # pylint: disable=too-many-function-args
-        self.set_threshold('warning', self.validate_threshold(self.options.warning, **kwargs))
-        self.set_threshold('critical', self.validate_threshold(self.options.critical, **kwargs))
+        self.set_threshold('warning', self.validate_threshold(self.options.warning, name='warning', **kwargs))
+        self.set_threshold('critical', self.validate_threshold(self.options.critical, name='critical', **kwargs))
 
     def check_threshold(self, name, result):
         if self.get_threshold(name).check(result):
