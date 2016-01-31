@@ -19,14 +19,8 @@ import re
 import sys
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
-try:
-    # pylint: disable=wrong-import-position
-    from harisekhon.utils import InvalidOptionException, CodingErrorException, isInt, isBool #, log
-except ImportError as _:
-    print('module import failed: %s' % _, file=sys.stderr)
-    print("Did you remember to build the project by running 'make'?", file=sys.stderr)
-    print("Alternatively perhaps you tried to copy this program out without it's adjacent libraries?", file=sys.stderr)
-    sys.exit(4)
+# pylint: disable=wrong-import-position
+from harisekhon.utils import InvalidOptionException, CodingErrorException, isInt, isBool #, log
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.1'
