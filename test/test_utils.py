@@ -486,6 +486,15 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isBlankOrNone(' a'))
         self.assertFalse(isBlankOrNone(' a '))
 
+    def test_isBool(self):
+        self.assertTrue(isBool(True))
+        self.assertTrue(isBool(False))
+        self.assertFalse(isBool(1))
+        self.assertFalse(isBool(0))
+        self.assertFalse(isBool(1.1))
+        self.assertFalse(isBool('test'))
+        self.assertFalse(isBool(None))
+
     def test_isChars(self):
         self.assertTrue(isChars('Alpha-01_', 'A-Za-z0-9_-'))
         self.assertFalse(isChars('Alpha-01_*', 'A-Za-z0-9_-'))
