@@ -250,6 +250,16 @@ class CLITester(unittest.TestCase):
             if _.code != 3:
                 raise Exception('wrong exit code for no_args()')
 
+    def test_verbose_env(self):
+        os.environ['VERBOSE'] = '3'
+        cli = self.SubCLI()
+        cli.main()
+
+    def test_verbose_env_invalid(self):
+        os.environ['VERBOSE'] = 'a'
+        cli = self.SubCLI()
+        cli.main()
+
         # self.cli._env_var('', 'test')
         # try:
         #     self.cli._env_var(None, 1)
