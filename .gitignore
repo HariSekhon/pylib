@@ -1,3 +1,4 @@
 *.pyc
 *$py.class
 .idea
+.coverage
