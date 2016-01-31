@@ -153,7 +153,7 @@ class NagiosPlugin(CLI):
         self.check_threshold('critical', result)
 
     @abstractmethod
-    def run(self):
+    def run(self): # pragma: no cover
         pass
 
     def end(self):
