@@ -48,6 +48,10 @@ def main():
     main()
     from test.test_cli import main
     main()
+    from test.test_nagiosplugin import main
+    main()
+    from test.test_threshold import main
+    main()
 
 if __name__ == '__main__':
     main()
