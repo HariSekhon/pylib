@@ -91,6 +91,8 @@ class CLITester(unittest.TestCase):
     def test_verbose_default_setters_getters(self):
         self.cli.set_verbose_default(2)
         self.assertEqual(self.cli.get_verbose_default(), 2)
+        self.cli.main()
+        self.cli.__init__()
 
     def test_main(self):
         self.cli.main()
