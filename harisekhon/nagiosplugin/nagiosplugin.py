@@ -111,13 +111,16 @@ class NagiosPlugin(CLI):
             raise CodingErrorException("threshold '%s' does not exist" % name +
                                        "invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
-    def validate_threshold(self, arg, **kwargs): # pylint: disable=no-self-use
-        try:
-            return Threshold(arg, **kwargs)
-        except InvalidThresholdException as _:
-            self.usage('UNKNOWN', _)
+    def validate_threshold(self, arg, optional=False, **kwargs): # pylint: disable=no-self-use
+        if optional:
+            return None
+        else:
+            try:
+                return Threshold(arg, **kwargs)
+            except InvalidThresholdException as _:
+                self.usage('UNKNOWN', _)
 
-    def validate_thresholds(self, **kwargs):
+    def validate_thresholds(self, optional=False, **kwargs):
         # pylint is reading this wrong
         # pylint: disable=too-many-function-args
         self.set_threshold('warning', self.validate_threshold(self.options.warning, name='warning', **kwargs))
