@@ -21,11 +21,20 @@ import sys
 from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
-from harisekhon.utils import ERRORS, qquit, CodingErrorException # pylint: disable=wrong-import-position
-from harisekhon import CLI # pylint: disable=wrong-import-position
+try:
+    # pylint: disable=wrong-import-position
+    from harisekhon.utils import ERRORS, qquit, CodingErrorException
+    from harisekhon import CLI
+    import Threshold
+    import InvalidThresholdException
+except ImportError as _:
+    print('module import failed: %s' % _, file=sys.stderr)
+    print("Did you remember to build the project by running 'make'?", file=sys.stderr)
+    print("Alternatively perhaps you tried to copy this program out without it's adjacent libraries?", file=sys.stderr)
+    sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2'
+__version__ = '0.4'
 
 class NagiosPlugin(CLI):
     """
@@ -43,6 +52,7 @@ class NagiosPlugin(CLI):
         # redirect_stderr_stdout()
         self.__status__ = 'UNKNOWN'
         self.msg = 'MESSAGE NOT DEFINED'
+        self.__thresholds = {'warning': None, 'critical': None}
 
     # ============================================================================ #
     #                           Nagios Exit Code Functions
@@ -88,6 +98,42 @@ class NagiosPlugin(CLI):
         return self.get_status() == 'UNKNOWN'
 
     # ============================================================================ #
+
+    def set_threshold(self, name, threshold):
+        if not isinstance(threshold, 'Threshold'):
+            raise CodingErrorException('passed a non-threshold to NagiosPlugin.set_threshold()')
+        self.__thresholds[name] = threshold
+
+    def get_threshold(self, name):
+        try:
+            return self.__thresholds[name]
+        except KeyError:
+            raise CodingErrorException("threshold '%s' does not exist" % name +
+                                       "invalid name passed to NagiosPlugin.check_threshold() - typo?")
+
+    def validate_threshold(self, arg, **kwargs): # pylint: disable=no-self-use
+        #if name not in ('warning', 'critical'):
+        #    code_error('Invalid %s threshold defined, must be one of: %s' % ', '.join(('warning', 'critical')))
+        try:
+            return Threshold(arg, kwargs)
+        except InvalidThresholdException as _:
+            self.usage('UNKNOWN', _)
+
+    def validate_thresholds(self, **kwargs):
+        # pylint is reading this wrong
+        # pylint: disable=too-many-function-args
+        self.set_threshold('warning', self.validate_threshold(self.options.warning, kwargs))
+        self.set_threshold('critical', self.validate_threshold(self.options.critical, kwargs))
+
+    def check_threshold(self, name, result):
+        if self.get_threshold(name).check(result):
+            self.critical()
+        elif self.get_threshold(name).check(result):
+            self.warning()
+
+    def check_thresholds(self, result):
+        self.check_threshold('warning', result)
+        self.check_threshold('critical', result)
 
     @abstractmethod
     def run(self):
