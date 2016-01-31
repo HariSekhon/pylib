@@ -247,7 +247,8 @@ class CLI(object):
         # this would intercept and return exit code 0
         # self.parser.add_option('-h', '--help', action='help')
         self.parser.add_option('-h', '--help', action='store_true', help='Show full help and exit')
-        self.parser.add_option('-D', '--debug', action='store_true', help=SUPPRESS_HELP, default=bool(os.getenv("DEBUG")))
+        self.parser.add_option('-D', '--debug', action='store_true', help=SUPPRESS_HELP,
+                               default=bool(os.getenv("DEBUG")))
 
     def __parse_args__(self):
         try:
@@ -266,12 +267,12 @@ class CLI(object):
         env_verbose = os.getenv('VERBOSE')
         if isInt(env_verbose):
             if env_verbose > self.get_verbose():
-                log.debug('environment variable $VERBOSE = %s, increasing verbosity' % env_verbose)
+                log.debug('environment variable $VERBOSE = %s, increasing verbosity', env_verbose)
                 self.set_verbose(env_verbose)
         elif env_verbose is None:
             pass
         else:
-            log.warn("$VERBOSE environment variable is not an integer ('%s')" % env_verbose)
+            log.warn("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
         self.parse_args()
         return self.options, self.args
 
