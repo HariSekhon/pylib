@@ -76,8 +76,8 @@ class Threshold(object):
                 self.opts['upper'] = _.group(2)
             if self.opts['lower'] and self.opts['upper']:
                 if self.opts['lower'] > self.opts['upper']:
-                    raise InvalidOptionException('invalid thresholds: lower %(arg)s threshold cannot be greater ' +
-                                                 'than upper %(arg)s threshold')
+                    raise InvalidThresholdException('invalid thresholds: lower %(arg)s threshold cannot be greater ' +
+                                                    'than upper %(arg)s threshold')
         else:
             _ = threshold_range_simple.match(arg)
             if _:
@@ -86,26 +86,26 @@ class Threshold(object):
                 elif self.opts['simple'] == 'lower':
                     self.thresholds['lower'] = _.group(1)
             else:
-                raise InvalidOptionException('invalid %(name)s threshold given, ' +
-                                             'must be standard nagios threshold [@][start:]end')
+                raise InvalidThresholdException('invalid %(name)s threshold given, ' +
+                                                'must be standard nagios threshold [@][start:]end')
 
 #        self.validate_opts()
 #
 #    def validate_opts(self):
         for boundary in ('upper', 'lower'):
             if self.opts['positive'] and self.thresholds[boundary] is not None and self.thresholds[boundary] < 0:
-                raise InvalidOptionException('%(name)s %(boundary)s threshold may not be less than zero' % locals())
+                raise InvalidThresholdException('%(name)s %(boundary)s threshold may not be less than zero' % locals())
             if self.thresholds['integer'] and self.opts[boundary] is not None in self.opts and \
                 not isInt(self.thresholds[boundary]):
-                raise InvalidOptionException('%(name)s %(boundary)s threshold must be an integer' % locals())
+                raise InvalidThresholdException('%(name)s %(boundary)s threshold must be an integer' % locals())
             if self.thresholds['min'] is not None and self.thresholds[boundary] is not None and \
                self.thresholds[boundary] < self.thresholds['min']:
-                raise InvalidOptionException('{} threshold cannot be less than {}'
-                                             .format(boundary, self.thresholds['min']))
+                raise InvalidThresholdException('{} threshold cannot be less than {}'
+                                                .format(boundary, self.thresholds['min']))
             if self.thresholds['max'] is not None and self.thresholds[boundary] is not None and \
                self.thresholds[boundary] > self.thresholds['max']:
-                raise InvalidOptionException('{} threshold cannot be greater than than {}'
-                                             .format(boundary, self.thresholds['max']))
+                raise InvalidThresholdException('{} threshold cannot be greater than than {}'
+                                                .format(boundary, self.thresholds['max']))
 
     def check(self, result):
         if self.thresholds['lower'] is not None and result < self.thresholds['lower']:
