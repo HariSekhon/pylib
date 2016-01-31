@@ -94,7 +94,7 @@ class NagiosPlugin(CLI):
     # ============================================================================ #
 
     def set_threshold(self, name, threshold):
-        if not isinstance(threshold, 'Threshold'):
+        if not isinstance(threshold, Threshold):
             raise CodingErrorException('passed a non-threshold to NagiosPlugin.set_threshold()')
         self.__thresholds[name] = threshold
 
@@ -117,20 +117,30 @@ class NagiosPlugin(CLI):
     def validate_thresholds(self, optional=False, **kwargs):
         # pylint is reading this wrong
         # pylint: disable=too-many-function-args
-        self.set_threshold('warning',
-                           self.validate_threshold(
-                               self.options.warning,
-                               optional=optional,
-                               name='warning',
-                               **kwargs)
-                          )
-        self.set_threshold('critical',
-                           self.validate_threshold(
-                               self.options.critical,
-                               optional=optional,
-                               name='critical',
-                               **kwargs)
-                          )
+        if 'warning' in dir(self.options):
+            self.set_threshold('warning',
+                               self.validate_threshold(
+                                   self.options.warning,
+                                   optional=optional,
+                                   name='warning',
+                                   **kwargs)
+                              )
+        elif optional:
+            pass
+        else:
+            qquit('UNKNOWN', 'warning threshold not defined')
+        if 'critical' in dir(self.options):
+            self.set_threshold('critical',
+                               self.validate_threshold(
+                                   self.options.critical,
+                                   optional=optional,
+                                   name='critical',
+                                   **kwargs)
+                              )
+        elif optional:
+            pass
+        else:
+            qquit('UNKNOWN', 'critical threshold not defined')
 
     def check_threshold(self, name, result):
         if self.get_threshold(name).check(result):
