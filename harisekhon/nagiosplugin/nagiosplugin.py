@@ -19,14 +19,14 @@ import sys
 # import logging
 # Python 2.6+ only
 from abc import ABCMeta, abstractmethod
-libdir = os.path.join(os.path.dirname(__file__), '..')
+libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
     from harisekhon.utils import ERRORS, qquit, CodingErrorException
     from harisekhon import CLI
-    import Threshold
-    import InvalidThresholdException
+    from harisekhon.nagiosplugin.threshold import Threshold
+    from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 except ImportError as _:
     print('module import failed: %s' % _, file=sys.stderr)
     print("Did you remember to build the project by running 'make'?", file=sys.stderr)
@@ -115,15 +115,15 @@ class NagiosPlugin(CLI):
         #if name not in ('warning', 'critical'):
         #    code_error('Invalid %s threshold defined, must be one of: %s' % ', '.join(('warning', 'critical')))
         try:
-            return Threshold(arg, kwargs)
+            return Threshold(arg, **kwargs)
         except InvalidThresholdException as _:
             self.usage('UNKNOWN', _)
 
     def validate_thresholds(self, **kwargs):
         # pylint is reading this wrong
         # pylint: disable=too-many-function-args
-        self.set_threshold('warning', self.validate_threshold(self.options.warning, kwargs))
-        self.set_threshold('critical', self.validate_threshold(self.options.critical, kwargs))
+        self.set_threshold('warning', self.validate_threshold(self.options.warning, **kwargs))
+        self.set_threshold('critical', self.validate_threshold(self.options.critical, **kwargs))
 
     def check_threshold(self, name, result):
         if self.get_threshold(name).check(result):
