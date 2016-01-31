@@ -25,8 +25,10 @@ import sys
 import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon.utils import log, CodingErrorException # pylint: disable=wrong-import-position
-from harisekhon import NagiosPlugin # pylint: disable=wrong-import-position
+# pylint: disable=wrong-wrong-position
+from harisekhon.utils import log, CodingErrorException
+from harisekhon import NagiosPlugin
+from harisekhon.nagiosplugin import Threshold
 
 class NagiosPluginTester(unittest.TestCase):
 
@@ -38,52 +40,65 @@ class NagiosPluginTester(unittest.TestCase):
         def run(self):
             print("running SubNagiosPlugin()")
 
-    # TODO: refactor
-    def test_subnagiosplugin(self):
-        obj = self.SubNagiosPlugin()
+    def setUp(self):
+        self.plugin = self.SubNagiosPlugin()
 
-        self.assertEqual(obj.validate_threshold(4, optional=True), None)
+    def test_threshold(self):
+        self.plugin.set_threshold('test', Threshold(5))
+        self.assertTrue(isinstance(self.plugin.get_threshold('test'), Threshold))
 
-        self.assertTrue(obj.is_unknown())
-        obj.ok()
-        self.assertTrue(obj.is_ok())
-        self.assertFalse(obj.is_warning())
-        self.assertFalse(obj.is_critical())
-        self.assertFalse(obj.is_unknown())
-        obj.unknown()
-        self.assertTrue(obj.is_unknown())
-        self.assertFalse(obj.is_ok())
-        self.assertFalse(obj.is_warning())
-        self.assertFalse(obj.is_critical())
-        obj.warning()
-        self.assertTrue(obj.is_warning())
-        self.assertFalse(obj.is_ok())
-        self.assertFalse(obj.is_critical())
-        self.assertFalse(obj.is_unknown())
-        obj.unknown()
-        self.assertTrue(obj.is_warning())
-        self.assertFalse(obj.is_ok())
-        self.assertFalse(obj.is_critical())
-        self.assertFalse(obj.is_unknown())
-        obj.critical()
-        self.assertTrue(obj.is_critical())
-        self.assertFalse(obj.is_ok())
-        self.assertFalse(obj.is_warning())
-        self.assertFalse(obj.is_unknown())
-        obj.warning()
-        self.assertTrue(obj.is_critical())
-        self.assertFalse(obj.is_ok())
-        self.assertFalse(obj.is_warning())
-        self.assertFalse(obj.is_unknown())
+    def test_validate_threshold(self):
+        self.assertEqual(self.plugin.validate_threshold(4, optional=True), None)
 
+    def test_validate_thresholds(self):
+        #self.plugin.option.warning = 2
+        #self.plugin.option.critical = 3
+        #self.assertTrue(isinstance(self.plugin.validate_thresholds(), Threshold))
+        self.assertEqual(self.plugin.validate_thresholds(optional=True), None)
+
+    def test_statuses(self):
+        self.assertTrue(self.plugin.is_unknown())
+        self.plugin.ok()
+        self.assertTrue(self.plugin.is_ok())
+        self.assertFalse(self.plugin.is_warning())
+        self.assertFalse(self.plugin.is_critical())
+        self.assertFalse(self.plugin.is_unknown())
+        self.plugin.unknown()
+        self.assertTrue(self.plugin.is_unknown())
+        self.assertFalse(self.plugin.is_ok())
+        self.assertFalse(self.plugin.is_warning())
+        self.assertFalse(self.plugin.is_critical())
+        self.plugin.warning()
+        self.assertTrue(self.plugin.is_warning())
+        self.assertFalse(self.plugin.is_ok())
+        self.assertFalse(self.plugin.is_critical())
+        self.assertFalse(self.plugin.is_unknown())
+        self.plugin.unknown()
+        self.assertTrue(self.plugin.is_warning())
+        self.assertFalse(self.plugin.is_ok())
+        self.assertFalse(self.plugin.is_critical())
+        self.assertFalse(self.plugin.is_unknown())
+        self.plugin.critical()
+        self.assertTrue(self.plugin.is_critical())
+        self.assertFalse(self.plugin.is_ok())
+        self.assertFalse(self.plugin.is_warning())
+        self.assertFalse(self.plugin.is_unknown())
+        self.plugin.warning()
+        self.assertTrue(self.plugin.is_critical())
+        self.assertFalse(self.plugin.is_ok())
+        self.assertFalse(self.plugin.is_warning())
+        self.assertFalse(self.plugin.is_unknown())
+
+    def test_invalid_status(self):
         try:
-            obj.set_status('invalidstatus')
+            self.plugin.set_status('invalidstatus')
         except CodingErrorException:
             pass
 
+    def test_critical_exit(self):
         try:
-            obj.critical()
-            obj.main()
+            self.plugin.critical()
+            self.plugin.main()
         except SystemExit as _:
             if _.code != 2:
                 raise Exception('NagiosPlugin failed to exit CRITICAL')
