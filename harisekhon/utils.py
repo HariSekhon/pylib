@@ -861,7 +861,7 @@ def isInt(arg, allow_negative=False):
     neg = ""
     if allow_negative:
         neg = "-?"
-    if re.match('^' + neg + r'\d+' + '$', str(arg)):
+    if re.match('^' + neg + r'\d+(?:\.0+)?' + '$', str(arg)):
         return True
     return False
 
