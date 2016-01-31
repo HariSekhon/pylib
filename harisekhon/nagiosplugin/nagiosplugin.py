@@ -117,8 +117,20 @@ class NagiosPlugin(CLI):
     def validate_thresholds(self, optional=False, **kwargs):
         # pylint is reading this wrong
         # pylint: disable=too-many-function-args
-        self.set_threshold('warning', self.validate_threshold(self.options.warning, name='warning', **kwargs))
-        self.set_threshold('critical', self.validate_threshold(self.options.critical, name='critical', **kwargs))
+        self.set_threshold('warning',
+                           self.validate_threshold(
+                               self.options.warning,
+                               optional=optional,
+                               name='warning',
+                               **kwargs)
+                          )
+        self.set_threshold('critical',
+                           self.validate_threshold(
+                               self.options.critical,
+                               optional=optional,
+                               name='critical',
+                               **kwargs)
+                          )
 
     def check_threshold(self, name, result):
         if self.get_threshold(name).check(result):
