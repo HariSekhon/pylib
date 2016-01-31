@@ -78,6 +78,13 @@ class NagiosPluginTester(unittest.TestCase):
             if _.code != 3:
                 raise Exception('invalid exit code raised when thresholds are not set')
 
+    def test_check_thresholds(self):
+        try:
+            self.plugin.check_thresholds(10)
+            raise Exception('failed to raise exception for check_thresholds() when thresholds are not set')
+        except CodingErrorException:
+            pass
+
     def test_statuses(self):
         self.assertTrue(self.plugin.is_unknown())
         self.plugin.ok()
