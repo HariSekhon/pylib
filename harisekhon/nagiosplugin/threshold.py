@@ -21,7 +21,7 @@ libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import InvalidOptionException, CodingErrorException, isInt
+    from harisekhon.utils import InvalidOptionException, CodingErrorException, isInt, isBool, log
 except ImportError as _:
     print('module import failed: %s' % _, file=sys.stderr)
     print("Did you remember to build the project by running 'make'?", file=sys.stderr)
@@ -54,14 +54,15 @@ class Threshold(object):
 
         if self.opts['simple'] not in ('upper', 'lower'):
             raise CodingErrorException('simple threshold type must be one of: upper, lower')
-        if not isinstance(self.opts['positive'], 'bool'):
+        if not isBool(self.opts['positive']):
             raise CodingErrorException('positive option must be set to either True or False')
-        if not isinstance(self.opts['integer'], 'bool'):
+        if not isBool(self.opts['integer']):
             raise CodingErrorException('integer option must be set to either True or False')
 
         self.parse_threshold(arg)
 
     def parse_threshold(self, arg):
+        arg = str(arg)
         threshold_range_regex = re.compile(r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?$')
         threshold_range_simple = re.compile(r'^(-?\d+(?:\.\d+)?)')
         _ = threshold_range_regex.match(arg)
@@ -70,10 +71,10 @@ class Threshold(object):
                 self.opts['invert'] = True
             if _.group(3):
                 if _.group(4):
-                    self.thresholds['upper'] = _.group(4)
-                    self.thresholds['lower'] = _.group(2)
+                    self.thresholds['upper'] = float(_.group(4))
+                    self.thresholds['lower'] = float(_.group(2))
             else:
-                self.opts['upper'] = _.group(2)
+                self.opts['upper'] = float(_.group(2))
             if self.opts['lower'] and self.opts['upper']:
                 if self.opts['lower'] > self.opts['upper']:
                     raise InvalidThresholdException('invalid thresholds: lower %(arg)s threshold cannot be greater ' +
@@ -82,9 +83,9 @@ class Threshold(object):
             _ = threshold_range_simple.match(arg)
             if _:
                 if self.opts['simple'] == 'upper':
-                    self.thresholds['upper'] = _.group(1)
+                    self.thresholds['upper'] = float(_.group(1))
                 elif self.opts['simple'] == 'lower':
-                    self.thresholds['lower'] = _.group(1)
+                    self.thresholds['lower'] = float(_.group(1))
             else:
                 raise InvalidThresholdException('invalid %(name)s threshold given, ' +
                                                 'must be standard nagios threshold [@][start:]end')
@@ -95,7 +96,7 @@ class Threshold(object):
         for boundary in ('upper', 'lower'):
             if self.opts['positive'] and self.thresholds[boundary] is not None and self.thresholds[boundary] < 0:
                 raise InvalidThresholdException('%(name)s %(boundary)s threshold may not be less than zero' % locals())
-            if self.thresholds['integer'] and self.opts[boundary] is not None in self.opts and \
+            if self.opts['integer'] and self.thresholds[boundary] is not None in self.opts and \
                 not isInt(self.thresholds[boundary]):
                 raise InvalidThresholdException('%(name)s %(boundary)s threshold must be an integer' % locals())
             if self.thresholds['min'] is not None and self.thresholds[boundary] is not None and \
@@ -108,6 +109,7 @@ class Threshold(object):
                                                 .format(boundary, self.thresholds['max']))
 
     def check(self, result):
+        result = float(result)
         if self.thresholds['lower'] is not None and result < self.thresholds['lower']:
             return False
         if self.thresholds['upper'] is not None and result > self.thresholds['upper']:
