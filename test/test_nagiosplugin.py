@@ -38,7 +38,7 @@ class NagiosPluginTester(unittest.TestCase):
         def run(self):
             print("running SubNagiosPlugin()")
 
-
+    # TODO: refactor
     def test_subnagiosplugin(self):
         obj = self.SubNagiosPlugin()
 
