@@ -25,7 +25,7 @@ import sys
 import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-# pylint: disable=wrong-wrong-position
+# pylint: disable=wrong-import-position
 from harisekhon.utils import log, CodingErrorException
 from harisekhon import NagiosPlugin
 from harisekhon.nagiosplugin import Threshold
