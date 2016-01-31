@@ -37,8 +37,15 @@ class NagiosThresholdTester(unittest.TestCase):
     def setUp(self):
         self.threshold = Threshold(5)
         self.threshold_lower = Threshold(5, simple='lower')
-        self.threshold_range = Threshold('5:10')
+        self.threshold_range = Threshold('5:10', name='myRange')
+        # self.threshold_range_no_lower = Threshold(':10', name='myRange')
         self.threshold_range_inverted = Threshold('@5:10')
+        self.threshold_negative = Threshold('-1', positive=False)
+        self.threshold_float = Threshold('1.1', integer=False)
+        self.threshold_max = Threshold(2, max=3)
+        self.threshold_max = Threshold(2, max=2)
+        self.threshold_min = Threshold(2, min=2)
+        self.threshold_min = Threshold(2, min=1)
 
     def test_threshold_check_upper(self):
         self.assertTrue(self.threshold.check(4))
@@ -64,6 +71,76 @@ class NagiosThresholdTester(unittest.TestCase):
         self.assertTrue(self.threshold_range_inverted.check(4))
         self.assertTrue(self.threshold_range_inverted.check(11))
 
+    def test_invalid_max_upper_boundary(self):
+        try:
+            Threshold(4, max=3)
+            raise Exception('failed to raise InvalidThresholdException for max high upper boundary')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_max_lower_boundary(self):
+        try:
+            Threshold(4, simple='lower', max=3)
+            raise Exception('failed to raise InvalidThresholdException for max low lower boundary')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_min_upper_boundary(self):
+        try:
+            Threshold(2, min=3)
+            raise Exception('failed to raise InvalidThresholdException min upper boundary')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_min_lower_boundary(self):
+        try:
+            Threshold(2, simple='lower', min=3)
+            raise Exception('failed to raise InvalidThresholdException for min lower boundary')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_non_positive_lower_boundaries(self):
+        try:
+            Threshold('-1')
+            raise Exception('failed to raise InvalidThresholdException for invalid relative boundaries')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_range_relative_boundaries(self):
+        try:
+            Threshold('@8:7')
+            raise Exception('failed to raise InvalidThresholdException for invalid relative boundaries')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_lower_non_integer(self):
+        try:
+            Threshold('1.1')
+            raise Exception('failed to raise InvalidThresholdException for non-integer')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_lower_non_positive(self):
+        try:
+            Threshold('-1', simple='lower')
+            raise Exception('failed to raise InvalidThresholdException for negative lower boundary')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_upper_non_positive(self):
+        try:
+            Threshold('-1', simple='upper')
+            raise Exception('failed to raise InvalidThresholdException for negative upper boundary')
+        except InvalidThresholdException:
+            pass
+
+    def test_invalid_range_non_positive(self):
+        try:
+            Threshold('-1:2')
+            raise Exception('failed to raise InvalidThresholdException for negative upper boundary')
+        except InvalidThresholdException:
+            pass
+
     def test_invalid_inverted_range_no_upper(self):
         try:
             Threshold('@5:')
@@ -77,7 +154,6 @@ class NagiosThresholdTester(unittest.TestCase):
             raise Exception('failed to raise InvalidThresholdException for invalid inverted range no lower')
         except InvalidThresholdException:
             pass
-
 
     def test_invalid_simple(self):
         try:
