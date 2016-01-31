@@ -26,7 +26,7 @@ from __future__ import unicode_literals
 from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
 
 # enables 'from harisekhon.nagiosplugin import Threshold'
-from harisekhon.nagiosplugin.threshold import Threshold
+from harisekhon.nagiosplugin.threshold import Threshold, InvalidThresholdException
 
 # pulls submodules in to 'from harisekhon import *'
 # __all__ = [ 'submodule1', 'submodule2' ]
