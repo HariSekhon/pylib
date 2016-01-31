@@ -22,6 +22,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+# enables 'from harisekhon.nagiosplugin import NagiosPlugin'
+from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
+
 # enables 'from harisekhon.nagiosplugin import Threshold'
 from harisekhon.nagiosplugin.threshold import Threshold
 
