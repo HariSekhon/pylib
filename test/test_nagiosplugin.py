@@ -38,8 +38,11 @@ class NagiosPluginTester(unittest.TestCase):
         def run(self):
             print("running SubNagiosPlugin()")
 
+
     def test_subnagiosplugin(self):
         obj = self.SubNagiosPlugin()
+
+        self.assertEqual(obj.validate_threshold(4, optional=True), None)
 
         self.assertTrue(obj.is_unknown())
         obj.ok()
