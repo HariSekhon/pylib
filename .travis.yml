@@ -31,7 +31,7 @@ install:
 
 script:
   - make test
-  - coverage run --source=harisekhon,harisekhon/nagiosplugin -m test
+  - coverage run --source=harisekhon -m test
 
 after_success:
   - coveralls
