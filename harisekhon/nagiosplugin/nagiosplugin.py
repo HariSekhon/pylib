@@ -28,7 +28,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.4'
+__version__ = '0.5'
 
 class NagiosPlugin(CLI):
     """
@@ -100,7 +100,10 @@ class NagiosPlugin(CLI):
 
     def get_threshold(self, name):
         try:
-            return self.__thresholds[name]
+            _ = self.__thresholds[name]
+            if _ is None:
+                raise CodingErrorException('threshold {} is not set (None)'.format(name))
+            return _
         except KeyError:
             raise CodingErrorException("threshold '%s' does not exist" % name +
                                        "invalid name passed to NagiosPlugin.check_threshold() - typo?")
