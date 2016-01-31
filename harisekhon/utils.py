@@ -639,6 +639,10 @@ def isBlankOrNone(arg):
     return False
 
 
+def isBool(arg):
+    return isinstance(arg, bool)
+
+
 def isChars(arg, chars):
     if chars is None:
         code_error('no chars passed to isChars()')
