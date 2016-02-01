@@ -28,8 +28,9 @@ from optparse import OptionConflictError
 # inspect.getfile(inspect.currentframe()) # filename
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon.utils import CodingErrorException, InvalidOptionException, log # pylint: disable=wrong-import-position
+from harisekhon.utils import CodingErrorException, InvalidOptionException, log  # pylint: disable=wrong-import-position
 from harisekhon import CLI # pylint: disable=wrong-import-position
+
 
 class CLITester(unittest.TestCase):
 
@@ -94,8 +95,10 @@ class CLITester(unittest.TestCase):
         self.cli.main()
         self.cli.__init__()
 
-    def test_main(self):
+    def test_main_and_get_opt_timeout(self):
         self.cli.main()
+        self.assertEqual(self.cli.get_opt('timeout'), self.cli.options.timeout)
+
 
     def test_reinit_main(self):
         self.cli.__init__()

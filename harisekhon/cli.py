@@ -39,7 +39,7 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, validate_int, plural       # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural  # pylint: disable=wrong-import-position
 from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit             # pylint: disable=wrong-import-position
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
@@ -175,6 +175,19 @@ class CLI(object):
     def add_options(self):
         pass
 
+    def add_opt(self, *args, **kwargs):
+        self.parser.add_option(*args, **kwargs)
+
+    def get_opt(self, name):
+        if not isStr(name):
+            raise CodingErrorException('passed non-string as arg to CLI.get_opt()')
+        if not self.is_option_defined(name):
+            raise CodingErrorException('{0} option not defined'.format(name))
+        return getattr(self.options, name)
+
+    def is_option_defined(self, name):
+        return name in dir(self.options)
+
     def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
         qquit('UNKNOWN', 'self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
 
@@ -241,16 +254,15 @@ class CLI(object):
         #         pass
 
         if self.__timeout_default is not None:
-            self.parser.add_option('-t', '--timeout', help='Timeout in secs (default: %d)' % self.__timeout_default,
-                                   metavar='secs', default=self.__timeout_default)
-        self.parser.add_option('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv)',
-                               action='count', default=self.__verbose_default)
-        self.parser.add_option('-V', '--version', action='store_true', help='Show version and exit')
+            self.add_opt('-t', '--timeout', help='Timeout in secs (default: %d)' % self.__timeout_default,
+                         metavar='secs', default=self.__timeout_default)
+        self.add_opt('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv)', action='count',
+                     default=self.__verbose_default)
+        self.add_opt('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
         # self.parser.add_option('-h', '--help', action='help')
-        self.parser.add_option('-h', '--help', action='store_true', help='Show full help and exit')
-        self.parser.add_option('-D', '--debug', action='store_true', help=SUPPRESS_HELP,
-                               default=bool(os.getenv("DEBUG")))
+        self.add_opt('-h', '--help', action='store_true', help='Show full help and exit')
+        self.add_opt('-D', '--debug', action='store_true', help=SUPPRESS_HELP, default=bool(os.getenv("DEBUG")))
 
     def __parse_args__(self):
         try:
@@ -291,10 +303,8 @@ class CLI(object):
                 raise CodingErrorException('invalid default port supplied to add_hostoption()')
         (host_envs, default_host) = getenvs2('HOST', default_host, name)
         (port_envs, default_port) = getenvs2('PORT', default_port, name)
-        self.parser.add_option('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs),
-                               default=default_host)
-        self.parser.add_option('-P', '--port', dest='port', help='%sPort (%s)' % (name2, port_envs),
-                               default=default_port)
+        self.add_opt('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs), default=default_host)
+        self.add_opt('-P', '--port', dest='port', help='%sPort (%s)' % (name2, port_envs), default=default_port)
 
     def add_useroption(self, name='', default_user=None, default_password=None):
         name2 = ''
@@ -302,10 +312,9 @@ class CLI(object):
             name2 = "%s " % name
         (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
         (pw_envs, default_password) = getenvs2('PASSWORD', default_password, name)
-        self.parser.add_option('-u', '--user', dest='user', help='%sUsername (%s)' % (name2, user_envs),
-                               default=default_user)
-        self.parser.add_option('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
-                               default=default_password)
+        self.add_opt('-u', '--user', dest='user', help='%sUsername (%s)' % (name2, user_envs), default=default_user)
+        self.add_opt('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
+                     default=default_password)
 
     @abstractmethod
     def run(self): # pragma: no cover
