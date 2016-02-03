@@ -1297,10 +1297,14 @@ def plural(arg):
     return ''
 
 def space_suffix(arg):
-    return str(arg) + ' '
+    if arg:
+        return str(arg) + ' '
+    return arg
 
 def space_prefix(arg):
-    return ' ' + str(arg)
+    if arg:
+        return ' ' + str(arg)
+    return arg
 
 
 # def prompt
