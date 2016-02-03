@@ -277,9 +277,9 @@ class UtilsTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
-    def test_envs2str(self):
+    def test_env_lines(self):
         print(env_lines())
-        self.assertTrue(re.search('\n\w+=\w+\n', env_lines()))
+        self.assertTrue(re.search('\n\w+\s+=\s+\w+\n', env_lines()))
 
     def test_check_tldcount(self):
         utils._check_tldcount()
