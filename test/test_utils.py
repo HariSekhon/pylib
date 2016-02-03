@@ -184,13 +184,19 @@ class UtilsTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
+    def test_gen_prefix_env(self):
+        self.assertEqual(list(gen_prefixes_env('Hadoop Master', ['host', 'port'])),
+                         ['HADOOP_MASTER_HOST', 'HADOOP_MASTER_PORT', 'HOST', 'PORT'])
+
     def test_gen_prefix(self):
-        self.assertEqual(list(gen_prefixes(['Ambari', ''], ['host', 'port'])),
+        self.assertEqual(list(gen_prefixes(['Hadoop Master'], ['host', 'port'])),
+                         ['Hadoop Master_host', 'Hadoop Master_port', 'host', 'port'])
+        self.assertEqual(list(gen_prefixes('Ambari', ['host', 'port'])),
                          ['Ambari_host', 'Ambari_port', 'host', 'port'])
-        self.assertEqual(list(gen_prefixes(['Ambari', ''], ['host', 'port'], True)),
+        self.assertEqual(list(gen_prefixes('Ambari', ['host', 'port'], True)),
                          ['Ambari_host', 'host', 'Ambari_port', 'port'])
-        self.assertEqual(list(gen_prefixes('Ambari', ['host', 'port'])), ['Ambari_host', 'Ambari_port'])
-        self.assertEqual(list(gen_prefixes('Ambari', 'host')), ['Ambari_host'])
+        self.assertEqual(list(gen_prefixes('Ambari', ['host', 'port'])), ['Ambari_host', 'Ambari_port', 'host', 'port'])
+        self.assertEqual(list(gen_prefixes('Ambari', 'host')), ['Ambari_host', 'host'])
         self.assertEqual(list(gen_prefixes('', 'host')), ['host'])
         self.assertEqual(list(gen_prefixes('', ['user', 'username'])), ['user', 'username'])
         self.assertEqual(list(gen_prefixes('', '')), [])
@@ -251,15 +257,19 @@ class UtilsTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
+    # suffixing testes with x to pass through to default as I now use $HOST regularly for Dockerized services
     def test_getenvs2(self):
-        (helpstring, result) = getenvs2('HOST', 'myDefault', 'NonExistent')
-        self.assertEqual(helpstring, '$NONEXISTENT_HOST, $HOST, default: myDefault')
+        (helpstring, result) = getenvs2('HOSTz', 'myDefault', 'NonExistent')
+        self.assertEqual(helpstring, '$NONEXISTENT_HOSTZ, $HOSTZ, default: myDefault')
         self.assertEqual(result, 'myDefault')
-        (helpstring, result) = getenvs2('PASSWORD', 'mysecret', 'NonExistent')
-        self.assertEqual(helpstring, '$NONEXISTENT_PASSWORD, $PASSWORD, default: ******')
+        (helpstring, result) = getenvs2('HOSTz', 'myDefault', 'Hadoop Master')
+        self.assertEqual(helpstring, '$HADOOP_MASTER_HOSTZ, $HOSTZ, default: myDefault')
+        self.assertEqual(result, 'myDefault')
+        (helpstring, result) = getenvs2('PASSWORDz', 'mysecret', 'NonExistent')
+        self.assertEqual(helpstring, '$NONEXISTENT_PASSWORDZ, $PASSWORDZ, default: ******')
         self.assertEqual(result, 'mysecret')
-        (helpstring, result) = getenvs2(['PASS', 'PASSWORD'], 'mysecret', 'NonExistent')
-        self.assertEqual(helpstring, '$NONEXISTENT_PASS, $NONEXISTENT_PASSWORD, $PASS, $PASSWORD, default: ******')
+        (helpstring, result) = getenvs2(['PASSz', 'PASSWORDz'], 'mysecret', 'NonExistent')
+        self.assertEqual(helpstring, '$NONEXISTENT_PASSZ, $NONEXISTENT_PASSWORDZ, $PASSZ, $PASSWORDZ, default: ******')
         self.assertEqual(result, 'mysecret')
         try:
             getenvs2('HOST', 'myDefault', None)
@@ -268,8 +278,8 @@ class UtilsTester(unittest.TestCase):
             pass
 
     def test_envs2str(self):
-        print(envs2str())
-        self.assertTrue(re.search('\n\w+=\w+\n', envs2str()))
+        print(env_lines())
+        self.assertTrue(re.search('\n\w+=\w+\n', env_lines()))
 
     def test_check_tldcount(self):
         utils._check_tldcount()
