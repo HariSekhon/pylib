@@ -44,7 +44,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.2'
+__version__ = '0.10.4'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -270,6 +270,8 @@ def gen_prefixes(prefixes, names, sort_by_names=False):
         raise CodingErrorException('non-iterable passed for prefixes to prefix()')
     if not isIterableNotStr(names):
         raise CodingErrorException('non-iterable passed for names to prefix()')
+    if '' not in prefixes:
+        prefixes.append('')
     # Python 2.6+ only
     # for pair in itertools.product(prefixes, names):
     if sort_by_names:
@@ -282,6 +284,8 @@ def gen_prefixes(prefixes, names, sort_by_names=False):
         if result:
             yield result
 
+def gen_prefixes_env(*args, **kwargs):
+    return [normalize_env_var(_) for _ in gen_prefixes(*args, **kwargs)]
 
 def getenv(var, default=None):
     if not isStr(var):
@@ -290,33 +294,34 @@ def getenv(var, default=None):
         raise CodingErrorException('supplied blank string for var arg to getenv()')
     log.debug('checking for environment variable: %s', var)
     var = str(var).strip()
-    # env_var = re.sub('[^A-Z0-9]', '_', var.upper())
     return os.getenv(var, default)
 
-
-def getenvs(my_my_vars, default=None, prefix=''):
+def getenvs(my_vars, default=None, prefix=''):
     if prefix is None:
         raise CodingErrorException('None prefix passed for prefix to getenvs()')
     if not isStr(prefix):
         raise CodingErrorException('non-string passed for prefix to getenvs()')
     result = None
-    assert isStr(my_my_vars) or isList(my_my_vars)
-    if isStr(my_my_vars):
-        for var in gen_prefixes(prefix, my_my_vars, True):
+    assert isStr(my_vars) or isList(my_vars)
+    if isStr(my_vars):
+        for var in gen_prefixes_env(prefix, my_vars, True):
             result = getenv(var)
-            if result is None:
+            if result is not None:
                 break
-    elif isList(my_my_vars):
-        for var in my_my_vars:
+    elif isList(my_vars):
+        for var in my_vars:
             if not isStr(var):
                 raise CodingErrorException('non-string passed in array to getenvs()')
-        for var in gen_prefixes(prefix, my_my_vars, True):
+        for var in gen_prefixes_env(prefix, my_vars, True):
             result = getenv(var)
             if result is not None:
                 break
     if result is None:
         result = default
     return result
+
+def normalize_env_var(env_var):
+    return re.sub('[^A-Z0-9]', '_', env_var.upper())
 
 # wrapper to getenvs to also return the generated string to use in option help
 def getenvs2(my_vars, default, name):
@@ -328,7 +333,6 @@ def getenvs2(my_vars, default, name):
     is_sensitive = False
     sensitive_regex = re.compile('password|passphrase|secret', re.I)
     if isStr(my_vars):
-        my_vars = my_vars.upper()
         if sensitive_regex.search(my_vars):
             is_sensitive = True
     elif isList(my_vars):
@@ -338,8 +342,7 @@ def getenvs2(my_vars, default, name):
             if sensitive_regex.search(_):
                 is_sensitive = True
                 break
-        my_vars = [_.upper() for _ in my_vars]
-    my_help = '$' + ', $'.join(gen_prefixes([name, ''], my_vars)).upper()
+    my_help = '$' + ', $'.join(gen_prefixes_env(name, my_vars))
     if default is not None:
         if is_sensitive:
             my_help += ', default: ******'
@@ -348,8 +351,11 @@ def getenvs2(my_vars, default, name):
     return my_help, getenvs(my_vars, default, name)
 
 
-def envs2str():
-    return '\n'.join(('%s=%s' % (key, value) for (key, value) in sorted(os.environ.iteritems())))
+def env_lines():
+    return dict_lines(os.environ.iteritems())
+
+def dict_lines(my_dict):
+    return '\n'.join(('%s = %s' % (key, value) for (key, value) in sorted(my_dict)))
 
 
 # ============================================================================ #
