@@ -64,7 +64,9 @@ def get_caller():
     # except Exception:
     #     return '<failed to get caller function>'
 
-prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
+# using get_topfile further down instead now
+# prog = os.path.basename(inspect.getfile(inspect.currentframe().f_back))
+
 
 # ============================================
 # add a trace log level for sub tracing
@@ -1294,6 +1296,12 @@ def plural(arg):
             return 's'
     return ''
 
+def space_suffix(arg):
+    return str(arg) + ' '
+
+def space_prefix(arg):
+    return ' ' + str(arg)
+
 
 # def prompt
 
@@ -1926,6 +1934,10 @@ def which(my_bin):
     # exception blocks
     # raise FileNotFoundException("could not find executable file '%s' in $PATH (%s)" % (my_bin, os.getenv('PATH', '')))
     return None
+
+
+prog = os.path.basename(get_topfile())
+
 
 # ============================================================================ #
 #                               PySpark Utils
