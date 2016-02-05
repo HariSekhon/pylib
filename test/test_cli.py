@@ -3,9 +3,14 @@
 #  Author: Hari Sekhon
 #  Date: 2014-09-15 20:49:22 +0100 (Mon, 15 Sep 2014)
 #
-#  http://github.com/harisekhon/pylib
+#  https://github.com/harisekhon/pylib
 #
-#  License: see accompanying LICENSE file
+#  License: see accompanying Hari Sekhon LICENSE file
+#
+#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
+#  to help improve or steer this or other code I publish
+#
+#  https://www.linkedin.com/in/harisekhon
 #
 
 """

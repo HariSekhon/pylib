@@ -1,10 +1,16 @@
+#  vim:ts=4:sts=4:sw=4:et
 #
 #  Author: Hari Sekhon
 #  Date: 2013-01-06 01:25:55 +0000 (Sun, 06 Jan 2013)
 #
 #  https://github.com/harisekhon/pylib
 #
-#  License: see accompanying LICENSE file
+#  License: see accompanying Hari Sekhon LICENSE file
+#
+#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
+#  to help improve or steer this or other code I publish
+#
+#  https://www.linkedin.com/in/harisekhon
 #
 
 """
@@ -309,7 +315,7 @@ class UtilsTester(unittest.TestCase):
         try:
             utils._check_tldcount()
             raise Exception('failed to raise CodingErrorException on double loaded TLDs')
-        except CodingErrorException as _:
+        except CodingErrorException:
             pass
         # reset the TLDs
         utils._tlds = tlds
@@ -1180,27 +1186,27 @@ class UtilsTester(unittest.TestCase):
         try:
             list_sort_dicts_by_value(myList, 'brokenkey')
             raise Exception('failed to raise KeyError exception for invalid/missing key')
-        except KeyError as _:
+        except KeyError:
             pass
         try:
             list_sort_dicts_by_value(myList, None)
             raise Exception('failed to raise InvalidArgumentException when passed a non-string None for key')
-        except InvalidArgumentException as _:
+        except InvalidArgumentException:
             pass
         try:
             list_sort_dicts_by_value('notAList', 'name')
             raise Exception('failed to raise InvalidArgumentException when passed a non-list')
-        except InvalidArgumentException as _:
+        except InvalidArgumentException:
             pass
         try:
             list_sort_dicts_by_value([['test']], 'name')
             raise Exception('failed to raise AssertionError when list contains non-dict')
-        except AssertionError as _:
+        except AssertionError:
             pass
         try:
             list_sort_dicts_by_value([{'name': ['embedded_array_should_have_been_string']}], 'name')
             raise Exception('failed to raise AssertionError when list dict key value is not a string')
-        except AssertionError as _:
+        except AssertionError:
             pass
 
     def test_support_msg(self):
