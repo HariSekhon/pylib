@@ -11,7 +11,7 @@
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
 #  to help improve or steer this or other code I publish
 #
-#  http://www.linkedin.com/in/harisekhon/pylib
+#  https://www.linkedin.com/in/harisekhon
 #
 
 """
@@ -39,7 +39,7 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural  # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isList, isPort, isStr, validate_int, plural  # pylint: disable=wrong-import-position
 from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit             # pylint: disable=wrong-import-position
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
@@ -106,7 +106,7 @@ class CLI(object):
         # self.parser = OptionParser(version=self.version)
         # will be added by default_opts later so that it's not annoyingly at the top of the option help
         # also this allows us to print full docstring for a complete description and not just the cli switches
-        self.parser = OptionParser(add_help_option=False)
+        self.parser = OptionParser(add_help_option=False) # description=self._docstring # don't want description printed for option errors
         # duplicate key error or duplicate options, sucks
         # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
         # self.setup()
@@ -288,15 +288,22 @@ class CLI(object):
         else:
             log.warn("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
         self.parse_args()
+        self.process_args()
         return self.options, self.args
 
     def parse_args(self):
         pass
 
+    def process_args(self):
+        pass
+
     def add_hostoption(self, name='', default_host=None, default_port=None):
         name2 = ''
+        # if isList(name):
+        #     name2 = '%s ' % name[0]
+        # elif not isBlankOrNone(name):
         if not isBlankOrNone(name):
-            name2 = "%s " % name
+            name2 = '%s ' % name
         if default_port is not None:
             # assert isPort(default_port)
             if not isPort(default_port):
