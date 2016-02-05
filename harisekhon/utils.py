@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#  vim:ts=4:sts=4:sw=4:et
 #
 #  Author: Hari Sekhon
 #  Date: 2008-03-06 15:20:22 +0000 (Thu, 06 Mar 2008)
@@ -6,7 +8,12 @@
 #
 #  https://github.com/harisekhon/pylib
 #
-#  License: see accompanying LICENSE file
+#  License: see accompanying Hari Sekhon LICENSE file
+#
+#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
+#  to help improve or steer this or other code I publish
+#
+#  https://www.linkedin.com/in/harisekhon
 #
 
 """ Personal Library originally started to standardize Nagios Plugin development """
