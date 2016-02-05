@@ -124,5 +124,5 @@ tld:
 
 .PHONY: clean
 clean:
-	# the xargs option to ignore blank input doesn't work on Mac
-	@find . -maxdepth 3 -iname '*.py[co]' -o -iname '*.jy[co]' -delete
+	@# the xargs option to ignore blank input doesn't work on Mac
+	@find . -maxdepth 3 -iname '*.py[co]' -o -iname '*.jy[co]' | xargs rm -f || :
