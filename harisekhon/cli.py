@@ -102,13 +102,13 @@ class CLI(object):
                         % self.__dict__
         self.usagemsg_short = 'Hari Sekhon%(_github_repo)s\n\n' % self.__dict__
         # set this in simpler client programs when you don't want to exclude
-        # self.parser = OptionParser(usage=self.usagemsg_short, version=self.version)
-        # self.parser = OptionParser(version=self.version)
+        # self.__parser = OptionParser(usage=self.usagemsg_short, version=self.version)
+        # self.__parser = OptionParser(version=self.version)
         # will be added by default_opts later so that it's not annoyingly at the top of the option help
         # also this allows us to print full docstring for a complete description and not just the cli switches
-        self.parser = OptionParser(add_help_option=False) # description=self._docstring # don't want description printed for option errors
+        self.__parser = OptionParser(add_help_option=False) # description=self._docstring # don't want description printed for option errors
         # duplicate key error or duplicate options, sucks
-        # self.parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
+        # self.__parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
         # self.setup()
 
     def setup(self):
@@ -163,7 +163,7 @@ class CLI(object):
             print('%s\n' % msg)
         else:
             print(self.usagemsg)
-        self.parser.print_help()
+        self.__parser.print_help()
         qquit(status)
 
     def no_args(self):
@@ -176,7 +176,7 @@ class CLI(object):
         pass
 
     def add_opt(self, *args, **kwargs):
-        self.parser.add_option(*args, **kwargs)
+        self.__parser.add_option(*args, **kwargs)
 
     def get_opt(self, name):
         if not isStr(name):
@@ -249,7 +249,7 @@ class CLI(object):
         # use separate objects in future
         # for _ in ('--help', '--version', '--timeout', '--verbose', '--debug'):
         #     try:
-        #         self.parser.remove_option(_)
+        #         self.__parser.remove_option(_)
         #     except ValueError:
         #         pass
 
@@ -260,13 +260,13 @@ class CLI(object):
                      default=self.__verbose_default)
         self.add_opt('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
-        # self.parser.add_option('-h', '--help', action='help')
+        # self.__parser.add_option('-h', '--help', action='help')
         self.add_opt('-h', '--help', action='store_true', help='Show full help and exit')
         self.add_opt('-D', '--debug', action='store_true', help=SUPPRESS_HELP, default=bool(os.getenv("DEBUG")))
 
     def __parse_args__(self):
         try:
-            (self.options, self.args) = self.parser.parse_args()
+            (self.options, self.args) = self.__parser.parse_args()
         # I don't agree with zero exit code from OptionParser for help/usage,
         # and want UNKNOWN not CRITICAL(2) for switch mis-usage...
         except SystemExit: # pragma: no cover

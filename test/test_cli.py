@@ -154,11 +154,11 @@ class CLITester(unittest.TestCase):
             if _.code != 3:
                 raise Exception('wrong exit code != 3 when exiting usage(test message) from base class CLI')
 
-    def test_parser_version(self):
-        print('parser version = %s' % self.cli.parser.get_version())
+    #def test_parser_version(self):
+    #    print('parser version = %s' % self.cli.__parser.get_version())
         # I don't populate version in OptionParser now as it creates the switch too high in the option order
         # self.assertTrue(re.search(' version (?:None|%(version_regex)s), CLI version %(version_regex)s, ' +
-        #                           'Utils version %(version_regex)s' % globals(), self.cli.parser.get_version()))
+        #                           'Utils version %(version_regex)s' % globals(), self.cli.__parser.get_version()))
 
     def test_set_timeout(self):
         try:
