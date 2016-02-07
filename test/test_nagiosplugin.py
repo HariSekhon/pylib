@@ -74,6 +74,17 @@ class NagiosPluginTester(unittest.TestCase):
     #     except CodingErrorException:
     #         pass
 
+    def test_add_thresholds(self):
+        self.plugin.add_thresholds()
+        self.plugin.add_thresholds('test')
+
+    def test_add_thresholds_nonstring_name_exception(self):
+        try:
+            self.plugin.add_thresholds(None)
+            raise Exception('failed to raise exception when passing None to add_thresholds()')
+        except CodingErrorException:
+            pass
+
     def test_validate_threshold(self):
         self.assertEqual(self.plugin.validate_threshold('warning', threshold=4, optional=False), None)
         self.assertTrue(isinstance(self.plugin.get_threshold('warning'), Threshold))

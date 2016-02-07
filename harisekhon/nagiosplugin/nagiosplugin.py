@@ -114,6 +114,18 @@ class NagiosPlugin(CLI):
             raise CodingErrorException("threshold '%s' does not exist" % name +
                                        "invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
+    def add_thresholds(self, name=''):
+        if not isStr(name):
+            raise CodingErrorException('non-string passed as name argument to add_thresholds()')
+        if name:
+            self.add_opt('--{0}-warning'.format(name), metavar='N',
+                         help='{0} warning threshold or ra:nge (inclusive)'.format(name.title()))
+            self.add_opt('--{0}-critical'.format(name), metavar='N',
+                         help='{0} critical threshold or ra:nge (inclusive)'.format(name.title()))
+        else:
+            self.add_opt('-w', '--warning', metavar='N', help='Warning threshold or ra:nge (inclusive)')
+            self.add_opt('-c', '--critical', metavar='N', help='Critical threshold or ra:nge (inclusive)')
+
     def validate_threshold(self, name, threshold=None, optional=False, **kwargs):
         if not isStr(name):
             raise CodingErrorException('non-string name passed to validate_threshold()')
