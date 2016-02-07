@@ -138,6 +138,7 @@ class NagiosPlugin(CLI):
                 self.__thresholds[name] = Threshold(threshold, **kwargs)
             except InvalidThresholdException as _:
                 self.usage('UNKNOWN', _)
+        log.info(name, threshold)
 
     def validate_thresholds(self, name='', warning=None, critical=None, **kwargs):
         if not isStr(name):
