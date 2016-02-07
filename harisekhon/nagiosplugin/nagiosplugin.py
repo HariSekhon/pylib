@@ -28,13 +28,13 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import ERRORS, qquit, CodingErrorException, log
+from harisekhon.utils import ERRORS, qquit, CodingErrorException, log, isStr
 from harisekhon import CLI
 from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.6'
+__version__ = '0.7'
 
 class NagiosPlugin(CLI):
     """
@@ -50,7 +50,7 @@ class NagiosPlugin(CLI):
         # Python 3.x
         # super().__init__()
         # redirect_stderr_stdout()
-        self.__status__ = 'UNKNOWN'
+        self.__status = 'UNKNOWN'
         self.msg = 'MESSAGE NOT DEFINED'
         self.__thresholds = {'warning': None, 'critical': None}
 
@@ -63,12 +63,12 @@ class NagiosPlugin(CLI):
     # there is no ok() since that behaviour needs to be determined by scenario
 
     def get_status(self):
-        return self.__status__
+        return self.__status
 
     def set_status(self, status):
         if not ERRORS.has_key(status):
             raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.set_status()")
-        self.__status__ = status
+        self.__status = status
 
     def ok(self): # pylint: disable=invalid-name
         self.set_status('OK')
@@ -113,6 +113,44 @@ class NagiosPlugin(CLI):
         except KeyError:
             raise CodingErrorException("threshold '%s' does not exist" % name +
                                        "invalid name passed to NagiosPlugin.check_threshold() - typo?")
+
+    def validate_threshold(self, name, threshold=None, optional=False, **kwargs):
+        if not isStr(name):
+            raise CodingErrorException('non-string name passed to validate_threshold()')
+        if threshold is None:
+            threshold = self.get_opt(name)
+        if optional and threshold is None:
+            return None
+        else:
+            try:
+                self.__thresholds[name] = Threshold(threshold, **kwargs)
+            except InvalidThresholdException as _:
+                self.usage('UNKNOWN', _)
+
+    def validate_thresholds(self, name='', warning=None, critical=None, **kwargs):
+        if not isStr(name):
+            raise CodingErrorException('non-string name passed to validate_thresholds()')
+        if name:
+            name += '_'
+        self.validate_threshold('{0}{1}'.format(name, 'warning'), warning, **kwargs)
+        self.validate_threshold('{0}{1}'.format(name, 'critical'), critical, **kwargs)
+
+    # inferring threshold type from naming convention, assume critical if can't determine
+    def check_threshold(self, name, result):
+        _ = self.get_threshold(name).check(result)
+        if not _:
+            if 'warning' in name:
+                self.warning()
+            else:
+                self.critical()
+
+    def check_thresholds(self, result, name=''):
+        if not isStr(name):
+            raise CodingErrorException('non-string passed to check_thresholds()')
+        if name:
+            name += '_'
+        self.check_threshold(result, '{0}warning'.format(name))
+        self.check_threshold(result, '{0}critical'.format(name))
 
     # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
     # the default python exit code of 1 which would equate to WARNING in Nagios compatible systems

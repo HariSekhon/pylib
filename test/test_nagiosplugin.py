@@ -66,8 +66,24 @@ class NagiosPluginTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
-    # def test_validate_threshold(self):
-    #     self.assertEqual(self.plugin.validate_threshold(4, optional=True), None)
+    # def test_get_threshold_none(self):
+    #     self.plugin.set_threshold('setToNone', Threshold(None))
+    #     try:
+    #         self.plugin.get_threshold('setToNone')
+    #         raise Exception('failed to raise CodingErrorException for Threshold.get_threshold(setToNone)')
+    #     except CodingErrorException:
+    #         pass
+
+    def test_validate_threshold(self):
+        self.assertEqual(self.plugin.validate_threshold('warning', threshold=4, optional=False), None)
+        self.assertTrue(isinstance(self.plugin.get_threshold('warning'), Threshold))
+
+    def test_validate_threshold_not_set_exception(self):
+        try:
+            self.assertEqual(self.plugin.validate_threshold('nonexistent'), None)
+            raise Exception('failed to raise CodingErrorException when threshold is not set')
+        except CodingErrorException:
+            pass
 
     # def test_validate_thresholds(self):
     #     self.plugin.option.warning = 2
@@ -82,7 +98,7 @@ class NagiosPluginTester(unittest.TestCase):
     #     except SystemExit as _:
     #         if _.code != 3:
     #             raise Exception('invalid exit code raised when thresholds are not set')
-    #
+
     # def test_check_thresholds(self):
     #     try:
     #         self.plugin.check_thresholds(10)
@@ -128,6 +144,20 @@ class NagiosPluginTester(unittest.TestCase):
             self.plugin.set_status('invalidstatus')
         except CodingErrorException:
             pass
+
+    def test_main_unhandled_exception(self):
+        def raise_exception():
+            raise Exception('this is an unhandled exception to be caught')
+        self.plugin.run = raise_exception
+        try:
+            self.plugin.main()
+            raise Exception('failed to exit on unhandled exception')
+        except SystemExit as _:
+            if _.code != 3:
+                raise Exception('failed to exit with code 3 upon unhandled exception')
+            # if _.message[:7] != 'UNKNOWN':
+            #     raise Exception('unhandled exception failed to add UNKNOWN prefix')
+
 
     def test_critical_exit(self):
         try:
