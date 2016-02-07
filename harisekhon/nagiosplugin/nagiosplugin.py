@@ -8,6 +8,11 @@
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
+#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
+#  to help improve or steer this or other code I publish
+#
+#  https://www.linkedin.com/in/harisekhon
+#
 
 from __future__ import absolute_import
 from __future__ import division
@@ -16,19 +21,20 @@ from __future__ import print_function
 
 import os
 import sys
+import traceback
 # import logging
 # Python 2.6+ only
 from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import ERRORS, qquit, CodingErrorException
+from harisekhon.utils import ERRORS, qquit, CodingErrorException, log
 from harisekhon import CLI
 from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.5'
+__version__ = '0.6'
 
 class NagiosPlugin(CLI):
     """
@@ -108,56 +114,26 @@ class NagiosPlugin(CLI):
             raise CodingErrorException("threshold '%s' does not exist" % name +
                                        "invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
-    def validate_threshold(self, arg, optional=False, **kwargs): # pylint: disable=no-self-use
-        if optional:
-            return None
-        else:
-            try:
-                return Threshold(arg, **kwargs)
-            except InvalidThresholdException as _:
-                self.usage('UNKNOWN', _)
-
-    def validate_thresholds(self, optional=False, **kwargs):
-        # pylint is reading this wrong
-        # pylint: disable=too-many-function-args
-        if 'warning' in dir(self.options):
-            self.set_threshold('warning',
-                               self.validate_threshold(
-                                   self.options.warning,
-                                   optional=optional,
-                                   name='warning',
-                                   **kwargs)
-                              )
-        elif optional:
-            pass
-        else:
-            qquit('UNKNOWN', 'warning threshold not defined')
-        if 'critical' in dir(self.options):
-            self.set_threshold('critical',
-                               self.validate_threshold(
-                                   self.options.critical,
-                                   optional=optional,
-                                   name='critical',
-                                   **kwargs)
-                              )
-        elif optional:
-            pass
-        else:
-            qquit('UNKNOWN', 'critical threshold not defined')
-
-    def check_threshold(self, name, result):
-        if self.get_threshold(name).check(result):
-            self.critical()
-        elif self.get_threshold(name).check(result):
-            self.warning()
-
-    def check_thresholds(self, result):
-        self.check_threshold('warning', result)
-        self.check_threshold('critical', result)
+    # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
+    # the default python exit code of 1 which would equate to WARNING in Nagios compatible systems
+    def main(self):
+       try:
+            # Python 2.x
+            super(NagiosPlugin, self).main()
+            # Python 3.x
+            # super().__init__()
+            # redirect_stderr_stdout()
+       except Exception as _:
+           print('UNKNOWN: {0}'.format(_))
+           # prints to stderr, Nagios spec wants stdout
+           # traceback.print_exc()
+           print('\n{0}'.format(traceback.format_exc()), end='')
+           sys.exit(ERRORS['UNKNOWN'])
 
     @abstractmethod
     def run(self): # pragma: no cover
         pass
 
     def end(self):
+        log.info('end\n{0}\n'.format('='*80))
         qquit(self.get_status(), self.msg)
