@@ -85,11 +85,9 @@ class NagiosPluginTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
-    # def test_validate_thresholds(self):
-    #     self.plugin.option.warning = 2
-    #     self.plugin.option.critical = 3
-        #self.assertTrue(isinstance(self.plugin.validate_thresholds(), Threshold))
-        # self.assertEqual(self.plugin.validate_thresholds(optional=True), None)
+    def test_validate_thresholds(self):
+        self.plugin.validate_thresholds('test', 2, 3)
+        self.plugin.check_threshold('test_warning', 1)
 
     # def test_validate_thresholds_nonexistent(self):
     #     try:
@@ -99,12 +97,19 @@ class NagiosPluginTester(unittest.TestCase):
     #         if _.code != 3:
     #             raise Exception('invalid exit code raised when thresholds are not set')
 
-    # def test_check_thresholds(self):
-    #     try:
-    #         self.plugin.check_thresholds(10)
-    #         raise Exception('failed to raise exception for check_thresholds() when thresholds are not set')
-    #     except CodingErrorException:
-    #         pass
+    def test_check_thresholds(self):
+        try:
+            self.plugin.check_thresholds(10, 'nonexistent')
+            raise Exception('failed to raise exception for check_thresholds() when thresholds are not set')
+        except CodingErrorException:
+            pass
+
+    def test_check_thresholds_nonstring_name(self):
+        try:
+            self.plugin.check_thresholds(10, None)
+            raise Exception('failed to raise exception for check_thresholds() when name is None')
+        except CodingErrorException:
+            pass
 
     def test_statuses(self):
         self.assertTrue(self.plugin.is_unknown())
