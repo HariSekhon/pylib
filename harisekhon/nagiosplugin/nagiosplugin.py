@@ -104,11 +104,14 @@ class NagiosPlugin(CLI):
             raise CodingErrorException('passed a non-threshold to NagiosPlugin.set_threshold()')
         self.__thresholds[name] = threshold
 
-    def get_threshold(self, name):
+    def get_threshold(self, name, optional=False):
         try:
             _ = self.__thresholds[name]
             if _ is None:
-                raise CodingErrorException('threshold {0} is not set (None)'.format(name))
+                if optional:
+                    return None
+                else:
+                    raise CodingErrorException('threshold {0} is not set (None)'.format(name))
             return _
         except KeyError:
             raise CodingErrorException("threshold '%s' does not exist. " % name +
