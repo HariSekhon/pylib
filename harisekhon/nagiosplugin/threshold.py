@@ -60,11 +60,14 @@ class Threshold(object):
         if not isBool(self.opts['integer']):
             raise CodingErrorException('integer option must be set to either True or False')
 
-        self.__parse_threshold__(arg)
+        self.__parse_threshold__(arg, kwargs.get('optional'))
 
-    def __parse_threshold__(self, arg):
+    def __parse_threshold__(self, arg, optional=False):
         if arg is None:
-            raise InvalidThresholdException('no {0}threshold defined'.format(self.name))
+            if optional:
+                return
+            else:
+                raise InvalidThresholdException('no {0}threshold defined'.format(self.name))
         arg = str(arg)
         log.debug("%sthreshold given = '%s'", self.name, arg)
         threshold_range_regex = re.compile(r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?$')
