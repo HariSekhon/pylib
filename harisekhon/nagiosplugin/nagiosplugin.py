@@ -111,8 +111,8 @@ class NagiosPlugin(CLI):
                 raise CodingErrorException('threshold {0} is not set (None)'.format(name))
             return _
         except KeyError:
-            raise CodingErrorException("threshold '%s' does not exist" % name +
-                                       "invalid name passed to NagiosPlugin.check_threshold() - typo?")
+            raise CodingErrorException("threshold '%s' does not exist. " % name +
+                                       "Invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
     def add_thresholds(self, name=''):
         if not isStr(name):
@@ -135,7 +135,7 @@ class NagiosPlugin(CLI):
             return None
         else:
             try:
-                self.__thresholds[name] = Threshold(threshold, **kwargs)
+                self.__thresholds[name] = Threshold(threshold, name=name, **kwargs)
             except InvalidThresholdException as _:
                 self.usage(_)
         vlog_option(name, threshold)
