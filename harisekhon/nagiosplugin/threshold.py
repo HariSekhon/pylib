@@ -63,6 +63,8 @@ class Threshold(object):
         self.__parse_threshold__(arg)
 
     def __parse_threshold__(self, arg):
+        if arg is None:
+            raise InvalidThresholdException('no {0}threshold defined'.format(self.name))
         arg = str(arg)
         log.debug("%sthreshold given = '%s'", self.name, arg)
         threshold_range_regex = re.compile(r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?$')
