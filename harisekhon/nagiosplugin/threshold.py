@@ -66,7 +66,7 @@ class Threshold(object):
         arg = str(arg)
         log.debug("%sthreshold given = '%s'", self.name, arg)
         threshold_range_regex = re.compile(r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?$')
-        threshold_range_simple = re.compile(r'^(-?\d+(?:\.\d+)?)')
+        threshold_range_simple = re.compile(r'^(-?\d+(?:\.\d+)?)$')
         _ = threshold_range_regex.match(arg)
         if _:
             if _.group(1):
