@@ -38,6 +38,7 @@ import signal
 #import six
 #import string
 import sys
+import traceback
 from types import CodeType
 import warnings
 import xml.etree.ElementTree as ET
@@ -173,8 +174,8 @@ def qquit(status, msg=''):
     """ Quit with status code from ERRORS dictionary after printing given msg """
     status = str(status).upper()
     if status not in ERRORS:
-        log.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical"
-                      % (status, get_caller()))
+        log.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical\n%s"
+                      % (status, get_caller(), traceback.format_exc()))
         status = 'CRITICAL'
     if msg:
         # log.error('%s: %s' % (status, msg))
