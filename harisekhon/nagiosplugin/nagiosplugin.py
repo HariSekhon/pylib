@@ -162,8 +162,8 @@ class NagiosPlugin(CLI):
             raise CodingErrorException('non-string passed to check_thresholds()')
         if name:
             name += '_'
-        self.check_threshold(result, '{0}warning'.format(name))
-        self.check_threshold(result, '{0}critical'.format(name))
+        self.check_threshold('{0}warning'.format(name), result)
+        self.check_threshold('{0}critical'.format(name), result)
 
     # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
     # the default python exit code of 1 which would equate to WARNING in Nagios compatible systems
