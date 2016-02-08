@@ -173,7 +173,7 @@ def qquit(status, msg=''):
     """ Quit with status code from ERRORS dictionary after printing given msg """
     status = str(status).upper()
     if status not in ERRORS:
-        warnings.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical" \
+        log.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical"
                       % (status, get_caller()))
         status = 'CRITICAL'
     if msg:
