@@ -28,7 +28,7 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import ERRORS, qquit, CodingErrorException, log, isStr
+from harisekhon.utils import ERRORS, qquit, CodingErrorException, log, isStr, vlog_option
 from harisekhon import CLI
 from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
@@ -137,8 +137,8 @@ class NagiosPlugin(CLI):
             try:
                 self.__thresholds[name] = Threshold(threshold, **kwargs)
             except InvalidThresholdException as _:
-                self.usage('UNKNOWN', _)
-        log.info(name, threshold)
+                self.usage(_)
+        vlog_option(name, threshold)
 
     def validate_thresholds(self, name='', warning=None, critical=None, **kwargs):
         if not isStr(name):
