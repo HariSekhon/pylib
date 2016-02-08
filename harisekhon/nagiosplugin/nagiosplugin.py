@@ -109,7 +109,7 @@ class NagiosPlugin(CLI):
             _ = self.__thresholds[name]
             if _ is None:
                 if optional:
-                    return None
+                    return Threshold(None, optional=True)
                 else:
                     raise CodingErrorException('threshold {0} is not set (None)'.format(name))
             return _
@@ -153,7 +153,7 @@ class NagiosPlugin(CLI):
 
     # inferring threshold type from naming convention, assume critical if can't determine
     def check_threshold(self, name, result):
-        _ = self.get_threshold(name).check(result)
+        _ = self.get_threshold(name, optional=True).check(result)
         if not _:
             if 'warning' in name:
                 self.warning()
