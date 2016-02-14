@@ -26,6 +26,8 @@ from __future__ import unicode_literals
 from harisekhon.cli import CLI
 # enables 'from harisekhon import NagiosPlugin'
 from harisekhon.nagiosplugin import NagiosPlugin
+from harisekhon.nagiosplugin import KeyCheckNagiosPlugin
+from harisekhon.nagiosplugin import KeyWriteNagiosPlugin
 
 # pulls submodules in to 'from harisekhon import *'
 # __all__ = [ 'submodule1', 'submodule2' ]
