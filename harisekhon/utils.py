@@ -1079,11 +1079,13 @@ def isPythonTraceback(arg):
 
 
 def getPythonVersion():
-    _ = re.match("^(" + version_regex_short + ")", sys.version.split('\n')[0])
-    if _:
+    #_ = re.match("^(" + version_regex_short + ")", sys.version.split('\n')[0])
+    #if _:
         # regex matched so no NumberFormatException on float cast
-        return float(_.group(1))
-    raise Exception("couldn't determine Python version!") # pragma: no cover
+    #    return float(_.group(1))
+    #raise Exception("couldn't determine Python version!") # pragma: no cover
+    #return '.'.join([str(sys.version_info.major), str(sys.version_info.minor), str(sys.version_info.micro)])
+    return float('.'.join([str(sys.version_info.major), str(sys.version_info.minor)]))
 
 
 def isPythonVersion(expected):
