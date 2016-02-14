@@ -24,6 +24,8 @@ from __future__ import unicode_literals
 
 # enables 'from harisekhon.nagiosplugin import NagiosPlugin'
 from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
+from harisekhon.nagiosplugin.keycheck_nagiosplugin import KeyCheckNagiosPlugin
+from harisekhon.nagiosplugin.keywrite_nagiosplugin import KeyWriteNagiosPlugin
 
 # enables 'from harisekhon.nagiosplugin import Threshold'
 from harisekhon.nagiosplugin.threshold import Threshold, InvalidThresholdException
