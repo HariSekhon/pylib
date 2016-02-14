@@ -20,7 +20,7 @@ import sys
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import InvalidOptionException, CodingErrorException, isInt, isBool, log
+from harisekhon.utils import InvalidOptionException, CodingErrorException, isBool, isInt, isFloat, log
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.1'
@@ -127,6 +127,8 @@ class Threshold(object):
                                                 .format(self.name, boundary, self.thresholds['max']))
 
     def check(self, result):
+        if not isFloat(result):
+            return False
         result = float(result)
         if self.opts['invert']:
             if self.thresholds['lower'] is not None and self.thresholds['upper'] and \
