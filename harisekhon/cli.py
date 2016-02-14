@@ -192,7 +192,7 @@ class CLI(object):
         qquit('UNKNOWN', 'self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
 
     def get_timeout(self):
-        return self.__timeout
+        return int(self.__timeout)
 
     def set_timeout(self, secs):
         if not isInt(secs):
