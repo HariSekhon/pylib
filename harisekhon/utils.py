@@ -1084,6 +1084,9 @@ def getPythonVersion():
         # regex matched so no NumberFormatException on float cast
         return float(_.group(1))
     raise Exception("couldn't determine Python version!") # pragma: no cover
+    # this works only from Python 2.7+
+    #return '.'.join([str(sys.version_info.major), str(sys.version_info.minor), str(sys.version_info.micro)])
+    #return float('.'.join([str(sys.version_info.major), str(sys.version_info.minor)]))
 
 
 def isPythonVersion(expected):
