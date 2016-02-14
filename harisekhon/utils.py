@@ -1302,7 +1302,8 @@ def perf_suffix(arg):
 def plural(arg):
     # TODO: add support for arrays, dictionaries
     # if type(arg) == int or type(arg) == float:
-    if isinstance(arg, int) or isinstance(arg, float):
+    if isFloat(arg):
+        arg = float(arg)
         if arg > 1:
             return 's'
     return ''
