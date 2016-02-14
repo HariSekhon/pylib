@@ -1134,9 +1134,9 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(plural(None), '')
         self.assertEqual(plural(2), 's')
 
-        # def test_random_alnum(self):
-        # like(random_alnum(20),  qr/^[A-Za-z0-9]{20}$/,                      'random_alnum(20)');
-        # like(random_alnum(3),  qr/^[A-Za-z0-9][A-Za-z0-9][A-za-z0-9]$/,     'random_alnum(3)');
+    def test_random_alnum(self):
+        self.assertTrue(re.match(r'\w{20}', random_alnum(20)))
+        self.assertTrue(re.match(r'\w{3}', random_alnum(3)))
 
     def test_flatten(self):
         self.assertEqual(list(flatten([[1, 2], 3, '4', [[5]]])), [1, 2, 3, '4', 5])  # list  => list

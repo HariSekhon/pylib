@@ -36,7 +36,7 @@ import logging.config
 import platform
 import signal
 #import six
-#import string
+import string
 import sys
 import traceback
 from types import CodeType
@@ -1322,12 +1322,12 @@ def space_prefix(arg):
 # def prompt
 
 
-# def random_alnum(num):
-#     isInt(num) or code_error('invalid length passed to random_alnum')
-#     chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
-#     string = ""
-#     # XXX: TODO
-#     return string
+def random_alnum(num):
+    isInt(num) or code_error('invalid length passed to random_alnum')
+    chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
+    import random
+    _ = ''.join(random.choice(chars) for _ in range(num))
+    return _
 
 
 # def resolve_ip
