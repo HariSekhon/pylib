@@ -159,35 +159,37 @@ class NagiosPlugin(CLI):
                 self.warning()
             else:
                 self.critical()
+            return False
+        return True
 
     def check_thresholds(self, result, name=''):
         if not isStr(name):
             raise CodingErrorException('non-string passed to check_thresholds()')
         if name:
             name += '_'
-        self.check_threshold('{0}warning'.format(name), result)
         self.check_threshold('{0}critical'.format(name), result)
+        self.check_threshold('{0}warning'.format(name), result)
 
     # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
     # the default python exit code of 1 which would equate to WARNING in Nagios compatible systems
     def main(self):
-       try:
+        try:
             # Python 2.x
             super(NagiosPlugin, self).main()
             # Python 3.x
             # super().__init__()
             # redirect_stderr_stdout()
-       except Exception as _:
-           print('UNKNOWN: {0}'.format(_))
-           # prints to stderr, Nagios spec wants stdout
-           # traceback.print_exc()
-           print('\n{0}'.format(traceback.format_exc()), end='')
-           sys.exit(ERRORS['UNKNOWN'])
+        except Exception as _: # pylint: disable=broad-except
+            print('UNKNOWN: {0}'.format(_))
+            # prints to stderr, Nagios spec wants stdout
+            # traceback.print_exc()
+            print('\n{0}'.format(traceback.format_exc()), end='')
+            sys.exit(ERRORS['UNKNOWN'])
 
     @abstractmethod
     def run(self): # pragma: no cover
         pass
 
     def end(self):
-        log.info('end\n{0}\n'.format('='*80))
+        log.info('end\n%s\n', '='*80)
         qquit(self.get_status(), self.msg)
