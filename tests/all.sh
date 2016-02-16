@@ -33,6 +33,8 @@ cd "$srcdir";
 
 ../bash-tools/python_compile.sh
 
+../bash-tools/python_find_quit.sh
+
 ../bash-tools/run_tests.sh
 
 #./help.sh
