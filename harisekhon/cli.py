@@ -39,12 +39,12 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isList, isPort, isStr, validate_int, plural  # pylint: disable=wrong-import-position
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural  # pylint: disable=wrong-import-position
 from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit             # pylint: disable=wrong-import-position
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.7.4'
+__version__ = '0.8.0'
 
 class CLI(object):
     """
@@ -109,7 +109,7 @@ class CLI(object):
         self.__parser = OptionParser(add_help_option=False) # description=self._docstring # don't want description printed for option errors
         # duplicate key error or duplicate options, sucks
         # self.__parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
-        # self.setup()
+        self.setup()
 
     def setup(self):
         pass
@@ -134,24 +134,24 @@ class CLI(object):
             # careful causes bad file descriptor for die(), jython_only() and printerr() unit tests
             # sys.stderr = sys.stdin
             log.setLevel(logging.WARN)
-            self.set_verbose(self.options.verbose)
-            if self.get_verbose() > 2:
+            self.verbose = self.get_opt('verbose')
+            if self.verbose > 2:
                 log.setLevel(logging.DEBUG)
-            elif self.get_verbose() > 1:
+            elif self.verbose > 1:
                 log.setLevel(logging.INFO)
             if self.options.debug:
                 log.setLevel(logging.DEBUG) # pragma: no cover
-            log.info('verbose level: %s', self.get_verbose())
-            if self.get_timeout() is not None:
-                validate_int(self.get_timeout(), 'timeout', 0, self.get_timeout_max())
-                log.debug('setting timeout alarm (%s)', self.get_timeout())
+            log.info('verbose level: %s', self.verbose)
+            if self.timeout is not None:
+                validate_int(self.timeout, 'timeout', 0, self.timeout_max)
+                log.debug('setting timeout alarm (%s)', self.timeout)
                 signal.signal(signal.SIGALRM, self.timeout_handler)
-                signal.alarm(int(self.get_timeout()))
+                signal.alarm(int(self.timeout))
             # if self.options.version:
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
             self.run()
-            self.end()
+            self.__end__()
         except InvalidOptionException as _:
             self.usage(_) # pragma: no cover
         except KeyboardInterrupt:
@@ -189,36 +189,42 @@ class CLI(object):
         return name in dir(self.options)
 
     def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
-        qquit('UNKNOWN', 'self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
+        qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
 
-    def get_timeout(self):
-        return int(self.__timeout)
+    @property
+    def timeout(self):
+        return self.__timeout
 
-    def set_timeout(self, secs):
+    @timeout.setter
+    def timeout(self, secs):
         if not isInt(secs):
             raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
-        validate_int(secs, 'timeout', 0, self.get_timeout_max())
+        validate_int(secs, 'timeout', 0, self.timeout_max)
         log.debug('setting timeout to %s secs', secs)
         self.__timeout = secs
 
-    def get_timeout_default(self):
+    @property
+    def timeout_default(self):
         return self.__timeout_default
 
     # None prevents --timeout switch becoming exposed, whereas 0 will allow
-    def set_timeout_default(self, secs):
+    @timeout_default.setter
+    def timeout_default(self, secs):
         if secs is not None:
             if not isInt(secs):
-                raise CodingErrorException('invalid timeout passed to set_timeout_default(), must be an integer representing seconds') # pylint: disable=line-too-long
+                raise CodingErrorException('invalid timeout passed to timeout_default = , must be an integer representing seconds') # pylint: disable=line-too-long
             # validate_int(secs, 'timeout default', 0, self.__timeout_max )
-            if self.get_timeout_max() is not None and secs > self.get_timeout_max():
+            if self.timeout_max is not None and secs > self.timeout_max:
                 raise CodingErrorException('set default timeout > timeout max')
         log.debug('setting default timeout to %s secs', secs)
         self.__timeout_default = secs
 
-    def get_timeout_max(self):
+    @property
+    def timeout_max(self):
         return self.__timeout_max
 
-    def set_timeout_max(self, secs):
+    @timeout_max.setter
+    def timeout_max(self, secs):
         if secs is not None and not isInt(secs):
             raise CodingErrorException('invalid timeout max passed to set_timeout_max(), must be an integer representing seconds') # pylint: disable=line-too-long
         # leave this to be able to set max to any amount
@@ -226,21 +232,25 @@ class CLI(object):
         log.debug('setting max timeout to %s secs', secs)
         self.__timeout_max = secs
 
-    def get_verbose(self):
+    @property
+    def verbose(self):
         return self.__verbose
 
-    def set_verbose(self, arg):
+    @verbose.setter
+    def verbose(self, arg):
         if not isInt(arg):
-            raise CodingErrorException('invalid verbose level passed to set_verbose(), must be an integer')
+            raise CodingErrorException('invalid verbose level passed to verbose(), must be an integer')
         log.debug('setting verbose to %s', arg)
         self.__verbose = int(arg)
 
-    def get_verbose_default(self):
+    @property
+    def verbose_default(self):
         return self.__verbose_default
 
-    def set_verbose_default(self, arg):
+    @verbose_default.setter
+    def verbose_default(self, arg):
         if not isInt(arg):
-            raise CodingErrorException('invalid verbose level passed to set_verbose_default(), must be an integer')
+            raise CodingErrorException('invalid verbose level passed to verbose_default(), must be an integer')
         log.debug('setting default verbose to %s', arg)
         self.__verbose_default = int(arg)
 
@@ -277,12 +287,12 @@ class CLI(object):
             print('%(version)s' % self.__dict__)
             sys.exit(ERRORS['UNKNOWN'])
         if 'timeout' in dir(self.options):
-            self.set_timeout(self.options.timeout)
+            self.timeout = self.get_opt('timeout')
         env_verbose = os.getenv('VERBOSE')
         if isInt(env_verbose):
-            if env_verbose > self.get_verbose():
+            if env_verbose > self.verbose:
                 log.debug('environment variable $VERBOSE = %s, increasing verbosity', env_verbose)
-                self.set_verbose(env_verbose)
+                self.verbose = env_verbose
         elif env_verbose is None:
             pass
         else:
@@ -330,3 +340,6 @@ class CLI(object):
 
     def end(self):
         pass
+
+    def __end__(self):
+        self.end()

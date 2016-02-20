@@ -34,7 +34,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.7'
+__version__ = '0.8.0'
 
 class NagiosPlugin(CLI):
     """
@@ -62,40 +62,42 @@ class NagiosPlugin(CLI):
 
     # there is no ok() since that behaviour needs to be determined by scenario
 
-    def get_status(self):
+    @property
+    def status(self):
         return self.__status
 
-    def set_status(self, status):
+    @status.setter
+    def status(self, status):
         if not ERRORS.has_key(status):
-            raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.set_status()")
+            raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.status()")
         self.__status = status
 
     def ok(self): # pylint: disable=invalid-name
-        self.set_status('OK')
+        self.status = 'OK'
 
     def warning(self):
-        if self.get_status() != 'CRITICAL':
-            self.set_status('WARNING')
+        if self.status != 'CRITICAL':
+            self.status = 'WARNING'
 
     def critical(self):
-        self.set_status('CRITICAL')
+        self.status = 'CRITICAL'
 
     def unknown(self):
-        if self.get_status() == 'OK':
-            self.set_status('UNKNOWN')
+        if self.status == 'OK':
+            self.status = 'UNKNOWN'
 
     ############################
     def is_ok(self):
-        return self.get_status() == 'OK'
+        return self.status == 'OK'
 
     def is_warning(self):
-        return self.get_status() == 'WARNING'
+        return self.status == 'WARNING'
 
     def is_critical(self):
-        return self.get_status() == 'CRITICAL'
+        return self.status == 'CRITICAL'
 
     def is_unknown(self):
-        return self.get_status() == 'UNKNOWN'
+        return self.status == 'UNKNOWN'
 
     # ============================================================================ #
 
@@ -171,23 +173,24 @@ class NagiosPlugin(CLI):
     # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
     # the default python exit code of 1 which would equate to WARNING in Nagios compatible systems
     def main(self):
-       try:
+        try:
             # Python 2.x
             super(NagiosPlugin, self).main()
             # Python 3.x
             # super().__init__()
             # redirect_stderr_stdout()
-       except Exception as _:
-           print('UNKNOWN: {0}'.format(_))
-           # prints to stderr, Nagios spec wants stdout
-           # traceback.print_exc()
-           print('\n{0}'.format(traceback.format_exc()), end='')
-           sys.exit(ERRORS['UNKNOWN'])
+        except Exception as _: # pylint: disable=broad-except
+            print('UNKNOWN: {0}'.format(_))
+            # prints to stderr, Nagios spec wants stdout
+            # traceback.print_exc()
+            print('\n{0}'.format(traceback.format_exc()), end='')
+            sys.exit(ERRORS['UNKNOWN'])
 
     @abstractmethod
     def run(self): # pragma: no cover
         pass
 
-    def end(self):
-        log.info('end\n{0}\n'.format('='*80))
-        qquit(self.get_status(), self.msg)
+    def __end__(self):
+        self.end()
+        log.info('end\n%s\n', '='*80)
+        qquit(self.status, self.msg)
