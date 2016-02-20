@@ -24,8 +24,6 @@ echo "
 
 cd "$srcdir";
 
-./whitespace.sh
-
 #./syntax.sh
 ./pylint.sh
 
