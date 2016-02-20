@@ -55,7 +55,7 @@ class NagiosPluginTester(unittest.TestCase):
     def test_set_threshold_invalid(self):
         try:
             self.plugin.set_threshold('test', 5)
-            raise Exception('failed to raise CodingErrorException on passing in non-threshold object to Threshold.set_threshold()')
+            raise Exception('failed to raise CodingErrorException on passing in non-threshold object to Threshold.set_threshold()') # pylint: disable=line-too-long
         except CodingErrorException:
             pass
 
