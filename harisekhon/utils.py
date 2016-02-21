@@ -378,6 +378,7 @@ def dict_lines(arg):
 #                              Custom Exceptions
 # ============================================================================ #
 
+# rename these all to not have the word Exception in them it's excessive
 class CodingErrorException(AssertionError):
     pass
 
@@ -475,21 +476,22 @@ def curl(*args, **kwargs):
     else:
         return harisekhon.RequestHandler.curl(*args, **kwargs)
 
-def curl_bs4(*args, **kwargs):
-    # request_handler should be a subclass of harisekhon.RequestBS4Handler
-    if 'request_handler' in kwargs:
-        request_handler = kwargs['request_handler']
-        if not isStr(request_handler):
-            raise CodingErrorException('request_handler passed to curl_bs4() must be a string')
-        containing_module = re.sub(r'[^\.]+$', '', request_handler).rstrip('.')
-        target_class = request_handler.split('.')[-1]
-        # log.debug('containing module is %s' % containing_module)
-        module = __import__(containing_module, globals(), locals(), [], -1)
-        # module = __import__(request_handler, globals(), locals(), [request_handler.split('.')[-1]], -1)
-        _class = getattr(module, target_class)
-        return _class.curl(*args, **kwargs)
-    else:
-        return harisekhon.RequestBS4Handler.curl(*args, **kwargs)
+# This doesn't make sense since you always have to override RequestBS4Handler's parse() and then call
+# def curl_bs4(*args, **kwargs):
+#     # request_handler should be a subclass of harisekhon.RequestBS4Handler
+#     if 'request_handler' in kwargs:
+#         request_handler = kwargs['request_handler']
+#         if not isStr(request_handler):
+#             raise CodingErrorException('request_handler passed to curl_bs4() must be a string')
+#         containing_module = re.sub(r'[^\.]+$', '', request_handler).rstrip('.')
+#         target_class = request_handler.split('.')[-1]
+#         # log.debug('containing module is %s' % containing_module)
+#         module = __import__(containing_module, globals(), locals(), [], -1)
+#         # module = __import__(request_handler, globals(), locals(), [request_handler.split('.')[-1]], -1)
+#         _class = getattr(module, target_class)
+#         return _class.curl(*args, **kwargs)
+#     else:
+#         return harisekhon.RequestBS4Handler.curl(*args, **kwargs)
 
 
 def flatten(arg):
