@@ -1145,6 +1145,12 @@ class UtilsTester(unittest.TestCase):
     def test_curl_custom_request_handler(self):
         curl('www.google.com', request_handler='harisekhon.RequestHandler')
 
+    def test_curl_bs4(self):
+        curl_bs4('www.google.com')
+
+    def test_curl_bs4_custom_request_handler(self):
+        curl_bs4('www.google.com', request_handler='harisekhon.RequestBS4Handler')
+
     def test_flatten(self):
         self.assertEqual(list(flatten([[1, 2], 3, '4', [[5]]])), [1, 2, 3, '4', 5])  # list  => list
         self.assertEqual(list(flatten(([1, 2], 3, '4', [[5]]))), [1, 2, 3, '4', 5])  # tuple => list
