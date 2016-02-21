@@ -49,6 +49,7 @@ class RequestHandlerTester(unittest.TestCase):
     def test_request_handler(self):
         req = RequestHandler.curl('www.google.com')
         self.assertTrue(isinstance, requests.Response)
+        RequestHandler(req)
 
 
 def main():
