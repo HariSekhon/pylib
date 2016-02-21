@@ -1139,6 +1139,12 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(re.match(r'\w{20}', random_alnum(20)))
         self.assertTrue(re.match(r'\w{3}', random_alnum(3)))
 
+    def test_curl(self):
+        curl('www.google.com')
+
+    def test_curl_custom_request_handler(self):
+        curl('www.google.com', request_handler='harisekhon.RequestHandler')
+
     def test_flatten(self):
         self.assertEqual(list(flatten([[1, 2], 3, '4', [[5]]])), [1, 2, 3, '4', 5])  # list  => list
         self.assertEqual(list(flatten(([1, 2], 3, '4', [[5]]))), [1, 2, 3, '4', 5])  # tuple => list
