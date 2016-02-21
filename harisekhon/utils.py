@@ -462,7 +462,15 @@ def java_oom_fix_msg():
 def curl(*args, **kwargs):
     # request_handler should be a subclass of harisekhon.RequestHandler
     if 'request_handler' in kwargs:
-        _class = getattr(kwargs['request_handler'])
+        request_handler = kwargs['request_handler']
+        if not isStr(request_handler):
+            raise CodingErrorException('request_handler passed to curl() must be a string')
+        containing_module = re.sub(r'[^\.]+$', '', request_handler).rstrip('.')
+        target_class = request_handler.split('.')[-1]
+        # log.debug('containing module is %s' % containing_module)
+        module = __import__(containing_module, globals(), locals(), [], -1)
+        # module = __import__(request_handler, globals(), locals(), [request_handler.split('.')[-1]], -1)
+        _class = getattr(module, target_class)
         return _class.curl(*args, **kwargs)
     else:
         return harisekhon.RequestHandler.curl(*args, **kwargs)
