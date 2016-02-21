@@ -50,12 +50,13 @@ __version__ = '0.1'
 
 class RequestHandler(object):
 
-    def __init__(self):
+    def __init__(self, req=None):
         # Python 2.x
         #super(RequestHandler, self).__init__()
         # Python 3.x
         # super().__init__()
-        pass
+        if req:
+            self.process_req(req)
 
     @classmethod
     def curl(cls, url, *args, **kwargs):
