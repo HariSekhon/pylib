@@ -100,32 +100,3 @@ class RequestHandler(object):
     @staticmethod
     def parse(req):
         pass
-
-    @staticmethod
-    def parse_print(soup):
-        if log.isEnabledFor(logging.DEBUG):
-            log.debug("BeautifulSoup prettified:\n%s\n%s", soup.prettify(), '='*80)
-
-    @staticmethod
-    def parse(soup):
-        # NOTE: soup.find() can return None - do not chain calls - must test each call 'is not None'
-        # link = soup.find('p')[3]
-        # link = soup.find('th', text='Uptime:')
-        # link = soup.find_next_sibling('th', text='Uptime:')
-
-        # link = soup.find('th', text=re.compile('Uptime:?', re.I))
-        # if link is None:
-        #     qquit('UNKNOWN', 'failed to find tag')
-        # link = link.find_next_sibling()
-        # if link is None:
-        #     qquit('UNKNOWN', 'failed to find tag (next sibling tag not found)')
-        # _ = link.get_text()
-        # shorter to just catch NoneType attribute error when tag not found and returns None
-        #try:
-        #    uptime = soup.find('th', text=re.compile('Uptime:?', re.I)).find_next_sibling().get_text()
-        #    version = soup.find('th', text=re.compile('Version:?', re.I)).find_next_sibling().get_text()
-        #except (AttributeError, TypeError):
-        #    qquit('UNKNOWN', 'failed to find parse Tachyon%(name)s uptime/version info' % self.__dict__)
-        #if not _ or not isStr(_) or not re.search(r'...', _):
-        #    qquit('UNKNOWN', 'format not recognized: {0}'.format(_))
-        pass
