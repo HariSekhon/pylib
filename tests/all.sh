@@ -24,14 +24,14 @@ echo "
 
 cd "$srcdir";
 
-./whitespace.sh
-
 #./syntax.sh
 ./pylint.sh
 
 #./python3.sh
 
 ../bash-tools/python_compile.sh
+
+../bash-tools/python_find_quit.sh
 
 ../bash-tools/run_tests.sh
 

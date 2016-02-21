@@ -34,7 +34,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.7'
+__version__ = '0.8.0'
 
 class NagiosPlugin(CLI):
     """
@@ -51,7 +51,7 @@ class NagiosPlugin(CLI):
         # super().__init__()
         # redirect_stderr_stdout()
         self.__status = 'UNKNOWN'
-        self.msg = 'MESSAGE NOT DEFINED'
+        self.__msg = 'MESSAGE NOT DEFINED'
         self.__thresholds = {'warning': None, 'critical': None}
 
     # ============================================================================ #
@@ -62,40 +62,50 @@ class NagiosPlugin(CLI):
 
     # there is no ok() since that behaviour needs to be determined by scenario
 
-    def get_status(self):
+    @property
+    def status(self):
         return self.__status
 
-    def set_status(self, status):
+    @status.setter
+    def status(self, status):
         if not ERRORS.has_key(status):
-            raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.set_status()")
+            raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.status()")
         self.__status = status
 
+    @property
+    def msg(self):
+        return self.__msg
+
+    @msg.setter
+    def msg(self, msg):
+        self.__msg = msg
+
     def ok(self): # pylint: disable=invalid-name
-        self.set_status('OK')
+        self.status = 'OK'
 
     def warning(self):
-        if self.get_status() != 'CRITICAL':
-            self.set_status('WARNING')
+        if self.status != 'CRITICAL':
+            self.status = 'WARNING'
 
     def critical(self):
-        self.set_status('CRITICAL')
+        self.status = 'CRITICAL'
 
     def unknown(self):
-        if self.get_status() == 'OK':
-            self.set_status('UNKNOWN')
+        if self.status == 'OK':
+            self.status = 'UNKNOWN'
 
     ############################
     def is_ok(self):
-        return self.get_status() == 'OK'
+        return self.status == 'OK'
 
     def is_warning(self):
-        return self.get_status() == 'WARNING'
+        return self.status == 'WARNING'
 
     def is_critical(self):
-        return self.get_status() == 'CRITICAL'
+        return self.status == 'CRITICAL'
 
     def is_unknown(self):
-        return self.get_status() == 'UNKNOWN'
+        return self.status == 'UNKNOWN'
 
     # ============================================================================ #
 
@@ -191,5 +201,9 @@ class NagiosPlugin(CLI):
         pass
 
     def end(self):
+        pass
+
+    def __end__(self):
+        self.end()
         log.info('end\n%s\n', '='*80)
-        qquit(self.get_status(), self.msg)
+        qquit(self.status, self.msg)

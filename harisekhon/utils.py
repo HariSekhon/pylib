@@ -362,10 +362,14 @@ def getenvs2(my_vars, default, name):
 
 
 def env_lines():
-    return dict_lines(os.environ.iteritems())
+    return dict_lines(dict(os.environ))
 
-def dict_lines(my_dict):
-    return '\n'.join(('%s = %s' % (key, value) for (key, value) in sorted(my_dict)))
+
+def dict_lines(arg):
+    if not isDict(arg):
+        raise CodingErrorException("non-dict type '%s' passed to dict_lines" % type(arg))
+    # can't use iteritems() any more due to Py3k
+    return '\n'.join(('%s = %s' % (key, value) for (key, value) in sorted(arg.items())))
 
 
 # ============================================================================ #

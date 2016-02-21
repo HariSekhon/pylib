@@ -95,8 +95,8 @@ class CLITester(unittest.TestCase):
 
     # set_verbose() won't work because parse args resets it so we change verbose_default instead
     def test_verbose_default_setters_getters(self):
-        self.cli.set_verbose_default(2)
-        self.assertEqual(self.cli.get_verbose_default(), 2)
+        self.cli.verbose_default = 2
+        self.assertEqual(self.cli.verbose_default, 2)
         self.cli.main()
         self.cli.__init__()
 
@@ -107,25 +107,25 @@ class CLITester(unittest.TestCase):
 
     def test_reinit_main(self):
         self.cli.__init__()
-        self.cli.set_verbose_default(3)
+        self.cli.verbose_default = 3
         self.cli.main()
 
     def test_reinit_set_verbose(self):
         self.cli.__init__()
-        self.cli.set_verbose(0)
-        self.assertEqual(self.cli.get_verbose(), 0)
+        self.cli.verbose = 0
+        self.assertEqual(self.cli.verbose, 0)
 
     def test_set_verbose_none_exception(self):
         try:
-            self.cli.set_verbose(None)
-            raise Exception('failed to raise CodingErrorException when calling set_verbose(None)')
+            self.cli.verbose = None
+            raise Exception('failed to raise CodingErrorException when calling verbose = None')
         except CodingErrorException:
             pass
 
     def test_set_verbose_default_none_exception(self):
         try:
-            self.cli.set_verbose_default(None)
-            raise Exception('failed to raise CodingErrorException when calling set_verbose_default(None)')
+            self.cli.verbose_default = None
+            raise Exception('failed to raise CodingErrorException when calling verbose_default = None')
         except CodingErrorException:
             pass
 
@@ -162,8 +162,8 @@ class CLITester(unittest.TestCase):
 
     def test_set_timeout(self):
         try:
-            self.cli.set_timeout(None)
-            raise Exception('failed to raise CodingErrorException for CLU.set_timeout(None)')
+            self.cli.timeout = None
+            raise Exception('failed to raise CodingErrorException for CLU.timeout = None')
         except CodingErrorException:
             pass
         self.cli.main()
@@ -171,64 +171,64 @@ class CLITester(unittest.TestCase):
     def test_set_timeout_alpha_exception(self):
         self.cli.__init__()
         try:
-            self.cli.set_timeout('a')
-            raise Exception('failed to raise CodingErrorException for CLU.set_timeout(a)')
+            self.cli.timeout = 'a'
+            raise Exception('failed to raise CodingErrorException for CLU.timeout = a')
         except CodingErrorException:
             pass
 
     def test_set_timeout_max_set_timeout_exception(self):
-        self.cli.set_timeout_max(5)
+        self.cli.timeout_max = 5
         try:
-            self.cli.set_timeout(6)
+            self.cli.timeout = 6
             raise Exception('failed to raise InvalidOptionException when setting timeout higher than max')
         except InvalidOptionException:
             pass
 
     def test_set_timeout_max_alpha_exception(self):
         try:
-            self.cli.set_timeout_max('a')
-            raise Exception('failed to raise CodingErrorException for set_timeout_max(a)')
+            self.cli.timeout_max = 'a'
+            raise Exception('failed to raise CodingErrorException for timeout_max = a')
         except CodingErrorException:
             pass
 
     #def test_set_timeout_max(self):
-    #    self.cli.set_timeout_max(None)
+    #    self.cli.timeout_max = None
 
     def test_set_timeout_default(self):
         cli = self.SubCLI()
-        cli.set_timeout_max(None)
-        cli.set_timeout_default(999999)
-        cli.set_timeout_default(9)
-        self.assertEqual(cli.get_timeout_default(), 9)
-        cli.set_timeout_default(None)
+        cli.timeout_max = None
+        cli.timeout_default = 999999
+        cli.timeout_default = 9
+        self.assertEqual(cli.timeout_default, 9)
+        cli.timeout_default = None
 
     def test_set_timeout_max_set_timeout_default_exception(self):
-        self.cli.set_timeout_max(10)
+        self.cli.timeout_max = 10
         try:
-            self.cli.set_timeout_default(11)
-            raise Exception('failed to raise exception on CLI.set_timeout_default() > max')
+            self.cli.timeout_default = 11
+            raise Exception('failed to raise exception on CLI.timeout_default > max')
         except CodingErrorException:
             pass
 
     def test_timeout_default_max_normal(self):
         cli = self.SubCLI()
-        cli.set_timeout_default(None)
-        self.assertEqual(cli.get_timeout_default(), None)
-        cli.set_timeout_max(30)
-        cli.set_timeout(22)
-        self.assertEqual(cli.get_timeout(), 22)
+        cli.timeout_default = None
+        self.assertEqual(cli.timeout_default, None)
+        cli.timeout_max = 30
+        cli.timeout = 22
+        self.assertEqual(cli.timeout, 22)
         cli.main()
 
     def test_timeout_default_alpha_exception(self):
         self.cli.__init__()
         try:
-            self.cli.set_timeout_default('a')
-            raise Exception('failed to raise CodingErrorException for CLI.set_timeout_default(a)')
+            self.cli.timeout_default = 'a'
+            raise Exception('failed to raise CodingErrorException for CLI.timeout_default = a')
         except CodingErrorException:
             pass
 
     def test_timeout_default_sleep_exception(self):
-        self.cli.set_timeout_default(1)
+        self.cli.timeout_default = 1
         self.cli.run = lambda: time.sleep(3)
         try:
             self.cli.main()

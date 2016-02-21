@@ -55,7 +55,7 @@ class NagiosPluginTester(unittest.TestCase):
     def test_set_threshold_invalid(self):
         try:
             self.plugin.set_threshold('test', 5)
-            raise Exception('failed to raise CodingErrorException on passing in non-threshold object to Threshold.set_threshold()')
+            raise Exception('failed to raise CodingErrorException on passing in non-threshold object to Threshold.set_threshold()') # pylint: disable=line-too-long
         except CodingErrorException:
             pass
 
@@ -157,7 +157,7 @@ class NagiosPluginTester(unittest.TestCase):
 
     def test_invalid_status(self):
         try:
-            self.plugin.set_status('invalidstatus')
+            self.plugin.status = 'invalidstatus'
         except CodingErrorException:
             pass
 
@@ -179,9 +179,10 @@ class NagiosPluginTester(unittest.TestCase):
         try:
             self.plugin.critical()
             self.plugin.main()
+            raise Exception('plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('NagiosPlugin failed to exit CRITICAL')
+                raise Exception('NagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'.format(_.code))
 
     def test_nagiosplugin_abstract(self): # pylint: disable=no-self-use
         try:
