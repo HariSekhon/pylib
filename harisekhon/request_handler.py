@@ -58,6 +58,8 @@ class RequestHandler(object):
 
     @classmethod
     def curl(cls, url):
+        if not '://' in url:
+            url = 'http://' + url
         try:
             req = requests.get(url)
         except requests.exceptions.RequestException as _:
