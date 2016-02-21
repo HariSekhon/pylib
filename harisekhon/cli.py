@@ -83,7 +83,7 @@ class CLI(object):
             self._docstring = ''
         self._topfile_version = get_file_version(self.topfile)
         # this doesn't work in unit tests
-        # if not self._topfile_version:
+        # if self._topfile_version:
         #     raise CodingErrorException('failed to get topfile version - did you set a __version__ in top cli program?') # pylint: disable=line-too-long
         self._cli_version = self.__version__
         self._utils_version = harisekhon.utils.__version__

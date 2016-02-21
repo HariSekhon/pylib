@@ -64,6 +64,8 @@ ERRORS = {
 }
 
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.append(libdir)
+import harisekhon # pylint: disable=wrong-import-position
 
 def get_caller():
     # return inspect.currentframe().f_back.f_back
@@ -456,6 +458,15 @@ def java_oom_fix_msg():
 
 
 # ============================================================================ #
+
+def curl(*args, **kwargs):
+    # request_handler should be a subclass of harisekhon.RequestHandler
+    if 'request_handler' in kwargs:
+        _class = getattr(kwargs['request_handler'])
+        return _class.curl(*args, **kwargs)
+    else:
+        return harisekhon.RequestHandler.curl(*args, **kwargs)
+
 
 def flatten(arg):
     if not isIterableNotStr(arg):
