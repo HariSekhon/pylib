@@ -64,7 +64,7 @@ ERRORS = {
 }
 
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.append(libdir)
+sys.path.append(libdir)
 import harisekhon # pylint: disable=wrong-import-position
 
 def get_caller():
