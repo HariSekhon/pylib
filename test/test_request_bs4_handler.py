@@ -49,6 +49,7 @@ class RequestBS4HandlerTester(unittest.TestCase):
     def test_request_bs4_handler(self):
         req = RequestBS4Handler.curl('www.google.com')
         self.assertTrue(isinstance, requests.Response)
+        RequestBS4Handler(req)
 
 
 def main():
