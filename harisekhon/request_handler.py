@@ -57,7 +57,7 @@ class RequestHandler(object):
         pass
 
     @classmethod
-    def curl(cls, url):
+    def curl(cls, url, *args, **kwargs):
         if '://' not in url:
             url = 'http://' + url
         try:
