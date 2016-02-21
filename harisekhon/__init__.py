@@ -24,6 +24,7 @@ from __future__ import unicode_literals
 # from harisekhon.utils import *
 # enables 'from harisekhon import CLI'
 from harisekhon.cli import CLI
+from harisekhon.request_handler import RequestHandler
 # enables 'from harisekhon import NagiosPlugin'
 from harisekhon.nagiosplugin import NagiosPlugin
 from harisekhon.nagiosplugin import KeyCheckNagiosPlugin
