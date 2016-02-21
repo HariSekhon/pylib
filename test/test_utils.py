@@ -34,9 +34,10 @@ import unittest
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
+# pylint: disable=wrong-import-position
 import harisekhon
-from harisekhon import utils  # pylint: disable=wrong-import-position
-from harisekhon.utils import *  # pylint: disable=wrong-import-position,wildcard-import,unused-wildcard-import
+from harisekhon import utils
+from harisekhon.utils import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
 
 # pylint: disable=invalid-name,no-self-use
