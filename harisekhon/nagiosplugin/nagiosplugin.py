@@ -51,7 +51,8 @@ class NagiosPlugin(CLI):
         # super().__init__()
         # redirect_stderr_stdout()
         self.__status = 'UNKNOWN'
-        self.__msg = 'MESSAGE NOT DEFINED'
+        # self.__msg = 'MESSAGE NOT DEFINED'
+        self.msg = 'MESSAGE NOT DEFINED'
         self.__thresholds = {'warning': None, 'critical': None}
 
     # ============================================================================ #
@@ -72,13 +73,13 @@ class NagiosPlugin(CLI):
             raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.status()")
         self.__status = status
 
-    @property
-    def msg(self):
-        return self.__msg
+    # @property
+    # def msg(self):
+    #     return self.__msg
 
-    @msg.setter
-    def msg(self, msg):
-        self.__msg = msg
+    # @msg.setter
+    # def msg(self, msg):
+    #     self.__msg = msg
 
     def ok(self): # pylint: disable=invalid-name
         self.status = 'OK'
