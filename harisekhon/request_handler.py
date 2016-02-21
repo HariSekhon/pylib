@@ -15,7 +15,8 @@
 
 """
 
-Request Handler Class
+Request Handler Class - Designed to contain various override-able and extendable tests
+                        for handling 'requests' module error handling HTTP scenarios
 
 """
 
@@ -29,7 +30,7 @@ import os
 import sys
 import traceback
 try:
-    from bs4 import BeautifulSoup
+    # from bs4 import BeautifulSoup
     import requests
 except ImportError:
     print(traceback.format_exc(), end='')
@@ -63,11 +64,20 @@ class RequestHandler(object):
         try:
             req = requests.get(url)
         except requests.exceptions.RequestException as _:
-            qquit('CRITICAL', _)
+            cls.handler_exception(_)
         cls.log_output(req)
+        cls.process_req(req)
+
+    @classmethod
+    def process_req(cls, req):
         cls.check_response_code(req)
-        cls.__parse__(req)
+        content = cls.__parse__(req)
+        cls.check_content(req)
         return req
+
+    @staticmethod
+    def handler_exception(_):
+        qquit('CRITICAL', _)
 
     @staticmethod
     def log_output(req):
@@ -77,13 +87,19 @@ class RequestHandler(object):
     @staticmethod
     def check_response_code(req):
         if req.status_code != 200:
-            qquit('CRITICAL', "Non-200 response! %s %s" % (req.status_code, req.reason))
+            qquit('CRITICAL', "%s %s" % (req.status_code, req.reason))
+
+    @staticmethod
+    def check_content(req):
+        pass
 
     @classmethod
     def __parse__(cls, req):
-        soup = BeautifulSoup(req.content, 'html.parser')
-        cls.parse_print(soup)
-        cls.parse(soup)
+        cls.parse(req)
+
+    @staticmethod
+    def parse(req):
+        pass
 
     @staticmethod
     def parse_print(soup):
