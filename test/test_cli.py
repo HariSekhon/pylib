@@ -33,8 +33,9 @@ from optparse import OptionConflictError
 # inspect.getfile(inspect.currentframe()) # filename
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon.utils import CodingErrorException, InvalidOptionException, log  # pylint: disable=wrong-import-position
-from harisekhon import CLI # pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-position
+from harisekhon.utils import CodingErrorException, InvalidOptionException, log
+from harisekhon import CLI
 
 
 class CLITester(unittest.TestCase):
