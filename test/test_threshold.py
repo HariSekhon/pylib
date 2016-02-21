@@ -30,8 +30,9 @@ import sys
 import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
-from harisekhon.utils import log, CodingErrorException # pylint: disable=wrong-import-position
-from harisekhon.nagiosplugin import Threshold, InvalidThresholdException # pylint: disable=wrong-import-position
+ # pylint: disable=wrong-import-position
+from harisekhon.utils import log, CodingErrorException
+from harisekhon.nagiosplugin import Threshold, InvalidThresholdException
 
 class NagiosThresholdTester(unittest.TestCase):
 
