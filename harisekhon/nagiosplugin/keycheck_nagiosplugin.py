@@ -65,6 +65,7 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
         self.regex = None
         self._read_value = None
         self._read_timing = None
+        self.status = 'OK'
 
     def add_options(self):
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
@@ -118,4 +119,4 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
         self.check_thresholds(self._read_value)
         if isFloat(self._read_value):
             self.msg += " | '{0}'={1} query_time={2:.7f}s".format(self.key, self._read_value, self._read_timing)
-        qquit('OK', self.msg)
+        qquit(self.status, self.msg)
