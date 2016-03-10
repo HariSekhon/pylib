@@ -145,7 +145,8 @@ class CLI(object):
             elif self.verbose > 1:
                 log.setLevel(logging.INFO)
             if self.options.debug:
-                log.setLevel(logging.DEBUG) # pragma: no cover
+                # log.debug('enabling debug logging')
+                log.setLevel(logging.DEBUG)  # pragma: no cover
             log.info('verbose level: %s', self.verbose)
             if self.timeout is not None:
                 validate_int(self.timeout, 'timeout', 0, self.timeout_max)
@@ -155,13 +156,14 @@ class CLI(object):
             # if self.options.version:
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
+            self.process_args()
             self.run()
             self.__end__()
         except InvalidOptionException as _:
-            self.usage(_) # pragma: no cover
+            self.usage(_)  # pragma: no cover
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
-            print('Caught control-c...') # pragma: no cover
+            print('Caught control-c...')  # pragma: no cover
 
     def usage(self, msg='', status='UNKNOWN'):
         if msg:
@@ -193,7 +195,7 @@ class CLI(object):
     def is_option_defined(self, name):
         return name in dir(self.options)
 
-    def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
+    def timeout_handler(self, signum, frame):  # pylint: disable=unused-argument
         qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
 
     @property
@@ -284,11 +286,11 @@ class CLI(object):
             (self.options, self.args) = self.__parser.parse_args()
         # I don't agree with zero exit code from OptionParser for help/usage,
         # and want UNKNOWN not CRITICAL(2) for switch mis-usage...
-        except SystemExit: # pragma: no cover
+        except SystemExit:  # pragma: no cover
             sys.exit(ERRORS['UNKNOWN'])
-        if self.options.help: # pragma: no cover
+        if self.options.help:  # pragma: no cover
             self.usage()
-        if self.options.version: # pragma: no cover
+        if self.options.version:  # pragma: no cover
             print('%(version)s' % self.__dict__)
             sys.exit(ERRORS['UNKNOWN'])
         if 'timeout' in dir(self.options):
@@ -303,7 +305,6 @@ class CLI(object):
         else:
             log.warn("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
         self.parse_args()
-        self.process_args()
         return self.options, self.args
 
     def parse_args(self):
@@ -339,7 +340,7 @@ class CLI(object):
                      default=default_password)
 
     @abstractmethod
-    def run(self): # pragma: no cover
+    def run(self):  # pragma: no cover
         raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                                    ' You should have overridden this run() method in the client code')
 
