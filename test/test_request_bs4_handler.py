@@ -47,7 +47,7 @@ class RequestBS4HandlerTester(unittest.TestCase):
 
     # TODO: mock this
     def test_request_bs4_handler(self):
-        req = RequestBS4Handler.curl('www.google.com')
+        req = RequestBS4Handler.get('www.google.com')
         self.assertTrue(isinstance, requests.Response)
         RequestBS4Handler(req)
 
