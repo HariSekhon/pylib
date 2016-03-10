@@ -21,7 +21,7 @@ from __future__ import print_function
 
 import os
 import sys
-import traceback
+# import traceback
 # import logging
 # Python 2.6+ only
 from abc import ABCMeta, abstractmethod
@@ -29,12 +29,14 @@ libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 from harisekhon.utils import ERRORS, qquit, CodingErrorException, log, isStr, vlog_option
+from harisekhon.utils import WarningError, CriticalError, UnknownError
 from harisekhon import CLI
 from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.8.0'
+
 
 class NagiosPlugin(CLI):
     """
@@ -190,12 +192,22 @@ class NagiosPlugin(CLI):
             # Python 3.x
             # super().__init__()
             # redirect_stderr_stdout()
-        except Exception as _: # pylint: disable=broad-except
-            print('UNKNOWN: {0}'.format(_))
+        except CriticalError as _:
+            qquit('CRITICAL', _)
+        except WarningError as _:
+            qquit('WARNING', _)
+        except UnknownError as _:
+            qquit('UNKNOWN', _)
+        except Exception as _:  # pylint: disable=broad-except
+            qquit('UNKNOWN', _)
+            # Done in utils now so that this also applies to the above specific exit handlers
+            # print('UNKNOWN: {0}'.format(_))
             # prints to stderr, Nagios spec wants stdout
             # traceback.print_exc()
-            print('\n{0}'.format(traceback.format_exc()), end='')
-            sys.exit(ERRORS['UNKNOWN'])
+            # tb = traceback.format_exc().strip()
+            # if tb != 'None':
+            #     print('\n{0}'.format(tb), end='')
+            # sys.exit(ERRORS['UNKNOWN'])
 
     @abstractmethod
     def run(self): # pragma: no cover
