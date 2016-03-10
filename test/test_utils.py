@@ -2673,8 +2673,8 @@ class UtilsTester(unittest.TestCase):
     def test_vlog3(self):
         vlog3('vlog2 test')
 
-    def test_vlog_option(self):
-        vlog_option('vlog_option', 'test')
+    def test_log_option(self):
+        log_option('log_option', 'test')
 
     # ============================================================================ #
 
