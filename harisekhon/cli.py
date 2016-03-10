@@ -38,13 +38,15 @@ from abc import ABCMeta, abstractmethod
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
-import harisekhon # pylint: disable=wrong-import-position
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural  # pylint: disable=wrong-import-position
-from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit             # pylint: disable=wrong-import-position
-from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version # pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-position
+import harisekhon
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural
+from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit
+from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.8.0'
+
 
 class CLI(object):
     """
