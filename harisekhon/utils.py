@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.4'
+__version__ = '0.10.5'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -176,12 +176,18 @@ def qquit(status, msg=''):
     """ Quit with status code from ERRORS dictionary after printing given msg """
     status = str(status).upper()
     if status not in ERRORS:
-        log.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical\n%s"
-                      % (status, get_caller(), traceback.format_exc()))
+        log.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical\n%s",
+                 status, get_caller(), traceback.format_exc())
         status = 'CRITICAL'
+    # log.error('%s: %s', status, msg)
     if msg:
-        # log.error('%s: %s' % (status, msg))
-        print('%(status)s: %(msg)s' % locals())
+        print('{0}: {1}'.format(status, msg))
+        if log.isEnabledFor(logging.DEBUG):
+            # prints to stderr, Nagios spec wants stdout
+            # traceback.print_exc()
+            tb = traceback.format_exc().strip()
+            if tb != 'None':
+                print('\n{0}'.format(tb), end='')
     sys.exit(ERRORS[status])
 
 
@@ -378,11 +384,24 @@ def dict_lines(arg):
 #                              Custom Exceptions
 # ============================================================================ #
 
-# rename these all to not have the word Exception in them it's excessive
+
+class WarningError(AssertionError):
+    pass
+
+
+class CriticalError(AssertionError):
+    pass
+
+
+class UnknownError(AssertionError):
+    pass
+
+
 class CodingErrorException(AssertionError):
     pass
 
 
+# TODO: rename these all to not have the word Exception in them it's excessive
 class LinuxOnlyException(AssertionError):
     # def __init__(self, value):
     #     self.value = value
@@ -406,8 +425,10 @@ class InvalidOptionException(AssertionError):
 class FileNotExecutableException(IOError):
     pass
 
+
 class InvalidFilenameException(IOError):
     pass
+
 
 class FileNotFoundException(IOError):
     pass
@@ -591,52 +612,54 @@ if os.path.isfile(_custom_tlds):
 
 tld_regex = r'(?i)\b(?:' + '|'.join(_tlds) + r')\b'
 
+# pylint: disable=bad-whitespace
 domain_component_regex = r'\b[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\b'
 # AWS regex from http://blogs.aws.amazon.com/security/blog/tag/key+rotation
-aws_access_key_regex = r'(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])'
-aws_secret_key_regex = r'(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])'
-domain_regex       = r'(?:' + domain_component_regex + r'\.)*' + tld_regex # pylint: disable=bad-whitespace
-domain_regex2      = r'(?:' + domain_component_regex + r'\.)+' + tld_regex # pylint: disable=bad-whitespace
-domain_regex_strict = domain_regex2
+aws_access_key_regex   = r'(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])'
+aws_secret_key_regex   = r'(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])'
+domain_regex           = r'(?:' + domain_component_regex + r'\.)*' + tld_regex
+domain_regex2          = r'(?:' + domain_component_regex + r'\.)+' + tld_regex
+domain_regex_strict    = domain_regex2
 # must permit numbers as valid host identifiers that are being used in the wild in FQDNs
-hostname_component = r'\b[A-Za-z0-9](?:[A-Za-z0-9_\-]{0,61}[a-zA-Z0-9])?\b'
-aws_host_component = r'ip-(?:10-\d+-\d+-\d+|172-1[6-9]-\d+-\d+|172-2[0-9]-\d+-\d+|172-3[0-1]-\d+-\d+|192-168-\d+-\d+)'
-hostname_regex     = hostname_component + r'(?:\.' + domain_regex + ')?' # pylint: disable=bad-whitespace
-aws_hostname_regex = aws_host_component + r'(?:\.' + domain_regex + ')?' # pylint: disable=bad-whitespace
-dirname_regex      = r'[\/\w\s\\.,:*()=%?+-]+'                      # pylint: disable=bad-whitespace
-filename_regex     = dirname_regex + r'[^\/]'                       # pylint: disable=bad-whitespace
-rwxt_regex         = r'[r-][w-][x-][r-][w-][x-][r-][w-][xt-]'       # pylint: disable=bad-whitespace
-fqdn_regex         = hostname_component + r'\.' + domain_regex      # pylint: disable=bad-whitespace
-aws_fqdn_regex     = aws_host_component + r'\.' + domain_regex      # pylint: disable=bad-whitespace
+hostname_component     = r'\b[A-Za-z0-9](?:[A-Za-z0-9_\-]{0,61}[a-zA-Z0-9])?\b'
+aws_host_component     = r'ip-(?:10-\d+-\d+-\d+|172-1[6-9]-\d+-\d+|172-2[0-9]-\d+-\d+|172-3[0-1]-\d+-\d+|192-168-\d+-\d+)'  # pylint: disable=line-too-long
+hostname_regex         = hostname_component + r'(?:\.' + domain_regex + ')?'
+aws_hostname_regex     = aws_host_component + r'(?:\.' + domain_regex + ')?'
+dirname_regex          = r'[\/\w\s\\.,:*()=%?+-]+'
+filename_regex         = dirname_regex + r'[^\/]'
+rwxt_regex             = r'[r-][w-][x-][r-][w-][x-][r-][w-][xt-]'
+fqdn_regex             = hostname_component + r'\.' + domain_regex
+aws_fqdn_regex         = aws_host_component + r'\.' + domain_regex
 # SECURITY NOTE: I'm allowing single quote through as it's found in Irish email addresses.
 # This makes the email_regex non-safe without further validation.
 # This regex only tests whether it's a valid email address, nothing more.
-email_regex        = r"\b[A-Za-z0-9](?:[A-Za-z0-9\._\%\'\+-]{0,62}[A-Za-z0-9\._\%\+-])?@" + domain_regex # pylint: disable=bad-whitespace
+email_regex            = r"\b[A-Za-z0-9](?:[A-Za-z0-9\._\%\'\+-]{0,62}[A-Za-z0-9\._\%\+-])?@" + domain_regex
 # TODO: review this IP regex again
-ip_prefix_regex    = r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}' # pylint: disable=bad-whitespace
+ip_prefix_regex        = r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}'
 # now allowing 0 or 255 as the final octet due to CIDR
-ip_regex           = ip_prefix_regex + r'(?:25[0-5]|2[0-4][0-9]|[01]?[1-9][0-9]|[01]?0[1-9]|[12]00|[0-9])\b' # pylint: disable=bad-whitespace
-subnet_mask_regex  = r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[1-9][0-9]|[01]?0[1-9]|[12]00|[0-9])\b' # pylint: disable=line-too-long,bad-whitespace
-mac_regex          = r'\b[0-9A-F-af]{1,2}[:-](?:[0-9A-Fa-f]{1,2}[:-]){4}[0-9A-Fa-f]{1,2}\b' # pylint: disable=bad-whitespace
-host_regex         = r'\b(?:' + hostname_regex + '|' + ip_regex + r')\b'    # pylint: disable=bad-whitespace
+ip_regex               = ip_prefix_regex + r'(?:25[0-5]|2[0-4][0-9]|[01]?[1-9][0-9]|[01]?0[1-9]|[12]00|[0-9])\b'
+subnet_mask_regex      = r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[1-9][0-9]|[01]?0[1-9]|[12]00|[0-9])\b'  # pylint: disable=line-too-long
+mac_regex              = r'\b[0-9A-F-af]{1,2}[:-](?:[0-9A-Fa-f]{1,2}[:-]){4}[0-9A-Fa-f]{1,2}\b'
+host_regex             = r'\b(?:' + hostname_regex + '|' + ip_regex + r')\b'
 # I did a scan of registered running process names across several hundred linux servers of a diverse group of
 # enterprise applications with 500 unique process names (58k individual processes) to determine that there are cases
 # with spaces, slashes, dashes, underscores, chevrons (<defunct>), dots (script.p[ly], in.tftpd etc) to determine
 # what this regex should be. Incidentally it appears that Linux truncates registered process names to 15 chars.
 # This is not from ps -ef etc it is the actual process registered name, hence init not [init] as it appears in ps output
-process_name_regex = r'\s*[\w_\.\/\<\>-][\w\s_\.\/\<\>-]+'
-url_path_suffix_regex = r'/(?:[\w.,:\/%&?!=*|\[\]~+-]+)?'
-url_regex          = r'(?i)\bhttps?://' + host_regex + r'(?::\d{1,5})?(?:' + url_path_suffix_regex + ')?' # pylint: disable=bad-whitespace
-user_regex         = r'\b[A-Za-z][A-Za-z0-9_-]*[A-Za-z0-9]\b'   # pylint: disable=bad-whitespace
-column_regex       = r'\b[\w\:]+\b'                             # pylint: disable=bad-whitespace
-ldap_dn_regex      = r'\b\w+=[\w\s]+(?:,\w+=[\w\s]+)*\b'        # pylint: disable=bad-whitespace
-krb5_principal_regex = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?:\@' + domain_regex + r')?' # pylint: disable=bad-whitespace
-threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?' # pylint: disable=bad-whitespace
+process_name_regex     = r'\s*[\w_\.\/\<\>-][\w\s_\.\/\<\>-]+'
+url_path_suffix_regex  = r'/(?:[\w.,:\/%&?!=*|\[\]~+-]+)?'
+url_regex              = r'(?i)\bhttps?://' + host_regex + r'(?::\d{1,5})?(?:' + url_path_suffix_regex + ')?'
+user_regex             = r'\b[A-Za-z][A-Za-z0-9_-]*[A-Za-z0-9]\b'
+column_regex           = r'\b[\w\:]+\b'
+ldap_dn_regex          = r'\b\w+=[\w\s]+(?:,\w+=[\w\s]+)*\b'
+krb5_principal_regex   = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?:\@' + domain_regex + r')?'
+threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
-label_regex         = r'\s*[\%\(\)\/\*\w-][\%\(\)\/\*\w\s-]*'   # pylint: disable=bad-whitespace
-version_regex       = r'\d+(\.\d+)*'                            # pylint: disable=bad-whitespace
-version_regex_short = r'\d+(\.\d+)?'                            # pylint: disable=bad-whitespace
-version_regex_lax   = version_regex + r'-?.+\b'                 # pylint: disable=bad-whitespace
+label_regex            = r'\s*[\%\(\)\/\*\w-][\%\(\)\/\*\w\s-]*'
+version_regex          = r'\d+(\.\d+)*'
+version_regex_short    = r'\d+(\.\d+)?'
+version_regex_lax      = version_regex + r'-?.+\b'
+# pylint: enable=bad-whitespace
 
 ##################
 #
@@ -961,15 +984,12 @@ def isJavaException(arg):
     if arg is None:
         return False
     arg = str(arg)
-    if re.match(r'(?:^\s+at|^Caused by:)\s+\w+(?:\.\w+)+', arg):
-        return True
-    elif re.match('^Exception in thread ', arg):
-        return True
-    elif re.search(r'\w+(?:\.\w+)+\(\w+\.java:\d+\)', arg):
-        return True
-    elif re.search(r'\(.+:[\w]+\(\d+\)\)', arg):
-        return True
-    elif re.search(r'(?:\b|_)(\w+\.)+\w+Exception\b', arg):
+    if re.match(r'(?:^\s+at|^Caused by:)\s+\w+(?:\.\w+)+', arg) or \
+       re.match('^Exception in thread ', arg) or \
+       re.search(r'\w+(?:\.\w+)+\(\w+\.java:\d+\)', arg) or \
+       re.search(r'\(.+:[\w]+\(\d+\)\)', arg) or \
+       re.search(r'(?:\b|_)(\w+\.)+\w+Exception\b', arg) \
+       :
         return True
     return False
 
@@ -1179,8 +1199,8 @@ def isStr(arg):
     # return type(arg).__name__ in [ 'str', 'unicode' ]
     if isPythonMinVersion(3):
         return isinstance(arg, str)
-    else: # pylint thinks unicode is an undefined variable
-        return isinstance(arg, str) or isinstance(arg, unicode) # pylint: disable=undefined-variable
+    else:                                                        # pylint thinks unicode is an undefined variable
+        return isinstance(arg, str) or isinstance(arg, unicode)  # pylint: disable=undefined-variable
     # basestring is abstract superclass of both str and unicode
     # update: looks like this is removed in Python 3
     # return isinstance(arg, basestring)
@@ -1725,7 +1745,8 @@ def validate_host(arg, name=''):
     if isHost(arg):
         vlog_option('%(name)shost' % locals(), arg)
         return True
-    raise InvalidOptionException("invalid %(name)shost '%(arg)s' defined: not a valid hostname or IP address" % locals())
+    raise InvalidOptionException("invalid %(name)shost '%(arg)s' defined: not a valid hostname or IP address"
+                                 % locals())
 
 # def validate_hosts
 # def validate_hostport
@@ -1757,9 +1778,11 @@ def validate_int(arg, name, my_min, my_max):
         except ValueError as _:
             code_error('invalid my_min/my_max (%(my_min)s/%(my_max)s) passed to validate_int(): %(_)s' % locals())
         if my_min is not None and arg < my_min:
-            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(my_min)s" % locals())
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(my_min)s"
+                                         % locals())
         if my_max is not None and arg > my_max:
-            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be greater than %(my_max)s" % locals()) # pylint: disable=line-too-long
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be greater than %(my_max)s"
+                                         % locals())
         vlog_option(name, arg)
         return True
     raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be a real number" % locals())
@@ -1853,8 +1876,8 @@ def validate_port(arg, name=''):
     if isPort(arg):
         vlog_option('%(name)sport' % locals(), arg)
         return True
-    raise InvalidOptionException("invalid %(name)sport number '%(arg)s' defined: must be a positive integer between 1 and 65535"\
-                                 % locals())
+    raise InvalidOptionException("invalid %(name)sport number '%(arg)s' defined: " % locals() +
+                                 "must be a positive integer between 1 and 65535")
 
 
 def validate_process_name(arg, name=''):
@@ -1902,7 +1925,8 @@ def validate_units(arg, name=''):
     if isNagiosUnit(arg):
         vlog_option('%(name)sunits' % locals(), arg)
         return True
-    raise InvalidOptionException("invalid %(name)sunits '%(arg)s' defined: must be one of: " % locals() + str(valid_nagios_units))
+    raise InvalidOptionException("invalid %(name)sunits '%(arg)s' defined: must be one of: " % locals() +
+                                 str(valid_nagios_units))
 
 
 def validate_url(arg, name=''):
@@ -1962,9 +1986,11 @@ def vlog2(msg):
 def vlog3(msg):
     log.debug(msg)
 
-def vlog_option(name, option): # pylint: disable=unused-argument
+def vlog_option(name, option):
     # vlog2('%-25s %s' % (name + ':', option))
-    vlog2('%(name)s:  %(option)s' % locals())
+     # pylint unused-argument otherwise
+    # vlog2('%(name)s:  %(option)s' % locals())
+    vlog2('{0}:  {1}'.format(name, option))
 
 
 def which(my_bin):
