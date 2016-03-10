@@ -25,7 +25,7 @@ from __future__ import division
 from __future__ import print_function
 #from __future__ import unicode_literals
 
-import logging
+# import logging
 import os
 import sys
 import traceback
@@ -39,7 +39,7 @@ libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'pylib'))
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, qquit
+    from harisekhon.utils import log, CriticalError
 except ImportError as _:
     print(traceback.format_exc(), end='')
     sys.exit(4)
@@ -59,26 +59,54 @@ class RequestHandler(object):
             self.process_req(req)
 
     @classmethod
-    def curl(cls, url, *args, **kwargs):
+    def req(cls, method, url, *args, **kwargs):
         if '://' not in url:
             url = 'http://' + url
+        log.debug('GET %s', url)
+        req = None
         try:
-            req = requests.get(url)
+            req = getattr(requests, method)(url, *args, **kwargs)
         except requests.exceptions.RequestException as _:
-            cls.handler_exception(_)
+            cls.exception_handler(_)
         cls.log_output(req)
         cls.process_req(req)
+        return req
+
+    @classmethod
+    def get(cls, url, *args, **kwargs):
+        return cls.req('get', url, *args, **kwargs)
+
+    @classmethod
+    def put(cls, url, *args, **kwargs):
+        return cls.req('put', url, *args, **kwargs)
+
+    @classmethod
+    def post(cls, url, *args, **kwargs):
+        return cls.req('post', url, *args, **kwargs)
+
+    @classmethod
+    def head(cls, url, *args, **kwargs):
+        return cls.req('head', url, *args, **kwargs)
+
+    @classmethod
+    def delete(cls, url, *args, **kwargs):
+        return cls.req('delete', url, *args, **kwargs)
 
     @classmethod
     def process_req(cls, req):
-        cls.check_response_code(req)
-        content = cls.__parse__(req)
-        cls.check_content(req)
+        cls.check_response(req)
         return req
 
+    @classmethod
+    def check_response(cls, req):
+        cls.check_response_code(req)
+        # content = cls.__parse__(req)
+        content = cls.parse(req)
+        cls.check_content(content)
+
     @staticmethod
-    def handler_exception(_):
-        qquit('CRITICAL', _)
+    def exception_handler(_):
+        raise CriticalError(_)
 
     @staticmethod
     def log_output(req):
@@ -88,16 +116,17 @@ class RequestHandler(object):
     @staticmethod
     def check_response_code(req):
         if req.status_code != 200:
-            qquit('CRITICAL', "%s %s" % (req.status_code, req.reason))
+            raise CriticalError("%s %s" % (req.status_code, req.reason))
 
     @staticmethod
-    def check_content(req):
+    def check_content(content):
         pass
 
-    @classmethod
-    def __parse__(cls, req):
-        cls.parse(req)
+    # no need to wrap at this time
+    # @classmethod
+    # def __parse__(cls, req):
+    #     cls.parse(req)
 
     @staticmethod
     def parse(req):
-        pass
+        return req.content
