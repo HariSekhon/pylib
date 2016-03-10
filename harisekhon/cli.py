@@ -120,7 +120,7 @@ class CLI(object):
         pass
 
     def main(self):
-        log.debug('running main()')
+        # log.debug('running main()')
         self.setup()
         try:
             self.add_options()
