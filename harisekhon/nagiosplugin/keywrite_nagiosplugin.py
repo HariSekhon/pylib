@@ -113,4 +113,4 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
         self.msg = '{0} key written and read back successfully'.format(self.name)
         self.msg += ' | write_time={0:.7f}s read_time={1:.7f}s delete_time={2:.7f}s'.format(
             self._write_timing, self._read_timing, self._delete_timing)
-        qquit('OK', self.msg)
+        qquit(self.status, self.msg)
