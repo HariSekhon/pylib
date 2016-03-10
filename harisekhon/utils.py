@@ -493,6 +493,7 @@ def curl(url, *args, **kwargs):
         module = __import__(containing_module, globals(), locals(), [], -1)
         # module = __import__(request_handler, globals(), locals(), [request_handler.split('.')[-1]], -1)
         _class = getattr(module, target_class)
+        del kwargs['request_handler']
         return _class.get(url, *args, **kwargs)
     else:
         return harisekhon.RequestHandler.get(url, *args, **kwargs)
