@@ -185,9 +185,9 @@ def qquit(status, msg=''):
         if log.isEnabledFor(logging.DEBUG):
             # prints to stderr, Nagios spec wants stdout
             # traceback.print_exc()
-            tb = traceback.format_exc().strip()
-            if tb != 'None':
-                print('\n{0}'.format(tb), end='')
+            _ = traceback.format_exc().strip()
+            if _ != 'None':
+                print('\n{0}'.format(_), end='')
     sys.exit(ERRORS[status])
 
 
@@ -481,7 +481,7 @@ def java_oom_fix_msg():
 
 # ============================================================================ #
 
-def curl(*args, **kwargs):
+def curl(url, *args, **kwargs):
     # request_handler should be a subclass of harisekhon.RequestHandler
     if 'request_handler' in kwargs:
         request_handler = kwargs['request_handler']
@@ -493,9 +493,9 @@ def curl(*args, **kwargs):
         module = __import__(containing_module, globals(), locals(), [], -1)
         # module = __import__(request_handler, globals(), locals(), [request_handler.split('.')[-1]], -1)
         _class = getattr(module, target_class)
-        return _class.curl(*args, **kwargs)
+        return _class.get(url, *args, **kwargs)
     else:
-        return harisekhon.RequestHandler.curl(*args, **kwargs)
+        return harisekhon.RequestHandler.get(url, *args, **kwargs)
 
 # This doesn't make sense since you always have to override RequestBS4Handler's parse() and then call
 # def curl_bs4(*args, **kwargs):
@@ -1384,7 +1384,8 @@ def space_prefix(arg):
 
 
 def random_alnum(num):
-    isInt(num) or code_error('invalid length passed to random_alnum')
+    if not isInt(num):
+        code_error('invalid length passed to random_alnum')
     chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
     import random
     _ = ''.join(random.choice(chars) for _ in range(num))
@@ -1990,11 +1991,7 @@ def vlog3(msg):
 
 
 def log_option(name, option):
-    # vlog2('%-25s %s' % (name + ':', option))
-     # pylint unused-argument otherwise
-    # vlog2('%(name)s:  %(option)s' % locals())
-    # vlog2('{0}:  {1}'.format(name, option))
-    log.info('{0}:  {1}'.format(name, option))
+    log.info('%s:  %s', name, option)
 
 
 def which(my_bin):
