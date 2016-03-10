@@ -30,10 +30,12 @@ import logging
 import os
 import signal
 import sys
+from optparse import IndentedHelpFormatter
 from optparse import OptionParser
 from optparse import SUPPRESS_HELP
 # Python 2.6+ only
 from abc import ABCMeta, abstractmethod
+from blessings import Terminal
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
 libdir = os.path.join(os.path.dirname(__file__), '..')
@@ -108,7 +110,8 @@ class CLI(object):
         # self.__parser = OptionParser(version=self.version)
         # will be added by default_opts later so that it's not annoyingly at the top of the option help
         # also this allows us to print full docstring for a complete description and not just the cli switches
-        self.__parser = OptionParser(add_help_option=False) # description=self._docstring # don't want description printed for option errors
+        # description=self._docstring # don't want description printed for option errors
+        self.__parser = OptionParser(add_help_option=False, formatter=IndentedHelpFormatter(width=Terminal().width))
         # duplicate key error or duplicate options, sucks
         # self.__parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
         self.setup()
