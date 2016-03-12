@@ -75,8 +75,7 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
 
     def process_args(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__ of " +
-                                       "KeyCheckNagiosPlugin")
+            raise CodingErrorException("didn't name check, please set self.name in __init__()")
         self.no_args()
         self.host = self.get_opt('host')
         self.port = self.get_opt('port')
