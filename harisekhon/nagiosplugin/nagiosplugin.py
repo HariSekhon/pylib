@@ -35,7 +35,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.0'
+__version__ = '0.8.1'
 
 
 class NagiosPlugin(CLI):
@@ -130,23 +130,35 @@ class NagiosPlugin(CLI):
             raise CodingErrorException("threshold '%s' does not exist. " % name +
                                        "Invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
-    def add_thresholds(self, name=''):
+    def add_thresholds(self, name='', default_warning=None, default_critical=None):
         if not isStr(name):
             raise CodingErrorException('non-string passed as name argument to add_thresholds()')
+        default_warning_msg = ''
+        default_critical_msg = ''
+        if default_warning is not None:
+            default_warning_msg = ', default: {0}'.format(default_warning)
+        if default_critical is not None:
+            default_critical_msg = ', default: {0}'.format(default_critical)
         if name:
-            self.add_opt('--{0}-warning'.format(name), metavar='N',
-                         help='{0} warning threshold or ra:nge (inclusive)'.format(name.title()))
-            self.add_opt('--{0}-critical'.format(name), metavar='N',
-                         help='{0} critical threshold or ra:nge (inclusive)'.format(name.title()))
+            self.add_opt('--{0}-warning'.format(name), metavar='N', default=default_warning,
+                         help='{0} warning threshold or ra:nge (inclusive{1})'
+                         .format(name.title(), default_warning_msg))
+            self.add_opt('--{0}-critical'.format(name), metavar='N', default=default_critical,
+                         help='{0} critical threshold or ra:nge (inclusive{1})'
+                         .format(name.title(), default_critical_msg))
         else:
-            self.add_opt('-w', '--warning', metavar='N', help='Warning threshold or ra:nge (inclusive)')
-            self.add_opt('-c', '--critical', metavar='N', help='Critical threshold or ra:nge (inclusive)')
+            self.add_opt('-w', '--warning', metavar='N', default=default_warning,
+                         help='Warning threshold or ra:nge (inclusive{0})'.format(default_warning_msg))
+            self.add_opt('-c', '--critical', metavar='N', default=default_critical,
+                         help='Critical threshold or ra:nge (inclusive{0})'.format(default_critical_msg))
 
     def validate_threshold(self, name, threshold=None, optional=False, **kwargs):
         if not isStr(name):
             raise CodingErrorException('non-string name passed to validate_threshold()')
         if threshold is None:
+            log.debug("using threshold option '%s'", name)
             threshold = self.get_opt(name)
+            log.debug("got threshold '{0}'".format(threshold))
         if optional and threshold is None:
             return None
         else:
@@ -167,21 +179,43 @@ class NagiosPlugin(CLI):
     # inferring threshold type from naming convention, assume critical if can't determine
     def check_threshold(self, name, result):
         _ = self.get_threshold(name, optional=True).check(result)
-        if not _:
+        if _:
             if 'warning' in name:
                 self.warning()
             else:
                 self.critical()
-            return False
-        return True
+            return _
+        return ''
 
     def check_thresholds(self, result, name=''):
         if not isStr(name):
             raise CodingErrorException('non-string passed to check_thresholds()')
         if name:
             name += '_'
-        self.check_threshold('{0}critical'.format(name), result)
-        self.check_threshold('{0}warning'.format(name), result)
+        threshold_breach_msg = self.check_threshold('{0}critical'.format(name), result)
+        threshold_breach_msg2 = self.check_threshold('{0}warning'.format(name), result)
+        if threshold_breach_msg:
+            self.msg += ' ' + threshold_breach_msg
+        elif threshold_breach_msg2:
+            self.msg += ' ' + threshold_breach_msg2
+
+    def get_perf_thresholds(self, boundary='upper'):
+        if boundary not in ('lower', 'upper'):
+            raise CodingErrorException('invalid boundary passed to msg_perf_thresholds')
+        warning = self.get_threshold('warning', optional=True)
+        critical = self.get_threshold('critical', optional=True)
+        if not warning or warning.thresholds[boundary] is None:
+            warning = ''
+        else:
+            warning = '{0:g}'.format(warning.thresholds[boundary])
+        if not critical or critical.thresholds[boundary] is None:
+            critical = ''
+        else:
+            critical = '{0:g}'.format(critical.thresholds[boundary])
+        if boundary == 'lower':
+            return ';{0};{1}'.format(warning, critical)
+        else:
+            return ';{0};{1}'.format(warning, critical)
 
     # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
     # the default python exit code of 1 which would equate to WARNING in Nagios compatible systems
