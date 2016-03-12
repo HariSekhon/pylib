@@ -122,6 +122,9 @@ class NagiosPluginTester(unittest.TestCase):
         except CodingErrorException:
             pass
 
+    def test_get_perf_thresholds(self):
+        self.assertEqual(self.plugin.get_perf_thresholds(), ';;')
+
     def test_statuses(self):
         self.assertTrue(self.plugin.is_unknown())
         self.plugin.ok()
