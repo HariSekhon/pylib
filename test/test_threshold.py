@@ -54,28 +54,28 @@ class NagiosThresholdTester(unittest.TestCase):
         self.threshold_min = Threshold(2, min=1)
 
     def test_threshold_check_upper(self):
-        self.assertTrue(self.threshold.check(4))
-        self.assertTrue(self.threshold.check(5))
-        self.assertFalse(self.threshold.check(6))
+        self.assertFalse(self.threshold.check(4))
+        self.assertFalse(self.threshold.check(5))
+        self.assertTrue(self.threshold.check(6))
 
     def test_threshold_check_lower(self):
-        self.assertFalse(self.threshold_lower.check(4))
-        self.assertTrue(self.threshold_lower.check(5))
-        self.assertTrue(self.threshold_lower.check(6))
+        self.assertTrue(self.threshold_lower.check(4))
+        self.assertFalse(self.threshold_lower.check(5))
+        self.assertFalse(self.threshold_lower.check(6))
 
     def test_threshold_check_range(self):
-        self.assertTrue(self.threshold_range.check(5))
-        self.assertTrue(self.threshold_range.check(7))
-        self.assertTrue(self.threshold_range.check(10))
-        self.assertFalse(self.threshold_range.check(4))
-        self.assertFalse(self.threshold_range.check(11))
+        self.assertFalse(self.threshold_range.check(5))
+        self.assertFalse(self.threshold_range.check(7))
+        self.assertFalse(self.threshold_range.check(10))
+        self.assertTrue(self.threshold_range.check(4))
+        self.assertTrue(self.threshold_range.check(11))
 
     def test_threshold_check_range_inverted(self):
-        self.assertFalse(self.threshold_range_inverted.check(5))
-        self.assertFalse(self.threshold_range_inverted.check(6))
-        self.assertFalse(self.threshold_range_inverted.check(10))
-        self.assertTrue(self.threshold_range_inverted.check(4))
-        self.assertTrue(self.threshold_range_inverted.check(11))
+        self.assertTrue(self.threshold_range_inverted.check(5))
+        self.assertTrue(self.threshold_range_inverted.check(6))
+        self.assertTrue(self.threshold_range_inverted.check(10))
+        self.assertFalse(self.threshold_range_inverted.check(4))
+        self.assertFalse(self.threshold_range_inverted.check(11))
 
     def test_invalid_max_upper_boundary(self):
         try:
