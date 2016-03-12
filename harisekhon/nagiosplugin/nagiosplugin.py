@@ -28,7 +28,7 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import ERRORS, qquit, CodingErrorException, log, isStr, log_option
+from harisekhon.utils import ERRORS, qquit, CodingErrorException, log, isStr, log_option, support_msg
 from harisekhon.utils import WarningError, CriticalError, UnknownError
 from harisekhon import CLI
 from harisekhon.nagiosplugin.threshold import Threshold
@@ -227,6 +227,8 @@ class NagiosPlugin(CLI):
             qquit('WARNING', _)
         except UnknownError as _:
             qquit('UNKNOWN', _)
+        except CodingErrorException as _:
+            qquit('UNKNOWN', 'Programming Error: {0}. {1}'.format(_, support_msg()))
         except Exception as _:  # pylint: disable=broad-except
             qquit('UNKNOWN', _)
             # Done in utils now so that this also applies to the above specific exit handlers
