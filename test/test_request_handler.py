@@ -35,7 +35,7 @@ import requests
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import CodingErrorException, InvalidOptionException, log
+from harisekhon.utils import CodingErrorException, InvalidOptionException, log, CriticalError
 from harisekhon import RequestHandler
 
 
@@ -50,6 +50,13 @@ class RequestHandlerTester(unittest.TestCase):
         req = RequestHandler.get('www.google.com')
         self.assertTrue(isinstance, requests.Response)
         RequestHandler(req)
+
+    def test_request_handler_failure(self):
+        try:
+            RequestHandler.get('127.0.0.1:1')
+            raise Exception('failed to raise exception for RequestHandler.get(nonexistent)')
+        except CriticalError:
+            pass
 
 
 def main():
