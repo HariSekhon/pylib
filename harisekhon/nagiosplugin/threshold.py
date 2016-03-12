@@ -128,15 +128,15 @@ class Threshold(object):
 
     def check(self, result):
         if not isFloat(result):
-            return False
+            return '(not a float!)'
         result = float(result)
         if self.opts['invert']:
-            if self.thresholds['lower'] is not None and self.thresholds['upper'] and \
+            if self.thresholds['lower'] is not None and self.thresholds['upper'] is not None and \
                result >= self.thresholds['lower'] and result <= self.thresholds['upper']:
-                return False
+                return '({0:g} <= {1:g} <= {2:g})'.format(self.thresholds['lower'], result, self.thresholds['upper'])
         else:
             if self.thresholds['lower'] is not None and result < self.thresholds['lower']:
-                return False
+                return '({0:g} < {1:g})'.format(result, self.thresholds['lower'])
             if self.thresholds['upper'] is not None and result > self.thresholds['upper']:
-                return False
-        return True
+                return '({0:g} > {1:g})'.format(result, self.thresholds['upper'])
+        return ''
