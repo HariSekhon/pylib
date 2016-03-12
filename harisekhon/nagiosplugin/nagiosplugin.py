@@ -156,9 +156,9 @@ class NagiosPlugin(CLI):
         if not isStr(name):
             raise CodingErrorException('non-string name passed to validate_threshold()')
         if threshold is None:
-            log.debug("using threshold option '%s'", name)
+            # log.debug("using threshold option '%s'", name)
             threshold = self.get_opt(name)
-            log.debug("got threshold '{0}'".format(threshold))
+            # log.debug("got threshold '%s'", threshold)
         if optional and threshold is None:
             return None
         else:
@@ -204,18 +204,13 @@ class NagiosPlugin(CLI):
             raise CodingErrorException('invalid boundary passed to msg_perf_thresholds')
         warning = self.get_threshold('warning', optional=True)
         critical = self.get_threshold('critical', optional=True)
-        if not warning or warning.thresholds[boundary] is None:
-            warning = ''
-        else:
-            warning = '{0:g}'.format(warning.thresholds[boundary])
-        if not critical or critical.thresholds[boundary] is None:
-            critical = ''
-        else:
-            critical = '{0:g}'.format(critical.thresholds[boundary])
-        if boundary == 'lower':
-            return ';{0};{1}'.format(warning, critical)
-        else:
-            return ';{0};{1}'.format(warning, critical)
+        warning_msg = ''
+        critical_msg = ''
+        if not warning or warning.thresholds[boundary] is not None:
+            warning_msg = '{0:g}'.format(warning.thresholds[boundary])
+        if not critical or critical.thresholds[boundary] is not None:
+            critical_msg = '{0:g}'.format(critical.thresholds[boundary])
+        return ';{0};{1}'.format(warning_msg, critical_msg)
 
     # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
     # the default python exit code of 1 which would equate to WARNING in Nagios compatible systems
