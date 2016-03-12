@@ -36,6 +36,7 @@ sys.path.append(libdir)
 from harisekhon.utils import CriticalError, UnknownError, CodingErrorException, qquit
 from harisekhon.utils import log, get_topfile, random_alnum, validate_host, validate_port
 from harisekhon.nagiosplugin import KeyCheckNagiosPlugin
+from harisekhon.nagiosplugin.threshold import Threshold
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.2'
@@ -62,6 +63,7 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
 
     def add_options(self):
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
+        self.add_thresholds(default_warning=1, default_critical=2)
 
     def process_args(self):
         if not self.name:
@@ -72,6 +74,7 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
         self.port = self.get_opt('port')
         validate_host(self.host)
         validate_port(self.port)
+        self.validate_thresholds()
 
     def run(self):
         ###############
@@ -111,6 +114,14 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
         if self._read_value is None:
             raise UnknownError('read value is not set!')
         self.msg = '{0} key written and read back successfully'.format(self.name)
-        self.msg += ' | write_time={0:.7f}s read_time={1:.7f}s delete_time={2:.7f}s'.format(
-            self._write_timing, self._read_timing, self._delete_timing)
+        self.msg += ', written in {0:.7f} secs'.format(self._write_timing)
+        self.check_thresholds(self._write_timing)
+        self.msg += ', read in {0:.7f} secs'.format(self._read_timing)
+        self.check_thresholds(self._read_timing)
+        self.msg += ', deleted in {0:.7f} secs'.format(self._delete_timing)
+        self.check_thresholds(self._delete_timing)
+        self.msg += ' | write_time={0:.7f}s{1} read_time={2:.7f}s{3} delete_time={4:.7f}s{5}'.format(
+                    self._write_timing, self.get_perf_thresholds(),
+                    self._read_timing, self.get_perf_thresholds(),
+                    self._delete_timing, self.get_perf_thresholds())
         qquit(self.status, self.msg)
