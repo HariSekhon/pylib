@@ -30,6 +30,8 @@ from harisekhon.request_bs4_handler import RequestBS4Handler
 from harisekhon.nagiosplugin import NagiosPlugin
 from harisekhon.nagiosplugin import KeyCheckNagiosPlugin
 from harisekhon.nagiosplugin import KeyWriteNagiosPlugin
+from harisekhon.nagiosplugin import PubSubNagiosPlugin
+from harisekhon.nagiosplugin import Threshold
 
 # pulls submodules in to 'from harisekhon import *'
 # __all__ = [ 'submodule1', 'submodule2' ]
