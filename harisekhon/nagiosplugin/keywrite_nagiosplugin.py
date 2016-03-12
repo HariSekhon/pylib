@@ -36,7 +36,6 @@ sys.path.append(libdir)
 from harisekhon.utils import CriticalError, UnknownError, CodingErrorException, qquit
 from harisekhon.utils import log, get_topfile, random_alnum, validate_host, validate_port
 from harisekhon.nagiosplugin import KeyCheckNagiosPlugin
-from harisekhon.nagiosplugin.threshold import Threshold
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.2'
@@ -121,7 +120,7 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
         self.msg += ', deleted in {0:.7f} secs'.format(self._delete_timing)
         self.check_thresholds(self._delete_timing)
         self.msg += ' | write_time={0:.7f}s{1} read_time={2:.7f}s{3} delete_time={4:.7f}s{5}'.format(
-                    self._write_timing, self.get_perf_thresholds(),
-                    self._read_timing, self.get_perf_thresholds(),
-                    self._delete_timing, self.get_perf_thresholds())
+            self._write_timing, self.get_perf_thresholds(),
+            self._read_timing, self.get_perf_thresholds(),
+            self._delete_timing, self.get_perf_thresholds())
         qquit(self.status, self.msg)
