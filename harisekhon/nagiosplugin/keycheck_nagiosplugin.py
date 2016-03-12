@@ -118,5 +118,5 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
             #    self.msg += " (matched regex '%s')" % regex
         self.check_thresholds(self._read_value)
         if isFloat(self._read_value):
-            self.msg += " | '{0}'={1} query_time={2:.7f}s".format(self.key, self._read_value, self._read_timing)
+            self.msg += " | '{0}'={1}{2} query_time={3:.7f}s".format(self.key, self._read_value, self.get_perf_thresholds(), self._read_timing)
         qquit(self.status, self.msg)
