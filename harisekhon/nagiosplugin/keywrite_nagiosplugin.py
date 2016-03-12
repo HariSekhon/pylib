@@ -38,7 +38,7 @@ from harisekhon.utils import log, get_topfile, random_alnum, validate_host, vali
 from harisekhon.nagiosplugin import KeyCheckNagiosPlugin
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2'
+__version__ = '0.3'
 
 
 class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
@@ -66,8 +66,7 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
 
     def process_args(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__ of " +
-                                       "KeyCheckNagiosPlugin")
+            raise CodingErrorException("didn't name check, please set self.name in __init__()")
         self.no_args()
         self.host = self.get_opt('host')
         self.port = self.get_opt('port')
@@ -112,6 +111,9 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
         # don't inherit read check's end as we want a different output format
         if self._read_value is None:
             raise UnknownError('read value is not set!')
+        log.debug("checking read key '{0}' == written key '{1}".format(self._read_value, self._write_value))
+        if self._read_value != self._write_value:
+            raise CriticalError("wrote '{0}' but got back '{1}' instead".format(self._write_value, self._read_value))
         self.msg = '{0} key written and read back successfully'.format(self.name)
         self.msg += ', written in {0:.7f} secs'.format(self._write_timing)
         self.check_thresholds(self._write_timing)
