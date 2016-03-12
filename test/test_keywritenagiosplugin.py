@@ -55,17 +55,17 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
     def test_unknown_exit(self):
         try:
             self.plugin.main()
-            raise Exception('KeyCheck plugin failed to terminate')
+            raise Exception('KeyWrite plugin failed to terminate')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('KeyCheckNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                raise Exception('KeyWriteNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             KeyWriteNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-                            'KeyCheckNagiosPlugin')
+                            'KeyWriteNagiosPlugin')
         except TypeError as _:
             pass
 
