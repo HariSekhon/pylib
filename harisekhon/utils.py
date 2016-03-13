@@ -494,9 +494,9 @@ def curl(url, *args, **kwargs):
         # module = __import__(request_handler, globals(), locals(), [request_handler.split('.')[-1]], -1)
         _class = getattr(module, target_class)
         del kwargs['request_handler']
-        return _class.get(url, *args, **kwargs)
+        return _class().get(url, *args, **kwargs)
     else:
-        return harisekhon.RequestHandler.get(url, *args, **kwargs)
+        return harisekhon.RequestHandler().get(url, *args, **kwargs)
 
 # This doesn't make sense since you always have to override RequestBS4Handler's parse() and then call
 # def curl_bs4(*args, **kwargs):
