@@ -68,6 +68,8 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
         self.status = 'OK'
 
     def add_options(self):
+        if not self.name:
+            raise CodingErrorException("didn't name check, please set self.name in __init__()")
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
         self.add_opt('-k', '--key', help='Key to query from %s' % self.name)
         self.add_opt('-r', '--regex', help="Regex to compare the key's value against (optional)")
