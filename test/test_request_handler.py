@@ -27,15 +27,13 @@ from __future__ import print_function
 import logging
 import os
 import sys
-import time
 import unittest
-from optparse import OptionConflictError
 # inspect.getfile(inspect.currentframe()) # filename
 import requests
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import CodingErrorException, InvalidOptionException, log, CriticalError
+from harisekhon.utils import log, CriticalError
 from harisekhon import RequestHandler
 
 
@@ -47,13 +45,14 @@ class RequestHandlerTester(unittest.TestCase):
 
     # TODO: mock this
     def test_request_handler(self):
-        req = RequestHandler.get('www.google.com')
+        req = RequestHandler().get('www.google.com')
         self.assertTrue(isinstance, requests.Response)
         RequestHandler(req)
 
-    def test_request_handler_failure(self):
+    @staticmethod
+    def test_request_handler_failure():
         try:
-            RequestHandler.get('127.0.0.1:1')
+            RequestHandler().get('127.0.0.1:1')
             raise Exception('failed to raise exception for RequestHandler.get(nonexistent)')
         except CriticalError:
             pass

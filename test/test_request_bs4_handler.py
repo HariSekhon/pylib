@@ -27,15 +27,13 @@ from __future__ import print_function
 import logging
 import os
 import sys
-import time
 import unittest
-from optparse import OptionConflictError
 # inspect.getfile(inspect.currentframe()) # filename
 import requests
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import CodingErrorException, InvalidOptionException, log
+from harisekhon.utils import log
 from harisekhon import RequestBS4Handler
 
 
@@ -45,11 +43,15 @@ class RequestBS4HandlerTester(unittest.TestCase):
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
+    class SubRequestBS4Handler(RequestBS4Handler):
+        def parse(self, soup):
+            pass
+
     # TODO: mock this
     def test_request_bs4_handler(self):
-        req = RequestBS4Handler.get('www.google.com')
+        req = self.SubRequestBS4Handler().get('www.google.com')
         self.assertTrue(isinstance, requests.Response)
-        RequestBS4Handler(req)
+        self.SubRequestBS4Handler(req)
 
 
 def main():

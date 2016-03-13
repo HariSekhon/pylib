@@ -30,7 +30,7 @@ import os
 import sys
 import traceback
 # Python 2.6+ only
-# from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod
 try:
     from bs4 import BeautifulSoup
     # import requests
@@ -41,7 +41,7 @@ libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'pylib'))
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, qquit
+    from harisekhon.utils import log
     from harisekhon import RequestHandler
 except ImportError as _:
     print(traceback.format_exc(), end='')
@@ -54,7 +54,7 @@ __version__ = '0.1'
 class RequestBS4Handler(RequestHandler):
 
     # abstract class
-    # __metaclass__ = ABCMeta
+    __metaclass__ = ABCMeta
 
     # def __init__(self):
         # Python 2.x
@@ -63,20 +63,20 @@ class RequestBS4Handler(RequestHandler):
         # super().__init__()
         # pass
 
-    @classmethod
-    def __parse__(cls, req):
+    # @classmethod
+    def __parse__(self, req):
         soup = BeautifulSoup(req.content, 'html.parser')
-        cls.parse_print(soup)
-        cls.parse(soup)
+        self.parse_print(soup)
+        self.parse(soup)
 
     @staticmethod
     def parse_print(soup):
         if log.isEnabledFor(logging.DEBUG):
             log.debug("BeautifulSoup prettified:\n%s\n%s", soup.prettify(), '='*80)
 
-    # @abstractmethod
-    @staticmethod
-    def parse(soup):
+    # @staticmethod
+    @abstractmethod
+    def parse(self, soup):
         # NOTE: soup.find() can return None - do not chain calls - must test each call 'is not None'
         # link = soup.find('p')[3]
         # link = soup.find('th', text='Uptime:')

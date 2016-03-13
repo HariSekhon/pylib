@@ -45,7 +45,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.1'
+__version__ = '0.3'
 
 
 class RequestHandler(object):
@@ -58,8 +58,7 @@ class RequestHandler(object):
         if req:
             self.process_req(req)
 
-    @classmethod
-    def req(cls, method, url, *args, **kwargs):
+    def req(self, method, url, *args, **kwargs):
         if '://' not in url:
             url = 'http://' + url
         log.debug('GET %s', url)
@@ -67,42 +66,35 @@ class RequestHandler(object):
         try:
             req = getattr(requests, method)(url, *args, **kwargs)
         except requests.exceptions.RequestException as _:
-            cls.exception_handler(_)
-        cls.log_output(req)
-        cls.process_req(req)
+            self.exception_handler(_)
+        self.log_output(req)
+        self.process_req(req)
         return req
 
-    @classmethod
-    def get(cls, url, *args, **kwargs):
-        return cls.req('get', url, *args, **kwargs)
+    def get(self, url, *args, **kwargs):
+        return self.req('get', url, *args, **kwargs)
 
-    @classmethod
-    def put(cls, url, *args, **kwargs):
-        return cls.req('put', url, *args, **kwargs)
+    def put(self, url, *args, **kwargs):
+        return self.req('put', url, *args, **kwargs)
 
-    @classmethod
-    def post(cls, url, *args, **kwargs):
-        return cls.req('post', url, *args, **kwargs)
+    def post(self, url, *args, **kwargs):
+        return self.req('post', url, *args, **kwargs)
 
-    @classmethod
-    def head(cls, url, *args, **kwargs):
-        return cls.req('head', url, *args, **kwargs)
+    def head(self, url, *args, **kwargs):
+        return self.req('head', url, *args, **kwargs)
 
-    @classmethod
-    def delete(cls, url, *args, **kwargs):
-        return cls.req('delete', url, *args, **kwargs)
+    def delete(self, url, *args, **kwargs):
+        return self.req('delete', url, *args, **kwargs)
 
-    @classmethod
-    def process_req(cls, req):
-        cls.check_response(req)
+    def process_req(self, req):
+        self.check_response(req)
         return req
 
-    @classmethod
-    def check_response(cls, req):
-        cls.check_response_code(req)
-        # content = cls.__parse__(req)
-        content = cls.parse(req)
-        cls.check_content(content)
+    def check_response(self, req):
+        self.check_response_code(req)
+        # content = self.__parse__(req)
+        content = self.parse(req)
+        self.check_content(content)
 
     @staticmethod
     def exception_handler(_):
@@ -118,14 +110,13 @@ class RequestHandler(object):
         if req.status_code != 200:
             raise CriticalError("%s %s" % (req.status_code, req.reason))
 
-    @staticmethod
-    def check_content(content):
+    def check_content(self, content):
         pass
 
     # no need to wrap at this time
     # @classmethod
-    # def __parse__(cls, req):
-    #     cls.parse(req)
+    # def __parse__(self, req):
+    #     self.parse(req)
 
     @staticmethod
     def parse(req):
