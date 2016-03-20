@@ -4,7 +4,7 @@
 #  Author: Hari Sekhon
 #  Date: 2016-02-21 12:26:44 +0000 (Sun, 21 Feb 2016)
 #
-#  https://github.com/harisekhon/pytools
+#  https://github.com/harisekhon/pylib
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
@@ -63,20 +63,17 @@ class RequestBS4Handler(RequestHandler):
         # super().__init__()
         # pass
 
-    # @classmethod
     def __parse__(self, req):
         soup = BeautifulSoup(req.content, 'html.parser')
-        self.parse_print(soup)
-        self.parse(soup)
+        self.soup_print(soup)
+        return self.parse(soup)
 
-    @staticmethod
-    def parse_print(soup):
+    def soup_print(self, soup):  # pylint: disable=no-self-use
         if log.isEnabledFor(logging.DEBUG):
             log.debug("BeautifulSoup prettified:\n%s\n%s", soup.prettify(), '='*80)
 
-    # @staticmethod
     @abstractmethod
-    def parse(self, soup):
+    def parse(self, soup):  # pylint: disable=no-self-use
         # NOTE: soup.find() can return None - do not chain calls - must test each call 'is not None'
         # link = soup.find('p')[3]
         # link = soup.find('th', text='Uptime:')
