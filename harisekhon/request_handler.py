@@ -4,7 +4,7 @@
 #  Author: Hari Sekhon
 #  Date: 2016-02-21 12:26:44 +0000 (Sun, 21 Feb 2016)
 #
-#  https://github.com/harisekhon/pytools
+#  https://github.com/harisekhon/pylib
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
@@ -30,7 +30,6 @@ import os
 import sys
 import traceback
 try:
-    # from bs4 import BeautifulSoup
     import requests
 except ImportError:
     print(traceback.format_exc(), end='')
@@ -51,10 +50,6 @@ __version__ = '0.3'
 class RequestHandler(object):
 
     def __init__(self, req=None):
-        # Python 2.x
-        #super(RequestHandler, self).__init__()
-        # Python 3.x
-        # super().__init__()
         if req:
             self.process_req(req)
 
@@ -92,32 +87,25 @@ class RequestHandler(object):
 
     def check_response(self, req):
         self.check_response_code(req)
-        # content = self.__parse__(req)
-        content = self.parse(req)
+        content = self.__parse__(req)
         self.check_content(content)
 
-    @staticmethod
-    def exception_handler(_):
-        raise CriticalError(_)
+    def exception_handler(self, arg):  # pylint: disable=no-self-use
+        raise CriticalError(arg)
 
-    @staticmethod
-    def log_output(req):
+    def log_output(self, req):  # pylint: disable=no-self-use
         log.debug("response: %s %s", req.status_code, req.reason)
         log.debug("content:\n%s\n%s\n%s", '='*80, req.content.strip(), '='*80)
 
-    @staticmethod
-    def check_response_code(req):
+    def check_response_code(self, req):  # pylint: disable=no-self-use
         if req.status_code != 200:
             raise CriticalError("%s %s" % (req.status_code, req.reason))
 
-    def check_content(self, content):
+    def check_content(self, content):  # pylint: disable=no-self-use
         pass
 
-    # no need to wrap at this time
-    # @classmethod
-    # def __parse__(self, req):
-    #     self.parse(req)
+    def __parse__(self, req):
+        return self.parse(req)
 
-    @staticmethod
-    def parse(req):
+    def parse(self, req):  # pylint: disable=no-self-use
         return req.content
