@@ -47,7 +47,7 @@ from harisekhon.utils import CodingErrorException, InvalidOptionException, ERROR
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.0'
+__version__ = '0.8.1'
 
 
 class CLI(object):
@@ -111,7 +111,10 @@ class CLI(object):
         # will be added by default_opts later so that it's not annoyingly at the top of the option help
         # also this allows us to print full docstring for a complete description and not just the cli switches
         # description=self._docstring # don't want description printed for option errors
-        self.__parser = OptionParser(add_help_option=False, formatter=IndentedHelpFormatter(width=Terminal().width))
+        width = os.getenv('COLUMNS', None)
+        if not isInt(width) or not width:
+            width = Terminal().width
+        self.__parser = OptionParser(add_help_option=False, formatter=IndentedHelpFormatter(width=width))
         # duplicate key error or duplicate options, sucks
         # self.__parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
         self.setup()
