@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.5'
+__version__ = '0.10.6'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -167,8 +167,7 @@ def die(msg, *ec):
 
 
 def code_error(msg):
-    raise CodingErrorException(msg)
-
+    raise CodingError(msg)
 
 # must be named differently to qquit() built-in to avoid overriding the built-in
 # overriding the built-in can lead to confusing errors with wrong exit code if forgetting to import this function
@@ -285,9 +284,9 @@ def gen_prefixes(prefixes, names, sort_by_names=False):
     if isStr(names):
         names = [names]
     if not isIterableNotStr(prefixes):
-        raise CodingErrorException('non-iterable passed for prefixes to prefix()')
+        raise CodingError('non-iterable passed for prefixes to prefix()')
     if not isIterableNotStr(names):
-        raise CodingErrorException('non-iterable passed for names to prefix()')
+        raise CodingError('non-iterable passed for names to prefix()')
     if '' not in prefixes:
         prefixes.append('')
     # Python 2.6+ only
@@ -307,18 +306,18 @@ def gen_prefixes_env(*args, **kwargs):
 
 def getenv(var, default=None):
     if not isStr(var):
-        raise CodingErrorException('supplied non-string for var arg to getenv()')
+        raise CodingError('supplied non-string for var arg to getenv()')
     if isBlankOrNone(var):
-        raise CodingErrorException('supplied blank string for var arg to getenv()')
+        raise CodingError('supplied blank string for var arg to getenv()')
     log.debug('checking for environment variable: %s', var)
     var = str(var).strip()
     return os.getenv(var, default)
 
 def getenvs(my_vars, default=None, prefix=''):
     if prefix is None:
-        raise CodingErrorException('None prefix passed for prefix to getenvs()')
+        raise CodingError('None prefix passed for prefix to getenvs()')
     if not isStr(prefix):
-        raise CodingErrorException('non-string passed for prefix to getenvs()')
+        raise CodingError('non-string passed for prefix to getenvs()')
     result = None
     assert isStr(my_vars) or isList(my_vars)
     if isStr(my_vars):
@@ -329,7 +328,7 @@ def getenvs(my_vars, default=None, prefix=''):
     elif isList(my_vars):
         for var in my_vars:
             if not isStr(var):
-                raise CodingErrorException('non-string passed in array to getenvs()')
+                raise CodingError('non-string passed in array to getenvs()')
         for var in gen_prefixes_env(prefix, my_vars, True):
             result = getenv(var)
             if result is not None:
@@ -344,7 +343,7 @@ def normalize_env_var(env_var):
 # wrapper to getenvs to also return the generated string to use in option help
 def getenvs2(my_vars, default, name):
     if not isStr(name):
-        raise CodingErrorException('passed non-string for name to getenvs2()')
+        raise CodingError('passed non-string for name to getenvs2()')
     name = name.upper()
     assert isStr(my_vars) or isList(my_vars)
     # exclude showing the default for sensitive options
@@ -375,7 +374,7 @@ def env_lines():
 
 def dict_lines(arg):
     if not isDict(arg):
-        raise CodingErrorException("non-dict type '%s' passed to dict_lines" % type(arg))
+        raise CodingError("non-dict type '%s' passed to dict_lines" % type(arg))
     # can't use iteritems() any more due to Py3k
     return '\n'.join(('%s = %s' % (key, value) for (key, value) in sorted(arg.items())))
 
@@ -385,19 +384,24 @@ def dict_lines(arg):
 # ============================================================================ #
 
 
-class WarningError(AssertionError):
+class NagiosException(Exception):
     pass
 
 
-class CriticalError(AssertionError):
+# can't do this, there is already a built-in Warning
+class WarningError(NagiosException):
     pass
 
 
-class UnknownError(AssertionError):
+class CriticalError(NagiosException):
     pass
 
 
-class CodingErrorException(AssertionError):
+class UnknownError(NagiosException):
+    pass
+
+
+class CodingError(AssertionError):
     pass
 
 
@@ -486,7 +490,7 @@ def curl(url, *args, **kwargs):
     if 'request_handler' in kwargs:
         request_handler = kwargs['request_handler']
         if not isStr(request_handler):
-            raise CodingErrorException('request_handler passed to curl() must be a string')
+            raise CodingError('request_handler passed to curl() must be a string')
         containing_module = re.sub(r'[^\.]+$', '', request_handler).rstrip('.')
         target_class = request_handler.split('.')[-1]
         # log.debug('containing module is %s' % containing_module)
@@ -504,7 +508,7 @@ def curl(url, *args, **kwargs):
 #     if 'request_handler' in kwargs:
 #         request_handler = kwargs['request_handler']
 #         if not isStr(request_handler):
-#             raise CodingErrorException('request_handler passed to curl_bs4() must be a string')
+#             raise CodingError('request_handler passed to curl_bs4() must be a string')
 #         containing_module = re.sub(r'[^\.]+$', '', request_handler).rstrip('.')
 #         target_class = request_handler.split('.')[-1]
 #         # log.debug('containing module is %s' % containing_module)
@@ -520,7 +524,7 @@ def flatten(arg):
     if not isIterableNotStr(arg):
         yield arg
         return
-    #     raise CodingErrorException('passed non-iterable to flatten()')
+    #     raise CodingError('passed non-iterable to flatten()')
     # if isInt(arg) or isFloat(arg):
     #     yield arg
     # else:
@@ -1398,7 +1402,7 @@ def random_alnum(num):
 
 def sec2min(secs):
     if not isFloat(secs):
-        # raise CodingErrorException('non-float passed to sec2min')
+        # raise CodingError('non-float passed to sec2min')
         return ''
     return '%d:%.2d' % (int(secs / 60), secs % 60)
 
@@ -1430,7 +1434,7 @@ def sec2human(secs):
 
 def set_timeout(secs, handler=None):
     if not isInt(secs):
-        raise CodingErrorException('non-integer passed for secs to set_timeout()')
+        raise CodingError('non-integer passed for secs to set_timeout()')
     if handler:
         signal.signal(signal.SIGALRM, handler)
     signal.alarm(secs)
@@ -1452,14 +1456,14 @@ def split_if_str(arg, sep):
 
 def uniq_list(my_list):
     if not isList(my_list):
-        raise CodingErrorException('non-list passed to uniq_list')
+        raise CodingError('non-list passed to uniq_list')
     return list(set(my_list))
 
 
 # collections.OrderedDict >= Python 2.7+
 def uniq_list_ordered(my_list):
     if not isList(my_list):
-        raise CodingErrorException('non-list passed to uniq_list_ordered')
+        raise CodingError('non-list passed to uniq_list_ordered')
     # list2 = []
     # for x in my_list:
     #     if not x in list2:
@@ -1692,7 +1696,7 @@ def validate_files(arg, name=''):
     elif isListOrTuple(arg):
         files = arg
     else:
-        raise CodingErrorException('non-list/tuple passed to parse_file_option')
+        raise CodingError('non-list/tuple passed to parse_file_option')
     # not flexible enough
     # list(itertools.chain(*files))
     # list(itertools.chain.from_iterable(files))
