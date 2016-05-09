@@ -91,6 +91,7 @@ class RequestHandler(object):
         self.check_content(content)
 
     def exception_handler(self, arg):  # pylint: disable=no-self-use
+        # TODO: improve this to extract connection refused for more concise errors
         raise CriticalError(arg)
 
     def log_output(self, req):  # pylint: disable=no-self-use
