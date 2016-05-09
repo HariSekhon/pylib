@@ -114,6 +114,7 @@ class CLI(object):
         width = os.getenv('COLUMNS', None)
         if not isInt(width) or not width:
             width = Terminal().width
+        width = min(width, 200)
         self.__parser = OptionParser(add_help_option=False, formatter=IndentedHelpFormatter(width=width))
         # duplicate key error or duplicate options, sucks
         # self.__parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
@@ -198,8 +199,13 @@ class CLI(object):
     def is_option_defined(self, name):
         return name in dir(self.options)
 
-    def timeout_handler(self, signum, frame):  # pylint: disable=unused-argument
-        qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
+    def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
+        # problem with this is that it'll print and then the exit exception will be caught and quit() printed again
+        # raising a custom TimeoutException will need to be handled in main, but that would also likely print and be re-caught and re-printed by NagiosPlugin
+        #print('self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
+        #sys.exit(ERRORS['UNKNOWN'])
+        # if doing die the same thing same will happen since die is a custom func which prints and then calls exit, only exit would be caught
+        quit('UNKNOWN', 'self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
 
     @property
     def timeout(self):
