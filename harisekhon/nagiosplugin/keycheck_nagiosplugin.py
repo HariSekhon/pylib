@@ -113,7 +113,7 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
             if not re.search(self.regex, self._read_value):
                 self.critical()
                 msg += " (did not match expected regex '%(regex)s')" % self.__dict__
-            #elif self.get_verbose():
+            #elif self.verbose:
             #    msg += " (matched regex '%s')" % regex
         return msg
 
