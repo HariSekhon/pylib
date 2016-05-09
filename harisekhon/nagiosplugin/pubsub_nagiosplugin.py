@@ -35,7 +35,7 @@ libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
-from harisekhon.utils import qquit, log, CodingErrorException, CriticalError, UnknownError
+from harisekhon.utils import qquit, log, CodingError, CriticalError, UnknownError
 from harisekhon.utils import validate_host, validate_port, get_topfile, random_alnum
 
 __author__ = 'Hari Sekhon'
@@ -79,13 +79,13 @@ class PubSubNagiosPlugin(NagiosPlugin):
 
     def add_options(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__()")
+            raise CodingError("didn't name check, please set self.name in __init__()")
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
         self.add_thresholds(default_warning=1, default_critical=2)
 
     def process_args(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__()")
+            raise CodingError("didn't name check, please set self.name in __init__()")
         self.no_args()
         self.host = self.get_opt('host')
         self.port = self.get_opt('port')

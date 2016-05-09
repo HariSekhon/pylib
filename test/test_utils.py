@@ -188,7 +188,7 @@ class UtilsTester(unittest.TestCase):
         try:
             code_error('test')
             raise Exception('code_error() failed to raise exception')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_gen_prefix_env(self):
@@ -208,15 +208,15 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(list(gen_prefixes('', ['user', 'username'])), ['user', 'username'])
         self.assertEqual(list(gen_prefixes('', '')), [])
         try:
-            # without list() the generator is created but not executed so the CodingErrorException doesn't get raised
+            # without list() the generator is created but not executed so the CodingError doesn't get raised
             list(gen_prefixes(1, 'test'))
-            raise Exception('gen_prefixes() failed to raise CodingErrorException on non-iterable prefixes')
-        except CodingErrorException:
+            raise Exception('gen_prefixes() failed to raise CodingError on non-iterable prefixes')
+        except CodingError:
             pass
         try:
             list(gen_prefixes('test', 1))
-            raise Exception('gen_prefixes() failed to raise CodingErrorException on non-iterable names')
-        except CodingErrorException:
+            raise Exception('gen_prefixes() failed to raise CodingError on non-iterable names')
+        except CodingError:
             pass
 
     def test_getenv(self):
@@ -226,18 +226,18 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(getenv('nonexistent', 'myDefault'), 'myDefault')
         try:
             getenv(1)
-            raise Exception('getenv failed to raise CodingErrorException for non-string var')
-        except CodingErrorException:
+            raise Exception('getenv failed to raise CodingError for non-string var')
+        except CodingError:
             pass
         try:
             getenv(None)
-            raise Exception('getenv failed to raise CodingErrorException for None var')
-        except CodingErrorException:
+            raise Exception('getenv failed to raise CodingError for None var')
+        except CodingError:
             pass
         try:
             getenv('')
-            raise Exception('getenv failed to raise CodingErrorException for blank var')
-        except CodingErrorException:
+            raise Exception('getenv failed to raise CodingError for blank var')
+        except CodingError:
             pass
 
     def test_getenvs(self):
@@ -250,18 +250,18 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(getenvs('nonexistent', 'myDefault', 'prefix'), 'myDefault')
         try:
             getenvs(['test', 1])
-            raise Exception('getenvs failed to raise CodingErrorException for non-string var')
-        except CodingErrorException:
+            raise Exception('getenvs failed to raise CodingError for non-string var')
+        except CodingError:
             pass
         try:
             getenvs('PATH', '', None)
-            raise Exception('getenvs failed to raise CodingErrorException for None prefix')
-        except CodingErrorException:
+            raise Exception('getenvs failed to raise CodingError for None prefix')
+        except CodingError:
             pass
         try:
             getenvs('PATH', '', prefix=1)
-            raise Exception('getenvs failed to raise CodingErrorException for prefix=1')
-        except CodingErrorException:
+            raise Exception('getenvs failed to raise CodingError for prefix=1')
+        except CodingError:
             pass
 
     # suffixing testes with x to pass through to default as I now use $HOST regularly for Dockerized services
@@ -280,8 +280,8 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(result, 'mysecret')
         try:
             getenvs2('HOST', 'myDefault', None)
-            raise Exception('failed to raise CodingErrorException for name=None for getenvs2')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError for name=None for getenvs2')
+        except CodingError:
             pass
 
     def test_env_lines(self):
@@ -295,7 +295,7 @@ class UtilsTester(unittest.TestCase):
         try:
             utils._check_tldcount()
             raise Exception('check_tldcount() failed to raise exception before IANA list loaded')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_load_tlds(self):
@@ -315,8 +315,8 @@ class UtilsTester(unittest.TestCase):
         utils._tlds.add('2001')
         try:
             utils._check_tldcount()
-            raise Exception('failed to raise CodingErrorException on double loaded TLDs')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError on double loaded TLDs')
+        except CodingError:
             pass
         # reset the TLDs
         utils._tlds = tlds
@@ -398,7 +398,7 @@ class UtilsTester(unittest.TestCase):
         try:
             isOS(None)
             raise Exception('failed to raise exception for none arg')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     if isLinux():
@@ -520,21 +520,21 @@ class UtilsTester(unittest.TestCase):
         try:
             isChars('alpha', '')
             raise Exception('failed to coding raise exception for blank chars')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_isChars_exception_none_chars(self):
         try:
             isChars('alpha', None)
             raise Exception('failed to coding raise exception for none chars')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_isChars_exception_invalid_char_range(self):
         try:
             isChars('alpha', 'c-a')
             raise Exception('failed to coding raise exception for invalid char range')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_isCode(self):
@@ -938,7 +938,7 @@ class UtilsTester(unittest.TestCase):
         try:
             isPythonVersion(None)
             raise Exception('failed to raise exception for none arg')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_isPythonMinVersion(self):
@@ -947,12 +947,12 @@ class UtilsTester(unittest.TestCase):
         try:
             isPythonMinVersion(' ')
             raise Exception('failed to raise exception for blank version')
-        except CodingErrorException:
+        except CodingError:
             pass
         try:
             isPythonMinVersion(None)
             raise Exception('failed to raise exception for none version')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_isRegex(self):
@@ -1099,12 +1099,12 @@ class UtilsTester(unittest.TestCase):
         try:
             min_value(None, 4)
             raise Exception('failed to raise exception for none first arg')
-        except CodingErrorException:
+        except CodingError:
             pass
         try:
             min_value(3, None)
             raise Exception('failed to raise exception for none second arg')
-        except CodingErrorException:
+        except CodingError:
             pass
 
             # def test_human_units(self):
@@ -1160,7 +1160,7 @@ class UtilsTester(unittest.TestCase):
         # try:
         #     flatten(1)
         #     raise Exception('failed to raise exception for non-iterable integer passed to flatten()')
-        # except CodingErrorException:
+        # except CodingError:
         #     pass
 
     def test_read_file_without_comments(self):
@@ -1272,17 +1272,17 @@ class UtilsTester(unittest.TestCase):
         try:
             sec2human(None)
             raise Exception('failed to raise exception for none')
-        except CodingErrorException:
+        except CodingError:
             pass
         try:
             sec2human('')
             raise Exception('failed to raise exception for blank')
-        except CodingErrorException:
+        except CodingError:
             pass
         try:
             sec2human(' ')
             raise Exception('failed to raise exception for spaces')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_sec2min(self):
@@ -1301,24 +1301,24 @@ class UtilsTester(unittest.TestCase):
         set_timeout(50, lambda x, y: x)
         try:
             set_timeout('a')
-            raise Exception('failed to raise CodingErrorException when passing non-integer to set_timeout()')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError when passing non-integer to set_timeout()')
+        except CodingError:
             pass
 
     def test_uniq_list(self):
         self.assertEqual(sorted(uniq_list(self.myList + self.myList)), sorted(self.myList))
         try:
             uniq_list(self.myDict)
-            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list()')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError when passing non-list to uniq_list()')
+        except CodingError:
             pass
 
     def test_uniq_list_ordered(self):
         self.assertEqual(uniq_list_ordered(self.myList + self.myList), self.myList)
         try:
             uniq_list_ordered(self.myDict)
-            raise Exception('failed to raise CodingErrorException when passing non-list to uniq_list_ordered()')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError when passing non-list to uniq_list_ordered()')
+        except CodingError:
             pass
 
         # ============================================================================ #
@@ -1341,7 +1341,7 @@ class UtilsTester(unittest.TestCase):
         try:
             validate_alnum('Alnum2Test99*', '')
             raise Exception('validate_alnum() failed to raise exception for no name')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_alnum_exception_none(self):
@@ -1461,7 +1461,7 @@ class UtilsTester(unittest.TestCase):
         try:
             validate_chars('log_date=2015-05-23_10*', '', 'A-Za-z0-9_=-')
             raise Exception('validate_chars() failed to raise exception for no name')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_chars_exception_none(self):
@@ -1906,14 +1906,14 @@ class UtilsTester(unittest.TestCase):
         try:
             validate_files(set([1, 2, 3]))
             raise Exception('validate_files() failed to raise exception for set(1,2,3)')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_files_exception_int(self):
         try:
             validate_files(1)
             raise Exception('validate_files(1) failed to raise exception')
-        except CodingErrorException:
+        except CodingError:
             pass
 
         # ============================================================================ #
@@ -1929,21 +1929,21 @@ class UtilsTester(unittest.TestCase):
         try:
             validate_float(-6, '', -6, 0)
             raise Exception('validate_float() failed to raise exception for no name')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_float_exception_min(self):
         try:
             validate_float(-6, 'name', 'blah', 0)
             raise Exception('validate_float() failed to raise exception for invalid min')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_float_exception_max(self):
         try:
             validate_float(-6, 'name', -6, 'blah')
             raise Exception('validate_float() failed to raise exception for invalid max')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_float_exception(self):
@@ -2097,21 +2097,21 @@ class UtilsTester(unittest.TestCase):
         try:
             validate_int(6, '', 5, 7)
             raise Exception('validate_int() failed to raise exception for no name')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_int_exception_invalid_min(self):
         try:
             validate_int(6, 'name', 'blah', 7)
             raise Exception('validate_int() failed to raise exception for invalid min')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_int_exception_invalid_max(self):
         try:
             validate_int(6, 'name', 5, 'blah')
             raise Exception('validate_int() failed to raise exception for invalid max')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_int_exception_boundary(self):

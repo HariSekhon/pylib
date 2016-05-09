@@ -28,7 +28,7 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import ERRORS, qquit, CodingErrorException, log, isStr, log_option, support_msg
+from harisekhon.utils import ERRORS, qquit, CodingError, log, isStr, log_option, support_msg
 from harisekhon.utils import WarningError, CriticalError, UnknownError
 from harisekhon import CLI
 from harisekhon.nagiosplugin.threshold import Threshold
@@ -72,7 +72,7 @@ class NagiosPlugin(CLI):
     @status.setter
     def status(self, status):
         if not ERRORS.has_key(status):
-            raise CodingErrorException("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.status()")
+            raise CodingError("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.status()")
         self.__status = status
 
     # @property
@@ -114,7 +114,7 @@ class NagiosPlugin(CLI):
 
     def set_threshold(self, name, threshold):
         if not isinstance(threshold, Threshold):
-            raise CodingErrorException('passed a non-threshold to NagiosPlugin.set_threshold()')
+            raise CodingError('passed a non-threshold to NagiosPlugin.set_threshold()')
         self.__thresholds[name] = threshold
 
     def get_threshold(self, name, optional=False):
@@ -124,15 +124,15 @@ class NagiosPlugin(CLI):
                 if optional:
                     return Threshold(None, optional=True)
                 else:
-                    raise CodingErrorException('threshold {0} is not set (None)'.format(name))
+                    raise CodingError('threshold {0} is not set (None)'.format(name))
             return _
         except KeyError:
-            raise CodingErrorException("threshold '%s' does not exist. " % name +
+            raise CodingError("threshold '%s' does not exist. " % name +
                                        "Invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
     def add_thresholds(self, name='', default_warning=None, default_critical=None):
         if not isStr(name):
-            raise CodingErrorException('non-string passed as name argument to add_thresholds()')
+            raise CodingError('non-string passed as name argument to add_thresholds()')
         default_warning_msg = ''
         default_critical_msg = ''
         if default_warning is not None:
@@ -154,7 +154,7 @@ class NagiosPlugin(CLI):
 
     def validate_threshold(self, name, threshold=None, optional=False, **kwargs):
         if not isStr(name):
-            raise CodingErrorException('non-string name passed to validate_threshold()')
+            raise CodingError('non-string name passed to validate_threshold()')
         if threshold is None:
             # log.debug("using threshold option '%s'", name)
             threshold = self.get_opt(name)
@@ -170,7 +170,7 @@ class NagiosPlugin(CLI):
 
     def validate_thresholds(self, name='', warning=None, critical=None, **kwargs):
         if not isStr(name):
-            raise CodingErrorException('non-string name passed to validate_thresholds()')
+            raise CodingError('non-string name passed to validate_thresholds()')
         if name:
             name += '_'
         self.validate_threshold('{0}{1}'.format(name, 'warning'), warning, **kwargs)
@@ -189,7 +189,7 @@ class NagiosPlugin(CLI):
 
     def check_thresholds(self, result, name=''):
         if not isStr(name):
-            raise CodingErrorException('non-string passed to check_thresholds()')
+            raise CodingError('non-string passed to check_thresholds()')
         if name:
             name += '_'
         threshold_breach_msg = self.check_threshold('{0}critical'.format(name), result)
@@ -201,7 +201,7 @@ class NagiosPlugin(CLI):
 
     def get_perf_thresholds(self, boundary='upper'):
         if boundary not in ('lower', 'upper'):
-            raise CodingErrorException('invalid boundary passed to msg_perf_thresholds')
+            raise CodingError('invalid boundary passed to msg_perf_thresholds')
         warning = self.get_threshold('warning', optional=True)
         critical = self.get_threshold('critical', optional=True)
         warning_msg = ''
@@ -227,7 +227,7 @@ class NagiosPlugin(CLI):
             qquit('WARNING', _)
         except UnknownError as _:
             qquit('UNKNOWN', _)
-        except CodingErrorException as _:
+        except CodingError as _:
             qquit('UNKNOWN', 'Programming Error: {0}. {1}'.format(_, support_msg()))
         except Exception as _:  # pylint: disable=broad-except
             qquit('UNKNOWN', _)

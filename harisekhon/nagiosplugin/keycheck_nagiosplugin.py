@@ -35,7 +35,7 @@ libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
-from harisekhon.utils import qquit, log, CodingErrorException, UnknownError
+from harisekhon.utils import qquit, log, CodingError, UnknownError
 from harisekhon.utils import validate_host, validate_port, validate_regex, validate_chars, isFloat
 
 __author__ = 'Hari Sekhon'
@@ -69,7 +69,7 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
 
     def add_options(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__()")
+            raise CodingError("didn't name check, please set self.name in __init__()")
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
         self.add_opt('-k', '--key', help='Key to query from %s' % self.name)
         self.add_opt('-r', '--regex', help="Regex to compare the key's value against (optional)")
@@ -77,7 +77,7 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
 
     def process_args(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__()")
+            raise CodingError("didn't name check, please set self.name in __init__()")
         self.no_args()
         self.host = self.get_opt('host')
         self.port = self.get_opt('port')
@@ -107,18 +107,35 @@ class KeyCheckNagiosPlugin(NagiosPlugin):
     def read(self):
         pass
 
-    def end(self):
-        if self._read_value is None:
-            raise UnknownError('read value is not set!')
-        self.msg = "%s key '%s' value = '%s'" % (self.name, self.key, self._read_value)
+    def create_msg(self):
+        msg = "%s key '%s' value = '%s'" % (self.name, self.key, self._read_value)
         if self.regex:
             if not re.search(self.regex, self._read_value):
                 self.critical()
-                self.msg += " (did not match expected regex '%(regex)s')" % self.__dict__
+                msg += " (did not match expected regex '%(regex)s')" % self.__dict__
             #elif self.get_verbose():
-            #    self.msg += " (matched regex '%s')" % regex
-        self.check_thresholds(self._read_value)
+            #    msg += " (matched regex '%s')" % regex
+        return msg
+
+    def create_perfdata(self):
+        perfdata = ''
         if isFloat(self._read_value):
-            self.msg += " | '{0}'={1}{2} query_time={3:.7f}s".format(
+            perfdata = " | '{0}'={1}{2} query_time={3:.7f}s".format(
                 self.key, self._read_value, self.get_perf_thresholds(), self._read_timing)
+        return perfdata
+
+    # not really referentially transparent yet like I'd like but better than it all being in end()
+    def create_output(self):
+        self.msg = self.create_msg()
+        self.check_thresholds(self._read_value) # this breaks referential transparency
+        perfdata = self.create_perfdata()
+        if perfdata:
+            self.msg += ' | ' + perfdata
+        return self.msg
+
+    def end(self):
+        if self._read_value is None:
+            raise UnknownError('read value is not set!')
+        #self.msg = self.create_output()
+        self.create_output()
         qquit(self.status, self.msg)

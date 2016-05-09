@@ -34,7 +34,7 @@ from optparse import OptionConflictError
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import CodingErrorException, InvalidOptionException, log
+from harisekhon.utils import CodingError, InvalidOptionException, log
 from harisekhon import CLI
 
 
@@ -59,8 +59,8 @@ class CLITester(unittest.TestCase):
         # self.cli.set_default_port(80)
         # try:
         #     self.cli.set_default_port('a')
-        #     raise Exception('failed to throw CodingErrorException when sending invalid port to set_default_port()')
-        # except CodingErrorException:
+        #     raise Exception('failed to throw CodingError when sending invalid port to set_default_port()')
+        # except CodingError:
         #     pass
 
     def test_add_hostoption(self):
@@ -81,8 +81,8 @@ class CLITester(unittest.TestCase):
     def test_add_hostoption_port_error_exception(self):
         try:
             self.cli.add_hostoption(default_port='error')
-            raise Exception('failed to throw CodingErrorException when sending invalid port to add_hostoption')
-        except CodingErrorException as _:
+            raise Exception('failed to throw CodingError when sending invalid port to add_hostoption')
+        except CodingError as _:
             pass
 
     def test_useroption_dup_exception(self):
@@ -119,21 +119,21 @@ class CLITester(unittest.TestCase):
     def test_set_verbose_none_exception(self):
         try:
             self.cli.verbose = None
-            raise Exception('failed to raise CodingErrorException when calling verbose = None')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError when calling verbose = None')
+        except CodingError:
             pass
 
     def test_set_verbose_default_none_exception(self):
         try:
             self.cli.verbose_default = None
-            raise Exception('failed to raise CodingErrorException when calling verbose_default = None')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError when calling verbose_default = None')
+        except CodingError:
             pass
 
         # would need to inject self.cli.options.help / self.cli.options.version to trigger those code branches
         # try:
         #     self.cli.main()
-        #     raise Exception('failed to raise CodingErrorException when calling main() after setting self.options.help') # pylint: disable=line-too-long
+        #     raise Exception('failed to raise CodingError when calling main() after setting self.options.help') # pylint: disable=line-too-long
         # except SystemExit as _:
         #     if _.code != 3:
         #         raise Exception('wrong exit code != 3 when triggering usage via self.options.help')
@@ -164,8 +164,8 @@ class CLITester(unittest.TestCase):
     def test_set_timeout(self):
         try:
             self.cli.timeout = None
-            raise Exception('failed to raise CodingErrorException for CLU.timeout = None')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError for CLU.timeout = None')
+        except CodingError:
             pass
         self.cli.main()
 
@@ -173,8 +173,8 @@ class CLITester(unittest.TestCase):
         self.cli.__init__()
         try:
             self.cli.timeout = 'a'
-            raise Exception('failed to raise CodingErrorException for CLU.timeout = a')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError for CLU.timeout = a')
+        except CodingError:
             pass
 
     def test_set_timeout_max_set_timeout_exception(self):
@@ -188,8 +188,8 @@ class CLITester(unittest.TestCase):
     def test_set_timeout_max_alpha_exception(self):
         try:
             self.cli.timeout_max = 'a'
-            raise Exception('failed to raise CodingErrorException for timeout_max = a')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError for timeout_max = a')
+        except CodingError:
             pass
 
     #def test_set_timeout_max(self):
@@ -208,7 +208,7 @@ class CLITester(unittest.TestCase):
         try:
             self.cli.timeout_default = 11
             raise Exception('failed to raise exception on CLI.timeout_default > max')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_timeout_default_max_normal(self):
@@ -224,8 +224,8 @@ class CLITester(unittest.TestCase):
         self.cli.__init__()
         try:
             self.cli.timeout_default = 'a'
-            raise Exception('failed to raise CodingErrorException for CLI.timeout_default = a')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError for CLI.timeout_default = a')
+        except CodingError:
             pass
 
     def test_timeout_default_sleep_exception(self):
@@ -274,50 +274,50 @@ class CLITester(unittest.TestCase):
         # self.cli._env_var('', 'test')
         # try:
         #     self.cli._env_var(None, 1)
-        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending integer as var')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in _env_var when sending integer as var')
+        # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli._env_var('test', None)
-        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending None as var')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in _env_var when sending None as var')
+        # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli._env_var('test', ' ')
-        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending blank as var')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in _env_var when sending blank as var')
+        # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli._env_var(None, 'test')
-        #     raise Exception('failed to raise a CodingErrorException in _env_var when sending None name')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in _env_var when sending None name')
+        # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars('test', ' ')
-        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending blank var')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in env_vars() when sending blank var')
+        # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars(None, 'test')
-        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending None as name var')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in env_vars() when sending None as name var')
+        # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars('test', ['test', None])
-        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending array with blank var')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in env_vars() when sending array with blank var')
+        # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars('test', self.myDict)
-        #     raise Exception('failed to raise a CodingErrorException in env_vars() when sending dict for var')
-        # except CodingErrorException as _:
+        #     raise Exception('failed to raise a CodingError in env_vars() when sending dict for var')
+        # except CodingError as _:
         #     pass
 
     def test_cli_abstract(self): # pylint: disable=no-self-use
@@ -327,9 +327,9 @@ class CLITester(unittest.TestCase):
         except TypeError as _:
             # print('caught TypeError when running CLI.main(): %s' % _)
             pass
-        # except CodingErrorException as _:
+        # except CodingError as _:
         #     if not re.search('abstract', str(_)):
-        #         raise Exception('raised CodingErrorException from CLI.main() but message mismatch')
+        #         raise Exception('raised CodingError from CLI.main() but message mismatch')
         # disabled abstract enforcement as it's Python 2.6+ only
         # but base class exits 3 in run() so can catch that too
         # except SystemExit as _:

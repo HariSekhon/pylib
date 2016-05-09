@@ -20,7 +20,7 @@ import sys
 libdir = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import InvalidOptionException, CodingErrorException, isBool, isInt, isFloat, log
+from harisekhon.utils import InvalidOptionException, CodingError, isBool, isInt, isFloat, log
 
 __author__ = 'Hari Sekhon'
 __version__ = '0.1'
@@ -54,11 +54,11 @@ class Threshold(object):
         log.debug('%sthreshold max = %s', self.name, self.thresholds['max'])
 
         if self.opts['simple'] not in ('upper', 'lower'):
-            raise CodingErrorException('simple threshold type must be one of: upper, lower')
+            raise CodingError('simple threshold type must be one of: upper, lower')
         if not isBool(self.opts['positive']):
-            raise CodingErrorException('positive option must be set to either True or False')
+            raise CodingError('positive option must be set to either True or False')
         if not isBool(self.opts['integer']):
-            raise CodingErrorException('integer option must be set to either True or False')
+            raise CodingError('integer option must be set to either True or False')
 
         self.__parse_threshold__(arg, kwargs.get('optional'))
 

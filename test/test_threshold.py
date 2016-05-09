@@ -31,7 +31,7 @@ import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
  # pylint: disable=wrong-import-position
-from harisekhon.utils import log, CodingErrorException
+from harisekhon.utils import log, CodingError
 from harisekhon.nagiosplugin import Threshold, InvalidThresholdException
 
 class NagiosThresholdTester(unittest.TestCase):
@@ -165,21 +165,21 @@ class NagiosThresholdTester(unittest.TestCase):
         try:
             Threshold(5, simple='blah')
             raise Exception('failed to raise InvalidThresholdException for invalid simple threshold type')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_invalid_positive(self):
         try:
             Threshold(5, simple='upper', positive=1)
             raise Exception('failed to raise InvalidThresholdException for invalid positive type')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_invalid_integer(self):
         try:
             Threshold(5, simple='upper', integer=1)
             raise Exception('failed to raise InvalidThresholdException for invalid integer type')
-        except CodingErrorException:
+        except CodingError:
             pass
 
 

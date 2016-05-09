@@ -32,7 +32,7 @@ from abc import ABCMeta, abstractmethod
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import UnknownError, CodingErrorException, qquit, plural
+from harisekhon.utils import UnknownError, CodingError, qquit, plural
 from harisekhon.utils import get_topfile, validate_host, validate_port
 from harisekhon.nagiosplugin import NagiosPlugin
 
@@ -74,7 +74,7 @@ class LiveNodesNagiosPlugin(NagiosPlugin):
 
     def add_options(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__()")
+            raise CodingError("didn't name check, please set self.name in __init__()")
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
         self._add_options()
 
@@ -83,7 +83,7 @@ class LiveNodesNagiosPlugin(NagiosPlugin):
 
     def process_args(self):
         if not self.name:
-            raise CodingErrorException("didn't name check, please set self.name in __init__()")
+            raise CodingError("didn't name check, please set self.name in __init__()")
         self.no_args()
         self.host = self.get_opt('host')
         self.port = self.get_opt('port')

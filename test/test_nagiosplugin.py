@@ -31,7 +31,7 @@ import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import log, CodingErrorException
+from harisekhon.utils import log, CodingError
 from harisekhon import NagiosPlugin
 from harisekhon.nagiosplugin import Threshold
 
@@ -55,23 +55,23 @@ class NagiosPluginTester(unittest.TestCase):
     def test_set_threshold_invalid(self):
         try:
             self.plugin.set_threshold('test', 5)
-            raise Exception('failed to raise CodingErrorException on passing in non-threshold object to Threshold.set_threshold()') # pylint: disable=line-too-long
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError on passing in non-threshold object to Threshold.set_threshold()') # pylint: disable=line-too-long
+        except CodingError:
             pass
 
     def test_get_threshold_nonexistent(self):
         try:
             self.plugin.get_threshold('nonexistent')
-            raise Exception('failed to raise CodingErrorException for Threshold.get_threshold(nonexistent)')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError for Threshold.get_threshold(nonexistent)')
+        except CodingError:
             pass
 
     # def test_get_threshold_none(self):
     #     self.plugin.set_threshold('setToNone', Threshold(None))
     #     try:
     #         self.plugin.get_threshold('setToNone')
-    #         raise Exception('failed to raise CodingErrorException for Threshold.get_threshold(setToNone)')
-    #     except CodingErrorException:
+    #         raise Exception('failed to raise CodingError for Threshold.get_threshold(setToNone)')
+    #     except CodingError:
     #         pass
 
     def test_add_thresholds(self):
@@ -82,7 +82,7 @@ class NagiosPluginTester(unittest.TestCase):
         try:
             self.plugin.add_thresholds(None)
             raise Exception('failed to raise exception when passing None to add_thresholds()')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_validate_threshold(self):
@@ -92,8 +92,8 @@ class NagiosPluginTester(unittest.TestCase):
     def test_validate_threshold_not_set_exception(self):
         try:
             self.assertEqual(self.plugin.validate_threshold('nonexistent'), None)
-            raise Exception('failed to raise CodingErrorException when threshold is not set')
-        except CodingErrorException:
+            raise Exception('failed to raise CodingError when threshold is not set')
+        except CodingError:
             pass
 
     def test_validate_thresholds(self):
@@ -112,14 +112,14 @@ class NagiosPluginTester(unittest.TestCase):
         try:
             self.plugin.check_thresholds(10, 'nonexistent')
             raise Exception('failed to raise exception for check_thresholds() when thresholds are not set')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_check_thresholds_nonstring_name(self):
         try:
             self.plugin.check_thresholds(10, None)
             raise Exception('failed to raise exception for check_thresholds() when name is None')
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_get_perf_thresholds(self):
@@ -161,7 +161,7 @@ class NagiosPluginTester(unittest.TestCase):
     def test_invalid_status(self):
         try:
             self.plugin.status = 'invalidstatus'
-        except CodingErrorException:
+        except CodingError:
             pass
 
     def test_main_unhandled_exception(self):

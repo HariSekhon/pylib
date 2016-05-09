@@ -43,7 +43,7 @@ sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 import harisekhon
 from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural
-from harisekhon.utils import CodingErrorException, InvalidOptionException, ERRORS, qquit
+from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 
 __author__ = 'Hari Sekhon'
@@ -88,7 +88,7 @@ class CLI(object):
         self._topfile_version = get_file_version(self.topfile)
         # this doesn't work in unit tests
         # if self._topfile_version:
-        #     raise CodingErrorException('failed to get topfile version - did you set a __version__ in top cli program?') # pylint: disable=line-too-long
+        #     raise CodingError('failed to get topfile version - did you set a __version__ in top cli program?') # pylint: disable=line-too-long
         self._cli_version = self.__version__
         self._utils_version = harisekhon.utils.__version__
         # returns 'python -m unittest' :-/
@@ -191,9 +191,9 @@ class CLI(object):
 
     def get_opt(self, name):
         if not isStr(name):
-            raise CodingErrorException('passed non-string as arg to CLI.get_opt()')
+            raise CodingError('passed non-string as arg to CLI.get_opt()')
         if not self.is_option_defined(name):
-            raise CodingErrorException('{0} option not defined'.format(name))
+            raise CodingError('{0} option not defined'.format(name))
         return getattr(self.options, name)
 
     def is_option_defined(self, name):
@@ -202,10 +202,10 @@ class CLI(object):
     def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
         # problem with this is that it'll print and then the exit exception will be caught and quit() printed again
         # raising a custom TimeoutException will need to be handled in main, but that would also likely print and be re-caught and re-printed by NagiosPlugin
-        #print('self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
+        #print('self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
         #sys.exit(ERRORS['UNKNOWN'])
         # if doing die the same thing same will happen since die is a custom func which prints and then calls exit, only exit would be caught
-        quit('UNKNOWN', 'self timed out after %d second%s' % (self.get_timeout(), plural(self.get_timeout())))
+        qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
 
     @property
     def timeout(self):
@@ -214,7 +214,7 @@ class CLI(object):
     @timeout.setter
     def timeout(self, secs):
         if not isInt(secs):
-            raise CodingErrorException('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
+            raise CodingError('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
         validate_int(secs, 'timeout', 0, self.timeout_max)
         log.debug('setting timeout to %s secs', secs)
         self.__timeout = secs
@@ -228,10 +228,10 @@ class CLI(object):
     def timeout_default(self, secs):
         if secs is not None:
             if not isInt(secs):
-                raise CodingErrorException('invalid timeout passed to timeout_default = , must be an integer representing seconds') # pylint: disable=line-too-long
+                raise CodingError('invalid timeout passed to timeout_default = , must be an integer representing seconds') # pylint: disable=line-too-long
             # validate_int(secs, 'timeout default', 0, self.__timeout_max )
             if self.timeout_max is not None and secs > self.timeout_max:
-                raise CodingErrorException('set default timeout > timeout max')
+                raise CodingError('set default timeout > timeout max')
         log.debug('setting default timeout to %s secs', secs)
         self.__timeout_default = secs
 
@@ -242,7 +242,7 @@ class CLI(object):
     @timeout_max.setter
     def timeout_max(self, secs):
         if secs is not None and not isInt(secs):
-            raise CodingErrorException('invalid timeout max passed to set_timeout_max(), must be an integer representing seconds') # pylint: disable=line-too-long
+            raise CodingError('invalid timeout max passed to set_timeout_max(), must be an integer representing seconds') # pylint: disable=line-too-long
         # leave this to be able to set max to any amount
         # validate_int(secs, 'timeout default', 0, self.__timeout_max )
         log.debug('setting max timeout to %s secs', secs)
@@ -255,7 +255,7 @@ class CLI(object):
     @verbose.setter
     def verbose(self, arg):
         if not isInt(arg):
-            raise CodingErrorException('invalid verbose level passed to verbose(), must be an integer')
+            raise CodingError('invalid verbose level passed to verbose(), must be an integer')
         log.debug('setting verbose to %s', arg)
         self.__verbose = int(arg)
 
@@ -266,7 +266,7 @@ class CLI(object):
     @verbose_default.setter
     def verbose_default(self, arg):
         if not isInt(arg):
-            raise CodingErrorException('invalid verbose level passed to verbose_default(), must be an integer')
+            raise CodingError('invalid verbose level passed to verbose_default(), must be an integer')
         log.debug('setting default verbose to %s', arg)
         self.__verbose_default = int(arg)
 
@@ -332,7 +332,7 @@ class CLI(object):
         if default_port is not None:
             # assert isPort(default_port)
             if not isPort(default_port):
-                raise CodingErrorException('invalid default port supplied to add_hostoption()')
+                raise CodingError('invalid default port supplied to add_hostoption()')
         (host_envs, default_host) = getenvs2('HOST', default_host, name)
         (port_envs, default_port) = getenvs2('PORT', default_port, name)
         self.add_opt('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs), default=default_host)
@@ -350,7 +350,7 @@ class CLI(object):
 
     @abstractmethod
     def run(self):  # pragma: no cover
-        raise CodingErrorException('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
+        raise CodingError('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                                    ' You should have overridden this run() method in the client code')
 
     def end(self):
