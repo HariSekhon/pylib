@@ -214,6 +214,9 @@ def get_topfile():
     # filename = os.path.splitext(filename)[0] + '.py'
     filename = re.sub('.pyc$', '.py', filename)
     assert isStr(filename)
+    # workaround for interactive mode
+    if filename == '<stdin>':
+        return ''
     assert isFilename(filename)
     return filename
 
