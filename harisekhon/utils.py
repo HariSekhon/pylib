@@ -1189,6 +1189,11 @@ def isRegex(arg):
 # def isScalar
 
 
+def isSet(arg):
+    # return type(arg).__name__ == 'set'
+    return isinstance(arg, set)
+
+
 def isScientific(arg, allow_negative=False):
     if arg is None:
         return False

@@ -52,6 +52,7 @@ class UtilsTester(unittest.TestCase):
     # libdir = libdir
     libfile = os.path.join(libdir, 'harisekhon', 'utils.py')
     myList = [1, 2, 3]
+    mySet = set(myList)
     myTuple = (1, 2, 3)
     myDict = {'one': 1, 'two': 2, 'three': 3}
     jsondata = '{ "name": { "first": "Hari", "last": "Sekhon" } }'
@@ -969,6 +970,15 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isScientific('-1e-10', True))
         self.assertFalse(isScientific(' ', True))
         self.assertFalse(isScientific(None, True))
+
+    def test_isSet(self):
+        self.assertTrue(isSet(self.mySet))
+        self.assertTrue(isSet(set()))
+        self.assertFalse(isSet(self.myList))
+        self.assertFalse(isSet(self.myDict))
+        self.assertFalse(isSet(self.myTuple))
+        self.assertFalse(isSet(1))
+        self.assertFalse(isSet(None))
 
     def test_isStr(self):
         self.assertTrue(isStr('test'))
