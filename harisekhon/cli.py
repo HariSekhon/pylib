@@ -47,7 +47,7 @@ from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.1'
+__version__ = '0.8.2'
 
 
 class CLI(object):
@@ -125,6 +125,7 @@ class CLI(object):
 
     def main(self):
         # log.debug('running main()')
+        log.setLevel(logging.WARN)
         self.setup()
         try:
             self.add_options()
@@ -142,7 +143,6 @@ class CLI(object):
             #     sys.stderr = sys.stdin
             # careful causes bad file descriptor for die(), jython_only() and printerr() unit tests
             # sys.stderr = sys.stdin
-            log.setLevel(logging.WARN)
             self.verbose = self.get_opt('verbose')
             if self.verbose > 2:
                 log.setLevel(logging.DEBUG)
