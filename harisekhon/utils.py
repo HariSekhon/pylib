@@ -186,7 +186,7 @@ def qquit(status, msg=''):
             # traceback.print_exc()
             _ = traceback.format_exc().strip()
             if _ != 'None':
-                print('\n{0}'.format(_), end='')
+                print('\n{0}'.format(_))
     sys.exit(ERRORS[status])
 
 
