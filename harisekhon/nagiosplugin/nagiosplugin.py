@@ -20,6 +20,7 @@ from __future__ import print_function
 # from __future__ import unicode_literals
 
 import os
+import re
 import sys
 # import traceback
 # import logging
@@ -35,7 +36,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.1'
+__version__ = '0.8.2'
 
 
 class NagiosPlugin(CLI):
@@ -133,6 +134,7 @@ class NagiosPlugin(CLI):
     def add_thresholds(self, name='', default_warning=None, default_critical=None):
         if not isStr(name):
             raise CodingError('non-string passed as name argument to add_thresholds()')
+        name = re.sub('[^A-Za-z0-9]', '-', name).lower()
         default_warning_msg = ''
         default_critical_msg = ''
         if default_warning is not None:
