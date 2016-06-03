@@ -16,7 +16,7 @@ make &&
 make test
 ```
 
-Continuous Integration is run on this repo to build and unit test it.
+Continuous Integration is run on this repo to build and unit test it (almost 400 unit tests + custom tests).
 
 #### Configuration ####
 
