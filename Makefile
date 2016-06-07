@@ -35,7 +35,7 @@ build:
 	#$(SUDO2) pip install mock
 	$(SUDO2) pip install -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
-	$(SUDO2) sudo pip install --upgrade ndg-httpsclient
+	$(SUDO2) pip install --upgrade ndg-httpsclient
 	# Python 2.4 - 2.6 backports
 	#$(SUDO2) pip install argparse
 	#$(SUDO2) pip install unittest2
