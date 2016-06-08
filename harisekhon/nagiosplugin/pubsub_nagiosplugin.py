@@ -39,7 +39,7 @@ from harisekhon.utils import qquit, log, CodingError, CriticalError, UnknownErro
 from harisekhon.utils import validate_host, validate_port, get_topfile, random_alnum
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2'
+__version__ = '0.2.1'
 
 
 class PubSubNagiosPlugin(NagiosPlugin):
@@ -66,8 +66,9 @@ class PubSubNagiosPlugin(NagiosPlugin):
         self.key = os.path.basename(get_topfile()) + '-' + random_alnum(20)
         self.start_offset = None
         timestamp = time.time()
+        # socket.getfqdn() hangs on network / DNS outage, use socket.gethostname() instead
         self.publish_message = "Test message from Hari Sekhon {0} on host {1} "\
-                               .format(os.path.basename(get_topfile()), socket.getfqdn()) + \
+                               .format(os.path.basename(get_topfile()), socket.gethostname()) + \
                                 "at epoch {0} ({1}) with random token '{2}'"\
                                .format(timestamp, time.ctime(timestamp), random_alnum(20))
         self._consumed_message = None
