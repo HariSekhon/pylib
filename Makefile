@@ -65,6 +65,8 @@ apt-packages:
 	#$(SUDO) apt-get install -y ipython-notebook || :
 	# for mysql_config to build MySQL-python
 	#$(SUDO) apt-get install -y libmysqlclient-dev || :
+	# needed for ndg-httpsclient upgrade
+	$(SUDO) apt-get install -y libffi-dev
 
 .PHONY: yum-packages
 yum-packages:
@@ -80,6 +82,8 @@ yum-packages:
 	rpm -q python-pip        || $(SUDO) yum install -y python-pip
 	rpm -q python-devel      || $(SUDO) yum install -y python-devel
 	#rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
+	# needed for ndg-httpsclient upgrade
+	rpm -q libffi-devel      || $(SUDO) yum install -y libffi-devel
 
 .PHONY: test-common
 test-common:
