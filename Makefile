@@ -33,6 +33,8 @@ build:
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
 	#$(SUDO2) pip install mock
+	# upgrade required to get install to work properly on Debian
+	$(SUDO2) pip install --upgrade pip
 	$(SUDO2) pip install -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	$(SUDO2) pip install --upgrade ndg-httpsclient
