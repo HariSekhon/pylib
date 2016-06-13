@@ -232,8 +232,9 @@ class CLI(object):
             # validate_int(secs, 'timeout default', 0, self.__timeout_max )
             if self.timeout_max is not None and secs > self.timeout_max:
                 raise CodingError('set default timeout > timeout max')
+            secs = int(secs)
         log.debug('setting default timeout to %s secs', secs)
-        self.__timeout_default = int(secs)
+        self.__timeout_default = secs
 
     @property
     def timeout_max(self):
