@@ -47,7 +47,7 @@ from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.2'
+__version__ = '0.8.3'
 
 
 class CLI(object):
@@ -217,7 +217,7 @@ class CLI(object):
             raise CodingError('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
         validate_int(secs, 'timeout', 0, self.timeout_max)
         log.debug('setting timeout to %s secs', secs)
-        self.__timeout = secs
+        self.__timeout = int(secs)
 
     @property
     def timeout_default(self):
@@ -233,7 +233,7 @@ class CLI(object):
             if self.timeout_max is not None and secs > self.timeout_max:
                 raise CodingError('set default timeout > timeout max')
         log.debug('setting default timeout to %s secs', secs)
-        self.__timeout_default = secs
+        self.__timeout_default = int(secs)
 
     @property
     def timeout_max(self):
