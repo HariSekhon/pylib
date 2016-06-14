@@ -138,11 +138,6 @@ class CLI(object):
             # autoflush()
             # too late
             # os.environ['PYTHONUNBUFFERED'] = "anything"
-            # move this to NagiosPlugin class
-            # if re.match('check_', prog):
-            #     sys.stderr = sys.stdin
-            # careful causes bad file descriptor for die(), jython_only() and printerr() unit tests
-            # sys.stderr = sys.stdin
             self.verbose = self.get_opt('verbose')
             if self.verbose > 2:
                 log.setLevel(logging.DEBUG)
