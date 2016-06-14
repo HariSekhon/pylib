@@ -36,7 +36,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.2'
+__version__ = '0.8.3'
 
 
 class NagiosPlugin(CLI):
@@ -57,6 +57,7 @@ class NagiosPlugin(CLI):
         # self.__msg = 'MESSAGE NOT DEFINED'
         self.msg = 'MESSAGE NOT DEFINED'
         self.__thresholds = {'warning': None, 'critical': None}
+        sys.stderr = sys.stdout
 
     # ============================================================================ #
     #                           Nagios Exit Code Functions
