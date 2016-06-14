@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.6'
+__version__ = '0.10.7'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1378,7 +1378,9 @@ def plural(arg):
     # if type(arg) == int or type(arg) == float:
     if isFloat(arg):
         arg = float(arg)
-        if arg > 1:
+        if arg == 1:
+            return ''
+        else:
             return 's'
     return ''
 
