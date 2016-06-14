@@ -1143,6 +1143,8 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(plural(''), '')
         self.assertEqual(plural(' '), '')
         self.assertEqual(plural(None), '')
+        self.assertEqual(plural(0), 's')
+        self.assertEqual(plural('0'), 's')
         self.assertEqual(plural(2), 's')
 
     def test_random_alnum(self):
