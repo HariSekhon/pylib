@@ -1147,7 +1147,7 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(plural('0'), 's')
         self.assertEqual(plural(2), 's')
         self.assertEqual(plural(3.0), 's')
-        self.assertEqual(plural("3.0"), 's')
+        self.assertEqual(plural("4.0"), 's')
 
     def test_random_alnum(self):
         self.assertTrue(re.match(r'\w{20}', random_alnum(20)))
