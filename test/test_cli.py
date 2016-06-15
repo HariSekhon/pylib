@@ -164,7 +164,7 @@ class CLITester(unittest.TestCase):
     def test_set_timeout(self):
         try:
             self.cli.timeout = None
-            raise Exception('failed to raise CodingError for CLU.timeout = None')
+            raise Exception('failed to raise CodingError for CLI.timeout = None')
         except CodingError:
             pass
         self.cli.main()
@@ -173,7 +173,7 @@ class CLITester(unittest.TestCase):
         self.cli.__init__()
         try:
             self.cli.timeout = 'a'
-            raise Exception('failed to raise CodingError for CLU.timeout = a')
+            raise Exception('failed to raise CodingError for CLI.timeout = a')
         except CodingError:
             pass
 
