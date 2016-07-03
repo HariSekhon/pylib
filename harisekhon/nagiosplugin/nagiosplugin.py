@@ -132,16 +132,19 @@ class NagiosPlugin(CLI):
             raise CodingError("threshold '%s' does not exist. " % name +
                                        "Invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
-    def add_thresholds(self, name='', default_warning=None, default_critical=None):
+    def add_thresholds(self, name='', default_warning=None, default_critical=None, percent=False):
         if not isStr(name):
             raise CodingError('non-string passed as name argument to add_thresholds()')
         name = re.sub('[^A-Za-z0-9]', '-', name).lower()
         default_warning_msg = ''
         default_critical_msg = ''
+        unit = ''
+        if percent:
+            unit = '%'
         if default_warning is not None:
-            default_warning_msg = ', default: {0}'.format(default_warning)
+            default_warning_msg = ', default: {0}{1}'.format(default_warning, unit)
         if default_critical is not None:
-            default_critical_msg = ', default: {0}'.format(default_critical)
+            default_critical_msg = ', default: {0}{1}'.format(default_critical, unit)
         if name:
             self.add_opt('--{0}-warning'.format(name), metavar='N', default=default_warning,
                          help='{0} warning threshold or ra:nge (inclusive{1})'
@@ -176,8 +179,12 @@ class NagiosPlugin(CLI):
             raise CodingError('non-string name passed to validate_thresholds()')
         if name:
             name += '_'
-        self.validate_threshold('{0}{1}'.format(name, 'warning'), warning, **kwargs)
-        self.validate_threshold('{0}{1}'.format(name, 'critical'), critical, **kwargs)
+        if 'percent' in kwargs and kwargs['percent']:
+            del kwargs['percent']
+            kwargs['min'] = 0
+            kwargs['max'] = 100
+        self.validate_threshold(name='{0}{1}'.format(name, 'warning'), threshold=warning, **kwargs)
+        self.validate_threshold(name='{0}{1}'.format(name, 'critical'), threshold=critical, **kwargs)
 
     # inferring threshold type from naming convention, assume critical if can't determine
     def check_threshold(self, name, result):
