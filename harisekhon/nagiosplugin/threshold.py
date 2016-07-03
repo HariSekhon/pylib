@@ -101,7 +101,7 @@ class Threshold(object):
                 elif self.opts['simple'] == 'lower':
                     self.thresholds['lower'] = float(_.group(1))
             else:
-                raise InvalidThresholdException('invalid {0}threshold given, '.format(self.name) +
+                raise InvalidThresholdException('invalid {0}threshold given (\'{1}\'), '.format(self.name, arg) +
                                                 'must be standard nagios threshold [@][start:]end')
             log.debug('%sthreshold upper boundary = %s', self.name, self.thresholds['upper'])
             log.debug('%sthreshold lower boundary = %s', self.name, self.thresholds['lower'])
