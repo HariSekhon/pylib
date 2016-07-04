@@ -240,7 +240,10 @@ class NagiosPlugin(CLI):
         except CodingError as _:
             qquit('UNKNOWN', 'Programming Error: {0}. {1}'.format(_, support_msg()))
         except Exception as _:  # pylint: disable=broad-except
-            qquit('UNKNOWN', _)
+            msg = str(_)
+            #if self.options.verbose > 2:
+            #    msg = type(_).__name__ + ': ' + msg
+            qquit('UNKNOWN', msg)
             # Done in utils now so that this also applies to the above specific exit handlers
             # print('UNKNOWN: {0}'.format(_))
             # prints to stderr, Nagios spec wants stdout
