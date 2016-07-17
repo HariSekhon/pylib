@@ -37,9 +37,9 @@ If using bespoke internal domains such as ```.local``` or ```.intranet``` that a
 
 Repos using this library:
 
-* [PyTools](https://github.com/harisekhon/pytools) - Hadoop, Spark, IPython, Pig => Solr / Elasticsearch, Pig Jython UDFs, Ambari, Linux
+* [PyTools](https://github.com/harisekhon/pytools) - Hadoop, Spark (PySpark), Pig => Solr / Elasticsearch indexers, Pig Jython UDFs, Ambari Blueprints, AWS CloudFormation templates, HBase, Linux, IPython Notebook, Data converters between different data formats and syntactic validators for Avro, Parquet, CSV, JSON, YAML...
 * [Advanced Nagios Plugins Collection](https://github.com/harisekhon/nagios-plugins) - 220+ programs - the largest repo of monitoring code for Hadoop & NoSQL technologies, every Hadoop vendor's management API and every major NoSQL technology (HBase, Cassandra, MongoDB, Elasticsearch, Solr, Riak, Redis etc.) as well as traditional Linux and infrastructure
 
 See also:
 
-* [Tools](https://github.com/harisekhon/tools) - Hadoop, NoSQL, Hive, Solr, Ambari, Web, Linux
+* [Tools](https://github.com/harisekhon/tools) - 30+ tools for Hadoop, NoSQL, Solr, Elasticsearch, Pig, Hive, Web URL + Nginx stats watchers, SQL and NoSQL syntax recasers, various Linux CLI tools
