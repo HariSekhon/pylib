@@ -39,7 +39,7 @@ from harisekhon.utils import qquit, log, CodingError, CriticalError, UnknownErro
 from harisekhon.utils import validate_host, validate_port, get_topfile, random_alnum
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 
 class PubSubNagiosPlugin(NagiosPlugin):
@@ -72,8 +72,9 @@ class PubSubNagiosPlugin(NagiosPlugin):
                                 "at epoch {0} ({1}) with random token '{2}'"\
                                .format(timestamp, time.ctime(timestamp), random_alnum(20))
         self._consumed_message = None
-        self._publish_timing = None
-        self._consume_timing = None
+        self._publish_time = None
+        self._consume_time = None
+        self._total_time = None
         self.status = 'OK'
         self.warning = 1
         self.critical = 2
@@ -95,21 +96,25 @@ class PubSubNagiosPlugin(NagiosPlugin):
         self.validate_thresholds()
 
     def run(self):
+        start = time.time()
         log.info('subscribing')
         self.subscribe()
         log.info('publishing message \'%s\'', self.publish_message)
-        start = time.time()
+        start_publish = time.time()
         self.publish()
-        stop = time.time()
-        self._publish_timing = stop - start
-        start = time.time()
+        stop_publish = time.time()
+        self._publish_time = stop_publish - start_publish
+        log.info('published in %s secs', self._publish_time)
+        start_consume = time.time()
         self._consumed_message = self.consume()
-        stop = time.time()
-        self._consume_timing = stop - start
-        log.info('read in %s secs', self._consume_timing)
+        stop_consume = time.time()
+        self._consume_time = stop_consume - start_consume
+        log.info('consumed in %s secs', self._consume_time)
         log.info("consumed message = '%s'", self._consumed_message)
         # resetting to ok is bad - would break inheritance logic
         #self.ok()
+        stop = time.time()
+        self._total_time = stop - start
 
     @abstractmethod
     def subscribe(self):
@@ -132,11 +137,13 @@ class PubSubNagiosPlugin(NagiosPlugin):
             raise CriticalError("wrote '{0}' but got back '{1}' instead".format(
                 self.publish_message, self._consumed_message))
         self.msg = '{0} message published and consumed back successfully'.format(self.name)
-        self.msg += ', published in {0:.7f} secs'.format(self._publish_timing)
-        self.check_thresholds(self._publish_timing)
-        self.msg += ', consumed in {0:.7f} secs'.format(self._consume_timing)
-        self.check_thresholds(self._consume_timing)
-        self.msg += ' | publish_time={0:.7f}s{1} consume_time={2:.7f}s{3}'.format(
-            self._publish_timing, self.get_perf_thresholds(),
-            self._consume_timing, self.get_perf_thresholds())
+        self.msg += ', published in {0:.7f} secs'.format(self._publish_time)
+        self.check_thresholds(self._publish_time)
+        self.msg += ', consumed in {0:.7f} secs'.format(self._consume_time)
+        self.check_thresholds(self._consume_time)
+        self.msg += ', total time = {0:.7f} secs'.format(self._total_time)
+        self.msg += ' | publish_time={0:.7f}s{1} consume_time={2:.7f}s{3} total_time={4:.7f}s'.format(
+            self._publish_time, self.get_perf_thresholds(),
+            self._consume_time, self.get_perf_thresholds(),
+            self._total_time)
         qquit(self.status, self.msg)
