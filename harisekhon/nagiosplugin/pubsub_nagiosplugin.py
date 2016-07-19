@@ -75,6 +75,7 @@ class PubSubNagiosPlugin(NagiosPlugin):
         self._publish_time = None
         self._consume_time = None
         self._total_time = None
+        self._precision = 3
         self.status = 'OK'
         self.warning = 1
         self.critical = 2
@@ -103,18 +104,18 @@ class PubSubNagiosPlugin(NagiosPlugin):
         start_publish = time.time()
         self.publish()
         stop_publish = time.time()
-        self._publish_time = stop_publish - start_publish
+        self._publish_time = round(stop_publish - start_publish, self._precision)
         log.info('published in %s secs', self._publish_time)
         start_consume = time.time()
         self._consumed_message = self.consume()
         stop_consume = time.time()
-        self._consume_time = stop_consume - start_consume
+        self._consume_time = round(stop_consume - start_consume, self._precision)
         log.info('consumed in %s secs', self._consume_time)
         log.info("consumed message = '%s'", self._consumed_message)
         # resetting to ok is bad - would break inheritance logic
         #self.ok()
         stop = time.time()
-        self._total_time = stop - start
+        self._total_time = round(stop - start, self._precision)
 
     @abstractmethod
     def subscribe(self):
@@ -137,13 +138,14 @@ class PubSubNagiosPlugin(NagiosPlugin):
             raise CriticalError("wrote '{0}' but got back '{1}' instead".format(
                 self.publish_message, self._consumed_message))
         self.msg = '{0} message published and consumed back successfully'.format(self.name)
-        self.msg += ', published in {0:.7f} secs'.format(self._publish_time)
+        self.msg += ', published in {0:.{1}f} secs'.format(self._publish_time, self._precision)
         self.check_thresholds(self._publish_time)
-        self.msg += ', consumed in {0:.7f} secs'.format(self._consume_time)
+        self.msg += ', consumed in {0:.{1}f} secs'.format(self._consume_time, self._precision)
         self.check_thresholds(self._consume_time)
-        self.msg += ', total time = {0:.7f} secs'.format(self._total_time)
-        self.msg += ' | publish_time={0:.7f}s{1} consume_time={2:.7f}s{3} total_time={4:.7f}s'.format(
+        self.msg += ', total time = {0:.{1}f} secs'.format(self._total_time, self._precision)
+        self.msg += ' | publish_time={0:.{5}f}s{1} consume_time={2:.{5}f}s{3} total_time={4:.{5}f}s'.format(
             self._publish_time, self.get_perf_thresholds(),
             self._consume_time, self.get_perf_thresholds(),
-            self._total_time)
+            self._total_time,
+            self._precision)
         qquit(self.status, self.msg)
