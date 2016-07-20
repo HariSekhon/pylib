@@ -1,4 +1,5 @@
 *.pyc
 *$py.class
-.idea
+.idea/
+.sonar/
 .coverage
