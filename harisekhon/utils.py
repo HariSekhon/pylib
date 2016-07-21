@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.7'
+__version__ = '0.10.8'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -380,6 +380,20 @@ def dict_lines(arg):
         raise CodingError("non-dict type '%s' passed to dict_lines" % type(arg))
     # can't use iteritems() any more due to Py3k
     return '\n'.join(('%s = %s' % (key, value) for (key, value) in sorted(arg.items())))
+
+
+def find_git_root(target):
+    target = os.path.abspath(target)
+    log.debug("finding git root for target '{0}'".format(target))
+    gitroot = target
+    while gitroot and gitroot != '/':
+        log.debug("trying '{0}'".format(gitroot))
+        # os.path.isdir doesn't work on git submodule Dockerfiles in PyTools repo :-/
+        if os.path.exists(os.path.join(gitroot, '.git')):
+            log.debug("found git root for target '{0}': '{1}'".format(target, gitroot))
+            return gitroot
+        gitroot = os.path.dirname(gitroot)
+    return None
 
 
 # ============================================================================ #
