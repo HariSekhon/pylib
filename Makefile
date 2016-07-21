@@ -87,6 +87,10 @@ yum-packages:
 	# needed for ndg-httpsclient upgrade
 	rpm -q libffi-devel      || $(SUDO) yum install -y libffi-devel
 
+.PHONY: sonar
+sonar:
+	sonar-scanner
+
 .PHONY: test-common
 test-common:
 	test/find_dup_defs.sh
