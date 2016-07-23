@@ -37,7 +37,8 @@ build:
 	$(SUDO2) pip install --upgrade pip
 	$(SUDO2) pip install -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
-	$(SUDO2) pip install --upgrade ndg-httpsclient
+	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
+	$(SUDO2) pip install --upgrade ndg-httpsclient || :
 	# Python 2.4 - 2.6 backports
 	#$(SUDO2) pip install argparse
 	#$(SUDO2) pip install unittest2
