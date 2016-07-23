@@ -678,8 +678,8 @@ krb5_principal_regex   = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?
 threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
 label_regex            = r'\s*[\%\(\)\/\*\w-][\%\(\)\/\*\w\s-]*'
-version_regex          = r'\d+(\.\d+)*'
-version_regex_short    = r'\d+(\.\d+)?'
+version_regex          = r'\d+(?:\.\d+)*'
+version_regex_short    = r'\d+(?:\.\d+)?'
 version_regex_lax      = version_regex + r'-?.+\b'
 # pylint: enable=bad-whitespace
 
