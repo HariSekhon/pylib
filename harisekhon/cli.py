@@ -47,7 +47,7 @@ from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.3'
+__version__ = '0.8.4'
 
 
 class CLI(object):
@@ -102,7 +102,7 @@ class CLI(object):
         # _hidden attributes are shown in __dict__
         self.version = '%(_prog)s version %(_topfile_version)s ' % self.__dict__ + \
                        '=>  CLI version %(_cli_version)s  =>  Utils version %(_utils_version)s' % self.__dict__
-        self.usagemsg = 'Hari Sekhon%(_github_repo)s\n\n%(_prog)s version %(_topfile_version)s\n%(_docstring)s\n' \
+        self.usagemsg = 'Hari Sekhon%(_github_repo)s\n\n%(_prog)s\n%(_docstring)s\n' \
                         % self.__dict__
         self.usagemsg_short = 'Hari Sekhon%(_github_repo)s\n\n' % self.__dict__
         # set this in simpler client programs when you don't want to exclude
