@@ -24,12 +24,13 @@ endif
 
 .PHONY: build
 build:
+	if [ -x /sbin/apk ];        then make apk-packages; fi
 	if [ -x /usr/bin/apt-get ]; then make apt-packages; fi
 	if [ -x /usr/bin/yum ];     then make yum-packages; fi
 	
 	git submodule init
 	git submodule update --recursive
-
+	
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
 	#$(SUDO2) pip install mock
@@ -53,6 +54,44 @@ build:
 	@echo
 	@echo 'BUILD SUCCESSFUL (pylib)'
 
+.PHONY: apk-packages
+apk-packages:
+	$(SUDO) apk update
+	$(SUDO) apk add alpine-sdk
+	$(SUDO) apk add bash
+	$(SUDO) apk add cyrus-sasl-dev
+	$(SUDO) apk add gcc
+	$(SUDO) apk add git
+	$(SUDO) apk add krb5-dev
+	$(SUDO) apk add libffi-dev
+	$(SUDO) apk add linux-headers
+	$(SUDO) apk add make
+	$(SUDO) apk add openssl-dev
+	$(SUDO) apk add py-pip
+	$(SUDO) apk add python
+	$(SUDO) apk add python-dev
+	$(SUDO) apk add snappy-dev
+	$(SUDO) apk add wget
+	$(SUDO) apk add zip
+	# Spark Java Py4J gets java linking error without this
+	if [ -f /lib/libc.musl-x86_64.so.1 ]; then [ -e /lib/ld-linux-x86-64.so.2 ] || ln -sv /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2; fi
+
+.PHONY: apk-packages-remove
+apk-packages-remove:
+	$(SUDO) apk del alpine-sdk
+	$(SUDO) apk del bash
+	$(SUDO) apk del cyrus-sasl-dev
+	$(SUDO) apk del gcc
+	$(SUDO) apk del krb5-dev
+	$(SUDO) apk del libffi-dev
+	$(SUDO) apk del linux-headers
+	$(SUDO) apk del openssl-dev
+	$(SUDO) apk del py-pip
+	$(SUDO) apk del python-dev
+	$(SUDO) apk del snappy-dev
+	$(SUDO) apk del wget
+	$(SUDO) apk del zip
+
 .PHONY: apt-packages
 apt-packages:
 	$(SUDO) apt-get update
@@ -71,6 +110,14 @@ apt-packages:
 	# needed for ndg-httpsclient upgrade
 	$(SUDO) apt-get install -y libffi-dev
 
+.PHONY: apt-packages-remove
+apt-packages-remove:
+	$(SUDO) apt-get purge -y build-essential
+	$(SUDO) apt-get purge -y python-dev
+	$(SUDO) apt-get purge -y python-setuptools
+	$(SUDO) apt-get purge -y python-pip
+	$(SUDO) apt-get purge -y libffi-dev
+
 .PHONY: yum-packages
 yum-packages:
 	rpm -q git || $(SUDO) yum install -y git
@@ -87,6 +134,17 @@ yum-packages:
 	#rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
 	# needed for ndg-httpsclient upgrade
 	rpm -q libffi-devel      || $(SUDO) yum install -y libffi-devel
+
+.PHONY: yum-packages-remove
+yum-packages-remove:
+	rpm -q wget && $(SUDO) yum remove -y wget
+	rpm -q gcc  && $(SUDO) yum remove -y gcc
+	rpm -q mysql-devel && $(SUDO) yum remove -y mysql-devel
+	rpm -q python-setuptools && $(SUDO) yum remove -y python-setuptools
+	rpm -q python-pip        && $(SUDO) yum remove -y python-pip
+	rpm -q python-devel      && $(SUDO) yum remove -y python-devel
+	#rpm -q ipython-notebook && $(SUDO) yum remove -y ipython-notebook || :
+	rpm -q libffi-devel      && $(SUDO) yum remove -y libffi-devel
 
 .PHONY: sonar
 sonar:
