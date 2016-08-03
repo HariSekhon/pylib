@@ -1,4 +1,4 @@
-beautifulsoup4==4.5.0
+beautifulsoup4==4.5.1
 blessings==1.6
 Jinja2==2.8
 linecache2==1.0.0
