@@ -45,9 +45,10 @@ import harisekhon
 from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural
 from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
+from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.4'
+__version__ = '0.8.5'
 
 
 class CLI(object):
@@ -156,7 +157,14 @@ class CLI(object):
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
             self.process_args()
-            self.run()
+            try:
+                self.run()
+            except CriticalError as _:
+                qquit('CRITICAL', _)
+            except WarningError as _:
+                qquit('WARNING', _)
+            except UnknownError as _:
+                qquit('UNKNOWN', _)
             self.__end__()
         except InvalidOptionException as _:
             self.usage(_)  # pragma: no cover
@@ -196,10 +204,12 @@ class CLI(object):
 
     def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
         # problem with this is that it'll print and then the exit exception will be caught and quit() printed again
-        # raising a custom TimeoutException will need to be handled in main, but that would also likely print and be re-caught and re-printed by NagiosPlugin
+        # raising a custom TimeoutException will need to be handled in main, but that would also likely print and be
+        # re-caught and re-printed by NagiosPlugin
         #print('self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
         #sys.exit(ERRORS['UNKNOWN'])
-        # if doing die the same thing same will happen since die is a custom func which prints and then calls exit, only exit would be caught
+        # if doing die the same thing same will happen since die is a custom func which prints and then calls exit,
+        # only exit would be caught
         qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
 
     @property
@@ -347,7 +357,7 @@ class CLI(object):
     @abstractmethod
     def run(self):  # pragma: no cover
         raise CodingError('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
-                                   ' You should have overridden this run() method in the client code')
+                          ' You should have overridden this run() method in the client code')
 
     def end(self):
         pass
