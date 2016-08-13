@@ -213,7 +213,7 @@ class CLI(object):
         qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
 
     def disable_timeout(self):
-        log.debug('disabling timeout')
+        log.info('disabling timeout')
         self.timeout = 0
         signal.alarm(0)
 
