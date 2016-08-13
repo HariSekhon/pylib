@@ -48,7 +48,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.5'
+__version__ = '0.8.6'
 
 
 class CLI(object):
@@ -211,6 +211,10 @@ class CLI(object):
         # if doing die the same thing same will happen since die is a custom func which prints and then calls exit,
         # only exit would be caught
         qquit('UNKNOWN', 'self timed out after %d second%s' % (self.timeout, plural(self.timeout)))
+
+    def disable_timeout(self):
+        self.timeout = 0
+        signal.alarm(0)
 
     @property
     def timeout(self):

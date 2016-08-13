@@ -169,6 +169,11 @@ class CLITester(unittest.TestCase):
             pass
         self.cli.main()
 
+    def test_disable_timeout(self):
+        self.cli.timeout = 10
+        self.cli.disable_timeout()
+        self.assertEquals(self.cli.timeout, 0)
+
     def test_set_timeout_alpha_exception(self):
         self.cli.__init__()
         try:
