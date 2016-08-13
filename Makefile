@@ -7,7 +7,7 @@
 #  License: see accompanying LICENSE file
 #
 
-ifdef TRAVIS
+ifdef VIRTUAL_ENV
 	SUDO2 =
 else
 	SUDO2 = sudo -H
