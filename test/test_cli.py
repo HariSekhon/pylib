@@ -53,6 +53,7 @@ class CLITester(unittest.TestCase):
 
     def setUp(self):
         self.cli = self.SubCLI()
+        self.cli.timeout = 30
 
     # bails on unit2 discover -v / python -m unittest discover -v
     # because the -v switch trips optparse
