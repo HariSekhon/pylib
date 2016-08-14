@@ -171,7 +171,7 @@ class CLITester(unittest.TestCase):
         self.cli.main()
 
     def test_disable_timeout(self):
-        self.cli.timeout = 10
+        self.cli.timeout = 30
         self.cli.disable_timeout()
         self.assertEquals(self.cli.timeout, 0)
 
