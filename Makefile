@@ -16,7 +16,7 @@ else
 	SUDO = sudo -H
 endif
 
-ifdef VIRTUAL_ENV
+ifneq ("$(VIRTUAL_ENV)$(TRAVIS)", "")
 	SUDO2 =
 else
 	SUDO2 = sudo -H
