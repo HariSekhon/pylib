@@ -53,7 +53,7 @@ class CLITester(unittest.TestCase):
 
     def setUp(self):
         self.cli = self.SubCLI()
-        self.cli.timeout = 30
+        self.cli.disable_timeout()
 
     # bails on unit2 discover -v / python -m unittest discover -v
     # because the -v switch trips optparse
@@ -225,6 +225,7 @@ class CLITester(unittest.TestCase):
         cli.timeout = 22
         self.assertEqual(cli.timeout, 22)
         cli.main()
+        self.cli.disable_timeout()
 
     def test_timeout_default_alpha_exception(self):
         self.cli.__init__()
