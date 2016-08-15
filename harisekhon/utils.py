@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.8'
+__version__ = '0.10.9'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -217,7 +217,11 @@ def get_topfile():
     # workaround for interactive mode
     if filename == '<stdin>':
         return ''
-    assert isFilename(filename)
+    # workaround for python -c
+    elif filename == '<string>':
+        return ''
+    else:
+        assert isFilename(filename)
     return filename
 
 
