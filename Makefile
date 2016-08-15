@@ -16,8 +16,10 @@ else
 	SUDO = sudo -H
 endif
 
+ifdef VIRTUAL_ENV
+	SUDO2 =
 # Travis has python install before in $PATH even in Perl builds so need to install PyPI modules here otherwise they're not found, but perms not set correctly on Travis build to do this, better than modifying $PATH to put /usr/bin first which is likely to affect many other things including potentially not find the perlbrew installation first
-ifneq ("$(VIRTUAL_ENV)$(TRAVIS)", "")
+else ifdef TRAVIS
 	SUDO2 =
 else
 	SUDO2 = sudo -H
