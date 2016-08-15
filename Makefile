@@ -18,7 +18,8 @@ endif
 
 ifdef VIRTUAL_ENV
 	SUDO2 =
-# Travis has custom python install earlier in $PATH even in Perl builds so need to install PyPI modules to non-system python otherwise they're not found by programs. Better than modifying $PATH to put /usr/bin first which is likely to affect many other things including potentially not find the perlbrew installation first
+# Travis has custom python install earlier in $PATH even in Perl builds so need to install PyPI modules to non-system python otherwise they're not found by programs.
+# Better than modifying $PATH to put /usr/bin first which is likely to affect many other things including potentially not finding the perlbrew installation first
 else ifdef TRAVIS
 	SUDO2 =
 else
