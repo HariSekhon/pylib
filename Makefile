@@ -124,14 +124,14 @@ apt-packages-remove:
 
 .PHONY: yum-packages
 yum-packages:
-	rpm -q git || $(SUDO) yum install -y git
-	rpm -q wget || $(SUDO) yum install -y wget
-	rpm -q gcc  || $(SUDO) yum install -y gcc
+	rpm -q git               || $(SUDO) yum install -y git
+	rpm -q wget              || $(SUDO) yum install -y wget
+	rpm -q gcc               || $(SUDO) yum install -y gcc
 	# needed to fetch the library submodule and CPAN modules
 	# python-pip requires EPEL, so try to get the correct EPEL rpm
-	rpm -q epel-release || yum install -y epel-release || { wget -t 100 --retry-connrefused -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
+	rpm -q epel-release      || yum install -y epel-release || { wget -t 100 --retry-connrefused -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
 	# for mysql_config to build MySQL-python
-	rpm -q mysql-devel || $(SUDO) yum install -y mysql-devel
+	rpm -q mysql-devel       || $(SUDO) yum install -y mysql-devel
 	rpm -q python-setuptools || $(SUDO) yum install -y python-setuptools
 	rpm -q python-pip        || $(SUDO) yum install -y python-pip
 	rpm -q python-devel      || $(SUDO) yum install -y python-devel
@@ -141,9 +141,9 @@ yum-packages:
 
 .PHONY: yum-packages-remove
 yum-packages-remove:
-	rpm -q wget && $(SUDO) yum remove -y wget
-	rpm -q gcc  && $(SUDO) yum remove -y gcc
-	rpm -q mysql-devel && $(SUDO) yum remove -y mysql-devel
+	rpm -q wget              && $(SUDO) yum remove -y wget
+	rpm -q gcc               && $(SUDO) yum remove -y gcc
+	rpm -q mysql-devel       && $(SUDO) yum remove -y mysql-devel
 	rpm -q python-setuptools && $(SUDO) yum remove -y python-setuptools
 	rpm -q python-pip        && $(SUDO) yum remove -y python-pip
 	rpm -q python-devel      && $(SUDO) yum remove -y python-devel
