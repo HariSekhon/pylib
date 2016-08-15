@@ -7,15 +7,6 @@
 #  License: see accompanying LICENSE file
 #
 
-# EUID /  UID not exported in Make
-# USER not populated in Docker
-ifeq '$(shell id -u)' '0'
-	SUDO =
-	SUDO2 =
-else
-	SUDO = sudo -H
-endif
-
 ifdef VIRTUAL_ENV
 	SUDO2 =
 # Travis has custom python install earlier in $PATH even in Perl builds so need to install PyPI modules to non-system python otherwise they're not found by programs.
@@ -24,6 +15,16 @@ else ifdef TRAVIS
 	SUDO2 =
 else
 	SUDO2 = sudo -H
+endif
+
+# must come after to reset SUDO2 to blank if root
+# EUID /  UID not exported in Make
+# USER not populated in Docker
+ifeq '$(shell id -u)' '0'
+	SUDO =
+	SUDO2 =
+else
+	SUDO = sudo -H
 endif
 
 .PHONY: build
