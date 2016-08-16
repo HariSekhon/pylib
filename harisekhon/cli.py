@@ -48,7 +48,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.6'
+__version__ = '0.8.7'
 
 
 class CLI(object):
@@ -144,6 +144,8 @@ class CLI(object):
                 log.setLevel(logging.DEBUG)
             elif self.verbose > 1:
                 log.setLevel(logging.INFO)
+            elif self.verbose > 0 and self._prog[0:6] != 'check_':
+                log.setLevel(logging.WARN)
             if self.options.debug:
                 # log.debug('enabling debug logging')
                 log.setLevel(logging.DEBUG)  # pragma: no cover
