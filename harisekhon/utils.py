@@ -131,11 +131,14 @@ def support_msg_api(repo=None):
     return 'API may have changed. ' + support_msg(repo)
 
 
-# also doesn't work in Py3K
-# def autoflush():
+# doesn't work in Py3K
+# Intended for use with CLI tools - will reset stdout which will clash with frameworks that already do this to try to capture stdout, for example by using StringIO
+def autoflush():
     # this line causes instant exit code 1
-    # unbuffered = os.fdopen(sys.stdout.fileno(), 'w', 0)
-    # sys.stdout = unbuffered
+    unbuffered = os.fdopen(sys.__stdout__.fileno(), 'w', 0)
+    orig_stdout = sys.stdout
+    sys.stdout = unbuffered
+    return orig_stdout
 
 def printerr(msg, indent=False):
     if indent:
