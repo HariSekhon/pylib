@@ -91,7 +91,6 @@ apk-packages-remove:
 	$(SUDO) apk del libffi-dev
 	$(SUDO) apk del linux-headers
 	$(SUDO) apk del openssl-dev
-	$(SUDO) apk del py-pip
 	$(SUDO) apk del python-dev
 	$(SUDO) apk del snappy-dev
 	$(SUDO) apk del wget
