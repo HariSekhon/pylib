@@ -1947,6 +1947,7 @@ def validate_regex(arg, name=''):
     if name:
         name += ' '
     if isRegex(arg):
+        log_option('{0}regex'.format(name), arg)
         return True
     raise InvalidOptionException("invalid %(name)sregex '%(arg)s' defined" % locals())
 
