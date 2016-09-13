@@ -48,7 +48,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.7'
+__version__ = '0.8.8'
 
 
 class CLI(object):
@@ -78,9 +78,8 @@ class CLI(object):
         self.__timeout_max = 86400
         self.topfile = get_topfile()
         # this gets utrunner.py in PyCharm and runpy.py from unittest
-        if os.path.basename(self.topfile) in ('utrunner.py', 'runpy.py'):
+        if os.path.basename(self.topfile) in ('utrunner.py', 'runpy.py', 'ipython'):
             self.topfile = __file__
-        #print('topfile = %s' % self.topfile)
         self._docstring = get_file_docstring(self.topfile)
         if self._docstring:
             self._docstring = '\n' + self._docstring.strip() + '\n'
