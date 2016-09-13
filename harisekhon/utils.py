@@ -217,6 +217,9 @@ def get_topfile():
     # filename = os.path.splitext(filename)[0] + '.py'
     filename = re.sub('.pyc$', '.py', filename)
     assert isStr(filename)
+    # this gets utrunner.py in PyCharm and runpy.py from unittest
+    if os.path.basename(filename) in ('utrunner.py', 'runpy.py', 'ipython'):
+        return __file__
     # workaround for interactive mode
     if filename == '<stdin>':
         return ''

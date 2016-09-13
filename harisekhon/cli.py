@@ -77,9 +77,6 @@ class CLI(object):
         self.__timeout_default = 10
         self.__timeout_max = 86400
         self.topfile = get_topfile()
-        # this gets utrunner.py in PyCharm and runpy.py from unittest
-        if os.path.basename(self.topfile) in ('utrunner.py', 'runpy.py', 'ipython'):
-            self.topfile = __file__
         self._docstring = get_file_docstring(self.topfile)
         if self._docstring:
             self._docstring = '\n' + self._docstring.strip() + '\n'
