@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.9'
+__version__ = '0.10.10'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -234,7 +234,15 @@ def get_file_docstring(filename):
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
-    _ = ast.parse(open(filename).read(), filename=filename, mode='exec')
+    file_contents = open(filename).read()
+    # binary, maybe started with python command
+    if '\0' in file_contents:
+        #file_contents = ''
+        return ''
+    try:
+        _ = ast.parse(file_contents, filename=filename, mode='exec')
+    except TypeError:
+        return ''
     return ast.get_docstring(_)
     # inspect.getdoc is another option but looks like it'll only get docstring of object, we want file/module
 ###### old way #####
@@ -1947,6 +1955,7 @@ def validate_regex(arg, name=''):
     if name:
         name += ' '
     if isRegex(arg):
+        log_option('{0}regex'.format(name), arg)
         return True
     raise InvalidOptionException("invalid %(name)sregex '%(arg)s' defined" % locals())
 
