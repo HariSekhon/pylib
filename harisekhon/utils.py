@@ -132,7 +132,8 @@ def support_msg_api(repo=None):
 
 
 # doesn't work in Py3K
-# Intended for use with CLI tools - will reset stdout which will clash with frameworks that already do this to try to capture stdout, for example by using StringIO
+# Intended for use with CLI tools - will reset stdout which will clash with frameworks
+# that already do this to try to capture stdout, for example by using StringIO
 def autoflush():
     # this line causes instant exit code 1
     unbuffered = os.fdopen(sys.__stdout__.fileno(), 'w', 0)
@@ -402,13 +403,13 @@ def dict_lines(arg):
 
 def find_git_root(target):
     target = os.path.abspath(target)
-    log.debug("finding git root for target '{0}'".format(target))
+    log.debug("finding git root for target '%s'", target)
     gitroot = target
     while gitroot and gitroot != '/':
-        log.debug("trying '{0}'".format(gitroot))
+        log.debug("trying '%s'", gitroot)
         # os.path.isdir doesn't work on git submodule Dockerfiles in PyTools repo :-/
         if os.path.exists(os.path.join(gitroot, '.git')):
-            log.debug("found git root for target '{0}': '{1}'".format(target, gitroot))
+            log.debug("found git root for target '%s': '%s'", target, gitroot)
             return gitroot
         gitroot = os.path.dirname(gitroot)
     return None
