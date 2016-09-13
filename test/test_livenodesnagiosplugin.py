@@ -34,6 +34,7 @@ sys.path.append(libdir)
 from harisekhon.utils import log
 from harisekhon.nagiosplugin import LiveNodesNagiosPlugin
 
+
 class LiveNodesNagiosPluginTester(unittest.TestCase):
 
     # must prefix with test_ in order for the tests to be called
