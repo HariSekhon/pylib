@@ -48,7 +48,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.8'
+__version__ = '0.8.9'
 
 
 class CLI(object):
@@ -143,9 +143,11 @@ class CLI(object):
             elif self.verbose > 0 and self._prog[0:6] != 'check_':
                 log.setLevel(logging.WARN)
             if self.options.debug:
-                # log.debug('enabling debug logging')
                 log.setLevel(logging.DEBUG)  # pragma: no cover
-            log.info('verbose level: %s', self.verbose)
+                log.debug('enabling debug logging')
+                if self.verbose < 3:
+                    self.verbose = 3
+            log.info('verbose level: %s (%s)', self.verbose, logging.getLevelName(log.getEffectiveLevel()))
             if self.timeout is not None:
                 validate_int(self.timeout, 'timeout', 0, self.timeout_max)
                 log.debug('setting timeout alarm (%s)', self.timeout)
