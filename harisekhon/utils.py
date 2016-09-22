@@ -1717,8 +1717,6 @@ def validate_filename(arg, name='', nolog=False):
 
 def validate_file(arg, name='', nolog=False):
     # ends up with double spacing as validate_filename also adds
-    #if name:
-    #    name += ' '
     # if not arg:
     #     raise InvalidOptionException('%(name)sfilename not defined' % locals())
     validate_filename(arg, name, nolog=nolog)
@@ -1726,6 +1724,8 @@ def validate_file(arg, name='', nolog=False):
         # if not nolog:
         #     log_option('%(name)sfile' locals(), arg)
         return True
+    if name:
+        name += ' '
     raise InvalidOptionException("%(name)sfile not found: '%(arg)s'" % locals())
 
 
