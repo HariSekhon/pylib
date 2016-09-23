@@ -15,6 +15,7 @@
 
 set -euo pipefail
 srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+[ -n "$DEBUG" ] && set -x
 
 echo "
 # ================== #
@@ -22,18 +23,18 @@ echo "
 # ================== #
 "
 
-cd "$srcdir";
+cd "$srcdir/..";
 
 #./syntax.sh
 ./pylint.sh
 
 #./python3.sh
 
-../bash-tools/python_compile.sh
+bash-tools/python_compile.sh
 
-../bash-tools/python_find_quit.sh
+bash-tools/python_find_quit.sh
 
-../bash-tools/run_tests.sh
+bash-tools/run_tests.sh
 
 #./help.sh
 
