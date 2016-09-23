@@ -14,8 +14,8 @@
 #
 
 set -euo pipefail
-srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 [ -n "${DEBUG:-}" ] && set -x
+srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "
 # ================== #
