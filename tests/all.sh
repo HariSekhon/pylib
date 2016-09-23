@@ -26,7 +26,7 @@ echo "
 cd "$srcdir/..";
 
 #./syntax.sh
-./pylint.sh
+tests/pylint.sh
 
 #./python3.sh
 
