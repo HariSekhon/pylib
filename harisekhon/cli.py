@@ -48,7 +48,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.9'
+__version__ = '0.8.10'
 
 
 class CLI(object):
@@ -136,7 +136,9 @@ class CLI(object):
             # too late
             # os.environ['PYTHONUNBUFFERED'] = "anything"
             self.verbose = self.get_opt('verbose')
-            if self.verbose > 2:
+            if self.get_opt('quiet'):
+                self.verbose = 0
+            elif self.verbose > 2:
                 log.setLevel(logging.DEBUG)
             elif self.verbose > 1:
                 log.setLevel(logging.INFO)
@@ -156,6 +158,7 @@ class CLI(object):
             # if self.options.version:
             #     print(self.version)
             #     sys.exit(ERRORS['UNKNOWN'])
+            self.process_options()
             self.process_args()
             try:
                 self.run()
@@ -333,6 +336,9 @@ class CLI(object):
     def process_args(self):
         pass
 
+    def process_options(self):
+        pass
+
     def add_hostoption(self, name='', default_host=None, default_port=None):
         name2 = ''
         # if isList(name):
@@ -358,6 +364,9 @@ class CLI(object):
         self.add_opt('-u', '--user', dest='user', help='%sUsername (%s)' % (name2, user_envs), default=default_user)
         self.add_opt('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
                      default=default_password)
+
+    def add_quietoption(self):
+        self.add_opt('-q', '--quiet', action='store_true', help='Quiet mode')
 
     @abstractmethod
     def run(self):  # pragma: no cover
