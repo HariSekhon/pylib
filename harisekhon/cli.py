@@ -136,7 +136,7 @@ class CLI(object):
             # too late
             # os.environ['PYTHONUNBUFFERED'] = "anything"
             self.verbose = self.get_opt('verbose')
-            if self.get_opt('quiet'):
+            if self.is_option_defined('quiet') and self.get_opt('quiet'):
                 self.verbose = 0
             elif self.verbose > 2:
                 log.setLevel(logging.DEBUG)
