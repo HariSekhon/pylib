@@ -1038,6 +1038,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isUrl(1))
         self.assertFalse(isUrl('-help'))
         self.assertTrue(isUrl('http://cdh43:50070/dfsnodelist.jsp?whatNodes=LIVE'))
+        self.assertTrue(isUrl('http://namenode:50070/dfshealth.html#tab-overview'))
         self.assertFalse(isUrl(' '))
         self.assertFalse(isUrl(None))
 

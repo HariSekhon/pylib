@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.10'
+__version__ = '0.10.11'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -688,7 +688,7 @@ host_regex             = r'\b(?:' + hostname_regex + '|' + ip_regex + r')\b'
 # what this regex should be. Incidentally it appears that Linux truncates registered process names to 15 chars.
 # This is not from ps -ef etc it is the actual process registered name, hence init not [init] as it appears in ps output
 process_name_regex     = r'\s*[\w_\.\/\<\>-][\w\s_\.\/\<\>-]+'
-url_path_suffix_regex  = r'/(?:[\w.,:\/%&?!=*|\[\]~+-]+)?'
+url_path_suffix_regex  = r'/(?:[\w.,:\/%&?#!=*|\[\]~+-]+)?'
 url_regex              = r'(?i)\bhttps?://' + host_regex + r'(?::\d{1,5})?(?:' + url_path_suffix_regex + ')?'
 user_regex             = r'\b[A-Za-z][A-Za-z0-9_-]*[A-Za-z0-9]\b'
 column_regex           = r'\b[\w\:]+\b'
