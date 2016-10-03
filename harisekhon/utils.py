@@ -1829,8 +1829,8 @@ def validate_host_list(arg, name=''):
         raise InvalidOptionException('%(name)shost list not defined' % locals())
     if not isList(arg):
         raise InvalidOptionException('%(name)s host list is not a list!' % locals())
-    for _ in range(len(arg)):
-        validate_host(arg[_], name + 'index {0}'.format(_ + 1))
+    for (index, host) in enumerate(arg):
+        validate_host(host, name + 'index {0}'.format(index + 1))
     return True
 
 
@@ -1867,7 +1867,6 @@ def validate_hostport_list(arg, name='', port_optional=False):
             raise InvalidOptionException('port suffix is mandatory for every host!')
         else:
             validate_host(host)
-        pass
     return True
 
 
