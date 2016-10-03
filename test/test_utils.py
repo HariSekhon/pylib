@@ -335,9 +335,9 @@ class UtilsTester(unittest.TestCase):
         # reset the TLDs
         utils._tlds = tlds
 
-    # ============================================================================ #
+# ============================================================================ #
     #                               PySpark
-    # ============================================================================ #
+# ============================================================================ #
 
     def test_pyspark_path(self):
         os.environ['SPARK_HOME'] = ''
@@ -366,9 +366,9 @@ class UtilsTester(unittest.TestCase):
         #         if  _.code != 3:
         #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
 
-    # ============================================================================ #
+# ============================================================================ #
     #                               Jython
-    # ============================================================================ #
+# ============================================================================ #
 
     def test_isJython(self):
         self.assertFalse(isJython())
@@ -403,9 +403,9 @@ class UtilsTester(unittest.TestCase):
         # assertIn >= Python 2.7
         self.assertTrue('-J' in java_oom_fix_msg())
 
-    # ============================================================================ #
+# ============================================================================ #
     #                          OS Validation Functions
-    # ============================================================================ #
+# ============================================================================ #
 
     def test_isOS(self):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
@@ -464,9 +464,9 @@ class UtilsTester(unittest.TestCase):
         def test_linux_mac_only(self):
             self.assertTrue(linux_mac_only())
 
-        # ============================================================================ #
+# ============================================================================ #
         #                          Validation Functions
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_isAlNum(self):
         self.assertTrue(isAlNum('ABC123efg'))
@@ -1114,7 +1114,7 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isYaml(self.jsondata_broken))
         self.assertFalse(isYaml(None))
 
-    # ============================================================================ #
+# ============================================================================ #
 
     def test_min_value(self):
         self.assertEqual(min_value(1, 4), 4)
@@ -1349,9 +1349,9 @@ class UtilsTester(unittest.TestCase):
         except CodingError:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
         #                          Validation Functions
-        # ============================================================================ #
+# ============================================================================ #
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
     def test_validate_alnum(self):
@@ -1386,7 +1386,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_aws_access_key(self):
         self.assertTrue(validate_aws_access_key('A' * 20))
@@ -1412,7 +1412,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_aws_bucket(self):
         self.assertTrue(validate_aws_bucket('BucKeT63'))
@@ -1438,7 +1438,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_aws_secret_key(self):
         self.assertTrue(validate_aws_secret_key('A' * 40))
@@ -1473,7 +1473,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_chars(self):
         self.assertTrue(validate_chars('log_date=2015-05-23_10', 'validate chars', 'A-Za-z0-9_=-'))
@@ -1506,7 +1506,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_collection(self):
         self.assertTrue(validate_collection('students.grades'))
@@ -1533,7 +1533,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_database(self):
         self.assertTrue(validate_database('mysql', 'MySQL'))
@@ -1559,7 +1559,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_database_columnname(self):
         self.assertTrue(validate_database_columnname('myColumn_1'))
@@ -1585,7 +1585,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_database_fieldname(self):
         self.assertTrue(validate_database_fieldname('age'))
@@ -1613,7 +1613,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_database_tablename(self):
         self.assertTrue(validate_database_tablename('myTable', 'Hive'))
@@ -1640,7 +1640,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_database_viewname(self):
         self.assertTrue(validate_database_viewname('myview', 'Hive'))
@@ -1668,7 +1668,7 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_database_query_select_show(self):
         self.assertTrue(validate_database_query_select_show('select * from myTable', 'name'))
@@ -1711,7 +1711,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_dirname(self):
         self.assertTrue(validate_dirname('test_Dir', 'name'))
@@ -1739,7 +1739,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_directory(self):
         if isLinuxOrMac():
@@ -1767,7 +1767,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_domain(self):
         self.assertTrue(validate_domain('localDomain', 'name'))
@@ -1807,7 +1807,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_email(self):
         self.assertTrue(validate_email('hari\'sekhon@gmail.com'))
@@ -1834,7 +1834,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_filename(self):
         self.assertTrue(validate_filename('../utils.py', 'name'))
@@ -1864,7 +1864,7 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_file(self):
         self.assertTrue(validate_file(self.libfile, 'name'))
@@ -1892,7 +1892,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_files(self):
         self.assertTrue(validate_file(self.libfile, 'name'))
@@ -1944,7 +1944,7 @@ class UtilsTester(unittest.TestCase):
         except CodingError:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_float(self):
         self.assertTrue(validate_float(2, 'two', 0, 10))
@@ -1995,7 +1995,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_fqdn(self):
         self.assertTrue(validate_fqdn('www.harisekhon.com', 'name'))
@@ -2022,7 +2022,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_host(self):
         self.assertTrue(validate_host('harisekhon.com', 'name'))
@@ -2062,7 +2062,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_hostname(self):
         self.assertTrue(validate_hostname('harisekhon.com', 'name'))
@@ -2109,7 +2109,223 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-        # ============================================================================ #
+# ============================================================================ #
+
+    def test_validate_hosts(self):
+        self.assertTrue(validate_hosts('harisekhon.com,hmaster.domain.com', 'name'))
+        self.assertTrue(validate_hosts('harisekhon,broker1, broker2,broker3  ')) # intentional random comma whitespace
+        self.assertTrue(validate_hosts('ip-172-31-1-1'))
+        self.assertTrue(validate_hosts('10.10.10.1,10.10.10.10'))
+        self.assertTrue(validate_hosts('10.10.10.100'))
+        self.assertTrue(validate_hosts('10.10.10.0'))
+        self.assertTrue(validate_hosts('10.10.10.255'))
+
+    def test_validate_hosts_exception_ip(self):
+        try:
+            validate_hosts('10.10.10.1,10.10.10.256')
+            raise Exception('validate_hosts() failed to raise exception for 10.10.10.256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hosts_exception_a256(self):
+        try:
+            validate_hosts('10.10.10.1,' + 'a' * 256)
+            raise Exception('validate_hosts() failed to raise exception for a * 256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hosts_exception_none(self):
+        try:
+            validate_hosts(None)
+            raise Exception('validate_hosts() failed to raise exception for none')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hosts_exception_blank_element(self):
+        try:
+            validate_hosts('10.10.10.10,')
+            raise Exception('validate_hosts() failed to raise exception for blank')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hosts_exception_blank(self):
+        try:
+            validate_hosts('')
+            raise Exception('validate_hosts() failed to raise exception for blank')
+        except InvalidOptionException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_host_list(self):
+        self.assertTrue(validate_host_list(['harisekhon.com', 'hmaster.domain.com'], 'name'))
+        self.assertTrue(validate_host_list(['harisekhon', 'broker1', 'broker2', 'broker3']))
+        self.assertTrue(validate_host_list(['ip-172-31-1-1']))
+        self.assertTrue(validate_host_list(['10.10.10.1', '10.10.10.10']))
+        self.assertTrue(validate_host_list(['10.10.10.100']))
+        self.assertTrue(validate_host_list(['10.10.10.0']))
+        self.assertTrue(validate_host_list(['10.10.10.255']))
+
+    def test_validate_host_list_exception_ip(self):
+        try:
+            validate_host_list(['10.10.10.1', '10.10.10.256'])
+            raise Exception('validate_host_list() failed to raise exception for 10.10.10.256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_host_list_exception_a256(self):
+        try:
+            validate_host_list(['10.10.10.1', 'a' * 256])
+            raise Exception('validate_host_list() failed to raise exception for a * 256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_host_list_exception_non_list(self):
+        try:
+            validate_host_list('test')
+            raise Exception('validate_host_list() failed to raise exception for test non-list')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_host_list_exception_none(self):
+        try:
+            validate_host_list(None)
+            raise Exception('validate_host_list() failed to raise exception for none')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_host_list_exception_blank(self):
+        try:
+            validate_host_list([])
+            raise Exception('validate_host_list() failed to raise exception for blank list')
+        except InvalidOptionException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_hostport(self):
+        self.assertTrue(validate_hostport('harisekhon.com:80', 'name'))
+        self.assertTrue(validate_hostport('harisekhon.com', name='name', port_optional=True))
+        self.assertTrue(validate_hostport('harisekhon:443'))
+        self.assertTrue(validate_hostport('ip-172-31-1-1:80'))
+        self.assertTrue(validate_hostport('10.10.10.1:1024'))
+        self.assertTrue(validate_hostport('10.10.10.10:1'))
+        self.assertTrue(validate_hostport('10.10.10.100:65535'))
+        self.assertTrue(validate_hostport('10.10.10.0:80'))
+        self.assertTrue(validate_hostport('10.10.10.255:8080'))
+
+    def test_validate_hostport_exception_port_not_optional(self):
+        try:
+            validate_hostport('harisekhon.com')
+            raise Exception('validate_hostport() failed to raise exception for harisekhon.com when port not optional')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_exception_port(self):
+        try:
+            validate_hostport('10.10.10.1:65536')
+            raise Exception('validate_hostport() failed to raise exception for 10.10.10.1:65536')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_exception_ip(self):
+        try:
+            validate_hostport('10.10.10.256:80')
+            raise Exception('validate_hostport() failed to raise exception for 10.10.10.256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_exception_a256(self):
+        try:
+            validate_hostport('a' * 256 + ':80')
+            raise Exception('validate_hostport() failed to raise exception for a * 256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_exception_non_list(self):
+        try:
+            validate_hostport('test')
+            raise Exception('validate_hostport() failed to raise exception for test non-list')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_exception_none(self):
+        try:
+            validate_hostport(None)
+            raise Exception('validate_hostport() failed to raise exception for none')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_exception_blank(self):
+        try:
+            validate_hostport('')
+            raise Exception('validate_hostport() failed to raise exception for blank')
+        except InvalidOptionException:
+            pass
+
+# ============================================================================ #
+
+    def test_validate_hostport_list(self):
+        self.assertTrue(validate_hostport_list(['harisekhon.com:80', 'hmaster.domain.com:16010'], 'name'))
+        self.assertTrue(validate_hostport_list(['harisekhon.com'], name='name', port_optional=True))
+        self.assertTrue(validate_hostport_list(['harisekhon:443']))
+        self.assertTrue(validate_hostport_list(['ip-172-31-1-1:80']))
+        self.assertTrue(validate_hostport_list(['10.10.10.1:1024']))
+        self.assertTrue(validate_hostport_list(['10.10.10.10:1']))
+        self.assertTrue(validate_hostport_list(['10.10.10.100:65535']))
+        self.assertTrue(validate_hostport_list(['10.10.10.0:80']))
+        self.assertTrue(validate_hostport_list(['10.10.10.255:8080']))
+
+    def test_validate_hostport_list_exception_port_not_optional(self):
+        try:
+            validate_hostport_list(['harisekhon.com'])
+            raise Exception('validate_hostport_list() failed to raise exception for harisekhon.com when port not optional')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_list_exception_port(self):
+        try:
+            validate_hostport_list(['10.10.10.1:65536'])
+            raise Exception('validate_hostport_list() failed to raise exception for 10.10.10.1:65536')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_list_exception_ip(self):
+        try:
+            validate_hostport_list(['10.10.10.256:80'])
+            raise Exception('validate_hostport_list() failed to raise exception for 10.10.10.256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_list_exception_a256(self):
+        try:
+            validate_hostport_list(['a' * 256 + ':80'])
+            raise Exception('validate_hostport_list() failed to raise exception for a * 256')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_list_exception_none(self):
+        try:
+            validate_hostport_list(None)
+            raise Exception('validate_hostport_list() failed to raise exception for none')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_list_exception_blank_element(self):
+        try:
+            validate_hostport_list(['10.10.10.10', ''])
+            raise Exception('validate_hostport_list() failed to raise exception for list with blank entry')
+        except InvalidOptionException:
+            pass
+
+    def test_validate_hostport_list_exception_blank_list(self):
+        try:
+            validate_hostport_list([])
+            raise Exception('validate_hostport_list() failed to raise exception for blank list')
+        except InvalidOptionException:
+            pass
+
+# ============================================================================ #
 
     def test_validate_int(self):
         self.assertTrue(validate_int(2, 'two', 0, 10))
@@ -2170,7 +2386,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_interface(self):
         self.assertTrue(validate_interface('eth0'))
@@ -2207,7 +2423,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_ip(self):
         self.assertTrue(validate_ip('10.10.10.1', 'name'))
@@ -2247,7 +2463,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_krb5_princ(self):
         self.assertTrue(validate_krb5_princ('tgt/HARI.COM@HARI.COM', 'name'))
@@ -2279,7 +2495,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_krb5_realm(self):
         self.assertTrue(validate_krb5_realm('localDomain', 'name'))
@@ -2319,7 +2535,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_label(self):
         self.assertTrue(validate_label('st4ts_used (%)'))
@@ -2345,7 +2561,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_ldap_dn(self):
         self.assertTrue(validate_ldap_dn('uid=hari,cn=users,cn=accounts,dc=local'))
@@ -2372,7 +2588,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_nosql_key(self):
         self.assertTrue(validate_nosql_key('HariSekhon:check_riak_write.pl:riak1:1385226607.02182:20abc'))
@@ -2399,7 +2615,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_port(self):
         self.assertTrue(validate_port(1, 'name'))
@@ -2448,7 +2664,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_process_name(self):
         self.assertTrue(validate_process_name('../my_program', 'name'))
@@ -2483,7 +2699,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_password(self):
         self.assertTrue(validate_password('wh@tev3r', 'name'))
@@ -2531,7 +2747,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_regex(self):
         self.assertTrue(validate_regex('.*'))
@@ -2558,7 +2774,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_units(self):
         self.assertTrue(validate_units('s', 'name'))
@@ -2594,7 +2810,7 @@ class UtilsTester(unittest.TestCase):
             pass
 
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_url(self):
         self.assertTrue(validate_url('www.google.com', 'name'))
@@ -2624,7 +2840,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_url_path_suffix(self):
         self.assertTrue(validate_url_path_suffix('/', 'name'))
@@ -2654,7 +2870,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_validate_user(self):
         self.assertTrue(validate_user('hadoop', 'name'))
@@ -2690,7 +2906,7 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-        # ============================================================================ #
+# ============================================================================ #
 
     def test_vlog(self):
         vlog('vlog test')
@@ -2704,7 +2920,7 @@ class UtilsTester(unittest.TestCase):
     def test_log_option(self):
         log_option('log_option', 'test')
 
-    # ============================================================================ #
+# ============================================================================ #
 
     if isLinuxOrMac():
         def test_which(self):
