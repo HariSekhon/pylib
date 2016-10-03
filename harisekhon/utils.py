@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.11'
+__version__ = '0.10.12'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1798,9 +1798,6 @@ def validate_host(arg, name=''):
     raise InvalidOptionException("invalid %(name)shost '%(arg)s' defined: not a valid hostname or IP address"
                                  % locals())
 
-# def validate_hosts
-# def validate_hostport
-
 
 def validate_hostname(arg, name=''):
     if name:
@@ -1811,6 +1808,67 @@ def validate_hostname(arg, name=''):
         log_option('%(name)shostname' % locals(), arg)
         return True
     raise InvalidOptionException("invalid %(name)shostname '%(arg)s' defined: not a valid hostname" % locals())
+
+
+def validate_hosts(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionException('%(name)shosts not defined' % locals())
+    arg = str(arg)
+    host_list = [host.strip() for host in arg.split(',')]
+    if not host_list:
+        raise InvalidOptionException('%(name)shosts list is empty' % locals())
+    return validate_host_list(host_list, name.strip())
+
+
+def validate_host_list(arg, name=''):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionException('%(name)shost list not defined' % locals())
+    if not isList(arg):
+        raise InvalidOptionException('%(name)s host list is not a list!' % locals())
+    for _ in range(len(arg)):
+        validate_host(arg[_], name + 'index {0}'.format(_ + 1))
+    return True
+
+
+def validate_hostport(arg, name='', port_optional=False):
+    if name:
+        name += ' '
+    if not arg:
+        raise InvalidOptionException('%(name)shost:port not defined' % locals())
+    try:
+        parts = arg.split(':')
+        len_parts = len(parts)
+        if len_parts == 1 and port_optional is True:
+            validate_host(parts[0])
+            return True
+        elif len(parts) == 2 and isHost(parts[0]) and isPort(parts[1]):
+            log_option('%(name)shost:port' % locals(), arg)
+            return True
+        raise ValueError
+    except ValueError:
+        raise InvalidOptionException("invalid %(name)shost:port '%(arg)s' defined: " % locals() +
+                                     "not a valid hostname /IP address + port combination")
+
+def validate_hostport_list(arg, name='', port_optional=False):
+    if name:
+        name += ' '
+    if not isList(arg):
+        raise InvalidOptionException('%(name)s host:port list is not a list!' % locals())
+    if not arg:
+        raise InvalidOptionException('empty %(name)shost:port list' % locals())
+    for host in arg:
+        if ':' in host:
+            validate_hostport(host)
+        elif port_optional is not True:
+            raise InvalidOptionException('port suffix is mandatory for every host!')
+        else:
+            validate_host(host)
+        pass
+    return True
 
 
 def validate_int(arg, name, my_min, my_max):
@@ -1902,9 +1960,6 @@ def validate_ldap_dn(arg, name=''):
 
 
 # validate_metrics
-# validate_node_list
-# validate_nodeport_list
-
 
 def validate_nosql_key(arg, name=''):
     if name:
