@@ -48,7 +48,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.10'
+__version__ = '0.8.11'
 
 
 class CLI(object):
@@ -226,9 +226,9 @@ class CLI(object):
 
     @timeout.setter
     def timeout(self, secs):
-        if not isInt(secs):
-            raise CodingError('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
         validate_int(secs, 'timeout', 0, self.timeout_max)
+        #if not isInt(secs):
+        #    raise CodingError('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
         log.debug('setting timeout to %s secs', secs)
         self.__timeout = int(secs)
 
