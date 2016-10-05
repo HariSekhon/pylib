@@ -166,7 +166,7 @@ class CLITester(unittest.TestCase):
         try:
             self.cli.timeout = None
             raise Exception('failed to raise CodingError for CLI.timeout = None')
-        except CodingError:
+        except InvalidOptionException:
             pass
         self.cli.main()
 
@@ -180,7 +180,7 @@ class CLITester(unittest.TestCase):
         try:
             self.cli.timeout = 'a'
             raise Exception('failed to raise CodingError for CLI.timeout = a')
-        except CodingError:
+        except InvalidOptionException:
             pass
 
     def test_set_timeout_max_set_timeout_exception(self):
