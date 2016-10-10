@@ -87,6 +87,8 @@ class UtilsTester(unittest.TestCase):
     def test_printerr(self):
         printerr('testing')
         printerr('testing', True)
+        printerr()
+        printerr(None, True)
 
     def test_warn(self):
         warn('testing')

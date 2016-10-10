@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.12'
+__version__ = '0.10.13'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -141,10 +141,14 @@ def autoflush():
     sys.stdout = unbuffered
     return orig_stdout
 
-def printerr(msg, indent=False):
+
+def printerr(msg=None, indent=False):
     if indent:
         print(">>> ", end='', file=sys.stderr)
-    print("%s" % msg, file=sys.stderr)
+    if msg is None:
+        print('', file=sys.stderr)
+    else:
+        print(msg, file=sys.stderr)
 
 
 def warn(msg):
