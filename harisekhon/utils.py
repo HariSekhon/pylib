@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.13'
+__version__ = '0.10.14'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -958,6 +958,9 @@ def isHost(arg):
     if arg is None:
         return False
     arg = str(arg)
+    # special case to short-circuit failure when chaining find_active_server.py
+    if arg in ('NO_SERVER_AVAILABLE', 'NO_HOST_AVAILABLE'):
+        return False
     if len(arg) > 255:
         return False
     if re.match('^' + host_regex + '$', str(arg)):

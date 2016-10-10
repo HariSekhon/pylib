@@ -730,6 +730,8 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isHost('10.10.10.100'))
         self.assertTrue(isHost('10.10.10.0'))
         self.assertTrue(isHost('10.10.10.255'))
+        self.assertFalse(isHost('NO_SERVER_AVAILABLE'))
+        self.assertFalse(isHost('NO_HOST_AVAILABLE'))
         self.assertFalse(isHost('10.10.10.256'))
         self.assertFalse(isHost('a' * 256))
         self.assertFalse(isHost(' '))
