@@ -1349,6 +1349,14 @@ class UtilsTester(unittest.TestCase):
         except CodingError:
             pass
 
+    def test_merge_dicts(self):
+        self.assertEqual(merge_dicts({'key': 'one'}, {'count': 100}), {'key': 'one', 'count': 100})
+        try:
+            merge_dicts(self.myList, self.myDict)
+            raise Exception('failed to raise CodingError when passing non-dict to merge_dicts()')
+        except CodingError:
+            pass
+
 # ============================================================================ #
         #                          Validation Functions
 # ============================================================================ #

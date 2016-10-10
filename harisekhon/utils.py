@@ -1517,6 +1517,16 @@ def uniq_list_ordered(my_list):
     return [x for x in my_list if not (x in seen or seen_add(x))]
 
 
+def merge_dicts(*args):
+    '''Merge any number of dicts and return result. Precedence goes to key value pairs in latter dicts'''
+    tmp_dict = {}
+    for arg in args:
+        if not isDict(arg):
+            code_error('passed non-dictionary argument to merge_dicts()')
+        tmp_dict.update(arg)
+    return tmp_dict
+
+
 #def user_exists(user):
 
 
