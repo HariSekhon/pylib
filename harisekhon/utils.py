@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.14'
+__version__ = '0.10.15'
 
 # Standard Nagios return codes
 ERRORS = {
