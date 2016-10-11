@@ -30,7 +30,7 @@ endif
 .PHONY: build
 build:
 	if [ -x /sbin/apk ];        then make apk-packages; fi
-	if [ -x /usr/bin/apt-get ]; then make apt-packages; fi
+	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then make apt-packages; fi
 	if [ -x /usr/bin/yum ];     then make yum-packages; fi
 	
 	git submodule init
@@ -41,7 +41,7 @@ build:
 	#$(SUDO2) pip install mock
 	# upgrade required to get install to work properly on Debian
 	$(SUDO2) pip install --upgrade pip
-	$(SUDO2) pip install -r requirements.txt
+	$(SUDO2) pip install --upgrade -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
 	$(SUDO2) pip install --upgrade ndg-httpsclient || :
