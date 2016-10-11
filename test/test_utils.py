@@ -744,6 +744,8 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isHostname('1'))
         self.assertTrue(isHostname('harisekhon1.com'))
         self.assertTrue(isHostname('1harisekhon.com'))
+        self.assertFalse(isHostname('NO_SERVER_AVAILABLE'))
+        self.assertFalse(isHostname('NO_HOST_AVAILABLE'))
         self.assertFalse(isHostname('-help'))
         self.assertTrue(isHostname('a' * 63))
         self.assertFalse(isHostname('a' * 256))
