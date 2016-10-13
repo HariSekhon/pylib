@@ -699,6 +699,8 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isFloat(-1.1, True))
         self.assertTrue(isFloat('-1.1', True))
 
+        self.assertFalse(isFloat('2a'))
+        self.assertFalse(isFloat('a2'))
         self.assertFalse(isFloat('nan'))
         self.assertFalse(isFloat('nan', True))
 

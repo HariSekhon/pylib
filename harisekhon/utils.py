@@ -52,7 +52,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.15'
+__version__ = '0.10.16'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -927,7 +927,7 @@ def isFloat(arg, allow_negative=False):
     neg = ''
     if allow_negative is True:
         neg = '-?'
-    if re.match('^' + neg + r'\d+(?:\.\d+)?', str(arg)):
+    if re.match('^' + neg + r'\d+(?:\.\d+)?' + '$', str(arg)):
         return True
     return False
 
