@@ -16,6 +16,8 @@
 #  https://www.linkedin.com/in/harisekhon
 #
 
+# pylint: disable=too-many-lines
+
 """ Personal Library originally started to standardize Nagios Plugin development """
 
 from __future__ import absolute_import
@@ -52,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.16'
+__version__ = '0.10.17'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -116,7 +118,6 @@ log = logging.getLogger('HariSekhonUtils')
 #     sys.stderr = sys.stdout
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
-
 
 def support_msg(repo=None):
     if isBlankOrNone(repo):
@@ -445,7 +446,6 @@ class CodingError(AssertionError):
     pass
 
 
-# TODO: rename these all to not have the word Exception in them it's excessive
 class LinuxOnlyException(AssertionError):
     # def __init__(self, value):
     #     self.value = value
@@ -959,7 +959,7 @@ def isHost(arg):
         return False
     arg = str(arg)
     # special case to short-circuit failure when chaining find_active_server.py
-    if arg in ('NO_SERVER_AVAILABLE', 'NO_HOST_AVAILABLE'):
+    if is_str_server_not_available(arg):
         return False
     if len(arg) > 255:
         return False
@@ -973,7 +973,7 @@ def isHostname(arg):
         return False
     arg = str(arg)
     # special case to short-circuit failure when chaining find_active_server.py
-    if arg in ('NO_SERVER_AVAILABLE', 'NO_HOST_AVAILABLE'):
+    if is_str_server_not_available(arg):
         return False
     if len(arg) > 255:
         return False
@@ -1388,6 +1388,15 @@ def min_value(val, min_val):
 # open_file
 
 
+def is_str_server_not_available(arg):
+    host = r'(?:server|host)'
+    if re.search(r'\b(?:no[\s_]+{host}[\s_]+available|'.format(host=host) +
+                 r'no[\s_]+available[\s_]+{host}|'.format(host=host) +
+                 r'{host}[\s_]+not[\s_]+available)\b'.format(host=host), str(arg), re.I):
+        return True
+    return False
+
+
 def perf_suffix(arg):
     if arg is None:
         return ''
@@ -1660,7 +1669,7 @@ def validate_database_viewname(arg, name='', allow_qualified=False):
     raise InvalidOptionException("invalid %(name)sview '%(arg)s' defined: must be alphanumeric" % locals())
 
 
-def validate_database_query_select_show(arg, name=''):
+def validate_database_query_select_show(arg, name=''):  # pylint: disable=invalid-name
     if name:
         name += " "
     if not arg:
@@ -1812,6 +1821,8 @@ def validate_host(arg, name=''):
         name += ' '
     if not arg:
         raise InvalidOptionException('%(name)shost not defined' % locals())
+    if is_str_server_not_available(arg):
+        raise CriticalError(arg)
     if isHost(arg):
         log_option('%(name)shost' % locals(), arg)
         return True
@@ -1824,6 +1835,8 @@ def validate_hostname(arg, name=''):
         name += ' '
     if not arg:
         raise InvalidOptionException('%(name)shostname not defined' % locals())
+    if is_str_server_not_available(arg):
+        raise CriticalError(arg)
     if isHostname(arg):
         log_option('%(name)shostname' % locals(), arg)
         return True
@@ -1835,6 +1848,8 @@ def validate_hosts(arg, name=''):
         name += ' '
     if not arg:
         raise InvalidOptionException('%(name)shosts not defined' % locals())
+    if is_str_server_not_available(arg):
+        raise CriticalError(arg)
     arg = str(arg)
     host_list = [host.strip() for host in arg.split(',')]
     if not host_list:
@@ -1850,6 +1865,8 @@ def validate_host_list(arg, name=''):
     if not isList(arg):
         raise InvalidOptionException('%(name)s host list is not a list!' % locals())
     for (index, host) in enumerate(arg):
+        if is_str_server_not_available(host):
+            raise CriticalError(host)
         validate_host(host, name + 'index {0}'.format(index + 1))
     return True
 
@@ -1860,12 +1877,15 @@ def validate_hostport(arg, name='', port_optional=False):
     if not arg:
         raise InvalidOptionException('%(name)shost:port not defined' % locals())
     try:
+        print(arg)
+        if is_str_server_not_available(arg):
+            raise CriticalError(arg)
         parts = arg.split(':')
-        len_parts = len(parts)
-        if len_parts == 1 and port_optional is True:
+        num_parts = len(parts)
+        if num_parts == 1 and port_optional is True:
             validate_host(parts[0])
             return True
-        elif len(parts) == 2 and isHost(parts[0]) and isPort(parts[1]):
+        elif num_parts == 2 and isHost(parts[0]) and isPort(parts[1]):
             log_option('%(name)shost:port' % locals(), arg)
             return True
         raise ValueError
@@ -1881,6 +1901,8 @@ def validate_hostport_list(arg, name='', port_optional=False):
     if not arg:
         raise InvalidOptionException('empty %(name)shost:port list' % locals())
     for host in arg:
+        if is_str_server_not_available(arg):
+            raise CriticalError(arg)
         if ':' in host:
             validate_hostport(host)
         elif port_optional is not True:
