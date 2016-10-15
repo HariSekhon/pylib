@@ -1877,7 +1877,6 @@ def validate_hostport(arg, name='', port_optional=False):
     if not arg:
         raise InvalidOptionException('%(name)shost:port not defined' % locals())
     try:
-        print(arg)
         if is_str_server_not_available(arg):
             raise CriticalError(arg)
         parts = arg.split(':')
