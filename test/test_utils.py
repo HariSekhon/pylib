@@ -302,7 +302,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_env_lines(self):
         print(env_lines())
-        self.assertTrue(re.search('\n\w+\s+=\s+\w+\n', env_lines()))
+        self.assertTrue(re.search(r'\n\w+\s+=\s+\w+\n', env_lines()))
 
     def test_check_tldcount(self):
         utils._check_tldcount()
@@ -347,26 +347,26 @@ class UtilsTester(unittest.TestCase):
         os.environ['SPARK_HOME'] = 'nonexistentdir'
         pyspark_path()
 
-        # can't really test successful import because spark is so long to download
-        # def test_import_pyspark(self):
-        #     os.environ['SPARK_HOME'] = ''
-        #     try:
-        #         import_pyspark()
-        #         raise Exception('failed to raise import error when importing pyspark without SPARK_HOME set')
-        #     # except ImportError:
-        #     #    pass
-        #     except SystemExit, e:
-        #         if  _.code != 3:
-        #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
-        #     os.environ['SPARK_HOME'] = 'nonexistentdir'
-        #     try:
-        #         import_pyspark()
-        #         raise Exception('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
-        #     # except ImportError:
-        #     #     pass
-        #     except SystemExit, e:
-        #         if  _.code != 3:
-        #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
+    # can't really test successful import because spark is so long to download
+    # def test_import_pyspark(self):
+    #     os.environ['SPARK_HOME'] = ''
+    #     try:
+    #         import_pyspark()
+    #         raise Exception('failed to raise import error when importing pyspark without SPARK_HOME set')
+    #     # except ImportError:
+    #     #    pass
+    #     except SystemExit, e:
+    #         if  _.code != 3:
+    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
+    #     os.environ['SPARK_HOME'] = 'nonexistentdir'
+    #     try:
+    #         import_pyspark()
+    #         raise Exception('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
+    #     # except ImportError:
+    #     #     pass
+    #     except SystemExit, e:
+    #         if  _.code != 3:
+    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
 
 # ============================================================================ #
     #                               Jython
@@ -1272,8 +1272,10 @@ class UtilsTester(unittest.TestCase):
     def test_support_msg_api(self):
         print(support_msg_api())
         # avoid assertRegexpMatches as it's only available >= 2.7
-        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/testrepo/issues', support_msg_api('testrepo')))
-        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/pytools/issues', support_msg_api()))
+        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/testrepo/issues',
+                                  support_msg_api('testrepo')))
+        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/pytools/issues',
+                                  support_msg_api()))
 
     def test_skip_java_output(self):
         self.assertTrue(skip_java_output('Class JavaLaunchHelper is implemented in both'))
@@ -1331,6 +1333,25 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(sec2min(''), '')
         self.assertEqual(sec2min(' '), '')
         self.assertEqual(sec2min(None), '')
+
+    def test_is_str_server_not_available(self):
+        self.assertTrue(is_str_server_not_available('NO_AVAILABLE_SERVER'))
+        self.assertTrue(is_str_server_not_available('NO_AVAILABLE_HOST'))
+        self.assertTrue(is_str_server_not_available('NO_SERVER_AVAILABLE'))
+        self.assertTrue(is_str_server_not_available('NO_HOST_AVAILABLE'))
+        self.assertTrue(is_str_server_not_available('SERVER_NOT_AVAILABLE'))
+        self.assertTrue(is_str_server_not_available('HOST_NOT_AVAILABLE'))
+        self.assertTrue(is_str_server_not_available(' SERVER_NOT_AVAILABLE '))
+        self.assertTrue(is_str_server_not_available(' NO_AVAILABLE_SERVER '))
+        self.assertTrue(is_str_server_not_available(' no server available '))
+        self.assertTrue(is_str_server_not_available(' no host available '))
+        self.assertTrue(is_str_server_not_available(' server not available '))
+        self.assertTrue(is_str_server_not_available(' host not available '))
+        self.assertFalse(is_str_server_not_available('a'))
+        self.assertFalse(is_str_server_not_available('123'))
+        self.assertFalse(is_str_server_not_available(123))
+        self.assertFalse(is_str_server_not_available(''))
+        self.assertFalse(is_str_server_not_available(None))
 
     def test_timeout(self):
         set_timeout(5)
@@ -2050,6 +2071,13 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_host('10.10.10.0'))
         self.assertTrue(validate_host('10.10.10.255'))
 
+    def test_validate_host_no_host_exception(self):
+        try:
+            validate_host('NO_SERVER_AVAILABLE')
+            raise Exception('validate_host() failed to raise exception for NO_SERVER_AVAILABLE')
+        except CriticalError:
+            pass
+
     def test_validate_host_exception_ip(self):
         try:
             validate_host('10.10.10.256')
@@ -2088,6 +2116,13 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_hostname('harisekhon1.com'))
         self.assertTrue(validate_hostname('1harisekhon.com'))
         self.assertTrue(validate_hostname('a' * 63))
+
+    def test_validate_hostname_no_host_exception(self):
+        try:
+            self.assertTrue(validate_hostname('NO_SERVER_AVAILABLE'))
+            raise Exception('validate_hostname() failed to raise exception for NO_SERVER_AVAILABLE')
+        except CriticalError:
+            pass
 
     def test_validate_hostname_exception_help(self):
         try:
@@ -2135,6 +2170,13 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_hosts('10.10.10.100'))
         self.assertTrue(validate_hosts('10.10.10.0'))
         self.assertTrue(validate_hosts('10.10.10.255'))
+
+    def test_validate_hosts_no_host_exception(self):
+        try:
+            validate_hosts('10.10.10.10,NO_SERVER_AVAILABLE')
+            raise Exception('validate_hosts() failed to raise exception for NO_SERVER_AVAILBLE')
+        except CriticalError:
+            pass
 
     def test_validate_hosts_exception_ip(self):
         try:
@@ -2230,6 +2272,13 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_hostport('10.10.10.0:80'))
         self.assertTrue(validate_hostport('10.10.10.255:8080'))
 
+    def test_validate_hostport_no_host_exception(self):
+        try:
+            validate_hostport('SERVER_NOT_AVAILABLE')
+            raise Exception('validate_hostport() failed to raise exception for SERVER_NOT_AVAILABLE')
+        except CriticalError:
+            pass
+
     def test_validate_hostport_exception_port_not_optional(self):
         try:
             validate_hostport('harisekhon.com')
@@ -2292,10 +2341,18 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_hostport_list(['10.10.10.0:80']))
         self.assertTrue(validate_hostport_list(['10.10.10.255:8080']))
 
+    def test_validate_hostport_list_no_host_exception(self):
+        try:
+            validate_hostport_list(['SERVER_NOT_AVAILABLE'])
+            raise Exception('validate_hostport_list() failed to raise exception for SERVER_NOT_AVAILABLE')
+        except CriticalError:
+            pass
+
     def test_validate_hostport_list_exception_port_not_optional(self):
         try:
             validate_hostport_list(['harisekhon.com'])
-            raise Exception('validate_hostport_list() failed to raise exception for harisekhon.com when port not optional')
+            raise Exception('validate_hostport_list() failed to raise exception ' +
+                            'for harisekhon.com when port not optional')
         except InvalidOptionException:
             pass
 
