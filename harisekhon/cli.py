@@ -30,6 +30,7 @@ import logging
 import os
 import signal
 import sys
+import time
 from optparse import IndentedHelpFormatter
 from optparse import OptionParser
 from optparse import SUPPRESS_HELP
@@ -48,7 +49,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.11'
+__version__ = '0.8.12'
 
 
 class CLI(object):
@@ -76,6 +77,7 @@ class CLI(object):
         self.__timeout = None
         self.__timeout_default = 10
         self.__timeout_max = 86400
+        self.__total_run_time = time.time()
         self.topfile = get_topfile()
         self._docstring = get_file_docstring(self.topfile)
         if self._docstring:
@@ -377,4 +379,5 @@ class CLI(object):
         pass
 
     def __end__(self):
+        self.__total_run_time = time.time() - self.__total_run_time
         self.end()
