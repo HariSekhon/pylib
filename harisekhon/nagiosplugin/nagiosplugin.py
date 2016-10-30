@@ -22,6 +22,7 @@ from __future__ import print_function
 import os
 import re
 import sys
+import time
 # import traceback
 # import logging
 # Python 2.6+ only
@@ -36,7 +37,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.3'
+__version__ = '0.9.0'
 
 
 class NagiosPlugin(CLI):
@@ -130,7 +131,7 @@ class NagiosPlugin(CLI):
             return _
         except KeyError:
             raise CodingError("threshold '%s' does not exist. " % name +
-                                       "Invalid name passed to NagiosPlugin.check_threshold() - typo?")
+                              "Invalid name passed to NagiosPlugin.check_threshold() - typo?")
 
     def add_thresholds(self, name='', default_warning=None, default_critical=None, percent=False):
         if not isStr(name):
@@ -261,6 +262,10 @@ class NagiosPlugin(CLI):
         pass
 
     def __end__(self):
-        self.end()
+        super(NagiosPlugin, self).__end__()
+        # enabling this would break existing PNP4Nagios data due to the change in num perfdata fields
+        #if '|' not in self.msg:
+        #    self.msg += ' |'
+        #self.msg += ' check_time={0:.2f}s'.format(CLI.__total_plugin_time)
         log.info('end\n%s\n', '='*80)
         qquit(self.status, self.msg)
