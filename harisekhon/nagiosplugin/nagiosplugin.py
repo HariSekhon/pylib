@@ -22,7 +22,7 @@ from __future__ import print_function
 import os
 import re
 import sys
-import time
+#import time
 # import traceback
 # import logging
 # Python 2.6+ only
