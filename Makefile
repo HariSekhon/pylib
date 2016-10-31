@@ -6,6 +6,8 @@
 #
 #  License: see accompanying LICENSE file
 #
+#  https://www.linkedin.com/in/harisekhon
+#
 
 # Travis has custom python install earlier in $PATH even in Perl builds so need to install PyPI modules to non-system python otherwise they're not found by programs.
 # Better than modifying $PATH to put /usr/bin first which is likely to affect many other things including potentially not finding the perlbrew installation first
@@ -42,7 +44,7 @@ build:
 	$(SUDO2) pip install --upgrade -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
-	$(SUDO2) pip install --upgrade ndg-httpsclient || :
+	$(SUDO2) pip install --upgrade ndg-httpsclient || $(SUDO2) pip install --upgrade ndg-httpsclient
 	# Python 2.4 - 2.6 backports
 	#$(SUDO2) pip install argparse
 	#$(SUDO2) pip install unittest2
@@ -60,97 +62,37 @@ build:
 .PHONY: apk-packages
 apk-packages:
 	$(SUDO) apk update
-	$(SUDO) apk add \
-		alpine-sdk \
-		bash \
-		cyrus-sasl-dev \
-		gcc \
-		git \
-		krb5-dev \
-		libffi-dev \
-		linux-headers \
-		make \
-		openssl-dev \
-		py-pip \
-		python \
-		python-dev \
-		snappy-dev \
-		wget \
-		zip
+	$(SUDO) apk add `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/apk-packages.txt`
 	# Spark Java Py4J gets java linking error without this
 	if [ -f /lib/libc.musl-x86_64.so.1 ]; then [ -e /lib/ld-linux-x86-64.so.2 ] || ln -sv /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2; fi
 
 .PHONY: apk-packages-remove
 apk-packages-remove:
-	$(SUDO) apk del \
-		alpine-sdk \
-		bash \
-		cyrus-sasl-dev \
-		gcc \
-		krb5-dev \
-		libffi-dev \
-		linux-headers \
-		openssl-dev \
-		python-dev \
-		snappy-dev \
-		wget \
-		zip \
-		|| :
+	$(SUDO) apk del `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/apk-packages-dev.txt` || :
 	$(SUDO) rm -fr /var/cache/apk/*
 
 .PHONY: apt-packages
 apt-packages:
 	$(SUDO) apt-get update
-	$(SUDO) apt-get install -y build-essential
-	$(SUDO) apt-get install -y git
-	$(SUDO) apt-get install -y python-dev
-	$(SUDO) apt-get install -y python-setuptools
-	$(SUDO) apt-get install -y python-pip
-	# IPython Notebook fails and leave apt broken
-	# The following packages have unmet dependencies:
-	#  python-zmq : Depends: libzmq1 but it is not going to be installed
-	#  E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
-	#$(SUDO) apt-get install -y ipython-notebook || :
-	# for mysql_config to build MySQL-python
-	#$(SUDO) apt-get install -y libmysqlclient-dev || :
-	# needed for ndg-httpsclient upgrade
-	$(SUDO) apt-get install -y libffi-dev
+	$(SUDO) apt-get install -y `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/deb-packages.txt`
 
 .PHONY: apt-packages-remove
 apt-packages-remove:
-	$(SUDO) apt-get purge -y build-essential
-	$(SUDO) apt-get purge -y python-dev
-	$(SUDO) apt-get purge -y python-setuptools
-	$(SUDO) apt-get purge -y python-pip
-	$(SUDO) apt-get purge -y libffi-dev
+	$(SUDO) apt-get purge -y `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/deb-packages-dev.txt`
 
 .PHONY: yum-packages
 yum-packages:
-	rpm -q git               || $(SUDO) yum install -y git
-	rpm -q wget              || $(SUDO) yum install -y wget
-	rpm -q gcc               || $(SUDO) yum install -y gcc
 	# needed to fetch the library submodule and CPAN modules
+	rpm -q git  || $(SUDO) yum install -y git
+	rpm -q wget || $(SUDO) yum install -y wget
 	# python-pip requires EPEL, so try to get the correct EPEL rpm
-	rpm -q epel-release      || yum install -y epel-release || { wget -t 100 --retry-connrefused -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
-	# for mysql_config to build MySQL-python
-	rpm -q mysql-devel       || $(SUDO) yum install -y mysql-devel
-	rpm -q python-setuptools || $(SUDO) yum install -y python-setuptools
-	rpm -q python-pip        || $(SUDO) yum install -y python-pip
-	rpm -q python-devel      || $(SUDO) yum install -y python-devel
-	#rpm -q ipython-notebook || $(SUDO) yum install -y ipython-notebook || :
-	# needed for ndg-httpsclient upgrade
-	rpm -q libffi-devel      || $(SUDO) yum install -y libffi-devel
+	rpm -q epel-release || yum install -y epel-release || { wget -t 100 --retry-connrefused -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
+
+	for x in `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/rpm-packages.txt`; do rpm -q $$x || $(SUDO) yum install -y $$x; done
 
 .PHONY: yum-packages-remove
 yum-packages-remove:
-	rpm -q wget              && $(SUDO) yum remove -y wget
-	rpm -q gcc               && $(SUDO) yum remove -y gcc
-	rpm -q mysql-devel       && $(SUDO) yum remove -y mysql-devel
-	rpm -q python-setuptools && $(SUDO) yum remove -y python-setuptools
-	rpm -q python-pip        && $(SUDO) yum remove -y python-pip
-	rpm -q python-devel      && $(SUDO) yum remove -y python-devel
-	#rpm -q ipython-notebook && $(SUDO) yum remove -y ipython-notebook || :
-	rpm -q libffi-devel      && $(SUDO) yum remove -y libffi-devel
+	for x in `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/rpm-packages-dev.txt`; do rpm -q $$x && $(SUDO) yum remove -y $$x; done
 
 .PHONY: sonar
 sonar:
