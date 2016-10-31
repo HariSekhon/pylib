@@ -14,7 +14,7 @@
 # ============================================================================ #
 
 build-essential
-python-dev
-python-setuptools
-python-pip
 libffi-dev
+python-dev
+python-pip
+python-setuptools

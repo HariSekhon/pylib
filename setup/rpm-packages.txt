@@ -13,14 +13,16 @@
 #                          RPM Package Requirements
 # ============================================================================ #
 
-git
-wget
 gcc
+git
 # for mysql_config to build MySQL-python
 mysql-devel
 python-setuptools
 python-pip
 python-devel
-#ipython-notebook || :
+wget
+
 # needed for ndg-httpsclient upgrade
 libffi-devel
+
+#ipython-notebook || :

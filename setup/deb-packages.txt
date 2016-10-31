@@ -16,8 +16,9 @@
 build-essential
 git
 python-dev
-python-setuptools
 python-pip
+python-setuptools
+
 # needed for ndg-httpsclient upgrade
 libffi-dev
 

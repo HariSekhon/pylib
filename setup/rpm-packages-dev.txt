@@ -13,11 +13,11 @@
 #                          RPM Dev Package Requirements
 # ============================================================================ #
 
-wget
 gcc
-#ipython-notebook || :
-mysql-devel
-python-setuptools
-python-pip
-python-devel
 libffi-devel
+mysql-devel
+python-devel
+python-pip
+python-setuptools
+wget
+#ipython-notebook || :
