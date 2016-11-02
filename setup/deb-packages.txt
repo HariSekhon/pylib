@@ -1,0 +1,33 @@
+#
+#  Author: Hari Sekhon
+#  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
+#
+#  https://github.com/harisekhon/pytools
+#
+#  License: see accompanying LICENSE file
+#
+#  https://www.linkedin.com/in/harisekhon
+#
+
+# ============================================================================ #
+#                          Deb Package Requirements
+# ============================================================================ #
+
+build-essential
+git
+python-dev
+python-pip
+python-setuptools
+
+# needed for ndg-httpsclient upgrade
+libffi-dev
+
+# IPython Notebook fails and leave apt broken
+# The following packages have unmet dependencies:
+#  python-zmq : Depends: libzmq1 but it is not going to be installed
+#  E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
+#
+#ipython-notebook || :
+
+# for mysql_config to build MySQL-python
+#libmysqlclient-dev || :
