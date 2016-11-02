@@ -1933,7 +1933,7 @@ def validate_int(arg, name, my_min, my_max):
                                          % locals())
         log_option(name, arg)
         return True
-    raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be a real number" % locals())
+    raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be an integer" % locals())
 
 
 
