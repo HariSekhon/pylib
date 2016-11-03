@@ -1785,7 +1785,7 @@ def validate_files(arg, name=''):
     return files
 
 
-def validate_float(arg, name, my_min, my_max):
+def validate_float(arg, name, min_value, max_value):
     if not name:
         code_error('no name passed for second arg to validate_float()')
     if arg is None:
@@ -1793,14 +1793,14 @@ def validate_float(arg, name, my_min, my_max):
     if isFloat(arg, allow_negative=True):
         arg = float(arg)
         try:
-            my_min = float(my_min)
-            my_max = float(my_max)
+            min_value = float(min_value)
+            max_value = float(max_value)
         except ValueError as _:
-            code_error('invalid my_min/my_max (%(my_min)s/%(my_max)s) passed to validate_float(): %(_)s' % locals())
-        if arg >= my_min and arg <= my_max:
+            code_error('invalid min_value/max_value (%(min_value)s/%(max_value)s) passed to validate_float(): %(_)s' % locals())
+        if arg >= min_value and arg <= max_value:
             log_option(name, arg)
             return True
-        raise InvalidOptionException('invalid %(name)s defined: must be real number between %(my_min)s and %(my_max)s' \
+        raise InvalidOptionException('invalid %(name)s defined: must be real number between %(min_value)s and %(max_value)s' \
                                      % locals())
     raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be a real number" % locals())
 
@@ -1911,7 +1911,7 @@ def validate_hostport_list(arg, name='', port_optional=False):
     return True
 
 
-def validate_int(arg, name, my_min, my_max):
+def validate_int(arg, name, min_value, max_value):
     if not name:
         code_error('no name passed for second arg to validate_int()')
     if arg is None:
@@ -1919,17 +1919,17 @@ def validate_int(arg, name, my_min, my_max):
     if isInt(arg, allow_negative=True):
         arg = int(arg)
         try:
-            if my_min is not None:
-                my_min = int(my_min)
-            if my_max is not None:
-                my_max = int(my_max)
+            if min_value is not None:
+                min_value = int(min_value)
+            if max_value is not None:
+                max_value = int(max_value)
         except ValueError as _:
-            code_error('invalid my_min/my_max (%(my_min)s/%(my_max)s) passed to validate_int(): %(_)s' % locals())
-        if my_min is not None and arg < my_min:
-            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(my_min)s"
+            code_error('invalid min_value/max_value (%(min_value)s/%(max_value)s) passed to validate_int(): %(_)s' % locals())
+        if min_value is not None and arg < min_value:
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(min_value)s"
                                          % locals())
-        if my_max is not None and arg > my_max:
-            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be greater than %(my_max)s"
+        if max_value is not None and arg > max_value:
+            raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be greater than %(max_value)s"
                                          % locals())
         log_option(name, arg)
         return True
