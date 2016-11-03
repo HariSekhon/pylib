@@ -1984,6 +1984,7 @@ class UtilsTester(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_float(self):
+        self.assertTrue(validate_float(2, 'name'))
         self.assertTrue(validate_float(2, 'two', 0, 10))
         self.assertTrue(validate_float(-2, 'minus two', -10, 10))
         self.assertTrue(validate_float(2.1, 'two point one', 0, 10))
@@ -2401,6 +2402,7 @@ class UtilsTester(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_int(self):
+        self.assertTrue(validate_int(2, 'name'))
         self.assertTrue(validate_int(2, 'two', 0, 10))
         self.assertTrue(validate_int(-2, 'minus-two', -10, 10))
         self.assertTrue(validate_int(6, 'six', 5, 10))

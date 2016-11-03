@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.17'
+__version__ = '0.10.18'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1793,15 +1793,18 @@ def validate_float(arg, name, min_value=None, max_value=None):
     if isFloat(arg, allow_negative=True):
         arg = float(arg)
         try:
-            min_value = float(min_value)
-            max_value = float(max_value)
+            if min_value is not None:
+                min_value = float(min_value)
+            if max_value is not None:
+                max_value = float(max_value)
         except ValueError as _:
             code_error('invalid min_value/max_value (%(min_value)s/%(max_value)s) passed to validate_float(): %(_)s' % locals())
-        if arg >= min_value and arg <= max_value:
-            log_option(name, arg)
-            return True
-        raise InvalidOptionException('invalid %(name)s defined: must be real number between %(min_value)s and %(max_value)s' \
-                                     % locals())
+        if min_value is not None and arg < min_value:
+            raise InvalidOptionException('invalid %(name)s defined: cannot be less than %(min_value)s' % locals())
+        if max_value is not None and arg > max_value:
+            raise InvalidOptionException('invalid %(name)s defined: cannot be greater than %(max_value)s' % locals())
+        log_option(name, arg)
+        return True
     raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be a real number" % locals())
 
 
