@@ -1785,7 +1785,7 @@ def validate_files(arg, name=''):
     return files
 
 
-def validate_float(arg, name, min_value, max_value):
+def validate_float(arg, name, min_value=None, max_value=None):
     if not name:
         code_error('no name passed for second arg to validate_float()')
     if arg is None:
@@ -1911,7 +1911,7 @@ def validate_hostport_list(arg, name='', port_optional=False):
     return True
 
 
-def validate_int(arg, name, min_value, max_value):
+def validate_int(arg, name, min_value=None, max_value=None):
     if not name:
         code_error('no name passed for second arg to validate_int()')
     if arg is None:
