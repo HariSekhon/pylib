@@ -49,7 +49,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.12'
+__version__ = '0.8.13'
 
 
 class CLI(object):
@@ -94,15 +94,16 @@ class CLI(object):
         # prog = os.path.basename(sys.argv[0])
         self._prog = os.path.basename(self.topfile)
         self._github_repo = get_file_github_repo(self.topfile)
-        # if not self.github_repo:
-        #     self.github_repo = 'https://github.com/harisekhon/pytools'
-        if self._github_repo:
-            self._github_repo = ' - ' + self._github_repo
         # _hidden attributes are shown in __dict__
-        self.version = '%(_prog)s version %(_topfile_version)s ' % self.__dict__ + \
-                       '=>  CLI version %(_cli_version)s  =>  Utils version %(_utils_version)s' % self.__dict__
-        self.usagemsg = 'Hari Sekhon%(_github_repo)s\n\n%(_prog)s\n%(_docstring)s\n' \
-                        % self.__dict__
+        self.version = '{prog} version {topfile_version} '.format(prog=self._prog,
+                                                                  topfile_version=self._topfile_version) + \
+                       '=>  CLI version {cli_version} '.format(cli_version=self._cli_version) + \
+                       '=>  Utils version {utils_version}'.format(utils_version=self._utils_version)
+        self.usagemsg = 'Hari Sekhon{sep}{github_repo}\n\n{prog}\n{docstring}\n'.format(\
+                            sep=' - ' if self._github_repo else '',
+                            github_repo=self._github_repo,
+                            prog=self._prog,
+                            docstring=self._docstring)
         self.usagemsg_short = 'Hari Sekhon%(_github_repo)s\n\n' % self.__dict__
         # set this in simpler client programs when you don't want to exclude
         # self.__parser = OptionParser(usage=self.usagemsg_short, version=self.version)
@@ -151,6 +152,8 @@ class CLI(object):
                 log.debug('enabling debug logging')
                 if self.verbose < 3:
                     self.verbose = 3
+            log.info('Hari Sekhon %s', self.version)
+            log.info(self._github_repo)
             log.info('verbose level: %s (%s)', self.verbose, logging.getLevelName(log.getEffectiveLevel()))
             if self.timeout is not None:
                 validate_int(self.timeout, 'timeout', 0, self.timeout_max)
