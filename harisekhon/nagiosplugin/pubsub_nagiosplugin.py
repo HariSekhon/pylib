@@ -36,10 +36,10 @@ sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
 from harisekhon.utils import qquit, log, CodingError, CriticalError, UnknownError
-from harisekhon.utils import validate_host, validate_port, get_topfile, random_alnum
+from harisekhon.utils import validate_host, validate_port, validate_float, get_topfile, random_alnum
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2.2'
+__version__ = '0.3'
 
 
 class PubSubNagiosPlugin(NagiosPlugin):
@@ -77,14 +77,16 @@ class PubSubNagiosPlugin(NagiosPlugin):
         self._total_time = None
         self._precision = 3
         self.status = 'OK'
-        self.warning = 1
-        self.critical = 2
+        self.warning_threshold_default = 1
+        self.critical_threshold_default = 2
+        self.__sleep_secs = 0
 
     def add_options(self):
         if not self.name:
             raise CodingError("didn't name check, please set self.name in __init__()")
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
-        self.add_thresholds(default_warning=1, default_critical=2)
+        self.add_thresholds(default_warning=self.warning_threshold_default,
+                            default_critical=self.critical_threshold_default)
 
     def process_args(self):
         if not self.name:
@@ -95,6 +97,20 @@ class PubSubNagiosPlugin(NagiosPlugin):
         validate_host(self.host)
         validate_port(self.port)
         self.validate_thresholds()
+        sleep_secs = self.get_opt('sleep')
+        if sleep_secs:
+            # validation done through property wrapper
+            self.sleep_secs = sleep_secs
+
+    @property
+    def sleep_secs(self):
+        return self.__sleep_secs
+
+    @sleep_secs.setter
+    def sleep_secs(self, secs):
+        validate_float(secs, 'sleep_secs')
+        log.debug('setting sleep secs to %s secs', secs)
+        self.__sleep_secs = float(secs)
 
     def run(self):
         start = time.time()
@@ -106,6 +122,9 @@ class PubSubNagiosPlugin(NagiosPlugin):
         stop_publish = time.time()
         self._publish_time = round(stop_publish - start_publish, self._precision)
         log.info('published in %s secs', self._publish_time)
+        if self.sleep_secs:
+            log.info('sleeping for %s secs', self.sleep_secs)
+            time.sleep(self.sleep_secs)
         start_consume = time.time()
         self._consumed_message = self.consume()
         stop_consume = time.time()
