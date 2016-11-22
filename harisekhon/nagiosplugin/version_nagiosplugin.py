@@ -96,7 +96,7 @@ class VersionNagiosPlugin(NagiosPlugin):
             qquit('UNKNOWN', '{0} version unrecognized \'{1}\'. {2}'\
                              .format(self.software, version, support_msg_api()))
         self.msg = '{0} version = {1}'.format(self.software, version)
-        if self.expected is not None and not re.search(self.expected, version):
+        if self.expected is not None and not re.match(self.expected, version):
             self.msg += " (expected '{0}')".format(self.expected)
             self.critical()
 
