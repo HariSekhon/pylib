@@ -33,6 +33,7 @@ from harisekhon.nagiosplugin import KeyWriteNagiosPlugin
 from harisekhon.nagiosplugin import LiveNodesNagiosPlugin
 from harisekhon.nagiosplugin import DeadNodesNagiosPlugin
 from harisekhon.nagiosplugin import StatusNagiosPlugin
+from harisekhon.nagiosplugin import VersionNagiosPlugin
 from harisekhon.nagiosplugin import PubSubNagiosPlugin
 from harisekhon.nagiosplugin import Threshold
 

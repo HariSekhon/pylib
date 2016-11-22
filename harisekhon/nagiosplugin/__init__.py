@@ -26,10 +26,11 @@ from __future__ import unicode_literals
 from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
 from harisekhon.nagiosplugin.keycheck_nagiosplugin import KeyCheckNagiosPlugin
 from harisekhon.nagiosplugin.keywrite_nagiosplugin import KeyWriteNagiosPlugin
-from harisekhon.nagiosplugin.status_nagiosplugin import StatusNagiosPlugin
 from harisekhon.nagiosplugin.livenodes_nagiosplugin import LiveNodesNagiosPlugin
 from harisekhon.nagiosplugin.deadnodes_nagiosplugin import DeadNodesNagiosPlugin
 from harisekhon.nagiosplugin.pubsub_nagiosplugin import PubSubNagiosPlugin
+from harisekhon.nagiosplugin.status_nagiosplugin import StatusNagiosPlugin
+from harisekhon.nagiosplugin.version_nagiosplugin import VersionNagiosPlugin
 
 # enables 'from harisekhon.nagiosplugin import Threshold'
 from harisekhon.nagiosplugin.threshold import Threshold
