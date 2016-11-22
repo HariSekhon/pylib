@@ -100,9 +100,14 @@ class VersionNagiosPlugin(NagiosPlugin):
             qquit('UNKNOWN', '{0} version unrecognized \'{1}\'. {2}'\
                              .format(self.software, version, support_msg_api()))
         self.msg = '{0} version = {1}'.format(self.software, version)
-        if self.expected is not None and not re.match(self.expected, version):
-            self.msg += " (expected '{0}')".format(self.expected)
-            self.critical()
+        if self.expected is not None:
+            log.info("verifying version against expected regex '%s'", self.expected)
+            if re.match(self.expected, version):
+                log.info('version regex matches retrieved version')
+            else:
+                log.info('version regex does not match retrieved version')
+                self.msg += " (expected '{0}')".format(self.expected)
+                self.critical()
 
     @abstractmethod
     def get_version(self):
