@@ -71,6 +71,9 @@ class VersionNagiosPlugin(NagiosPlugin):
         self.add_hostoption(name=self.software,
                             default_host=self.default_host,
                             default_port=self.default_port)
+        self.add_expected_version_option()
+
+    def add_expected_version_option(self):
         self.add_opt('-e', '--expected', help='Expected version regex (optional)')
 
     def process_options(self):
