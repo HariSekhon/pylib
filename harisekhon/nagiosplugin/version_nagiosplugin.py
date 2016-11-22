@@ -89,6 +89,7 @@ class VersionNagiosPlugin(NagiosPlugin):
 
     def run(self):
         version = self.get_version()
+        log.info("got version '%s'", version)
         self.check_version(version)
 
     def check_version(self, version):
