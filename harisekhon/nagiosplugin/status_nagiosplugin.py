@@ -62,6 +62,7 @@ class StatusNagiosPlugin(NagiosPlugin):
         self.state = None
         self.msg2 = ''
         self.perfdata = ''
+        self.ok()
 
     def add_options(self):
         if not self.name:
@@ -86,7 +87,6 @@ class StatusNagiosPlugin(NagiosPlugin):
         pass
 
     def run(self):
-        self.ok()
         self.state = self.get_status()
 
     @abstractmethod
