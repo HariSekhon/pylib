@@ -89,6 +89,7 @@ class VersionNagiosPlugin(NagiosPlugin):
         self.check_version(version)
 
     def check_version(self, version):
+        log.info("checking version '%s'", version)
         if not isVersion(version):
             qquit('UNKNOWN', '{0} version unrecognized \'{1}\'. {2}'\
                              .format(self.software, version, support_msg_api()))
