@@ -4,7 +4,7 @@
 #  Author: Hari Sekhon
 #  Date: 2016-11-22 16:52:53 +0000 (Tue, 22 Nov 2016)
 #
-#  https://github.com/harisekhon/nagios-plugins
+#  https://github.com/harisekhon/pylib
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
