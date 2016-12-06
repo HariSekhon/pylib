@@ -37,7 +37,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.0'
+__version__ = '0.9.1'
 
 
 class NagiosPlugin(CLI):
@@ -162,6 +162,7 @@ class NagiosPlugin(CLI):
     def validate_threshold(self, name, threshold=None, optional=False, **kwargs):
         if not isStr(name):
             raise CodingError('non-string name passed to validate_threshold()')
+        name = re.sub('[^A-Za-z0-9]', '_', name).lower()
         if threshold is None:
             # log.debug("using threshold option '%s'", name)
             threshold = self.get_opt(name)
