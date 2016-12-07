@@ -125,7 +125,7 @@ def support_msg(repo=None):
             repo = 'nagios-plugins'
         else:
             repo = 'pytools'
-    _ = 'Please try latest version from https:/github.com/HariSekhon/%(repo)s and if problem persists paste the full output in to a ticket for a fix/update at https://github.com/HariSekhon/%(repo)s/issues' % locals() # pylint: disable=line-too-long
+    _ = 'Please try latest version from https:/github.com/HariSekhon/%(repo)s and if problem persists paste the full output using the --debug switch in to a ticket for a fix/update at https://github.com/HariSekhon/%(repo)s/issues' % locals() # pylint: disable=line-too-long
     return _
 
 def support_msg_api(repo=None):
