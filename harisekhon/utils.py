@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.18'
+__version__ = '0.10.19'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -141,13 +141,13 @@ def autoflush():
     #unbuffered = os.fdopen(sys.__stdout__.fileno(), 'w', 0)
     #sys.stdout = unbuffered
     class Unbuffered(object):
-       def __init__(self, stream):
-           self.stream = stream
-       def write(self, data):
-           self.stream.write(data)
-           self.stream.flush()
-       def __getattr__(self, attr):
-           return getattr(self.stream, attr)
+        def __init__(self, stream):
+            self.stream = stream
+        def write(self, data):
+            self.stream.write(data)
+            self.stream.flush()
+        def __getattr__(self, attr):
+            return getattr(self.stream, attr)
     sys.stdout = Unbuffered(sys.stdout)
     return orig_stdout
 
@@ -1794,7 +1794,7 @@ def validate_files(arg, name=''):
     return files
 
 
-def validate_float(arg, name, min_value=None, max_value=None):
+def validate_float(arg, name, min_value=None, max_value=None):  # pylint: disable=redefined-outer-name
     if not name:
         code_error('no name passed for second arg to validate_float()')
     if arg is None:
@@ -1807,7 +1807,8 @@ def validate_float(arg, name, min_value=None, max_value=None):
             if max_value is not None:
                 max_value = float(max_value)
         except ValueError as _:
-            code_error('invalid min_value/max_value (%(min_value)s/%(max_value)s) passed to validate_float(): %(_)s' % locals())
+            code_error('invalid min_value/max_value ({0}/{1}) passed to validate_float(): {2}'\
+                       .format(min_value, max_value, _))
         if min_value is not None and arg < min_value:
             raise InvalidOptionException('invalid %(name)s defined: cannot be less than %(min_value)s' % locals())
         if max_value is not None and arg > max_value:
@@ -1923,7 +1924,7 @@ def validate_hostport_list(arg, name='', port_optional=False):
     return True
 
 
-def validate_int(arg, name, min_value=None, max_value=None):
+def validate_int(arg, name, min_value=None, max_value=None):  # pylint: disable=redefined-outer-name
     if not name:
         code_error('no name passed for second arg to validate_int()')
     if arg is None:
@@ -1936,7 +1937,8 @@ def validate_int(arg, name, min_value=None, max_value=None):
             if max_value is not None:
                 max_value = int(max_value)
         except ValueError as _:
-            code_error('invalid min_value/max_value (%(min_value)s/%(max_value)s) passed to validate_int(): %(_)s' % locals())
+            code_error('invalid min_value/max_value ({0}/{1}) passed to validate_int(): {2}'\
+                       .format(min_value, max_value, _))
         if min_value is not None and arg < min_value:
             raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: cannot be less than %(min_value)s"
                                          % locals())
