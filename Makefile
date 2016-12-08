@@ -56,7 +56,7 @@ build:
 	#$(SUDO2) pip install MySQL-python || :
 
 	# PyLint breaks in Python 2.6
-	if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO2) pip uninstall pylint; fi
+	if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO2) pip uninstall -y pylint; fi
 
 	@echo
 	bash-tools/python_compile.sh
