@@ -74,8 +74,8 @@ class NagiosPlugin(CLI):
 
     @status.setter
     def status(self, status):
-        if not ERRORS.has_key(status):
-            raise CodingError("invalid status '%(status)s' passed to harisekhon.NagiosPlugin.status()")
+        if status not in ERRORS:
+            raise CodingError("invalid status '{0}' passed to harisekhon.NagiosPlugin.status()".format(status))
         self.__status = status
 
     # @property
