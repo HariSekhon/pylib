@@ -77,105 +77,120 @@ class NagiosThresholdTester(unittest.TestCase):
         self.assertFalse(self.threshold_range_inverted.check(4))
         self.assertFalse(self.threshold_range_inverted.check(11))
 
-    def test_invalid_max_upper_boundary(self):
+    @staticmethod
+    def test_invalid_max_upper_boundary():
         try:
             Threshold(4, max=3)
             raise Exception('failed to raise InvalidThresholdException for max high upper boundary')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_max_lower_boundary(self):
+    @staticmethod
+    def test_invalid_max_lower_boundary():
         try:
             Threshold(4, simple='lower', max=3)
             raise Exception('failed to raise InvalidThresholdException for max low lower boundary')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_min_upper_boundary(self):
+    @staticmethod
+    def test_invalid_min_upper_boundary():
         try:
             Threshold(2, min=3)
             raise Exception('failed to raise InvalidThresholdException min upper boundary')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_min_lower_boundary(self):
+    @staticmethod
+    def test_invalid_min_lower_boundary():
         try:
             Threshold(2, simple='lower', min=3)
             raise Exception('failed to raise InvalidThresholdException for min lower boundary')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_non_positive_lower_boundaries(self):
+    @staticmethod
+    def test_invalid_non_positive_lower_boundaries():
         try:
             Threshold('-1')
             raise Exception('failed to raise InvalidThresholdException for invalid relative boundaries')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_range_relative_boundaries(self):
+    @staticmethod
+    def test_invalid_range_relative_boundaries():
         try:
             Threshold('@8:7')
             raise Exception('failed to raise InvalidThresholdException for invalid relative boundaries')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_lower_non_integer(self):
+    @staticmethod
+    def test_invalid_lower_non_integer():
         try:
             Threshold('1.1')
             raise Exception('failed to raise InvalidThresholdException for non-integer')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_lower_non_positive(self):
+    @staticmethod
+    def test_invalid_lower_non_positive():
         try:
             Threshold('-1', simple='lower')
             raise Exception('failed to raise InvalidThresholdException for negative lower boundary')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_upper_non_positive(self):
+    @staticmethod
+    def test_invalid_upper_non_positive():
         try:
             Threshold('-1', simple='upper')
             raise Exception('failed to raise InvalidThresholdException for negative upper boundary')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_range_non_positive(self):
+    @staticmethod
+    def test_invalid_range_non_positive():
         try:
             Threshold('-1:2')
             raise Exception('failed to raise InvalidThresholdException for negative upper boundary')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_inverted_range_no_upper(self):
+    @staticmethod
+    def test_invalid_inverted_range_no_upper():
         try:
             Threshold('@5:')
             raise Exception('failed to raise InvalidThresholdException for invalid inverted range no upper')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_inverted_range_no_lower(self):
+    @staticmethod
+    def test_invalid_inverted_range_no_lower():
         try:
             Threshold('@:10')
             raise Exception('failed to raise InvalidThresholdException for invalid inverted range no lower')
         except InvalidThresholdException:
             pass
 
-    def test_invalid_simple(self):
+    @staticmethod
+    def test_invalid_simple():
         try:
             Threshold(5, simple='blah')
             raise Exception('failed to raise InvalidThresholdException for invalid simple threshold type')
         except CodingError:
             pass
 
-    def test_invalid_positive(self):
+    @staticmethod
+    def test_invalid_positive():
         try:
             Threshold(5, simple='upper', positive=1)
             raise Exception('failed to raise InvalidThresholdException for invalid positive type')
         except CodingError:
             pass
 
-    def test_invalid_integer(self):
+    @staticmethod
+    def test_invalid_integer():
         try:
             Threshold(5, simple='upper', integer=1)
             raise Exception('failed to raise InvalidThresholdException for invalid integer type')
