@@ -54,6 +54,10 @@ build:
 	#yum install -y perl-DBD-MySQL
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
 	#$(SUDO2) pip install MySQL-python || :
+
+	# PyLint breaks in Python 2.6
+	if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO2) pip uninstall pylint; fi
+
 	@echo
 	bash-tools/python_compile.sh
 	@echo
