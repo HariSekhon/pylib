@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.19'
+__version__ = '0.10.20'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -93,6 +93,8 @@ logging.Logger.trace = trace
 
 logging.config.fileConfig(os.path.join(libdir, 'resources', 'logging.conf'))
 log = logging.getLogger('HariSekhonUtils')
+if os.getenv('DEBUG'):
+    log.setLevel(logging.DEBUG)
 # optimization - gives unknown file, unknown function, line 0
 # logging._srcfile = None
 # optimization - not tested yet
@@ -644,7 +646,7 @@ def _load_tlds(filename):
             tld_count += 1
         else:
             warnings.warn("TLD: '%(line)s' from tld file '%(filename)s' not validated, skipping that TLD" % locals())
-    log.debug("loaded %(tld_count)s TLDs from file '%(filename)s'")
+    log.debug("loaded %s TLDs from file '%s'", tld_count, filename)
 
 _tld_file = libdir + '/resources/tlds-alpha-by-domain.txt'
 _load_tlds(_tld_file)
