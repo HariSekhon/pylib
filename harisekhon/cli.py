@@ -361,6 +361,8 @@ class CLI(object):
         # if isList(name):
         #     name2 = '%s ' % name[0]
         # elif not isBlankOrNone(name):
+        if name is None:
+            name = ''
         # because can't reference name=self.name in def
         if not name and self.name:
             name = self.name
@@ -377,6 +379,9 @@ class CLI(object):
 
     def add_useroption(self, name=None, default_user=None, default_password=None):
         name2 = ''
+        if name is None:
+            name = ''
+        # because can't reference name=self.name in def
         if not name and self.name:
             name = self.name
         if not isBlankOrNone(name):
