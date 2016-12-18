@@ -31,11 +31,13 @@ import os
 import signal
 import sys
 import time
+#import traceback
 from optparse import IndentedHelpFormatter
 from optparse import OptionParser
 from optparse import SUPPRESS_HELP
 # Python 2.6+ only
 from abc import ABCMeta, abstractmethod
+import _curses
 from blessings import Terminal
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
@@ -44,12 +46,12 @@ sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 import harisekhon
 from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural
-from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit
+from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit #, die
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.13'
+__version__ = '0.8.14'
 
 
 class CLI(object):
@@ -70,6 +72,7 @@ class CLI(object):
     # super().__init__()
     def __init__(self):
         # instance attributes, feels safer
+        self.name = None
         self.options = None
         self.args = None
         self.__verbose = None
@@ -113,7 +116,10 @@ class CLI(object):
         # description=self._docstring # don't want description printed for option errors
         width = os.getenv('COLUMNS', None)
         if not isInt(width) or not width:
-            width = Terminal().width
+            try:
+                width = Terminal().width
+            except _curses.error:
+                width = 80
         width = min(width, 200)
         self.__parser = OptionParser(add_help_option=False, formatter=IndentedHelpFormatter(width=width))
         # duplicate key error or duplicate options, sucks
@@ -179,6 +185,12 @@ class CLI(object):
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
             print('Caught control-c...')  # pragma: no cover
+        #except Exception as _:  # pylint: disable=broad-except
+        #    exception_type = type(_).__name__
+        #    if log.isEnabledFor(logging.DEBUG):
+        #        log.debug("exception: '%s'", exception_type)
+        #        log.debug(traceback.format_exc())
+        #    die('{exception_type}: {msg}'.format(exception_type=exception_type, msg=_))
 
     def usage(self, msg='', status='UNKNOWN'):
         if msg:
@@ -344,11 +356,14 @@ class CLI(object):
     def process_options(self):
         pass
 
-    def add_hostoption(self, name='', default_host=None, default_port=None):
+    def add_hostoption(self, name=None, default_host=None, default_port=None):
         name2 = ''
         # if isList(name):
         #     name2 = '%s ' % name[0]
         # elif not isBlankOrNone(name):
+        # because can't reference name=self.name in def
+        if not name and self.name:
+            name = self.name
         if not isBlankOrNone(name):
             name2 = '%s ' % name
         if default_port is not None:
@@ -360,8 +375,10 @@ class CLI(object):
         self.add_opt('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs), default=default_host)
         self.add_opt('-P', '--port', dest='port', help='%sPort (%s)' % (name2, port_envs), default=default_port)
 
-    def add_useroption(self, name='', default_user=None, default_password=None):
+    def add_useroption(self, name=None, default_user=None, default_password=None):
         name2 = ''
+        if not name and self.name:
+            name = self.name
         if not isBlankOrNone(name):
             name2 = "%s " % name
         (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
