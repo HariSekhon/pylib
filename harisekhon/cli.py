@@ -365,10 +365,11 @@ class CLI(object):
             name = ''
         # because can't reference name=self.name in def
         if not name:
-            if 'name' in self.__dict__ and self.name:
-                name = self.name
-            elif 'software' in self.__dict__ and self.software:
-                name = self.software
+            # pylint will fail if you use these directly as it tries to resolve them
+            if 'name' in self.__dict__ and getattr(self, 'name'):
+                name = getattr(self, name)
+            elif 'software' in self.__dict__ and getattr(self, 'software'):
+                name = getattr(self, 'software')
         if not isBlankOrNone(name):
             name2 = '%s ' % name
         if default_port is not None:
@@ -386,10 +387,10 @@ class CLI(object):
             name = ''
         # because can't reference name=self.name in def
         if not name:
-            if 'name' in self.__dict__ and self.name:
-                name = self.name
-            elif 'software' in self.__dict__ and self.software:
-                name = self.software
+            if 'name' in self.__dict__ and getattr(self, 'name'):
+                name = getattr(self, name)
+            elif 'software' in self.__dict__ and getattr(self, 'software'):
+                name = getattr(self, 'software')
         if not isBlankOrNone(name):
             name2 = "%s " % name
         (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
