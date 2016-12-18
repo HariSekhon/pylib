@@ -9,7 +9,7 @@ py>=1.4.31
 #pylint==1.5.2
 pytest>=3.0.0
 PyYAML>=3.11
-requests>=2.11.1
+requests>=2.12.4
 six>=1.10.0
 traceback2>=1.4.0
 unittest2>=1.1.0
