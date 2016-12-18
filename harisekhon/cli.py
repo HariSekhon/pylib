@@ -364,8 +364,11 @@ class CLI(object):
         if name is None:
             name = ''
         # because can't reference name=self.name in def
-        if not name and self.name:
-            name = self.name
+        if not name:
+            if self.name:
+                name = self.name
+            elif self.software:
+                name = self.software
         if not isBlankOrNone(name):
             name2 = '%s ' % name
         if default_port is not None:
@@ -382,8 +385,11 @@ class CLI(object):
         if name is None:
             name = ''
         # because can't reference name=self.name in def
-        if not name and self.name:
-            name = self.name
+        if not name:
+            if self.name:
+                name = self.name
+            elif self.software:
+                name = self.software
         if not isBlankOrNone(name):
             name2 = "%s " % name
         (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
