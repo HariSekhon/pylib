@@ -25,6 +25,7 @@ from __future__ import division
 from __future__ import print_function
 #from __future__ import unicode_literals
 
+import json
 # import logging
 import os
 import sys
@@ -44,7 +45,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.4'
+__version__ = '0.5'
 
 
 class RequestHandler(object):
@@ -58,7 +59,7 @@ class RequestHandler(object):
         if '://' not in url:
             url = 'http://' + url
         self.url = url
-        log.debug('GET %s', url)
+        log.debug('%s %s', str(method).upper(), url)
         req = None
         try:
             req = getattr(requests, method)(url, *args, **kwargs)
@@ -110,7 +111,16 @@ class RequestHandler(object):
 
     def check_response_code(self, req):  # pylint: disable=no-self-use
         if req.status_code != 200:
-            raise CriticalError("%s %s" % (req.status_code, req.reason))
+            extra_info = ''
+            try:
+                json_data = json.loads(req.content)
+                for key in ('error', 'reason', 'message'):
+                    if key in json_data:
+                        extra_info += ', {key}: {info}'.format(key=key, info=json_data[key])
+            except ValueError:
+                log.debug('output is not json, not extracting additional error info')
+            raise CriticalError('{status} {reason}{extra_info}'\
+                                .format(status=req.status_code, reason=req.reason, extra_info=extra_info))
 
     def check_content(self, content):  # pylint: disable=no-self-use
         pass
