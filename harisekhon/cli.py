@@ -365,9 +365,9 @@ class CLI(object):
             name = ''
         # because can't reference name=self.name in def
         if not name:
-            if self.name:
+            if 'name' in self.__dict__ and self.name:
                 name = self.name
-            elif self.software:
+            elif 'software' in self.__dict__ and self.software:
                 name = self.software
         if not isBlankOrNone(name):
             name2 = '%s ' % name
@@ -386,9 +386,9 @@ class CLI(object):
             name = ''
         # because can't reference name=self.name in def
         if not name:
-            if self.name:
+            if 'name' in self.__dict__ and self.name:
                 name = self.name
-            elif self.software:
+            elif 'software' in self.__dict__ and self.software:
                 name = self.software
         if not isBlankOrNone(name):
             name2 = "%s " % name
