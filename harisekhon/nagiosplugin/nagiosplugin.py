@@ -19,9 +19,11 @@ from __future__ import division
 from __future__ import print_function
 # from __future__ import unicode_literals
 
+import logging
 import os
 import re
 import sys
+import traceback
 #import time
 # import traceback
 # import logging
@@ -37,7 +39,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.1'
+__version__ = '0.9.2'
 
 
 class NagiosPlugin(CLI):
@@ -242,9 +244,17 @@ class NagiosPlugin(CLI):
         except CodingError as _:
             qquit('UNKNOWN', 'Programming Error: {0}. {1}'.format(_, support_msg()))
         except Exception as _:  # pylint: disable=broad-except
-            msg = str(_)
+            exception_type = type(_).__name__
+            if log.isEnabledFor(logging.DEBUG):
+                log.debug("exception: '%s'", exception_type)
+                log.debug(traceback.format_exc())
+            msg = '{exception_type}: {msg}'.format(exception_type=exception_type, msg=_)
+            #msg = ', '.join([x.strip() for x in msg.split('\n')])
+            # ', ' doesn't look nice for ':\n ...' => ':, ...' (snakebite OutOfNNException)
+            #msg = '\t'.join([x.strip() for x in msg.split('\n')])
             #if self.options.verbose > 2:
             #    msg = type(_).__name__ + ': ' + msg
+            msg += support_msg()
             qquit('UNKNOWN', msg)
             # Done in utils now so that this also applies to the above specific exit handlers
             # print('UNKNOWN: {0}'.format(_))
@@ -254,6 +264,14 @@ class NagiosPlugin(CLI):
             # if tb != 'None':
             #     print('\n{0}'.format(tb), end='')
             # sys.exit(ERRORS['UNKNOWN'])
+
+    def exception_msg(self):
+        err = None
+        if log.isEnabledFor(logging.DEBUG):
+            err = traceback.format_exc()
+        else:
+            err = traceback.format_exc().split('\n')[-2]
+        return err
 
     @abstractmethod
     def run(self): # pragma: no cover
