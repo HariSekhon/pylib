@@ -367,7 +367,7 @@ class CLI(object):
         if not name:
             # pylint will fail if you use these directly as it tries to resolve them
             if 'name' in self.__dict__ and getattr(self, 'name'):
-                name = getattr(self, name)
+                name = getattr(self, 'name')
             elif 'software' in self.__dict__ and getattr(self, 'software'):
                 name = getattr(self, 'software')
         if not isBlankOrNone(name):
@@ -388,7 +388,7 @@ class CLI(object):
         # because can't reference name=self.name in def
         if not name:
             if 'name' in self.__dict__ and getattr(self, 'name'):
-                name = getattr(self, name)
+                name = getattr(self, 'name')
             elif 'software' in self.__dict__ and getattr(self, 'software'):
                 name = getattr(self, 'software')
         if not isBlankOrNone(name):
