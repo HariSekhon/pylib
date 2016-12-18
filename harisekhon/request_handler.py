@@ -44,18 +44,20 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.3'
+__version__ = '0.4'
 
 
 class RequestHandler(object):
 
     def __init__(self, req=None):
+        self.url = None
         if req:
             self.process_req(req)
 
     def req(self, method, url, *args, **kwargs):
         if '://' not in url:
             url = 'http://' + url
+        self.url = url
         log.debug('GET %s', url)
         req = None
         try:
@@ -91,8 +93,16 @@ class RequestHandler(object):
         self.check_content(content)
 
     def exception_handler(self, arg):  # pylint: disable=no-self-use
+        assert issubclass(type(arg), Exception)
         # TODO: improve this to extract connection refused for more concise errors
-        raise CriticalError(arg)
+        errhint = ''
+        if 'BadStatusLine' in str(arg.message):
+            errhint = ' (possibly connecting to an SSL secured port using plain HTTP?)'
+        elif 'https://' in self.url and 'unknown protocol' in str(arg.message):
+            errhint = ' (possibly connecting to a plain HTTP port with the -S / --ssl switch enabled?)'
+        raise CriticalError('{type}: {exception}{errhint}'.format(type=type(arg).__name__,
+                                                                  exception=arg,
+                                                                  errhint=errhint))
 
     def log_output(self, req):  # pylint: disable=no-self-use
         log.debug("response: %s %s", req.status_code, req.reason)
