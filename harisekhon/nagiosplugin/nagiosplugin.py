@@ -248,13 +248,13 @@ class NagiosPlugin(CLI):
             if log.isEnabledFor(logging.DEBUG):
                 log.debug("exception: '%s'", exception_type)
                 log.debug(traceback.format_exc())
-            msg = '{exception_type}: {msg}'.format(exception_type=exception_type, msg=_)
+            msg = 'Nagios Plugin Exception: {exception_type}: {msg}'.format(exception_type=exception_type, msg=self.exception_msg())
             #msg = ', '.join([x.strip() for x in msg.split('\n')])
             # ', ' doesn't look nice for ':\n ...' => ':, ...' (snakebite OutOfNNException)
             #msg = '\t'.join([x.strip() for x in msg.split('\n')])
             #if self.options.verbose > 2:
             #    msg = type(_).__name__ + ': ' + msg
-            msg += support_msg()
+            msg += '. ' + support_msg()
             qquit('UNKNOWN', msg)
             # Done in utils now so that this also applies to the above specific exit handlers
             # print('UNKNOWN: {0}'.format(_))
@@ -266,12 +266,13 @@ class NagiosPlugin(CLI):
             # sys.exit(ERRORS['UNKNOWN'])
 
     @staticmethod
-    def exception_msg(self):
+    def exception_msg():
         err = None
-        if log.isEnabledFor(logging.DEBUG):
+        if os.getenv('DEBUG') or log.isEnabledFor(logging.DEBUG):
             err = traceback.format_exc()
         else:
             err = traceback.format_exc().split('\n')[-2]
+        err = err.rstrip('\r\n')
         return err
 
     @abstractmethod
