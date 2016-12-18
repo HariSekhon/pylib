@@ -265,6 +265,7 @@ class NagiosPlugin(CLI):
             #     print('\n{0}'.format(tb), end='')
             # sys.exit(ERRORS['UNKNOWN'])
 
+    @staticmethod
     def exception_msg(self):
         err = None
         if log.isEnabledFor(logging.DEBUG):
