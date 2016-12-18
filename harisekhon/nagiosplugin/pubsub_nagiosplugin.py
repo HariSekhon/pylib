@@ -116,7 +116,7 @@ class PubSubNagiosPlugin(NagiosPlugin):
         start = time.time()
         log.info('subscribing')
         self.subscribe()
-        log.info('publishing message \'%s\'', self.publish_message)
+        log.info('publishing message "%s"', self.publish_message)
         start_publish = time.time()
         self.publish()
         stop_publish = time.time()
@@ -126,11 +126,12 @@ class PubSubNagiosPlugin(NagiosPlugin):
             log.info('sleeping for %s secs', self.sleep_secs)
             time.sleep(self.sleep_secs)
         start_consume = time.time()
+        log.info('consuming message')
         self._consumed_message = self.consume()
         stop_consume = time.time()
         self._consume_time = round(stop_consume - start_consume, self._precision)
         log.info('consumed in %s secs', self._consume_time)
-        log.info("consumed message = '%s'", self._consumed_message)
+        log.info('consumed message = "%s"', self._consumed_message)
         # resetting to ok is bad - would break inheritance logic
         #self.ok()
         stop = time.time()
@@ -151,7 +152,7 @@ class PubSubNagiosPlugin(NagiosPlugin):
     def end(self):
         if self._consumed_message is None:
             raise UnknownError('read value is not set!')
-        log.info("checking consumed message '%s' == published message '%s'",
+        log.info('checking consumed message "%s" == published message "%s"',
                  self._consumed_message, self.publish_message)
         if self._consumed_message != self.publish_message:
             raise CriticalError("wrote '{0}' but got back '{1}' instead".format(
