@@ -35,6 +35,8 @@ from harisekhon.nagiosplugin import DeadNodesNagiosPlugin
 from harisekhon.nagiosplugin import StatusNagiosPlugin
 from harisekhon.nagiosplugin import VersionNagiosPlugin
 from harisekhon.nagiosplugin import PubSubNagiosPlugin
+from harisekhon.nagiosplugin import RestNagiosPlugin
+from harisekhon.nagiosplugin import RestVersionNagiosPlugin
 from harisekhon.nagiosplugin import Threshold
 
 # pulls submodules in to 'from harisekhon import *'
