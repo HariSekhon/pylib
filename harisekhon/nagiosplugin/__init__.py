@@ -29,6 +29,8 @@ from harisekhon.nagiosplugin.keywrite_nagiosplugin import KeyWriteNagiosPlugin
 from harisekhon.nagiosplugin.livenodes_nagiosplugin import LiveNodesNagiosPlugin
 from harisekhon.nagiosplugin.deadnodes_nagiosplugin import DeadNodesNagiosPlugin
 from harisekhon.nagiosplugin.pubsub_nagiosplugin import PubSubNagiosPlugin
+from harisekhon.nagiosplugin.rest_nagiosplugin import RestNagiosPlugin
+from harisekhon.nagiosplugin.rest_version_nagiosplugin import RestVersionNagiosPlugin
 from harisekhon.nagiosplugin.status_nagiosplugin import StatusNagiosPlugin
 from harisekhon.nagiosplugin.version_nagiosplugin import VersionNagiosPlugin
 
