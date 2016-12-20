@@ -16,7 +16,7 @@
 
 """
 
-Rest Version Check Specialization of NagiosPlugin
+Rest API Version Check Specialization of NagiosPlugin
 
 """
 
@@ -30,7 +30,7 @@ import re
 import sys
 import traceback
 # Python 2.6+ only
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta #, abstractmethod
 srcdir = os.path.abspath(os.path.dirname(__file__))
 libdir = os.path.join(srcdir, 'pylib')
 sys.path.append(libdir)
@@ -60,6 +60,7 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
         # super().__init__()
         self.expected = None
         self.msg = 'version unknown - no message defined'
+        self.json = True
 
     def add_options(self):
         super(RestVersionNagiosPlugin, self).add_options()
@@ -82,6 +83,9 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
         version = self.get_version()
         log.info("got version '%s'", version)
         self.check_version(version)
+        extra_info = self.extra_info()
+        if extra_info:
+            self.msg += extra_info
 
     def check_version(self, version):
         log.info("checking version '%s'", version)
@@ -102,8 +106,11 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
 
     def get_version(self):
         req = self.query()
-        return self.parse(req)
+        if self.json:
+            version = self.process_json(req.content)
+        else:
+            version = self.parse(req)
+        return version
 
-    @abstractmethod
-    def parse(self, req):
+    def extra_info(self):
         pass
