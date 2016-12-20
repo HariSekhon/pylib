@@ -60,7 +60,6 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
         # super().__init__()
         self.expected = None
         self.msg = 'version unknown - no message defined'
-        self.json = True
 
     def add_options(self):
         super(RestVersionNagiosPlugin, self).add_options()
