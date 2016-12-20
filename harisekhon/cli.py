@@ -343,7 +343,7 @@ class CLI(object):
         elif env_verbose is None:
             pass
         else:
-            log.warn("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
+            log.warning("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
         self.parse_args()
         return self.options, self.args
 
