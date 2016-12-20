@@ -59,10 +59,13 @@ class RestNagiosPluginTester(unittest.TestCase):
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             RestNagiosPlugin()  # pylint: disable=abstract-class-instantiated
-            raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-                            'RestNagiosPlugin')
-        except TypeError:
-            pass
+            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                'RestNagiosPlugin')
+        #except TypeError:
+        except SystemExit as _:
+            if _.code != 0:
+                raise Exception('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                                .format(_.code))
 
 
 def main():
