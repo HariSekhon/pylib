@@ -164,7 +164,7 @@ def printerr(msg=None, indent=False):
 
 
 def warn(msg):
-    log.warn(msg)
+    log.warning(msg)
 
 
 def die(msg, *ec):
@@ -195,7 +195,7 @@ def qquit(status, msg=''):
     """ Quit with status code from ERRORS dictionary after printing given msg """
     status = str(status).upper()
     if status not in ERRORS:
-        log.warn("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical\n%s",
+        log.warning("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical\n%s",
                  status, get_caller(), traceback.format_exc())
         status = 'CRITICAL'
     # log.error('%s: %s', status, msg)
@@ -1126,10 +1126,10 @@ def isListOrTuple(arg):
 
 def isMinVersion(version, my_min):
     if version is None:
-        log.warn("'%s' is not a recognized version format", version)
+        log.warning("'%s' is not a recognized version format", version)
         return False
     if not isVersionLax(version):
-        log.warn("'%s' is not a recognized version format", version)
+        log.warning("'%s' is not a recognized version format", version)
         return False
     if not isFloat(my_min):
         code_error('invalid second arg passed to min_version')
@@ -2140,7 +2140,7 @@ def validate_user(arg, name=''):
 
 
 def vlog(msg):
-    log.warn(msg)
+    log.warning(msg)
 
 
 def vlog2(msg):
