@@ -140,4 +140,5 @@ class RestNagiosPlugin(NagiosPlugin):
                 log.debug('JSON prettified:\n\n%s\n%s', jsonpp(self.json_data), '='*80)
             return self.parse_json(self.json_data)
         except (KeyError, ValueError) as _:
-            raise UnknownError(str(_) + support_msg_api())
+            #raise UnknownError('{0}: {1}. {2}'.format(type(_).__name__, _, support_msg_api()))
+            raise UnknownError('{0}. {1}'.format(self.exception_msg(), support_msg_api()))
