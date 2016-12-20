@@ -25,17 +25,19 @@ from __future__ import division
 from __future__ import print_function
 #from __future__ import unicode_literals
 
+import logging
+import json
 import os
 import sys
 import traceback
 # Python 2.6+ only
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta #, abstractmethod
 srcdir = os.path.abspath(os.path.dirname(__file__))
 libdir = os.path.join(srcdir, 'pylib')
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, log_option
+    from harisekhon.utils import log, log_option, UnknownError, support_msg_api, jsonpp
     from harisekhon.utils import validate_host, validate_port, validate_user, validate_password
     from harisekhon.nagiosplugin import NagiosPlugin
     from harisekhon import RequestHandler
@@ -70,7 +72,10 @@ class RestNagiosPlugin(NagiosPlugin):
         self.protocol = 'http'
         self.msg = 'rest msg not defined yet'
         self.request = RequestHandler()
+        self.req = None
+        self.json_data = None
         self.path = None
+        self.json = False
         self.ok()
 
     def add_options(self):
@@ -101,8 +106,11 @@ class RestNagiosPlugin(NagiosPlugin):
             self.protocol = 'https'
 
     def run(self):
-        req = self.query()
-        self.parse(req)
+        self.req = self.query()
+        if self.json:
+            self.process_json(self.req.content)
+        else:
+            self.parse(self.req)
 
     def query(self):
         url = '{proto}://{host}:{port}/'.format(proto=self.protocol,
@@ -117,6 +125,19 @@ class RestNagiosPlugin(NagiosPlugin):
         req = self.request.get(url, auth=auth)
         return req
 
-    @abstractmethod
+    #@abstractmethod
     def parse(self, req):
         pass
+
+    #@abstractmethod
+    def parse_json(self, json_data):
+        pass
+
+    def process_json(self, content):
+        try:
+            self.json_data = json.loads(content)
+            if log.isEnabledFor(logging.DEBUG):
+                log.debug('JSON prettified:\n\n%s\n%s', jsonpp(self.json_data), '='*80)
+            return self.parse_json(self.json_data)
+        except (KeyError, ValueError) as _:
+            raise UnknownError(str(_) + support_msg_api())
