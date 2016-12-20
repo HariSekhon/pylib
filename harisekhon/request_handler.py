@@ -39,7 +39,7 @@ libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'pylib'))
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, CriticalError
+    from harisekhon.utils import log, CriticalError, get_topfile
 except ImportError as _:
     print(traceback.format_exc(), end='')
     sys.exit(4)
@@ -61,6 +61,10 @@ class RequestHandler(object):
         self.url = url
         log.debug('%s %s', str(method).upper(), url)
         req = None
+        if 'headers' in kwargs:
+            kwargs['headers']['User-Agent'] = get_topfile()
+        else:
+            kwargs['headers'] = {'User-Agent': get_topfile()}
         try:
             req = getattr(requests, method)(url, *args, **kwargs)
         except requests.exceptions.RequestException as _:
