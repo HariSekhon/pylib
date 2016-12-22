@@ -45,13 +45,13 @@ libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 import harisekhon
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isPort, isStr, validate_int, plural
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isHost, isPort, isStr, validate_int, plural
 from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit #, die
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.14'
+__version__ = '0.8.15'
 
 
 class CLI(object):
@@ -73,6 +73,10 @@ class CLI(object):
     def __init__(self):
         # instance attributes, feels safer
         self.name = None
+        self.default_host = None
+        self.default_port = None
+        self.default_user = None
+        self.default_password = None
         self.options = None
         self.args = None
         self.__verbose = None
@@ -370,8 +374,17 @@ class CLI(object):
                 name = getattr(self, 'name')
             elif 'software' in self.__dict__ and getattr(self, 'software'):
                 name = getattr(self, 'software')
+        if not default_host:
+            if 'default_host' in self.__dict__ and getattr(self, 'default_host'):
+                default_host = getattr(self, 'default_host')
+        if not default_port:
+            if 'default_port' in self.__dict__ and getattr(self, 'default_port'):
+                default_port = getattr(self, 'default_port')
         if not isBlankOrNone(name):
             name2 = '%s ' % name
+        if default_host is not None:
+            if not isHost(default_host):
+                raise CodingError('invalid default host supplied to add_hostoption()')
         if default_port is not None:
             # assert isPort(default_port)
             if not isPort(default_port):
@@ -391,6 +404,12 @@ class CLI(object):
                 name = getattr(self, 'name')
             elif 'software' in self.__dict__ and getattr(self, 'software'):
                 name = getattr(self, 'software')
+        if not default_user:
+            if 'default_user' in self.__dict__ and getattr(self, 'default_user'):
+                default_user = getattr(self, 'default_user')
+        if not default_password:
+            if 'default_password' in self.__dict__ and getattr(self, 'default_password'):
+                default_password = getattr(self, 'default_password')
         if not isBlankOrNone(name):
             name2 = "%s " % name
         (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
