@@ -374,21 +374,16 @@ class CLI(object):
                 name = getattr(self, 'name')
             elif 'software' in self.__dict__ and getattr(self, 'software'):
                 name = getattr(self, 'software')
-        if not default_host:
-            if 'default_host' in self.__dict__ and getattr(self, 'default_host'):
-                default_host = getattr(self, 'default_host')
-        if not default_port:
-            if 'default_port' in self.__dict__ and getattr(self, 'default_port'):
-                default_port = getattr(self, 'default_port')
+        if not default_host and 'default_host' in self.__dict__ and getattr(self, 'default_host'):
+            default_host = getattr(self, 'default_host')
+        if not default_port and 'default_port' in self.__dict__ and getattr(self, 'default_port'):
+            default_port = getattr(self, 'default_port')
         if not isBlankOrNone(name):
             name2 = '%s ' % name
-        if default_host is not None:
-            if not isHost(default_host):
-                raise CodingError('invalid default host supplied to add_hostoption()')
-        if default_port is not None:
-            # assert isPort(default_port)
-            if not isPort(default_port):
-                raise CodingError('invalid default port supplied to add_hostoption()')
+        if default_host is not None and not isHost(default_host):
+            raise CodingError('invalid default host supplied to add_hostoption()')
+        if default_port is not None and not isPort(default_port):
+            raise CodingError('invalid default port supplied to add_hostoption()')
         (host_envs, default_host) = getenvs2('HOST', default_host, name)
         (port_envs, default_port) = getenvs2('PORT', default_port, name)
         self.add_opt('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs), default=default_host)
@@ -404,12 +399,10 @@ class CLI(object):
                 name = getattr(self, 'name')
             elif 'software' in self.__dict__ and getattr(self, 'software'):
                 name = getattr(self, 'software')
-        if not default_user:
-            if 'default_user' in self.__dict__ and getattr(self, 'default_user'):
-                default_user = getattr(self, 'default_user')
-        if not default_password:
-            if 'default_password' in self.__dict__ and getattr(self, 'default_password'):
-                default_password = getattr(self, 'default_password')
+        if not default_user and 'default_user' in self.__dict__ and getattr(self, 'default_user'):
+            default_user = getattr(self, 'default_user')
+        if not default_password and 'default_password' in self.__dict__ and getattr(self, 'default_password'):
+            default_password = getattr(self, 'default_password')
         if not isBlankOrNone(name):
             name2 = "%s " % name
         (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
