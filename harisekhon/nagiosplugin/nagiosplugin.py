@@ -215,7 +215,7 @@ class NagiosPlugin(CLI):
 
     def get_perf_thresholds(self, boundary='upper'):
         if boundary not in ('lower', 'upper'):
-            raise CodingError('invalid boundary passed to msg_perf_thresholds')
+            raise CodingError('invalid boundary passed to get_perf_thresholds()')
         warning = self.get_threshold('warning', optional=True)
         critical = self.get_threshold('critical', optional=True)
         warning_msg = ''
