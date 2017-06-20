@@ -90,7 +90,7 @@ class RestNagiosPlugin(NagiosPlugin):
         self.add_ssl_option()
 
     def add_ssl_option(self):
-        self.add_opt('-S', '--use-ssl', action='store_true', default=False, help='Use SSL')
+        self.add_opt('-S', '--ssl', action='store_true', default=False, help='Use SSL')
 
     def process_options(self):
         self.no_args()
