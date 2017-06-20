@@ -76,15 +76,17 @@ class RestNagiosPlugin(NagiosPlugin):
         self.json_data = None
         self.path = None
         self.json = False
+        self.auth = True
         self.ok()
 
     def add_options(self):
         self.add_hostoption(name=self.name,
                             default_host=self.default_host,
                             default_port=self.default_port)
-        self.add_useroption(name=self.name,
-                            default_user=self.default_user,
-                            default_password=self.default_password)
+        if self.auth:
+            self.add_useroption(name=self.name,
+                                default_user=self.default_user,
+                                default_password=self.default_password)
         self.add_ssl_option()
 
     def add_ssl_option(self):
@@ -94,12 +96,13 @@ class RestNagiosPlugin(NagiosPlugin):
         self.no_args()
         self.host = self.get_opt('host')
         self.port = self.get_opt('port')
-        self.user = self.get_opt('user')
-        self.password = self.get_opt('password')
         validate_host(self.host)
-        validate_user(self.user)
-        validate_password(self.password)
         validate_port(self.port)
+        if self.auth:
+            self.user = self.get_opt('user')
+            self.password = self.get_opt('password')
+            validate_user(self.user)
+            validate_password(self.password)
         use_ssl = self.get_opt('use_ssl')
         log_option('ssl', use_ssl)
         if use_ssl and self.protocol == 'http':
@@ -139,6 +142,7 @@ class RestNagiosPlugin(NagiosPlugin):
             if log.isEnabledFor(logging.DEBUG):
                 log.debug('JSON prettified:\n\n%s\n%s', jsonpp(self.json_data), '='*80)
             return self.parse_json(self.json_data)
-        except (KeyError, ValueError) as _:
+        #except (KeyError, ValueError) as _:
             #raise UnknownError('{0}: {1}. {2}'.format(type(_).__name__, _, support_msg_api()))
+        except (KeyError, ValueError):
             raise UnknownError('{0}. {1}'.format(self.exception_msg(), support_msg_api()))
