@@ -15,6 +15,7 @@
 
 build-essential
 libffi-dev
+libssl-dev
 python-dev
 python-pip
 python-setuptools

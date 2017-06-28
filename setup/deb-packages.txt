@@ -19,6 +19,8 @@ python-dev
 python-pip
 python-setuptools
 
+libssl-dev
+
 # needed for ndg-httpsclient upgrade
 libffi-dev
 
