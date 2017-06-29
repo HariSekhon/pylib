@@ -39,7 +39,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.2'
+__version__ = '0.9.3'
 
 
 class NagiosPlugin(CLI):
@@ -187,6 +187,7 @@ class NagiosPlugin(CLI):
             del kwargs['percent']
             kwargs['min'] = 0
             kwargs['max'] = 100
+            kwargs['integer'] = False
         self.validate_threshold(name='{0}{1}'.format(name, 'warning'), threshold=warning, **kwargs)
         self.validate_threshold(name='{0}{1}'.format(name, 'critical'), threshold=critical, **kwargs)
 
