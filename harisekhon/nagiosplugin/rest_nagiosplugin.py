@@ -29,6 +29,7 @@ import logging
 import json
 import os
 import sys
+import time
 import traceback
 # Python 2.6+ only
 from abc import ABCMeta #, abstractmethod
@@ -46,7 +47,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.1'
+__version__ = '0.2'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -103,17 +104,23 @@ class RestNagiosPlugin(NagiosPlugin):
             self.password = self.get_opt('password')
             validate_user(self.user)
             validate_password(self.password)
-        use_ssl = self.get_opt('use_ssl')
-        log_option('ssl', use_ssl)
-        if use_ssl and self.protocol == 'http':
+        ssl = self.get_opt('ssl')
+        log_option('ssl', ssl)
+        if ssl and self.protocol == 'http':
             self.protocol = 'https'
 
     def run(self):
+        start_time = time.time()
         self.req = self.query()
+        query_time = time.time() - start_time
         if self.json:
             self.process_json(self.req.content)
         else:
             self.parse(self.req)
+        if '|' not in self.msg:
+            self.msg += ' |'
+        if ' query_time=' not in self.msg:
+            self.msg += ' query_time={0:.4f}s'.format(query_time)
 
     def query(self):
         url = '{proto}://{host}:{port}/'.format(proto=self.protocol,
