@@ -51,7 +51,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.15'
+__version__ = '0.8.16'
 
 
 class CLI(object):
@@ -79,10 +79,10 @@ class CLI(object):
         self.default_password = None
         self.options = None
         self.args = None
-        self.__verbose = None
         self.__verbose_default = 0
-        self.__timeout = None
+        self.__verbose = self.__verbose_default
         self.__timeout_default = 10
+        self.__timeout = self.__timeout_default
         self.__timeout_max = 86400
         self.__total_run_time = time.time()
         self.topfile = get_topfile()
@@ -94,7 +94,7 @@ class CLI(object):
         self._topfile_version = get_file_version(self.topfile)
         # this doesn't work in unit tests
         # if self._topfile_version:
-        #     raise CodingError('failed to get topfile version - did you set a __version__ in top cli program?') # pylint: disable=line-too-long
+        #     raise CodingError('failed to get topfile version - did you set a __version__ in top cli program?')
         self._cli_version = self.__version__
         self._utils_version = harisekhon.utils.__version__
         # returns 'python -m unittest' :-/
@@ -148,7 +148,7 @@ class CLI(object):
             # autoflush()
             # too late
             # os.environ['PYTHONUNBUFFERED'] = "anything"
-            self.verbose = self.get_opt('verbose')
+            self.verbose += int(self.get_opt('verbose'))
             if self.is_option_defined('quiet') and self.get_opt('quiet'):
                 self.verbose = 0
             elif self.verbose > 2:
@@ -249,7 +249,7 @@ class CLI(object):
     def timeout(self, secs):
         validate_int(secs, 'timeout', 0, self.timeout_max)
         #if not isInt(secs):
-        #    raise CodingError('invalid timeout passed to set_timeout(), must be an integer representing seconds') # pylint: disable=line-too-long
+        #    raise CodingError('invalid timeout passed to set_timeout(), must be an integer representing seconds')
         log.debug('setting timeout to %s secs', secs)
         self.__timeout = int(secs)
 
@@ -262,7 +262,8 @@ class CLI(object):
     def timeout_default(self, secs):
         if secs is not None:
             if not isInt(secs):
-                raise CodingError('invalid timeout passed to timeout_default = , must be an integer representing seconds') # pylint: disable=line-too-long
+                raise CodingError('invalid timeout passed assigned to timeout_default, ' + \
+                                  'must be an integer representing seconds')
             # validate_int(secs, 'timeout default', 0, self.__timeout_max )
             if self.timeout_max is not None and secs > self.timeout_max:
                 raise CodingError('set default timeout > timeout max')
@@ -277,7 +278,8 @@ class CLI(object):
     @timeout_max.setter
     def timeout_max(self, secs):
         if secs is not None and not isInt(secs):
-            raise CodingError('invalid timeout max passed to set_timeout_max(), must be an integer representing seconds') # pylint: disable=line-too-long
+            raise CodingError('invalid timeout max passed to set_timeout_max(), ' + \
+                              'must be an integer representing seconds')
         # leave this to be able to set max to any amount
         # validate_int(secs, 'timeout default', 0, self.__timeout_max )
         log.debug('setting max timeout to %s secs', secs)
