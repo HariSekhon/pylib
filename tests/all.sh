@@ -25,9 +25,6 @@ echo "
 
 cd "$srcdir/..";
 
-#./syntax.sh
-tests/pylint.sh
-
 #./python3.sh
 
 bash-tools/python_compile.sh
