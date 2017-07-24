@@ -2783,6 +2783,10 @@ class UtilsTester(unittest.TestCase):
     def test_validate_password(self):
         self.assertTrue(validate_password('wh@tev3r', 'name'))
         self.assertTrue(validate_password('wh@tev3r'))
+        os.environ['PASSWORD_DEBUG'] = '1'
+        self.assertTrue(validate_password('wh@tev3r', 'name'))
+        self.assertTrue(validate_password('wh@tev3r'))
+        del os.environ['PASSWORD_DEBUG']
 
     def test_validate_password_exception_backticks(self):
         try:

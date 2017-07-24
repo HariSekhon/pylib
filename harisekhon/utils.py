@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.20'
+__version__ = '0.10.21'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -2066,7 +2066,10 @@ def validate_password(arg, name=''):
     if re.search('[`\'"]|\\$\\(', arg):
         raise InvalidOptionException('invalid %(name)spassword defined, may not contain quotes, ' % locals() + \
                                      'subshell escape sequences like $( ) or backticks')
-    log_option('%(name)spassword' % locals(), '<omitted>')
+    if os.getenv('PASSWORD_DEBUG', ''):
+        log_option('%(name)spassword' % locals(), arg)
+    else:
+        log_option('%(name)spassword' % locals(), '<omitted>')
     return True
 
 
