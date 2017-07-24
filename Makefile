@@ -65,6 +65,10 @@ build:
 	@echo
 	@echo 'BUILD SUCCESSFUL (pylib)'
 
+.PHONY: quick
+quick:
+	QUICK=1 make
+
 .PHONY: apk-packages
 apk-packages:
 	$(SUDO) apk update
