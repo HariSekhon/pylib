@@ -51,7 +51,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.16'
+__version__ = '0.8.17'
 
 
 class CLI(object):
@@ -317,10 +317,10 @@ class CLI(object):
         #         pass
 
         if self.__timeout_default is not None:
-            self.add_opt('-t', '--timeout', help='Timeout in secs (default: %d)' % self.__timeout_default,
-                         metavar='secs', default=self.__timeout_default)
-        self.add_opt('-v', '--verbose', help='Verbose mode (-v, -vv, -vvv)', action='count',
-                     default=self.__verbose_default)
+            self.add_opt('-t', '--timeout', help='Timeout in secs ($TIMEOUT, default: %d)' % self.__timeout_default,
+                         metavar='secs', default=os.getenv('TIMEOUT', self.__timeout_default))
+        self.add_opt('-v', '--verbose', help='Verbose mode ($VERBOSE=<int>, or specify multiple times -v, -vv, -vvv)',
+                     action='count', default=os.getenv('VERBOSE', self.__verbose_default))
         self.add_opt('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
         # self.__parser.add_option('-h', '--help', action='help')
