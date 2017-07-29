@@ -51,7 +51,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.17'
+__version__ = '0.8.18'
 
 
 class CLI(object):
@@ -82,7 +82,7 @@ class CLI(object):
         self.__verbose_default = 0
         self.__verbose = self.__verbose_default
         self.__timeout_default = 10
-        self.__timeout = self.__timeout_default
+        self.__timeout = None
         self.__timeout_max = 86400
         self.__total_run_time = time.time()
         self.topfile = get_topfile()
@@ -318,9 +318,9 @@ class CLI(object):
 
         if self.__timeout_default is not None:
             self.add_opt('-t', '--timeout', help='Timeout in secs ($TIMEOUT, default: %d)' % self.__timeout_default,
-                         metavar='secs', default=os.getenv('TIMEOUT', self.__timeout_default))
-        self.add_opt('-v', '--verbose', help='Verbose mode ($VERBOSE=<int>, or specify multiple times -v, -vv, -vvv)',
-                     action='count', default=os.getenv('VERBOSE', self.__verbose_default))
+                         metavar='secs', default=self.__timeout_default)
+        self.add_opt('-v', '--verbose', help='Verbose level ($VERBOSE=<int>, or use multiple -v, -vv, -vvv)',
+                     action='count', default=self.__verbose_default)
         self.add_opt('-V', '--version', action='store_true', help='Show version and exit')
         # this would intercept and return exit code 0
         # self.__parser.add_option('-h', '--help', action='help')
@@ -339,17 +339,27 @@ class CLI(object):
         if self.options.version:  # pragma: no cover
             print('%(version)s' % self.__dict__)
             sys.exit(ERRORS['UNKNOWN'])
-        if 'timeout' in dir(self.options):
-            self.timeout = self.get_opt('timeout')
         env_verbose = os.getenv('VERBOSE')
         if isInt(env_verbose):
             if env_verbose > self.verbose:
                 log.debug('environment variable $VERBOSE = %s, increasing verbosity', env_verbose)
-                self.verbose = env_verbose
+                self.verbose = int(env_verbose)
         elif env_verbose is None:
             pass
         else:
             log.warning("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
+        if 'timeout' in dir(self.options):
+            self.timeout = self.get_opt('timeout')
+        if self.timeout is None:
+            env_timeout = os.getenv('TIMEOUT')
+            if env_timeout is not None:
+                if isInt(env_timeout):
+                    log.debug("environment variable $TIMEOUT = '%s' and timeout not already set, setting timeout = %s", env_timeout, env_timeout)
+                    self.timeout = int(env_timeout)
+                else:
+                    log.warning("$TIMEOUT environment variable is not an integer ('%s')", env_timeout)
+            else:
+                self.timeout = self.__timeout_default
         self.parse_args()
         return self.options, self.args
 
