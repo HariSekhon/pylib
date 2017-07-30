@@ -354,7 +354,8 @@ class CLI(object):
             env_timeout = os.getenv('TIMEOUT')
             if env_timeout is not None:
                 if isInt(env_timeout):
-                    log.debug("environment variable $TIMEOUT = '%s' and timeout not already set, setting timeout = %s", env_timeout, env_timeout)
+                    log.debug("environment variable $TIMEOUT = '%s' and timeout not already set, setting timeout = %s",
+                              env_timeout, env_timeout)
                     self.timeout = int(env_timeout)
                 else:
                     log.warning("$TIMEOUT environment variable is not an integer ('%s')", env_timeout)
