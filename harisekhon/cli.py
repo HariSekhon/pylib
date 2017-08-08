@@ -51,7 +51,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.18'
+__version__ = '0.8.19'
 
 
 class CLI(object):
@@ -134,8 +134,10 @@ class CLI(object):
         pass
 
     def main(self):
-        # log.debug('running main()')
-        log.setLevel(logging.WARN)
+        # DEBUG env var is picked up immediately in pylib utils, do not override it here if so
+        if not log.isEnabledFor(logging.DEBUG) and \
+           not log.isEnabledFor(logging.ERROR): # do not downgrade logging either
+            log.setLevel(logging.WARN)
         self.setup()
         try:
             self.add_options()
@@ -318,7 +320,9 @@ class CLI(object):
 
         if self.__timeout_default is not None:
             self.add_opt('-t', '--timeout', help='Timeout in secs ($TIMEOUT, default: %d)' % self.__timeout_default,
-                         metavar='secs', default=self.__timeout_default)
+                         metavar='secs' ) # , default=self.__timeout_default)
+                                          # do not set default here, detect None and inherit $TIMEOUT if available,
+                                          # set to self.__timeout_default afterwards if still none in __parse_args__()
         self.add_opt('-v', '--verbose', help='Verbose level ($VERBOSE=<int>, or use multiple -v, -vv, -vvv)',
                      action='count', default=self.__verbose_default)
         self.add_opt('-V', '--version', action='store_true', help='Show version and exit')
@@ -349,18 +353,24 @@ class CLI(object):
         else:
             log.warning("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
         if 'timeout' in dir(self.options):
-            self.timeout = self.get_opt('timeout')
+            timeout = self.get_opt('timeout')
+            if timeout is not None:
+                log.debug('getting --timeout value', self.timeout)
+                self.timeout = timeout
         if self.timeout is None:
             env_timeout = os.getenv('TIMEOUT')
+            log.debug('getting $TIMEOUT value %s', env_timeout)
             if env_timeout is not None:
+                log.debug('env_timeout is not None')
                 if isInt(env_timeout):
                     log.debug("environment variable $TIMEOUT = '%s' and timeout not already set, setting timeout = %s",
                               env_timeout, env_timeout)
                     self.timeout = int(env_timeout)
                 else:
                     log.warning("$TIMEOUT environment variable is not an integer ('%s')", env_timeout)
-            else:
-                self.timeout = self.__timeout_default
+        if self.timeout is None:
+            log.debug('timeout not set, using default timeout %s', self.__timeout_default)
+            self.timeout = self.__timeout_default
         self.parse_args()
         return self.options, self.args
 
