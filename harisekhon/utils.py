@@ -95,6 +95,7 @@ logging.config.fileConfig(os.path.join(libdir, 'resources', 'logging.conf'))
 log = logging.getLogger('HariSekhonUtils')
 if os.getenv('DEBUG'):
     log.setLevel(logging.DEBUG)
+    log.debug('DEBUG environment variable set, enabling debug logging')
 # optimization - gives unknown file, unknown function, line 0
 # logging._srcfile = None
 # optimization - not tested yet
