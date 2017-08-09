@@ -208,6 +208,7 @@ class CLITester(unittest.TestCase):
         cli.timeout_default = 9
         self.assertEqual(cli.timeout_default, 9)
         cli.timeout_default = None
+        cli.timeout_default = 10
 
     def test_set_timeout_max_set_timeout_default_exception(self):
         self.cli.timeout_max = 10
@@ -221,11 +222,13 @@ class CLITester(unittest.TestCase):
         cli = self.SubCLI()
         cli.timeout_default = None
         self.assertEqual(cli.timeout_default, None)
+        cli.timeout_default = 30
         cli.timeout_max = 30
         cli.timeout = 22
         self.assertEqual(cli.timeout, 22)
         cli.main()
         self.cli.disable_timeout()
+        self.cli.timeout = 30
 
     def test_timeout_default_alpha_exception(self):
         self.cli.__init__()
