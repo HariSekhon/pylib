@@ -31,6 +31,7 @@ import os
 import signal
 import sys
 import time
+import traceback
 #import traceback
 from optparse import IndentedHelpFormatter
 from optparse import OptionParser
@@ -51,7 +52,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.19'
+__version__ = '0.8.20'
 
 
 class CLI(object):
@@ -135,6 +136,8 @@ class CLI(object):
 
     def main(self):
         # DEBUG env var is picked up immediately in pylib utils, do not override it here if so
+        if os.getenv('DEBUG'):
+            log.setLevel(logging.DEBUG)
         if not log.isEnabledFor(logging.DEBUG) and \
            not log.isEnabledFor(logging.ERROR): # do not downgrade logging either
             log.setLevel(logging.WARN)
@@ -150,20 +153,6 @@ class CLI(object):
             # autoflush()
             # too late
             # os.environ['PYTHONUNBUFFERED'] = "anything"
-            self.verbose += int(self.get_opt('verbose'))
-            if self.is_option_defined('quiet') and self.get_opt('quiet'):
-                self.verbose = 0
-            elif self.verbose > 2:
-                log.setLevel(logging.DEBUG)
-            elif self.verbose > 1:
-                log.setLevel(logging.INFO)
-            elif self.verbose > 0 and self._prog[0:6] != 'check_':
-                log.setLevel(logging.WARN)
-            if self.options.debug:
-                log.setLevel(logging.DEBUG)  # pragma: no cover
-                log.debug('enabling debug logging')
-                if self.verbose < 3:
-                    self.verbose = 3
             log.info('Hari Sekhon %s', self.version)
             log.info(self._github_repo)
             log.info('verbose level: %s (%s)', self.verbose, logging.getLevelName(log.getEffectiveLevel()))
@@ -187,6 +176,8 @@ class CLI(object):
                 qquit('UNKNOWN', _)
             self.__end__()
         except InvalidOptionException as _:
+            if log.isEnabledFor(logging.DEBUG):
+                log.debug(traceback.format_exc())
             self.usage(_)  # pragma: no cover
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
@@ -318,11 +309,11 @@ class CLI(object):
         #     except ValueError:
         #         pass
 
-        if self.__timeout_default is not None:
-            self.add_opt('-t', '--timeout', help='Timeout in secs ($TIMEOUT, default: %d)' % self.__timeout_default,
-                         metavar='secs' ) # , default=self.__timeout_default)
-                                          # do not set default here, detect None and inherit $TIMEOUT if available,
-                                          # set to self.__timeout_default afterwards if still none in __parse_args__()
+        if self.timeout_default is not None:
+            self.add_opt('-t', '--timeout', help='Timeout in secs ($TIMEOUT, default: %d)' % self.timeout_default, \
+                         metavar='secs') # , default=self.timeout_default)
+                                         # do not set default here, detect None and inherit $TIMEOUT if available,
+                                         # set to self.timeout_default afterwards if still none in __parse_args__()
         self.add_opt('-v', '--verbose', help='Verbose level ($VERBOSE=<int>, or use multiple -v, -vv, -vvv)',
                      action='count', default=self.__verbose_default)
         self.add_opt('-V', '--version', action='store_true', help='Show version and exit')
@@ -343,6 +334,13 @@ class CLI(object):
         if self.options.version:  # pragma: no cover
             print('%(version)s' % self.__dict__)
             sys.exit(ERRORS['UNKNOWN'])
+        self.__parse_verbose__()
+        self.__parse_timeout__()
+        self.parse_args()
+        return self.options, self.args
+
+    def __parse_verbose__(self):
+        self.verbose += int(self.get_opt('verbose'))
         env_verbose = os.getenv('VERBOSE')
         if isInt(env_verbose):
             if env_verbose > self.verbose:
@@ -352,10 +350,29 @@ class CLI(object):
             pass
         else:
             log.warning("$VERBOSE environment variable is not an integer ('%s')", env_verbose)
+
+        if self.is_option_defined('quiet') and self.get_opt('quiet'):
+            self.verbose = 0
+        elif self.verbose > 2:
+            log.setLevel(logging.DEBUG)
+        elif self.verbose > 1:
+            log.setLevel(logging.INFO)
+        elif self.verbose > 0 and self._prog[0:6] != 'check_':
+            log.setLevel(logging.WARN)
+        if self.options.debug:
+            log.setLevel(logging.DEBUG)  # pragma: no cover
+            log.debug('enabling debug logging')
+            if self.verbose < 3:
+                self.verbose = 3
+
+    def __parse_timeout__(self):
+        # reset this to none otherwise unit tests fail to take setting from timeout_default
+        # use __timeout to bypass the property setter checks
+        self.__timeout = None
         if 'timeout' in dir(self.options):
             timeout = self.get_opt('timeout')
             if timeout is not None:
-                log.debug('getting --timeout value', self.timeout)
+                log.debug('getting --timeout value %s', self.timeout)
                 self.timeout = timeout
         if self.timeout is None:
             env_timeout = os.getenv('TIMEOUT')
@@ -369,10 +386,8 @@ class CLI(object):
                 else:
                     log.warning("$TIMEOUT environment variable is not an integer ('%s')", env_timeout)
         if self.timeout is None:
-            log.debug('timeout not set, using default timeout %s', self.__timeout_default)
-            self.timeout = self.__timeout_default
-        self.parse_args()
-        return self.options, self.args
+            log.debug('timeout not set, using default timeout %s', self.timeout_default)
+            self.timeout = self.timeout_default
 
     def parse_args(self):
         pass
