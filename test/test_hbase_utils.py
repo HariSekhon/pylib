@@ -67,7 +67,7 @@ class HBaseUtilsTester(unittest.TestCase):
     def test_isHBaseColumnQualifier(self):
         self.assertTrue(isHBaseColumnQualifier('cf1:q1'))
         self.assertFalse(isHBaseColumnQualifier('?'))
-        
+
     def test_isHBaseRowKey(self):
         self.assertTrue(isHBaseRowKey('one#two'))
         self.assertFalse(isHBaseRowKey('?'))

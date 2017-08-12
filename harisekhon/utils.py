@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.21'
+__version__ = '0.10.22'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -509,9 +509,8 @@ def get_jython_exception():
     #import traceback; traceback.print_exc()
     if sys.exc_info()[1] is None:
         return ''
-    else:
-        # return sys.exc_info()[1].toString()
-        return sys.exc_info()[1].message
+    # return sys.exc_info()[1].toString()
+    return sys.exc_info()[1].message
 
 
 def log_jython_exception():
@@ -1267,8 +1266,8 @@ def isStr(arg):
     # return type(arg).__name__ in [ 'str', 'unicode' ]
     if isPythonMinVersion(3):
         return isinstance(arg, str)
-    else:                                                        # pylint thinks unicode is an undefined variable
-        return isinstance(arg, str) or isinstance(arg, unicode)  # pylint: disable=undefined-variable
+    # pylint thinks unicode is an undefined variable
+    return isinstance(arg, str) or isinstance(arg, unicode)  # pylint: disable=undefined-variable
     # basestring is abstract superclass of both str and unicode
     # update: looks like this is removed in Python 3
     # return isinstance(arg, basestring)
@@ -1442,14 +1441,13 @@ def plural(arg):
         arg = float(arg)
         if arg == 1:
             return ''
-        else:
-            return 's'
+        return 's'
     elif isList(arg):
         if len(arg) == 1:
             return ''
-        else:
-            return 's'
+        return 's'
     return ''
+
 
 def space_suffix(arg):
     if arg:

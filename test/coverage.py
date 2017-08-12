@@ -8,7 +8,8 @@
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
-#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback to help improve or steer this or other code I publish
+#  If you're using my code you're welcome to connect with me on LinkedIn
+#  and optionally send me feedback to help improve or steer this or other code I publish
 #
 #  http://www.linkedin.com/in/harisekhon
 #
@@ -21,17 +22,17 @@ from __future__ import unicode_literals
 __author__  = 'Hari Sekhon'
 __version__ = '0.1'
 
-import coverage
 import os
 import sys
+import coverage
 # using optparse rather than argparse for servers still on Python 2.6
 #from optparse import OptionParser
 sys.path.append(os.path.join(os.path.dirname(__file__), '/lib'))
 try:
     from harisekhon.utils import *
     #from harisekhon import CLI
-except ImportError as e:
-    print('module import failed: %s' % e)
+except ImportError as _:
+    print('module import failed: {0}'.format(_))
     sys.exit(4)
 
 def main():

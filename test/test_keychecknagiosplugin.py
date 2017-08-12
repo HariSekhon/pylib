@@ -34,6 +34,7 @@ sys.path.append(libdir)
 from harisekhon.utils import log
 from harisekhon import KeyCheckNagiosPlugin
 
+
 class KeyCheckNagiosPluginTester(unittest.TestCase):
 
     # must prefix with test_ in order for the tests to be called
@@ -61,7 +62,7 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
             KeyCheckNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
                             'KeyCheckNagiosPlugin')
-        except TypeError as _:
+        except TypeError:
             pass
 
 
@@ -72,6 +73,7 @@ def main():
     log.setLevel(logging.DEBUG)
     suite = unittest.TestLoader().loadTestsFromTestCase(KeyCheckNagiosPluginTester)
     unittest.TextTestRunner(verbosity=2).run(suite)
+
 
 if __name__ == '__main__':
     main()
