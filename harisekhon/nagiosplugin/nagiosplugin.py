@@ -249,7 +249,8 @@ class NagiosPlugin(CLI):
             if log.isEnabledFor(logging.DEBUG):
                 log.debug("exception: '%s'", exception_type)
                 log.debug(traceback.format_exc())
-            msg = 'Nagios Plugin Exception: {exception_type}: {msg}'.format(exception_type=exception_type, msg=self.exception_msg())
+            msg = 'Nagios Plugin Exception: {exception_type}: {msg}'\
+                  .format(exception_type=exception_type, msg=self.exception_msg())
             #msg = ', '.join([x.strip() for x in msg.split('\n')])
             # ', ' doesn't look nice for ':\n ...' => ':, ...' (snakebite OutOfNNException)
             #msg = '\t'.join([x.strip() for x in msg.split('\n')])
