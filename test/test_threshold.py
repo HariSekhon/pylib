@@ -34,6 +34,7 @@ sys.path.append(libdir)
 from harisekhon.utils import log, CodingError
 from harisekhon.nagiosplugin import Threshold, InvalidThresholdException
 
+
 class NagiosThresholdTester(unittest.TestCase):
 
     # must prefix with test_ in order for the tests to be called
@@ -205,6 +206,7 @@ def main():
     log.setLevel(logging.DEBUG)
     suite = unittest.TestLoader().loadTestsFromTestCase(NagiosThresholdTester)
     unittest.TextTestRunner(verbosity=2).run(suite)
+
 
 if __name__ == '__main__':
     main()
