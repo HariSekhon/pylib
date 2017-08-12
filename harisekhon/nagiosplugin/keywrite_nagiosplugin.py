@@ -113,7 +113,7 @@ class KeyWriteNagiosPlugin(KeyCheckNagiosPlugin):
         # don't inherit read check's end as we want a different output format
         if self._read_value is None:
             raise UnknownError('read value is not set!')
-        log.info("checking read key '{0}' == written key '{1}".format(self._read_value, self._write_value))
+        log.info("checking read key '%s' == written key '%s'", self._read_value, self._write_value)
         if self._read_value != self._write_value:
             raise CriticalError("wrote '{0}' but got back '{1}' instead".format(self._write_value, self._read_value))
         self.msg = '{0} key written and read back successfully'.format(self.name)
