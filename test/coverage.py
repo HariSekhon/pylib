@@ -22,9 +22,9 @@ from __future__ import unicode_literals
 __author__  = 'Hari Sekhon'
 __version__ = '0.1'
 
-import coverage
 import os
 import sys
+import coverage
 # using optparse rather than argparse for servers still on Python 2.6
 #from optparse import OptionParser
 sys.path.append(os.path.join(os.path.dirname(__file__), '/lib'))
