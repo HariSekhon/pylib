@@ -1441,14 +1441,13 @@ def plural(arg):
         arg = float(arg)
         if arg == 1:
             return ''
-        else:
-            return 's'
+        return 's'
     elif isList(arg):
         if len(arg) == 1:
             return ''
-        else:
-            return 's'
+        return 's'
     return ''
+
 
 def space_suffix(arg):
     if arg:
