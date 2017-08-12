@@ -31,8 +31,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '/lib'))
 try:
     from harisekhon.utils import *
     #from harisekhon import CLI
-except ImportError as e:
-    print('module import failed: %s' % e)
+except ImportError as _:
+    print('module import failed: {0}'.format(_))
     sys.exit(4)
 
 def main():
