@@ -195,10 +195,10 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(re.match('.*/pylib', find_git_root(__file__)))
 
     def test_find_git_root_not_found(self):
-        self.assertEquals(find_git_root('/usr/bin'), None)
+        self.assertEqual(find_git_root('/usr/bin'), None)
 
     def test_find_git_root_nonexistent(self):
-        self.assertEquals(find_git_root('/nonexistent'), None)
+        self.assertEqual(find_git_root('/nonexistent'), None)
 
     def test_code_error(self):
         try:
