@@ -509,9 +509,8 @@ def get_jython_exception():
     #import traceback; traceback.print_exc()
     if sys.exc_info()[1] is None:
         return ''
-    else:
-        # return sys.exc_info()[1].toString()
-        return sys.exc_info()[1].message
+    # return sys.exc_info()[1].toString()
+    return sys.exc_info()[1].message
 
 
 def log_jython_exception():
