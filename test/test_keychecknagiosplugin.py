@@ -62,7 +62,7 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
             KeyCheckNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
                             'KeyCheckNagiosPlugin')
-        except TypeError as _:
+        except TypeError:
             pass
 
 
