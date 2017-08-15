@@ -70,7 +70,7 @@ class RequestBS4Handler(RequestHandler):
 
     def soup_print(self, soup):  # pylint: disable=no-self-use
         if log.isEnabledFor(logging.DEBUG):
-            log.debug("BeautifulSoup prettified:\n%s\n%s", soup.prettify(), '='*80)
+            log.debug("BeautifulSoup prettified:\n%s\n%s", soup.prettify(), '=' * 80)
 
     @abstractmethod
     def parse(self, soup):  # pylint: disable=no-self-use
