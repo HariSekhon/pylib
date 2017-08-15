@@ -111,7 +111,7 @@ class RequestHandler(object):
 
     def log_output(self, req):  # pylint: disable=no-self-use
         log.debug("response: %s %s", req.status_code, req.reason)
-        log.debug("content:\n%s\n%s\n%s", '='*80, req.content.strip(), '='*80)
+        log.debug("content:\n%s\n%s\n%s", '=' * 80, req.content.strip(), '=' * 80)
 
     def check_response_code(self, req):  # pylint: disable=no-self-use
         if req.status_code != 200:
