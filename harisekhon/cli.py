@@ -125,7 +125,7 @@ class CLI(object):
                 width = Terminal().width
             except _curses.error:
                 width = 80
-        width = min(width, 200)
+        #width = min(width, 200)
         self.__parser = OptionParser(add_help_option=False, formatter=IndentedHelpFormatter(width=width))
         # duplicate key error or duplicate options, sucks
         # self.__parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
