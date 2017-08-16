@@ -20,6 +20,10 @@ cd "$srcdir/..";
 
 . ./tests/utils.sh
 
+section "Python Syntax Checks"
+
+start_time="$(start_timer)"
+
 for x in $(echo *.py *.jy 2>/dev/null); do
     isExcluded "$x" && continue
     if which flake8 &> /dev/null; then
@@ -35,3 +39,6 @@ for x in $(echo *.py *.jy 2>/dev/null); do
         fi
    done
 done
+
+time_taken "$start_time"
+section2 "Python Syntax Checks Passed"
