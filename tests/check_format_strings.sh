@@ -18,11 +18,18 @@ srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "$srcdir/..";
 
-. ./tests/utils.sh
+. tests/utils.sh
+
+section "Checking Python format strings"
+
+start_time="$(start_timer)"
 
 set +e
 for x in ${@:-$(find . -iname '*.py' -o -iname '*.jy')}; do
-    isExcluded "$x" && continue
+    # this call is expensive, skip it when in CI as using fresh git checkouts
+    if ! is_CI; then
+        isExcluded "$x" && continue
+    fi
     output="$(egrep ' log\.(info|warn|error|debug|notice)' "$x" | grep -v "['\"]")"
     if [ -n "$output" ]; then
         echo "$x contains potentially unsafe string interpolation behaviour:"
@@ -30,5 +37,8 @@ for x in ${@:-$(find . -iname '*.py' -o -iname '*.jy')}; do
         echo
     fi
 done
+
+time_taken "$start_time"
+section2 "Finished checking python format strings"
 
 exit 0
