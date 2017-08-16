@@ -71,20 +71,20 @@ class HBaseUtilsTester(unittest.TestCase):
     def test_isHBaseRowKey(self):
         self.assertTrue(isHBaseRowKey('one#two'))
         self.assertFalse(isHBaseRowKey('?'))
-        
+
     def test_isHBaseTable(self):
         self.assertTrue(isHBaseTable('hbase:meta'))
         self.assertFalse(isHBaseTable('?'))
-        
+
     def test_validate_hbase_column_qualifier(self):
         self.assertTrue(validate_hbase_column_qualifier('cf1:q1'))
-        
+
     def test_validate_hbase_rowkey(self):
         self.assertTrue(validate_hbase_rowkey('one#two'))
-        
+
     def test_validate_hbase_table(self):
         self.assertTrue(validate_hbase_table('hbase:meta'))
-        
+
 # ============================================================================ #
     def test_validate_hbase_column_qualifier_exception(self):
         try:
