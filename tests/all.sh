@@ -17,13 +17,13 @@ set -euo pipefail
 [ -n "${DEBUG:-}" ] && set -x
 srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo "
-# ================== #
-# Running PyLib ALL
-# ================== #
-"
-
 cd "$srcdir/..";
+
+. bash-tools/utils.sh
+
+section "PyLib Tests ALL"
+
+pylib_start_time="$(start_timer)"
 
 #./python3.sh
 
@@ -37,3 +37,6 @@ bash-tools/run_tests.sh
 
 cd "$srcdir/.."
 bash-tools/all.sh
+
+time_taken "$pylib_start_time" "PyLib Tests Completed in"
+section2 "PyLib Tests Successful"
