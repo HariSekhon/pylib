@@ -20,8 +20,18 @@ cd "$srcdir/..";
 
 . ./tests/utils.sh
 
+section "Python Compile"
+
+start_time="$(start_timer)"
+
 for x in $(find . -type f -iname '*.py' -o -iname '*.jy'); do
-    isExcluded "$x" && continue
+    # this call is expensive, skip it when in CI as using fresh git checkouts
+    if ! is_CI; then
+        isExcluded "$x" && continue
+    fi
     echo "compiling $x"
     python -m py_compile $x
 done
+
+time_taken "$start_time"
+section2 "Completed Python Compile"
