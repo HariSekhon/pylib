@@ -20,6 +20,8 @@
 set -eu
 
 isExcluded(){
+    # this call is expensive, skip it when in CI as using fresh git checkouts
+    is_CI && return 1
     local prog="$1"
     [[ "$prog" =~ ^\* ]] && return 0
     commit="$(git log "$prog" | head -n1 | grep 'commit')"
