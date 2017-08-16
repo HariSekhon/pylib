@@ -26,10 +26,7 @@ start_time="$(start_timer)"
 
 set +e
 for x in ${@:-$(find . -iname '*.py' -o -iname '*.jy')}; do
-    # this call is expensive, skip it when in CI as using fresh git checkouts
-    if ! is_CI; then
-        isExcluded "$x" && continue
-    fi
+    isExcluded "$x" && continue
     output="$(egrep ' log\.(info|warn|error|debug|notice)' "$x" | grep -v "['\"]")"
     if [ -n "$output" ]; then
         echo "$x contains potentially unsafe string interpolation behaviour:"
