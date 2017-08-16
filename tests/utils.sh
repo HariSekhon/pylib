@@ -13,7 +13,8 @@
 #  http://www.linkedin.com/in/harisekhon
 #
 
-set -eu
+set -euo pipefail
+srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 hr(){
     echo "===================="
@@ -39,3 +40,5 @@ check(){
         exit 1
     fi
 }
+
+. "$srcdir/../bash-tools/utils.sh"
