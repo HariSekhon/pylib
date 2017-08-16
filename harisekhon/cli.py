@@ -125,7 +125,9 @@ class CLI(object):
                 width = Terminal().width
             except _curses.error:
                 width = 80
-        #width = min(width, 200)
+        # limit the width to 200 as we don't want super long strings going all the way across
+        # 27" Thunderbolt displays of 364 columns etc.
+        width = min(width, 200)
         self.__parser = OptionParser(add_help_option=False, formatter=IndentedHelpFormatter(width=width))
         # duplicate key error or duplicate options, sucks
         # self.__parser.add_option('-V', dest='version', help='Show version and exit', action='store_true')
