@@ -45,7 +45,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.5.1'
+__version__ = '0.5.2'
 
 
 class RequestHandler(object):
@@ -118,7 +118,7 @@ class RequestHandler(object):
             extra_info = ''
             try:
                 json_data = json.loads(req.content)
-                for key in ('status', 'error', 'reason', 'message'):
+                for key in ('status', 'message', 'error', 'error_message', 'reason'):
                     if key in json_data:
                         extra_info += ', {key}: {info}'.format(key=key, info=json_data[key])
             except ValueError:
