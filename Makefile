@@ -64,6 +64,8 @@ build:
 	bash-tools/python_compile.sh
 	@echo
 	@echo 'BUILD SUCCESSFUL (pylib)'
+	@echo
+	@echo
 
 .PHONY: quick
 quick:
