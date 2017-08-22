@@ -29,6 +29,23 @@ else
 	SUDO = sudo -H
 endif
 
+# ===================
+# bootstrap commands:
+
+# Alpine:
+#
+#   apk add --no-cache git make && git clone https://github.com/harisekhon/pylib && cd pylib && make
+
+# Debian / Ubuntu:
+#
+#   apt-get update && apt-get install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
+
+# RHEL / CentOS:
+#
+#   yum install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
+
+# ===================
+
 .PHONY: build
 build:
 	@echo ================
