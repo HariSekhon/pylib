@@ -18,7 +18,7 @@ make &&
 make test
 ```
 
-Continuous Integration is run on this repo to build and test it (around 450 unit tests, plus custom tests).
+[Continuous Integration](https://travis-ci.org/HariSekhon/pylib) is run on this repo to build and test it (around 450 unit tests, plus custom tests).
 
 #### Configuration ####
 
