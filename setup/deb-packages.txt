@@ -15,6 +15,7 @@
 
 build-essential
 git
+python
 python-dev
 python-pip
 python-setuptools
