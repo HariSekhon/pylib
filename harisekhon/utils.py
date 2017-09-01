@@ -1615,7 +1615,8 @@ def validate_chars(arg, name, chars):
     if isChars(arg, chars):
         log_option(name, arg)
         return True
-    raise InvalidOptionException("invalid %(name)s '%(arg)s' defined - must be one of the following chars: %(chars)s" \
+    raise InvalidOptionException("invalid %(name)s '%(arg)s' defined" % locals() + \
+                                 " - must contain only the following chars: %(chars)s" \
                                  % locals())
 
 
