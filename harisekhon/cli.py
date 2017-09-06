@@ -46,9 +46,9 @@ libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 import harisekhon
-from harisekhon.utils import log, getenvs, getenvs2, isBlankOrNone, isInt, isHost, isPort, isStr, isList, validate_int, plural
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isHost, isPort, isStr, isList, validate_int
 from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit #, die
-from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
+from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version, plural
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
@@ -420,9 +420,9 @@ class CLI(object):
             default_port = getattr(self, 'default_port')
         if not isBlankOrNone(name):
             if isList(name):
-                name2 = name[0]
+                name2 = '{0} '.format(name[0])
             else:
-                name2 = '%s ' % name
+                name2 = '{0} '.format(name)
         if default_host is not None and not isHost(default_host):
             raise CodingError('invalid default host supplied to add_hostoption()')
         if default_port is not None and not isPort(default_port):
@@ -447,12 +447,16 @@ class CLI(object):
         if not default_password and 'default_password' in self.__dict__ and getattr(self, 'default_password'):
             default_password = getattr(self, 'default_password')
         if not isBlankOrNone(name):
-            name2 = "%s " % name
-        (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
-        (pw_envs, default_password) = getenvs2('PASSWORD', default_password, name)
-        self.add_opt('-u', '--user', dest='user', help='%sUsername (%s)' % (name2, user_envs), default=default_user)
-        self.add_opt('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
-                     default=default_password)
+            if isList(name):
+                name2 = '{0} '.format(name[0])
+            else:
+                name2 = '{0} '.format(name)
+        (user_envs_help, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
+        (pw_envs_help, default_password) = getenvs2('PASSWORD', default_password, name)
+        self.add_opt('-u', '--user', dest='user',
+                     help='%sUsername (%s)' % (name2, user_envs_help), default=default_user)
+        self.add_opt('-p', '--password', dest='password',
+                     help='%sPassword (%s)' % (name2, pw_envs_help), default=default_password)
 
     def add_quietoption(self):
         self.add_opt('-q', '--quiet', action='store_true', help='Quiet mode')
