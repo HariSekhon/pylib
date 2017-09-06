@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.10.22'
+__version__ = '0.11.0'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -355,8 +355,8 @@ def getenv(var, default=None):
 def getenvs(my_vars, default=None, prefix=''):
     if prefix is None:
         raise CodingError('None prefix passed for prefix to getenvs()')
-    if not isStr(prefix):
-        raise CodingError('non-string passed for prefix to getenvs()')
+    if not isStr(prefix) and not isList(prefix):
+        raise CodingError('non-string/list passed for prefix to getenvs()')
     result = None
     assert isStr(my_vars) or isList(my_vars)
     if isStr(my_vars):
@@ -379,11 +379,14 @@ def getenvs(my_vars, default=None, prefix=''):
 def normalize_env_var(env_var):
     return re.sub('[^A-Z0-9]', '_', env_var.upper())
 
-# wrapper to getenvs to also return the generated string to use in option help
 def getenvs2(my_vars, default, name):
-    if not isStr(name):
-        raise CodingError('passed non-string for name to getenvs2()')
-    name = name.upper()
+    """ Wrapper function to getenvs to also return the generated string to use in option help """
+    if isStr(name):
+        name = name.upper()
+    elif isList(name):
+        name = [_.upper() for _ in name]
+    else:
+        raise CodingError('passed non-string/list for name to getenvs2()')
     assert isStr(my_vars) or isList(my_vars)
     # exclude showing the default for sensitive options
     is_sensitive = False
@@ -1615,8 +1618,7 @@ def validate_chars(arg, name, chars):
     if isChars(arg, chars):
         log_option(name, arg)
         return True
-    raise InvalidOptionException("invalid %(name)s '%(arg)s' defined" % locals() + \
-                                 " - must contain only the following chars: %(chars)s" \
+    raise InvalidOptionException("invalid %(name)s '%(arg)s' defined - must be one of the following chars: %(chars)s" \
                                  % locals())
 
 
