@@ -1504,6 +1504,7 @@ def sec2human(secs):
     human_time += '%d sec%s' % (secs, plural(secs))
     return human_time
 
+# human_units is replaced by official humanize.naturalsize()
 
 # set_http_timeout
 # set_sudo
