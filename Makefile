@@ -13,6 +13,12 @@
 # Better than modifying $PATH to put /usr/bin first which is likely to affect many other things including potentially not finding the perlbrew installation first
 #ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)$(TRAVIS)' ''
 # Looks like Perl travis builds are now using system Python
+ifndef VIRTUAL_ENV
+	VIRTUAL_ENV = ''
+endif
+ifndef CONDA_DEFAULT_ENV
+	CONDA_DEFAULT_ENV = ''
+endif
 ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)' ''
 	SUDO2 =
 else
