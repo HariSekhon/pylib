@@ -46,13 +46,13 @@ libdir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 import harisekhon
-from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isHost, isPort, isStr, validate_int, plural
+from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isHost, isPort, isStr, isList, validate_int
 from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit #, die
-from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version
+from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version, plural
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.8.20'
+__version__ = '0.9.0'
 
 
 class CLI(object):
@@ -419,15 +419,18 @@ class CLI(object):
         if not default_port and 'default_port' in self.__dict__ and getattr(self, 'default_port'):
             default_port = getattr(self, 'default_port')
         if not isBlankOrNone(name):
-            name2 = '%s ' % name
+            if isList(name):
+                name2 = '{0} '.format(name[0])
+            else:
+                name2 = '{0} '.format(name)
         if default_host is not None and not isHost(default_host):
             raise CodingError('invalid default host supplied to add_hostoption()')
         if default_port is not None and not isPort(default_port):
             raise CodingError('invalid default port supplied to add_hostoption()')
-        (host_envs, default_host) = getenvs2('HOST', default_host, name)
-        (port_envs, default_port) = getenvs2('PORT', default_port, name)
-        self.add_opt('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs), default=default_host)
-        self.add_opt('-P', '--port', dest='port', help='%sPort (%s)' % (name2, port_envs), default=default_port)
+        (host_envs_help, default_host) = getenvs2(my_vars='HOST', default=default_host, name=name)
+        (port_envs_help, default_port) = getenvs2(my_vars='PORT', default=default_port, name=name)
+        self.add_opt('-H', '--host', dest='host', help='%sHost (%s)' % (name2, host_envs_help), default=default_host)
+        self.add_opt('-P', '--port', dest='port', help='%sPort (%s)' % (name2, port_envs_help), default=default_port)
 
     def add_useroption(self, name=None, default_user=None, default_password=None):
         name2 = ''
@@ -444,12 +447,16 @@ class CLI(object):
         if not default_password and 'default_password' in self.__dict__ and getattr(self, 'default_password'):
             default_password = getattr(self, 'default_password')
         if not isBlankOrNone(name):
-            name2 = "%s " % name
-        (user_envs, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
-        (pw_envs, default_password) = getenvs2('PASSWORD', default_password, name)
-        self.add_opt('-u', '--user', dest='user', help='%sUsername (%s)' % (name2, user_envs), default=default_user)
-        self.add_opt('-p', '--password', dest='password', help='%sPassword (%s)' % (name2, pw_envs),
-                     default=default_password)
+            if isList(name):
+                name2 = '{0} '.format(name[0])
+            else:
+                name2 = '{0} '.format(name)
+        (user_envs_help, default_user) = getenvs2(['USERNAME', 'USER'], default_user, name)
+        (pw_envs_help, default_password) = getenvs2('PASSWORD', default_password, name)
+        self.add_opt('-u', '--user', dest='user',
+                     help='%sUsername (%s)' % (name2, user_envs_help), default=default_user)
+        self.add_opt('-p', '--password', dest='password',
+                     help='%sPassword (%s)' % (name2, pw_envs_help), default=default_password)
 
     def add_quietoption(self):
         self.add_opt('-q', '--quiet', action='store_true', help='Quiet mode')

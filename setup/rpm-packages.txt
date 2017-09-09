@@ -15,11 +15,12 @@
 
 gcc
 git
-# for mysql_config to build MySQL-python
-mysql-devel
+python
 python-setuptools
 python-pip
 python-devel
+# for mysql_config to build MySQL-python
+mysql-devel
 wget
 
 # needed for ndg-httpsclient upgrade

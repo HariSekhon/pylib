@@ -178,6 +178,10 @@ class NagiosPlugin(CLI):
                 self.usage(_)
         log_option(name, threshold)
 
+    # not making this implicit via add_options as we may want to specify threshold validation options so must call
+    # manually when creating threshold objects
+    # would require a much more serious rewrite to store all the threshold kwargs in state and then catch here
+    # and also this would not work for multiple thresholds in a program unless very careful
     def validate_thresholds(self, name='', warning=None, critical=None, **kwargs):
         if not isStr(name):
             raise CodingError('non-string name passed to validate_thresholds()')
