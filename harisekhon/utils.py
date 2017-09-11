@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.11.0'
+__version__ = '0.11.1'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -173,6 +173,8 @@ def die(msg, *ec):
     printerr(msg)
     if ec:
         exitcode = ec[0]
+        log.info('ec = %s', ec)
+        log.info('exitcode = %s', exitcode)
         if str(exitcode).isdigit():
             if exitcode > 255:
                 sys.exit(exitcode % 256)
@@ -197,7 +199,7 @@ def qquit(status, msg=''):
     status = str(status).upper()
     if status not in ERRORS:
         log.warning("invalid status '%s' passed to qquit() by caller '%s', defaulting to critical\n%s",
-                 status, get_caller(), traceback.format_exc())
+                    status, get_caller(), traceback.format_exc())
         status = 'CRITICAL'
     # log.error('%s: %s', status, msg)
     if msg:
@@ -572,6 +574,40 @@ def curl(url, *args, **kwargs):
 #         return _class.curl(*args, **kwargs)
 #     else:
 #         return harisekhon.RequestBS4Handler.curl(*args, **kwargs)
+
+
+def expand_units(num, units=None, name=''):
+    if name is None:
+        name = ''
+    if num is None:
+        raise UnknownError('passed None to expand_units')
+    if not units:
+        match = re.match(r'^(\d+(?:\.\d+)?)([A-Za-z]{1,2})$', str(num))
+        if match:
+            num = match.group(1)
+            units = match.group(2)
+    if not units:
+        raise code_error('no units arg 2 passed to expand_units() and could not infer from num')
+    if not isFloat(num):
+        raise code_error('non-float num arg 1 passed to expand_units()')
+    num = float(num)
+    if re.match(r'^B?$', units, re.I):
+        return num
+    elif re.match(r'^KB?$', units, re.I):
+        power = 1
+    elif re.match(r'^MB?$', units, re.I):
+        power = 2
+    elif re.match(r'^GB?$', units, re.I):
+        power = 3
+    elif re.match(r'^TB?$', units, re.I):
+        power = 4
+    elif re.match(r'^PB?$', units, re.I):
+        power = 5
+    else:
+        if name:
+            name = ' for name {0}'.format(name)
+        code_error("unrecognized units '{0}'{1} passed to expand_units(). {2}".format(units, name, support_msg()))
+    return num * (1024 ** power)
 
 
 def flatten(arg):
