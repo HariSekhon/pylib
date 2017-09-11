@@ -337,8 +337,45 @@ class UtilsTester(unittest.TestCase):
         # reset the TLDs
         utils._tlds = tlds
 
+    def test_expand_units_bytes(self):
+        assert expand_units('7', 'B') == 7
+
+    def test_expand_units_bytes_inferred(self):
+        assert expand_units('8b') == 8
+
+    def test_expand_units_kb(self):
+        assert expand_units('10', 'KB') == 10240
+
+    def test_expand_units_kb_inferred(self):
+        assert expand_units('10KB') == 10240
+
+    def test_expand_units_mb(self):
+        assert expand_units('10', 'mB') == 10485760
+
+    def test_expand_units_mb_inferred(self):
+        assert expand_units('10mB') == 10485760
+
+    def test_expand_units_gb(self):
+        assert expand_units('10', 'GB') == 10737418240
+
+    def test_expand_units_gb_inferred(self):
+        assert expand_units('10GB') == 10737418240
+#
+#    def test_expand_units_tb(self):
+#        assert expand_units('10', 'tb') == 10995116277760
+#
+#    def test_expand_units_tb_inferred(self):
+#        assert expand_units('10tb') == 10995116277760
+#
+#    def test_expand_units_pb(self):
+#        assert expand_units('10', 'Pb') == 11258999068426240
+#
+#    def test_expand_units_pb_inferred(self):
+#        assert expand_units('10Pb') == 11258999068426240
+
+
 # ============================================================================ #
-    #                               PySpark
+#                                 P y S p a r k
 # ============================================================================ #
 
     def test_pyspark_path(self):
@@ -369,7 +406,7 @@ class UtilsTester(unittest.TestCase):
     #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
 
 # ============================================================================ #
-    #                               Jython
+#                                  J y t h o n
 # ============================================================================ #
 
     def test_isJython(self):
@@ -406,7 +443,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue('-J' in java_oom_fix_msg())
 
 # ============================================================================ #
-    #                          OS Validation Functions
+#                 O S   V a l i d a t i o n   F u n c t i o n s
 # ============================================================================ #
 
     def test_isOS(self):
@@ -467,7 +504,7 @@ class UtilsTester(unittest.TestCase):
             self.assertTrue(linux_mac_only())
 
 # ============================================================================ #
-        #                          Validation Functions
+#                    V a l i d a t i o n   F u n c t i o n s
 # ============================================================================ #
 
     def test_isAlNum(self):
