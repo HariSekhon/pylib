@@ -47,7 +47,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2'
+__version__ = '0.2.1'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -89,9 +89,6 @@ class RestNagiosPlugin(NagiosPlugin):
                                 default_user=self.default_user,
                                 default_password=self.default_password)
         self.add_ssl_option()
-
-    def add_ssl_option(self):
-        self.add_opt('-S', '--ssl', action='store_true', default=False, help='Use SSL')
 
     def process_options(self):
         self.no_args()
