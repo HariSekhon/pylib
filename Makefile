@@ -143,19 +143,17 @@ test-common:
 	tests/all.sh
 
 .PHONY: test
-test:
+test: test-common
 	#python test/test_HariSekhonUtils.py
 	# find all unit tests under test/
 	# Python -m >= 2.7
 	#python -m unittest discover -v
 	#unit2 discover -v
 	nosetests
-	make test-common
 
 .PHONY: test2
-test2:
+test2: test-common
 	python -m unittest discover -v
-	make test-common
 
 .PHONY: install
 install:
@@ -180,8 +178,8 @@ update-no-recompile:
 update-submodules:
 	git submodule update --init --remote
 .PHONY: updatem
-updatem:
-	make update-submodules
+updatem: update-submodules
+	:
 
 .PHONY: tld
 tld:
