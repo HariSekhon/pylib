@@ -37,14 +37,14 @@ sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
     from harisekhon.utils import log, qquit, support_msg_api
-    from harisekhon.utils import validate_regex, isVersion
+    from harisekhon.utils import validate_regex, isVersion, isVersionLax
     from harisekhon.nagiosplugin import RestNagiosPlugin
 except ImportError as _:
     print(traceback.format_exc(), end='')
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2'
+__version__ = '0.3'
 
 
 class RestVersionNagiosPlugin(RestNagiosPlugin):
@@ -60,6 +60,7 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
         # super().__init__()
         self.expected = None
         self.msg = 'version unknown - no message defined'
+        self.lax_version = False
 
     def add_options(self):
         super(RestVersionNagiosPlugin, self).add_options()
@@ -90,7 +91,9 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
         log.info("checking version '%s'", version)
         if not version:
             qquit('UNKNOWN', '{0} version not found. {1}'.format(self.name, support_msg_api()))
-        if not isVersion(version):
+        if self.lax_version and isVersionLax(version):
+            pass
+        elif not isVersion(version):
             qquit('UNKNOWN', '{0} version unrecognized \'{1}\'. {2}'\
                              .format(self.name, version, support_msg_api()))
         self.msg = '{0} version = {1}'.format(self.name, version)
