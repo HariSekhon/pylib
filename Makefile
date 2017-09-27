@@ -20,9 +20,9 @@
 #	CONDA_DEFAULT_ENV = ''
 #endif
 ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)' ''
-	SUDO2 = sudo -H
-else
 	SUDO2 =
+else
+	SUDO2 = sudo -H
 endif
 
 # must come after to reset SUDO2 to blank if root
