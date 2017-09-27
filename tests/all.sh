@@ -17,6 +17,8 @@ set -euo pipefail
 [ -n "${DEBUG:-}" ] && set -x
 srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+export PROJECT=pylib
+
 cd "$srcdir/..";
 
 . bash-tools/utils.sh
@@ -25,18 +27,13 @@ section "PyLib Tests ALL"
 
 pylib_start_time="$(start_timer)"
 
-#./python3.sh
-
-bash-tools/python_compile.sh
-
-bash-tools/python_find_quit.sh
-
-bash-tools/run_tests.sh
+tests/find_dup_defs.sh
 
 #./help.sh
 
-cd "$srcdir/.."
 bash-tools/all.sh
+
+bash-tools/run_tests.sh
 
 time_taken "$pylib_start_time" "PyLib Tests Completed in"
 section2 "PyLib Tests Successful"
