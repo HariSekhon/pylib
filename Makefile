@@ -139,7 +139,6 @@ sonar:
 
 .PHONY: test-common
 test-common:
-	test/find_dup_defs.sh
 	tests/all.sh
 
 .PHONY: test
