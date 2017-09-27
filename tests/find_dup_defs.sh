@@ -18,6 +18,10 @@ srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "$srcdir/.."
 
+. "bash-tools/utils.sh"
+
+section "Find Duplicate Defs"
+
 # sed + and \+ don't work on Mac, must use *
 # .*? also doesn't work, must use .*
 #dups="$(grep -hR '^[^#]*def ' test/ | sed 's/^[[:space:]]*def[[:space:]]*//; s/(.*$//;' | sort | uniq -d)"
@@ -31,5 +35,6 @@ if [ -n "$dups" ]; then
     exit 1
 else
     echo "no duplicate defs found"
-    exit 0
 fi
+echo
+echo
