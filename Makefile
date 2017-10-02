@@ -13,26 +13,44 @@
 # Better than modifying $PATH to put /usr/bin first which is likely to affect many other things including potentially not finding the perlbrew installation first
 #ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)$(TRAVIS)' ''
 # Looks like Perl travis builds are now using system Python
+
+# silences warnings but breaks ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)$(TRAVIS)' ''
 #ifndef VIRTUAL_ENV
 #	VIRTUAL_ENV = ''
 #endif
 #ifndef CONDA_DEFAULT_ENV
 #	CONDA_DEFAULT_ENV = ''
 #endif
-ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)' ''
-	SUDO2 =
-else
-	SUDO2 = sudo -H
+#ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)' ''
+#	SUDO_PIP =
+#else
+#	SUDO_PIP = sudo -H
+#endif
+
+ifdef VIRTUAL_ENV
+       # breaks as command before first target
+       #$(info VIRTUAL_ENV environment variable detected, not using sudo)
+       SUDO_PIP :=
+endif
+ifdef CONDA_DEFAULT_ENV
+       #$(info CONDA_DEFAULT_ENV environment variable detected, not using sudo)
+       SUDO_PIP :=
+endif
+ifdef TRAVIS
+       # this breaks before first target
+       #$(info TRAVIS environment variable detected, not using sudo)
+       SUDO_PIP :=
 endif
 
-# must come after to reset SUDO2 to blank if root
+SUDO     := sudo -H
+SUDO_PIP := sudo -H
+
+# must come after to reset SUDO_PIP to blank if root
 # EUID /  UID not exported in Make
 # USER not populated in Docker
 ifeq '$(shell id -u)' '0'
 	SUDO =
-	SUDO2 =
-else
-	SUDO = sudo -H
+	SUDO_PIP =
 endif
 
 # ===================
@@ -67,25 +85,25 @@ build:
 	
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
-	#$(SUDO2) pip install mock
+	#$(SUDO_PIP) pip install mock
 	# upgrade required to get install to work properly on Debian
-	$(SUDO2) pip install --upgrade pip
-	$(SUDO2) pip install --upgrade -r requirements.txt
+	$(SUDO_PIP) pip install --upgrade pip
+	$(SUDO_PIP) pip install --upgrade -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
-	$(SUDO2) pip install --upgrade ndg-httpsclient || $(SUDO2) pip install --upgrade ndg-httpsclient
+	$(SUDO_PIP) pip install --upgrade ndg-httpsclient || $(SUDO_PIP) pip install --upgrade ndg-httpsclient
 	# Python 2.4 - 2.6 backports
-	#$(SUDO2) pip install argparse
-	#$(SUDO2) pip install unittest2
+	#$(SUDO_PIP) pip install argparse
+	#$(SUDO_PIP) pip install unittest2
 	# json module built-in to Python >= 2.6, backport not available via pypi
-	#$(SUDO2) pip install json
+	#$(SUDO_PIP) pip install json
 	
 	#yum install -y perl-DBD-MySQL
 	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
-	#$(SUDO2) pip install MySQL-python || :
+	#$(SUDO_PIP) pip install MySQL-python || :
 
 	# PyLint breaks in Python 2.6
-	#if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO2) pip uninstall -y pylint; fi
+	#if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO_PIP) pip uninstall -y pylint; fi
 
 	@echo
 	bash-tools/python_compile.sh
