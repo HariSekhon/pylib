@@ -27,6 +27,9 @@
 #	SUDO_PIP = sudo -H
 #endif
 
+SUDO     := sudo -H
+SUDO_PIP := sudo -H
+
 ifdef VIRTUAL_ENV
 	# breaks as command before first target
 	#$(info VIRTUAL_ENV environment variable detected, not using sudo)
@@ -41,9 +44,6 @@ endif
 	#$(info TRAVIS environment variable detected, not using sudo)
 #	SUDO_PIP :=
 #endif
-
-SUDO     := sudo -H
-SUDO_PIP := sudo -H
 
 # must come after to reset SUDO_PIP to blank if root
 # EUID /  UID not exported in Make
