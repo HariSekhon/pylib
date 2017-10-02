@@ -28,18 +28,18 @@
 #endif
 
 ifdef VIRTUAL_ENV
-       # breaks as command before first target
-       #$(info VIRTUAL_ENV environment variable detected, not using sudo)
-       SUDO_PIP :=
+	# breaks as command before first target
+	#$(info VIRTUAL_ENV environment variable detected, not using sudo)
+	SUDO_PIP :=
 endif
 ifdef CONDA_DEFAULT_ENV
-       #$(info CONDA_DEFAULT_ENV environment variable detected, not using sudo)
-       SUDO_PIP :=
+	#$(info CONDA_DEFAULT_ENV environment variable detected, not using sudo)
+	SUDO_PIP :=
 endif
 ifdef TRAVIS
-       # this breaks before first target
-       #$(info TRAVIS environment variable detected, not using sudo)
-       SUDO_PIP :=
+	# this breaks before first target
+	#$(info TRAVIS environment variable detected, not using sudo)
+	SUDO_PIP :=
 endif
 
 SUDO     := sudo -H
