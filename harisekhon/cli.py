@@ -47,7 +47,7 @@ sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 import harisekhon
 from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isHost, isPort, isStr, isList, validate_int
-from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit  #, die
+from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit  # , die
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version, plural
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
@@ -257,7 +257,7 @@ class CLI(object):
     def timeout_default(self, secs):
         if secs is not None:
             if not isInt(secs):
-                raise CodingError('invalid timeout passed assigned to timeout_default, ' + \
+                raise CodingError('invalid timeout passed assigned to timeout_default, ' +
                                   'must be an integer representing seconds')
             # validate_int(secs, 'timeout default', 0, self.__timeout_max )
             if self.timeout_max is not None and secs > self.timeout_max:
@@ -273,7 +273,7 @@ class CLI(object):
     @timeout_max.setter
     def timeout_max(self, secs):
         if secs is not None and not isInt(secs):
-            raise CodingError('invalid timeout max passed to set_timeout_max(), ' + \
+            raise CodingError('invalid timeout max passed to set_timeout_max(), ' +
                               'must be an integer representing seconds')
         # leave this to be able to set max to any amount
         # validate_int(secs, 'timeout default', 0, self.__timeout_max )
@@ -312,10 +312,10 @@ class CLI(object):
         #         pass
 
         if self.timeout_default is not None:
-            self.add_opt('-t', '--timeout', help='Timeout in secs ($TIMEOUT, default: %d)' % self.timeout_default, \
-                         metavar='secs') # , default=self.timeout_default)
-                                         # do not set default here, detect None and inherit $TIMEOUT if available,
-                                         # set to self.timeout_default afterwards if still none in __parse_args__()
+            # do not set default here, detect None and inherit $TIMEOUT if available,
+            # set to self.timeout_default afterwards if still none in __parse_args__()
+            self.add_opt('-t', '--timeout', help='Timeout in secs ($TIMEOUT, default: %d)' % self.timeout_default,
+                         metavar='secs')  # , default=self.timeout_default)
         self.add_opt('-v', '--verbose', help='Verbose level ($VERBOSE=<int>, or use multiple -v, -vv, -vvv)',
                      action='count', default=self.__verbose_default)
         self.add_opt('-V', '--version', action='store_true', help='Show version and exit')
