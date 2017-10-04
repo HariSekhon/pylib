@@ -22,7 +22,9 @@ python:
   #- "3.3"
   #- "3.4"
   #- "3.5"
-  - "pypy"
+  # PyPy is getting UnicodeEncodeError: 'ascii' codec can't encode characters in position 9-12: ordinal not in range(128)
+  # here: https://travis-ci.org/HariSekhon/pylib/jobs/283211758#L654
+  #- "pypy"
   #- "pypy3"
 
 sudo: required
