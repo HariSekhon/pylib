@@ -47,7 +47,7 @@ sys.path.append(libdir)
 # pylint: disable=wrong-import-position
 import harisekhon
 from harisekhon.utils import log, getenvs2, isBlankOrNone, isInt, isHost, isPort, isStr, isList, validate_int
-from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit #, die
+from harisekhon.utils import CodingError, InvalidOptionException, ERRORS, qquit  #, die
 from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_repo, get_file_version, plural
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
@@ -107,11 +107,11 @@ class CLI(object):
                                                                   topfile_version=self._topfile_version) + \
                        '=>  CLI version {cli_version} '.format(cli_version=self._cli_version) + \
                        '=>  Utils version {utils_version}'.format(utils_version=self._utils_version)
-        self.usagemsg = 'Hari Sekhon{sep}{github_repo}\n\n{prog}\n{docstring}\n'.format(\
-                            sep=' - ' if self._github_repo else '',
-                            github_repo=self._github_repo,
-                            prog=self._prog,
-                            docstring=self._docstring)
+        self.usagemsg = 'Hari Sekhon{sep}{github_repo}\n\n{prog}\n{docstring}\n'.format(
+            sep=' - ' if self._github_repo else '',
+            github_repo=self._github_repo,
+            prog=self._prog,
+            docstring=self._docstring)
         self.usagemsg_short = 'Hari Sekhon%(_github_repo)s\n\n' % self.__dict__
         # set this in simpler client programs when you don't want to exclude
         # self.__parser = OptionParser(usage=self.usagemsg_short, version=self.version)
@@ -141,7 +141,7 @@ class CLI(object):
         if os.getenv('DEBUG'):
             log.setLevel(logging.DEBUG)
         if not log.isEnabledFor(logging.DEBUG) and \
-           not log.isEnabledFor(logging.ERROR): # do not downgrade logging either
+           not log.isEnabledFor(logging.ERROR):  # do not downgrade logging either
             log.setLevel(logging.WARN)
         self.setup()
         try:
@@ -184,7 +184,7 @@ class CLI(object):
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
             print('Caught control-c...')  # pragma: no cover
-        #except Exception as _:  # pylint: disable=broad-except
+        # except Exception as _:  # pylint: disable=broad-except
         #    exception_type = type(_).__name__
         #    if log.isEnabledFor(logging.DEBUG):
         #        log.debug("exception: '%s'", exception_type)
@@ -221,7 +221,7 @@ class CLI(object):
     def is_option_defined(self, name):
         return name in dir(self.options)
 
-    def timeout_handler(self, signum, frame): # pylint: disable=unused-argument
+    def timeout_handler(self, signum, frame):  # pylint: disable=unused-argument
         # problem with this is that it'll print and then the exit exception will be caught and quit() printed again
         # raising a custom TimeoutException will need to be handled in main, but that would also likely print and be
         # re-caught and re-printed by NagiosPlugin
