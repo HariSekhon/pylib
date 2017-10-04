@@ -8,7 +8,8 @@
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
-#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback # pylint: disable=line-too-long
+#  If you're using my code you're welcome to connect with me on LinkedIn
+#  and optionally send me feedback
 #
 #  https://www.linkedin.com/in/harisekhon
 #
@@ -56,12 +57,12 @@ class RequestBS4Handler(RequestHandler):
     # abstract class
     __metaclass__ = ABCMeta
 
-    # def __init__(self):
-        # Python 2.x
-        #super(RequestHandler, self).__init__()
-        # Python 3.x
-        # super().__init__()
-        # pass
+#     def __init__(self):
+#         Python 2.x
+#        super(RequestHandler, self).__init__()
+#         Python 3.x
+#         super().__init__()
+#         pass
 
     def __parse__(self, req):
         soup = BeautifulSoup(req.content, 'html.parser')
