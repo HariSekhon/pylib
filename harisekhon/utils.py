@@ -58,16 +58,17 @@ __version__ = '0.11.1'
 
 # Standard Nagios return codes
 ERRORS = {
-    "OK"        : 0,
-    "WARNING"   : 1,
-    "CRITICAL"  : 2,
-    "UNKNOWN"   : 3,
-    "DEPENDENT" : 4
+    "OK": 0,
+    "WARNING": 1,
+    "CRITICAL": 2,
+    "UNKNOWN": 3,
+    "DEPENDENT": 4
 }
 
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(libdir)
-import harisekhon # pylint: disable=wrong-import-position
+import harisekhon  # pylint: disable=wrong-import-position
+
 
 def get_caller():
     # return inspect.currentframe().f_back.f_back
@@ -84,6 +85,7 @@ def get_caller():
 # add a trace log level for sub tracing
 TRACE = 5
 logging.addLevelName(TRACE, 'TRACE')
+
 
 def trace(self, message, *args, **kwargs):
     self.log(TRACE, message, *args, **kwargs)
@@ -122,13 +124,14 @@ if os.getenv('DEBUG'):
 
 valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 
+
 def support_msg(repo=None):
     if isBlankOrNone(repo):
         if prog.startswith('check_'):
             repo = 'nagios-plugins'
         else:
             repo = 'pytools'
-    _ = 'Please try latest version from https:/github.com/HariSekhon/%(repo)s and if problem persists paste the full output using the --debug switch in to a ticket for a fix/update at https://github.com/HariSekhon/%(repo)s/issues' % locals() # pylint: disable=line-too-long
+    _ = 'Please try latest version from https:/github.com/HariSekhon/%(repo)s and if problem persists paste the full output using the --debug switch in to a ticket for a fix/update at https://github.com/HariSekhon/%(repo)s/issues' % locals()  # pylint: disable=line-too-long
     return _
 
 def support_msg_api(repo=None):
