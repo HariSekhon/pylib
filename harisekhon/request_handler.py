@@ -8,7 +8,8 @@
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
-#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback # pylint: disable=line-too-long
+#  If you're using my code you're welcome to connect with me on LinkedIn
+#  and optionally send me feedback # pylint: disable=line-too-long
 #
 #  https://www.linkedin.com/in/harisekhon
 #
@@ -123,7 +124,7 @@ class RequestHandler(object):
                         extra_info += ', {key}: {info}'.format(key=key, info=json_data[key])
             except ValueError:
                 log.debug('output is not json, not extracting additional error info')
-            raise CriticalError('{status} {reason}{extra_info}'\
+            raise CriticalError('{status} {reason}{extra_info}'
                                 .format(status=req.status_code, reason=req.reason, extra_info=extra_info))
 
     def check_content(self, content):  # pylint: disable=no-self-use
