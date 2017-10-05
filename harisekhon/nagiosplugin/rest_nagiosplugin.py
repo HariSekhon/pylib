@@ -111,8 +111,10 @@ class RestNagiosPlugin(NagiosPlugin):
         self.req = self.query()
         query_time = time.time() - start_time
         if self.json:
+            log.info('parsing json response')
             self.process_json(self.req.content)
         else:
+            log.info('parsing response')
             self.parse(self.req)
         if '|' not in self.msg:
             self.msg += ' |'
