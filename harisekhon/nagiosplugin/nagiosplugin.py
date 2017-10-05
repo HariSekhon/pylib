@@ -39,7 +39,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.3'
+__version__ = '0.9.4'
 
 
 class NagiosPlugin(CLI):
@@ -215,8 +215,11 @@ class NagiosPlugin(CLI):
         threshold_breach_msg2 = self.check_threshold('{0}warning'.format(name), result)
         if threshold_breach_msg:
             self.msg += ' ' + threshold_breach_msg
+            return threshold_breach_msg
         elif threshold_breach_msg2:
             self.msg += ' ' + threshold_breach_msg2
+            return threshold_breach_msg2
+        return ''
 
     def get_perf_thresholds(self, boundary='upper'):
         if boundary not in ('lower', 'upper'):
