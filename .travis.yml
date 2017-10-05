@@ -30,7 +30,8 @@ python:
 sudo: required
 
 env:
-  - DEBUG=1 PYTHONUNBUFFERED=1
+  # DEBUG=1 is pushing log over 4MB limit causing Travis job to fail
+  - PYTHONUNBUFFERED=1
 
 notifications:
   email: false
