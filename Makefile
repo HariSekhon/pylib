@@ -12,20 +12,7 @@
 # Travis has custom python install earlier in $PATH even in Perl builds so need to install PyPI modules to non-system python otherwise they're not found by programs.
 # Better than modifying $PATH to put /usr/bin first which is likely to affect many other things including potentially not finding the perlbrew installation first
 #ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)$(TRAVIS)' ''
-# Looks like Perl travis builds are now using system Python
-
-# silences warnings but breaks ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)$(TRAVIS)' ''
-#ifndef VIRTUAL_ENV
-#	VIRTUAL_ENV = ''
-#endif
-#ifndef CONDA_DEFAULT_ENV
-#	CONDA_DEFAULT_ENV = ''
-#endif
-#ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)' ''
-#	SUDO_PIP =
-#else
-#	SUDO_PIP = sudo -H
-#endif
+# Looks like Perl travis builds are now using system Python - do not use TRAVIS env var
 
 SUDO     := sudo -H
 SUDO_PIP := sudo -H
@@ -39,11 +26,6 @@ ifdef CONDA_DEFAULT_ENV
 	#$(info CONDA_DEFAULT_ENV environment variable detected, not using sudo)
 	SUDO_PIP :=
 endif
-#ifdef TRAVIS
-	# this breaks before first target
-	#$(info TRAVIS environment variable detected, not using sudo)
-#	SUDO_PIP :=
-#endif
 
 # must come after to reset SUDO_PIP to blank if root
 # EUID /  UID not exported in Make
@@ -206,6 +188,10 @@ tld:
 clean:
 	@# the xargs option to ignore blank input doesn't work on Mac
 	@find . -maxdepth 3 -iname '*.py[co]' -o -iname '*.jy[co]' | xargs rm -f || :
+
+.PHONY: deep-clean
+deep-clean: clean
+	$(SUDO) rm -fr /root/.cache /root/.cpanm ~/.cpanm ~/.cache 2>/dev/null
 
 .PHONY: push
 push:
