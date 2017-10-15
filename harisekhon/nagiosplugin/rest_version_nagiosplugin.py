@@ -36,7 +36,7 @@ libdir = os.path.join(srcdir, 'pylib')
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, qquit, support_msg_api
+    from harisekhon.utils import log, qquit, support_msg_api, isList
     from harisekhon.utils import validate_regex, isVersion, isVersionLax
     from harisekhon.nagiosplugin import RestNagiosPlugin
 except ImportError as _:
@@ -44,7 +44,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.3'
+__version__ = '0.4'
 
 
 class RestVersionNagiosPlugin(RestNagiosPlugin):
@@ -88,15 +88,18 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
             self.msg += extra_info
 
     def check_version(self, version):
+        name = self.name
+        if isList(name):
+            name = name[0]
         log.info("checking version '%s'", version)
         if not version:
-            qquit('UNKNOWN', '{0} version not found. {1}'.format(self.name, support_msg_api()))
+            qquit('UNKNOWN', '{0} version not found. {1}'.format(name, support_msg_api()))
         if self.lax_version and isVersionLax(version):
             pass
         elif not isVersion(version):
             qquit('UNKNOWN', '{0} version unrecognized \'{1}\'. {2}'\
-                             .format(self.name, version, support_msg_api()))
-        self.msg = '{0} version = {1}'.format(self.name, version)
+                             .format(name, version, support_msg_api()))
+        self.msg = '{0} version = {1}'.format(name, version)
         if self.expected is not None:
             log.info("verifying version against expected regex '%s'", self.expected)
             if re.match(self.expected, version):
