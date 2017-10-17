@@ -47,7 +47,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2.1'
+__version__ = '0.3.0'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -99,8 +99,13 @@ class RestNagiosPlugin(NagiosPlugin):
         if self.auth:
             self.user = self.get_opt('user')
             self.password = self.get_opt('password')
-            validate_user(self.user)
-            validate_password(self.password)
+            if self.auth == 'optional':
+                if self.user or self.password:
+                    validate_user(self.user)
+                    validate_password(self.password)
+            else:
+                validate_user(self.user)
+                validate_password(self.password)
         ssl = self.get_opt('ssl')
         log_option('ssl', ssl)
         if ssl and self.protocol == 'http':
