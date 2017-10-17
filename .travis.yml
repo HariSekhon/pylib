@@ -40,6 +40,8 @@ branches:
   only:
     - master
 
+cache: pip
+
 install:
   - make
   - pip install codecov
