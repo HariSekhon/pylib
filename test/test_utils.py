@@ -3008,13 +3008,6 @@ class UtilsTester(unittest.TestCase):
         except InvalidOptionException:
             pass
 
-    def test_validate_user_exception_numfirst(self):
-        try:
-            validate_user('9hari')
-            raise Exception('validate_user() failed to raise exception for numfirst')
-        except InvalidOptionException:
-            pass
-
     def test_validate_user_exception_none(self):
         try:
             validate_user(None)
