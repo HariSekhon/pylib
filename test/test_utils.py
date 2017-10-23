@@ -1103,7 +1103,8 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isUser('mysql_test'))
         self.assertTrue(isUser('cloudera-scm'))
         self.assertFalse(isUser('-hari'))
-        self.assertFalse(isUser('9hari'))
+        self.assertTrue(isUser('9hari'))
+        self.assertTrue(isUser('12345678'))
         self.assertFalse(isUser(' '))
         self.assertFalse(isUser(None))
 
