@@ -2996,6 +2996,8 @@ class UtilsTester(unittest.TestCase):
     def test_validate_user(self):
         self.assertTrue(validate_user('hadoop', 'name'))
         self.assertTrue(validate_user('hari1'))
+        self.assertTrue(validate_user('9hari'))
+        self.assertTrue(validate_user('12345678'))
         self.assertTrue(validate_user('mysql_test'))
         self.assertTrue(validate_user('cloudera-scm'))
 
