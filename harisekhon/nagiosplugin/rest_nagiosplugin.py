@@ -47,7 +47,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -73,6 +73,7 @@ class RestNagiosPlugin(NagiosPlugin):
         self.protocol = 'http'
         self.msg = 'rest msg not defined yet'
         self.request = RequestHandler()
+        self.request_method = 'get'
         self.req = None
         self.json_data = None
         self.path = None
@@ -136,7 +137,7 @@ class RestNagiosPlugin(NagiosPlugin):
         if self.user and self.password:
             log.info('authenticating to rest API')
             auth = (self.user, self.password)
-        req = self.request.get(url, auth=auth)
+        req = self.request.req(self.request_method, url, auth=auth)
         return req
 
     #@abstractmethod
