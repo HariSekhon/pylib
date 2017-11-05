@@ -47,7 +47,7 @@ install:
   - pip install codecov
   - pip install coveralls
 
-# Travis CI runs all script bullet points regardless of if the previous one failed, obscuring errors, so chain using &&
+# Travis CI runs all script list items regardless of whether the previous one failed, obscuring errors, so chain using &&
 script:
   - make test && coverage run --source=harisekhon -m test
 
