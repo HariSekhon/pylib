@@ -47,7 +47,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.4.0'
+__version__ = '0.5.0'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -78,6 +78,7 @@ class RestNagiosPlugin(NagiosPlugin):
         self.json_data = None
         self.path = None
         self.json = False
+        self.headers = {}
         self.auth = True
         self.ok()
 
@@ -111,6 +112,9 @@ class RestNagiosPlugin(NagiosPlugin):
         log_option('ssl', ssl)
         if ssl and self.protocol == 'http':
             self.protocol = 'https'
+        if self.json:
+            # recommended for many systems like CouchDB
+            self.headers['Accept'] = 'application/json'
 
     def run(self):
         start_time = time.time()
@@ -137,7 +141,7 @@ class RestNagiosPlugin(NagiosPlugin):
         if self.user and self.password:
             log.info('authenticating to rest API')
             auth = (self.user, self.password)
-        req = self.request.req(self.request_method, url, auth=auth)
+        req = self.request.req(self.request_method, url, auth=auth, headers=self.headers)
         return req
 
     #@abstractmethod
