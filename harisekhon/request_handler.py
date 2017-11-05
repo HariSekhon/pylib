@@ -46,7 +46,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.5.2'
+__version__ = '0.6.0'
 
 
 class RequestHandler(object):
@@ -106,8 +106,13 @@ class RequestHandler(object):
             errhint = ' (possibly connecting to an SSL secured port using plain HTTP?)'
         elif 'https://' in self.url and 'unknown protocol' in str(arg.message):
             errhint = ' (possibly connecting to a plain HTTP port with the -S / --ssl switch enabled?)'
-        raise CriticalError('{type}: {exception}{errhint}'.format(type=type(arg).__name__,
-                                                                  exception=arg,
+        _type = type(arg).__name__
+        msg = str(arg)
+        if 'Connection refused' in msg:
+            msg = 'Connection refused'
+            #msg += to {host}:{port}'.format(arg.host, arg.port)
+        raise CriticalError('{type}: {exception}{errhint}'.format(type=_type,
+                                                                  exception=msg,
                                                                   errhint=errhint))
 
     def log_output(self, req):  # pylint: disable=no-self-use
