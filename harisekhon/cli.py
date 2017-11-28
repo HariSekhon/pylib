@@ -28,6 +28,7 @@ from __future__ import print_function
 # import inspect
 import logging
 import os
+# import re # re-enable if suppressing broken pipe to exclude check_ code
 import signal
 import sys
 import time
@@ -184,6 +185,11 @@ class CLI(object):
         except KeyboardInterrupt:
             # log.debug('Caught control-c...')
             print('Caught control-c...')  # pragma: no cover
+#        except IOError as _:
+#            if str(_) == '[Errno 32] Broken pipe' and not re.match('^check_', self.topfile):
+#                pass
+#            else:
+#                raise
         # except Exception as _:  # pylint: disable=broad-except
         #    exception_type = type(_).__name__
         #    if log.isEnabledFor(logging.DEBUG):
