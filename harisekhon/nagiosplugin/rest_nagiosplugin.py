@@ -47,7 +47,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -102,7 +102,7 @@ class RestNagiosPlugin(NagiosPlugin):
             self.user = self.get_opt('user')
             self.password = self.get_opt('password')
             if self.auth == 'optional':
-                if self.user or self.password:
+                if self.user and self.password:
                     validate_user(self.user)
                     validate_password(self.password)
             else:
