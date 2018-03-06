@@ -24,6 +24,7 @@ from __future__ import unicode_literals
 
 # enables 'from harisekhon.nagiosplugin import NagiosPlugin'
 from harisekhon.nagiosplugin.nagiosplugin import NagiosPlugin
+from harisekhon.nagiosplugin.docker_nagiosplugin import DockerNagiosPlugin
 from harisekhon.nagiosplugin.keycheck_nagiosplugin import KeyCheckNagiosPlugin
 from harisekhon.nagiosplugin.keywrite_nagiosplugin import KeyWriteNagiosPlugin
 from harisekhon.nagiosplugin.livenodes_nagiosplugin import LiveNodesNagiosPlugin
