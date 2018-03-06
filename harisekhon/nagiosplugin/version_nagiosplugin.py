@@ -44,7 +44,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2'
+__version__ = '0.2.1'
 
 
 class VersionNagiosPlugin(NagiosPlugin):
@@ -105,7 +105,7 @@ class VersionNagiosPlugin(NagiosPlugin):
         self.msg = '{0} version = {1}'.format(self.software, version)
         if self.expected is not None:
             log.info("verifying version against expected regex '%s'", self.expected)
-            if re.match(self.expected, version):
+            if re.match(self.expected, str(version)):
                 log.info('version regex matches retrieved version')
             else:
                 log.info('version regex does not match retrieved version')
