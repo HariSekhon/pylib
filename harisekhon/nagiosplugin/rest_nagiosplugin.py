@@ -139,7 +139,7 @@ class RestNagiosPlugin(NagiosPlugin):
             url += self.path.lstrip('/')
         auth = None
         if self.user and self.password:
-            log.info('authenticating to rest API')
+            log.info('authenticating to Rest API')
             auth = (self.user, self.password)
         req = self.request.req(self.request_method, url, auth=auth, headers=self.headers)
         return req
