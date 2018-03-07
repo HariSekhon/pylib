@@ -50,7 +50,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 
 
 class DockerNagiosPlugin(NagiosPlugin):
@@ -140,7 +140,7 @@ class DockerNagiosPlugin(NagiosPlugin):
             # exception happens here
             self.check(client)
         except docker.errors.APIError as _:
-            raise CriticalError('Docker API Ping FAILED: {}'.format(_))
+            raise CriticalError('Docker API call FAILED: {}'.format(_))
         except requests.ConnectionError as _:
             raise CriticalError('Docker connection failed: {}'.format(_))
         except docker.errors.DockerException as _:
