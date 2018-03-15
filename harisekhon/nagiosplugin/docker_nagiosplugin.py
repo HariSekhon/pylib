@@ -33,6 +33,7 @@ import traceback
 from abc import ABCMeta, abstractmethod
 try:
     import docker
+    # docker-py uses Requests module, catch requests.ConnectionError
     import requests
 except ImportError:
     print(traceback.format_exc(), end='')
