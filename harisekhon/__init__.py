@@ -28,6 +28,7 @@ from harisekhon.request_handler import RequestHandler
 from harisekhon.request_bs4_handler import RequestBS4Handler
 # enables 'from harisekhon import NagiosPlugin'
 from harisekhon.nagiosplugin import NagiosPlugin
+from harisekhon.nagiosplugin import DockerNagiosPlugin
 from harisekhon.nagiosplugin import KeyCheckNagiosPlugin
 from harisekhon.nagiosplugin import KeyWriteNagiosPlugin
 from harisekhon.nagiosplugin import LiveNodesNagiosPlugin
