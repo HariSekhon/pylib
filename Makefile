@@ -58,6 +58,8 @@ build:
 	@echo Python Lib Build
 	@echo ================
 
+	python -V
+
 	if [ -x /sbin/apk ];        then make apk-packages; fi
 	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then make apt-packages; fi
 	if [ -x /usr/bin/yum ];     then make yum-packages; fi
