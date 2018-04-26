@@ -71,7 +71,7 @@ build:
 	
 	#$(SUDO_PIP) pip install mock
 	# upgrade required to get install to work properly on Debian
-	$(SUDO_PIP) pip install --upgrade pip
+	#$(SUDO_PIP) pip install --upgrade pip
 	$(SUDO_PIP) pip install --upgrade -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
