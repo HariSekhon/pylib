@@ -59,6 +59,7 @@ build:
 	@echo ================
 
 	python -V
+	pip -V
 
 	if [ -x /sbin/apk ];        then make apk-packages; fi
 	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then make apt-packages; fi
