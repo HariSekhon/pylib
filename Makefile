@@ -59,6 +59,9 @@ build:
 	@echo ================
 
 	python -V
+
+	which pip || $(SUDO) easy_install pip || :
+
 	pip -V
 
 	if [ -x /sbin/apk ];        then make apk-packages; fi
@@ -70,7 +73,6 @@ build:
 	
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
-	which pip || $(SUDO) easy_install pip || :
 	#$(SUDO_PIP) pip install mock
 	# upgrade required to get install to work properly on Debian
 	#$(SUDO_PIP) pip install --upgrade pip
