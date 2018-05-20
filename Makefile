@@ -64,9 +64,9 @@ build:
 
 	pip -V
 
-	if [ -x /sbin/apk ];        then make apk-packages; fi
-	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then make apt-packages; fi
-	if [ -x /usr/bin/yum ];     then make yum-packages; fi
+	if [ -x /sbin/apk ];        then $(MAKE) apk-packages; fi
+	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then $(MAKE) apt-packages; fi
+	if [ -x /usr/bin/yum ];     then $(MAKE) yum-packages; fi
 	
 	git submodule init
 	git submodule update --recursive
@@ -172,7 +172,7 @@ update:
 
 .PHONY: update2
 update2:
-	make update-no-recompile
+	$(MAKE) update-no-recompile
 
 .PHONY: update-no-recompile
 update-no-recompile:
