@@ -40,15 +40,15 @@ endif
 
 # Alpine:
 #
-#   apk add --no-cache git make && git clone https://github.com/harisekhon/pylib && cd pylib && make
+#   apk add --no-cache git $(MAKE) && git clone https://github.com/harisekhon/pylib && cd pylib && $(MAKE)
 
 # Debian / Ubuntu:
 #
-#   apt-get update && apt-get install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
+#   apt-get update && apt-get install -y $(MAKE) git && git clone https://github.com/harisekhon/pylib && cd pylib && $(MAKE)
 
 # RHEL / CentOS:
 #
-#   yum install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
+#   yum install -y $(MAKE) git && git clone https://github.com/harisekhon/pylib && cd pylib && $(MAKE)
 
 # ===================
 
@@ -64,9 +64,9 @@ build:
 
 	pip -V
 
-	if [ -x /sbin/apk ];        then make apk-packages; fi
-	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then make apt-packages; fi
-	if [ -x /usr/bin/yum ];     then make yum-packages; fi
+	if [ -x /sbin/apk ];        then $(MAKE) apk-packages; fi
+	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then $(MAKE) apt-packages; fi
+	if [ -x /usr/bin/yum ];     then $(MAKE) yum-packages; fi
 	
 	git submodule init
 	git submodule update --recursive
@@ -102,7 +102,7 @@ build:
 
 .PHONY: quick
 quick:
-	QUICK=1 make
+	QUICK=1 $(MAKE)
 
 .PHONY: apk-packages
 apk-packages:
@@ -168,11 +168,11 @@ install:
 update:
 	git pull
 	git submodule update --init --recursive
-	make
+	$(MAKE)
 
 .PHONY: update2
 update2:
-	make update-no-recompile
+	$(MAKE) update-no-recompile
 
 .PHONY: update-no-recompile
 update-no-recompile:
