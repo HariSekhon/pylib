@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.11.2'
+__version__ = '0.11.3'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1409,21 +1409,33 @@ def isLinuxOrMac():
 supported_os_msg = "this program is only supported on %s at this time"
 
 
-def mac_only():
+def mac_only(msg=None):
     if not isMac():
-        raise MacOnlyException(supported_os_msg % 'Mac/Darwin')
+        msg2 = ''
+        # could isStr(msg) but don't want to as this would mask minor imperfetions in client code I would rather have it crash with a type mixing error and fix it
+        if msg:
+            msg2 = msg
+        raise MacOnlyException(supported_os_msg % 'Mac/Darwin' + msg2)
     return True
 
 
-def linux_only():
+def linux_only(msg=None):
     if not isLinux():
-        raise LinuxOnlyException(supported_os_msg % 'Linux')
+        msg2 = ''
+        # could isStr(msg) but don't want to as this would mask minor imperfetions in client code I would rather have it crash with a type mixing error and fix it
+        if msg:
+            msg2 = msg
+        raise LinuxOnlyException(supported_os_msg % 'Linux' + msg2)
     return True
 
 
-def linux_mac_only():
+def linux_mac_only(msg=None):
     if not isLinuxOrMac():
-        raise Exception(supported_os_msg % 'Linux or Mac/Darwin')
+        msg2 = ''
+        # could isStr(msg) but don't want to as this would mask minor imperfetions in client code I would rather have it crash with a type mixing error and fix it
+        if msg:
+            msg2 = msg
+        raise Exception(supported_os_msg % 'Linux or Mac/Darwin' + msg2)
     return True
 
 # a little extra assertion that the values we're comparing are in fact ints/floats
