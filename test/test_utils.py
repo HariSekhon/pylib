@@ -460,6 +460,7 @@ class UtilsTester(unittest.TestCase):
 
         def test_isLinux_ON_LINUX(self):
             self.assertTrue(isLinux())
+            self.assertTrue(isLinux('extra message'))
 
         def test_isMac(self):
             self.assertFalse(isMac())
@@ -487,6 +488,7 @@ class UtilsTester(unittest.TestCase):
 
         def test_mac_only(self):
             self.assertTrue(mac_only())
+            self.assertTrue(mac_only('extra message'))
 
         def test_linux_only_ON_MAC(self):
             # assertRaises >= 2.7
