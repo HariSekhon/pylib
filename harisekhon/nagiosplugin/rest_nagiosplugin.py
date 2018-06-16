@@ -47,7 +47,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.5.1'
+__version__ = '0.5.2'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -114,7 +114,9 @@ class RestNagiosPlugin(NagiosPlugin):
             self.protocol = 'https'
         if self.json:
             # recommended for many systems like CouchDB
-            self.headers['Accept'] = 'application/json'
+            # but breaks Ambari API calls
+            #self.headers['Accept'] = 'application/json'
+            self.headers['Content-Type'] = 'application/json'
 
     def run(self):
         start_time = time.time()
