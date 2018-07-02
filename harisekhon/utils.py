@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.11.3'
+__version__ = '0.11.4'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1770,8 +1770,6 @@ def validate_directory(arg, name='', nolog=False):
         raise InvalidOptionException('%(name)sdirectory not defined' % locals())
     validate_dirname(arg, name, nolog)
     if os.path.isdir(arg):
-        if not nolog:
-            log_option('%(name)sdirectory' % locals(), arg)
         return True
     raise InvalidOptionException("%(name)sdirectory not found: '%(arg)s'"  % locals())
 
