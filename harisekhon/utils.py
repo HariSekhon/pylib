@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.11.4'
+__version__ = '0.11.5'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -737,7 +737,7 @@ ip_prefix_regex        = r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}'
 # now allowing 0 or 255 as the final octet due to CIDR
 ip_regex               = ip_prefix_regex + r'(?:25[0-5]|2[0-4][0-9]|[01]?[1-9][0-9]|[01]?0[1-9]|[12]00|[0-9])\b'
 subnet_mask_regex      = r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[1-9][0-9]|[01]?0[1-9]|[12]00|[0-9])\b'  # pylint: disable=line-too-long
-mac_regex              = r'\b[0-9A-F-af]{1,2}[:-](?:[0-9A-Fa-f]{1,2}[:-]){4}[0-9A-Fa-f]{1,2}\b'
+mac_regex              = r'\b[0-9A-Fa-f]{1,2}[:-](?:[0-9A-Fa-f]{1,2}[:-]){4}[0-9A-Fa-f]{1,2}\b'
 host_regex             = r'\b(?:' + hostname_regex + '|' + ip_regex + r')\b'
 # I did a scan of registered running process names across several hundred linux servers of a diverse group of
 # enterprise applications with 500 unique process names (58k individual processes) to determine that there are cases
