@@ -43,13 +43,13 @@ branches:
 cache: pip
 
 install:
-  - make
-  - pip install codecov
-  - pip install coveralls
+  - travis_retry make
+  - travis_retry pip install codecov
+  - travis_retry pip install coveralls
 
 # Travis CI runs all script list items regardless of whether the previous one failed, obscuring errors, so chain using &&
 script:
-  - make test && { coverage run --source=harisekhon -m test || :; }
+  - travis_retry make test && { coverage run --source=harisekhon -m test || :; }
 
 after_success:
   - coveralls -v
