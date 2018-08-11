@@ -53,7 +53,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.2'
+__version__ = '0.9.3'
 
 
 class CLI(object):
@@ -199,10 +199,10 @@ class CLI(object):
 
     def usage(self, msg='', status='UNKNOWN'):
         if msg:
-            print('%s\n' % msg)
+            print('%s\n' % msg, file=sys.stderr)
         else:
-            print(self.usagemsg)
-        self.__parser.print_help()
+            print(self.usagemsg, file=sys.stderr)
+        self.__parser.print_help(file=sys.stderr)
         qquit(status)
 
     def no_args(self):
