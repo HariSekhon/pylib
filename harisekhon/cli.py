@@ -53,7 +53,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.1'
+__version__ = '0.9.2'
 
 
 class CLI(object):
@@ -393,7 +393,7 @@ class CLI(object):
                     self.timeout = int(env_timeout)
                 else:
                     log.warning("$TIMEOUT environment variable is not an integer ('%s')", env_timeout)
-        if self.timeout is None:
+        if self.timeout is None and self.timeout_default is not None:
             log.debug('timeout not set, using default timeout %s', self.timeout_default)
             self.timeout = self.timeout_default
 
