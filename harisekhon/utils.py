@@ -130,7 +130,7 @@ def support_msg(repo=None):
         if prog.startswith('check_'):
             repo = 'nagios-plugins'
         else:
-            repo = 'pytools'
+            repo = 'devops-python-tools'
     _ = 'Please try latest version from https:/github.com/HariSekhon/%(repo)s and if problem persists paste the full output using the --debug switch in to a ticket for a fix/update at https://github.com/HariSekhon/%(repo)s/issues' % locals()  # pylint: disable=line-too-long
     return _
 
@@ -432,7 +432,7 @@ def find_git_root(target):
     gitroot = target
     while gitroot and gitroot != '/':
         log.debug("trying '%s'", gitroot)
-        # os.path.isdir doesn't work on git submodule Dockerfiles in PyTools repo :-/
+        # os.path.isdir doesn't work on git submodule Dockerfiles in DevOps Python Tools repo :-/
         if os.path.exists(os.path.join(gitroot, '.git')):
             log.debug("found git root for target '%s': '%s'", target, gitroot)
             return gitroot

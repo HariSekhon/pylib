@@ -1305,9 +1305,9 @@ class UtilsTester(unittest.TestCase):
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
         self.assertTrue(re.search('https://github.com/HariSekhon/testrepo/issues', support_msg('testrepo')))
-        self.assertTrue(re.search('https://github.com/HariSekhon/pytools/issues', support_msg('')))
-        self.assertTrue(re.search('https://github.com/HariSekhon/pytools/issues', support_msg(None)))
-        self.assertTrue(re.search('https://github.com/HariSekhon/pytools/issues', support_msg()))
+        self.assertTrue(re.search('https://github.com/HariSekhon/devops-python-tools/issues', support_msg('')))
+        self.assertTrue(re.search('https://github.com/HariSekhon/devops-python-tools/issues', support_msg(None)))
+        self.assertTrue(re.search('https://github.com/HariSekhon/devops-python-tools/issues', support_msg()))
         prog2 = harisekhon.utils.prog
         harisekhon.utils.prog = 'check_test'
         self.assertTrue(re.search('https://github.com/HariSekhon/nagios-plugins/issues', support_msg(None)))
@@ -1318,7 +1318,7 @@ class UtilsTester(unittest.TestCase):
         # avoid assertRegexpMatches as it's only available >= 2.7
         self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/testrepo/issues',
                                   support_msg_api('testrepo')))
-        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/pytools/issues',
+        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/devops-python-tools/issues',
                                   support_msg_api()))
 
     def test_skip_java_output(self):
