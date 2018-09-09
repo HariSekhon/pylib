@@ -51,4 +51,4 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        echo "Caught Control-C, aborting..."
+        print('Caught Control-C, aborting...')
