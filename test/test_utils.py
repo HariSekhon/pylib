@@ -175,7 +175,7 @@ class UtilsTester(unittest.TestCase):
     def test_get_topfile(self):
         topfile = get_topfile()
         print('topfile=%s' % topfile)
-        self.assertTrue(re.search(r'\b(unit2|nosetests|py.test|coverage|\.py)$', topfile))
+        self.assertTrue(re.search(r'\b(unit2|nosetests|py.?test|coverage|\.py)$', topfile))
         # comes out as utrunner.py in IDE or python2.7/runpy.py
         # self.assertEqual('test_utils.py', get_topfile())
 
@@ -1398,8 +1398,8 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(is_str_server_not_available(None))
 
     def test_strip_ansi_escape_codes(self):
-        self.assertEqual(strip_ansi_escape_codes('some ^[[01;31m^[[Kcontent^[[m^[[K here'), 'some content here')
-        self.assertEqual(strip_ansi_escape_codes('some ^[[01;31m^[[Khigh^[[m^[[Klighted ^[[01;31m^[[Kcontent^[[m^[[K'), 'some highlighted content')
+        self.assertEqual(strip_ansi_escape_codes("some \033[01;31m\033[Kcontent\033[m\033[K here"), 'some content here')
+        self.assertEqual(strip_ansi_escape_codes('some \033[01;31m\033[Khigh\033[m\033[Klighted \033[01;31m\033[Kcontent\033[m\033[K'), 'some highlighted content')
 
     def test_timeout(self):
         set_timeout(5)
