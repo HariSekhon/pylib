@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.11.5'
+__version__ = '0.12.0'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1584,6 +1584,12 @@ def split_if_str(arg, sep):
     if isStr(arg):
         return arg.split(sep)
     return arg
+
+
+def strip_ansi_escape_codes(arg):
+    assert isStr(arg)
+    stripped_string = re.sub(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]', '', arg)
+    return stripped_string
 
 
 def uniq_list(my_list):
