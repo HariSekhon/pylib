@@ -1397,6 +1397,9 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(is_str_server_not_available(''))
         self.assertFalse(is_str_server_not_available(None))
 
+    def test_strip_ansi_escape_codes(self):
+        self.assertEqual(strip_ansi_escape_codes('some ^[[01;31m^[[Kcontent^[[m^[[K here'), 'some content here')
+
     def test_timeout(self):
         set_timeout(5)
         set_timeout(50, lambda x, y: x)
