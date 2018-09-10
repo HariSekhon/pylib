@@ -1399,7 +1399,9 @@ class UtilsTester(unittest.TestCase):
 
     def test_strip_ansi_escape_codes(self):
         self.assertEqual(strip_ansi_escape_codes("some \033[01;31m\033[Kcontent\033[m\033[K here"), 'some content here')
-        self.assertEqual(strip_ansi_escape_codes('some \033[01;31m\033[Khigh\033[m\033[Klighted \033[01;31m\033[Kcontent\033[m\033[K'), 'some highlighted content')
+        self.assertEqual(strip_ansi_escape_codes(
+            'some \033[01;31m\033[Khigh\033[m\033[Klighted \033[01;31m\033[Kcontent\033[m\033[K'),
+            'some highlighted content')
 
     def test_timeout(self):
         set_timeout(5)
