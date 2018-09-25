@@ -33,12 +33,13 @@ import time
 import traceback
 # Python 2.6+ only
 from abc import ABCMeta #, abstractmethod
+from requests_kerberos import HTTPKerberosAuth, OPTIONAL
 srcdir = os.path.abspath(os.path.dirname(__file__))
 libdir = os.path.join(srcdir, 'pylib')
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, log_option, UnknownError, support_msg_api, jsonpp
+    from harisekhon.utils import log, log_option, UnknownError, support_msg_api, jsonpp, prog
     from harisekhon.utils import validate_host, validate_port, validate_user, validate_password
     from harisekhon.nagiosplugin import NagiosPlugin
     from harisekhon import RequestHandler
@@ -47,7 +48,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.5.2'
+__version__ = '0.6.0'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -90,6 +91,10 @@ class RestNagiosPlugin(NagiosPlugin):
             self.add_useroption(name=self.name,
                                 default_user=self.default_user,
                                 default_password=self.default_password)
+            self.add_opt('kerberos',
+                         help='Kerberos SpNego authentication, uses TGT cache from $KRB5CCNAME or keytab ' + \
+                              'from $KRB5_CLIENT_KEYTAB environment variable if defined ' + \
+                              '(overrides --user/--password)')
         self.add_ssl_option()
 
     def process_options(self):
@@ -98,6 +103,8 @@ class RestNagiosPlugin(NagiosPlugin):
         self.port = self.get_opt('port')
         validate_host(self.host)
         validate_port(self.port)
+        if self.get_opt('kerberos'):
+            self.auth = 'kerberos'
         if self.auth:
             self.user = self.get_opt('user')
             self.password = self.get_opt('password')
@@ -105,6 +112,12 @@ class RestNagiosPlugin(NagiosPlugin):
                 if self.user and self.password:
                     validate_user(self.user)
                     validate_password(self.password)
+            elif self.auth == 'kerberos':
+                if os.getenv('KRB5_CLIENT_KTNAME'):
+                    log.debug('kerberos enabled, will try to use keytab at %s', os.getenv('KRB5_CLIENT_KTNAME'))
+                    # if using KRB5_CLIENT_KTNAME to kinit avoid clobbering the same TGT cache /tmp/krb5cc_{uid}
+                    # as that may be used by different programs kinit'd different keytabs
+                    os.environ['KRB5CCNAME'] = '/tmp/krb5cc_{euid}_{basename}'.format(euid=os.geteuid(), basename=prog)
             else:
                 validate_user(self.user)
                 validate_password(self.password)
@@ -140,9 +153,12 @@ class RestNagiosPlugin(NagiosPlugin):
         if self.path:
             url += self.path.lstrip('/')
         auth = None
-        if self.user and self.password:
-            log.info('authenticating to Rest API')
-            auth = (self.user, self.password)
+        if self.auth == 'kerberos':
+            log.info('authenticating to Rest API with Kerberos')
+            auth = HTTPKerberosAuth(mutual_authentication=OPTIONAL)
+        elif self.user and self.password:
+            log.info('authenticating to Rest API with username and password')
+            auth = (self.user, self.password)  # pylint: disable=redefined-variable-type
         req = self.request.req(self.request_method, url, auth=auth, headers=self.headers)
         return req
 
