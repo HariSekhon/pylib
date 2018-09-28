@@ -2248,6 +2248,7 @@ def which(my_bin):
 
 
 prog = os.path.basename(get_topfile())
+prog_version = get_file_version(get_topfile())
 
 
 # ============================================================================ #
