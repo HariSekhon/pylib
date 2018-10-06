@@ -40,13 +40,13 @@ libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'pylib'))
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, CriticalError, prog, prog_version
+    from harisekhon.utils import log, CriticalError, prog, prog_version, code_error
 except ImportError as _:
     print(traceback.format_exc(), end='')
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.6.0'
+__version__ = '0.6.1'
 
 
 class RequestHandler(object):
@@ -100,7 +100,8 @@ class RequestHandler(object):
         self.check_content(content)
 
     def exception_handler(self, arg):  # pylint: disable=no-self-use
-        assert issubclass(type(arg), Exception)
+        if not issubclass(type(arg), Exception):
+            code_error('RequestHandler.exception_handler arg {} is not a subclass of Exception'.format(arg))
         # TODO: improve this to extract connection refused for more concise errors
         errhint = ''
         if 'BadStatusLine' in str(arg.message):
