@@ -239,7 +239,8 @@ def get_topfile():
     filename = inspect.getfile(frame)
     # filename = os.path.splitext(filename)[0] + '.py'
     filename = re.sub('.pyc$', '.py', filename)
-    assert isStr(filename)
+    if not isStr(filename):
+        code_error('non-string filename {} passed to get_topfile()'.format(filename))
     # this gets utrunner.py in PyCharm and runpy.py from unittest
     if os.path.basename(filename) in ('utrunner.py', 'runpy.py', 'ipython'):
         return __file__
@@ -250,13 +251,16 @@ def get_topfile():
     elif filename == '<string>':
         return ''
     else:
-        assert isFilename(filename)
+        if not isFilename(filename):
+            code_error('invalid filename {} passed to get_topfile()'.format(filename))
     return filename
 
 
 def get_file_docstring(filename):
-    assert isStr(filename)
-    assert isFilename(filename)
+    if not isStr(filename):
+        code_error('invalid non-string filename {} passed to get_file_docstring()'.format(filename))
+    if not isFilename(filename):
+        code_error('invalid filename {} passed to get_file_docstring()'.format(filename))
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
@@ -288,8 +292,10 @@ def get_file_docstring(filename):
 
 
 def get_file_version(filename):
-    assert isStr(filename)
-    assert isFilename(filename)
+    if not isStr(filename):
+        code_error('non-string filename {} passed tp get_file_version()'.format(filename))
+    if not isFilename(filename):
+        code_error('invalid filename {} passed to get_file_version()'.format(filename))
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
@@ -308,8 +314,10 @@ def get_file_version(filename):
 
 
 def get_file_github_repo(filename):
-    assert isStr(filename)
-    assert isFilename(filename)
+    if not isStr(filename):
+        code_error('non-string filename {} passed to get_file_github_repo()'.format(filename))
+    if not isFilename(filename):
+        code_error('invalid filename {} passed to get_file_github_repo()'.format(filename))
     # .pyc files cause the following error:
     # TypeError: compile() expected string without null bytes
     filename = re.sub('.pyc$', '.py', filename)
@@ -363,7 +371,8 @@ def getenvs(my_vars, default=None, prefix=''):
     if not isStr(prefix) and not isList(prefix):
         raise CodingError('non-string/list passed for prefix to getenvs()')
     result = None
-    assert isStr(my_vars) or isList(my_vars)
+    if not (isStr(my_vars) or isList(my_vars)):
+        code_error('non-string/list my_vars {} passed to getenvs()'.format(my_vars))
     if isStr(my_vars):
         for var in gen_prefixes_env(prefix, my_vars, True):
             result = getenv(var)
@@ -392,7 +401,8 @@ def getenvs2(my_vars, default, name):
         name = [_.upper() for _ in name]
     else:
         raise CodingError('passed non-string/list for name to getenvs2()')
-    assert isStr(my_vars) or isList(my_vars)
+    if not (isStr(my_vars) or isList(my_vars)):
+        code_error('non-string/list my_vars {} passed to getenvs2()'.format(my_vars))
     # exclude showing the default for sensitive options
     is_sensitive = False
     sensitive_regex = re.compile('password|passphrase|secret', re.I)
@@ -401,7 +411,8 @@ def getenvs2(my_vars, default, name):
             is_sensitive = True
     elif isList(my_vars):
         for _ in my_vars:
-            assert isStr(_)
+            if not isStr(_):
+                code_error('non-string element {} in my_vars passed to getenvs2()'.format(_))
         for _ in my_vars:
             if sensitive_regex.search(_):
                 is_sensitive = True
@@ -1587,7 +1598,8 @@ def split_if_str(arg, sep):
 
 
 def strip_ansi_escape_codes(arg):
-    assert isStr(arg)
+    if not isStr(arg):
+        code_error('non-string arg {} passed to strip_ansi_escape_codes()'.format(arg))
     stripped_string = re.sub(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]', '', arg)
     return stripped_string
 
