@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.11.5'
+__version__ = '0.12.0'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -720,14 +720,16 @@ domain_regex2          = r'(?:' + domain_component_regex + r'\.)+' + tld_regex
 domain_regex_strict    = domain_regex2
 # must permit numbers as valid host identifiers that are being used in the wild in FQDNs
 hostname_component     = r'\b[A-Za-z0-9](?:[A-Za-z0-9_\-]{0,61}[a-zA-Z0-9])?\b'
-aws_host_component     = r'ip-(?:10-\d+-\d+-\d+|172-1[6-9]-\d+-\d+|172-2[0-9]-\d+-\d+|172-3[0-1]-\d+-\d+|192-168-\d+-\d+)'  # pylint: disable=line-too-long
+#aws_host_ip_regex     = r'ip-(?:10-\d+-\d+-\d+|172-1[6-9]-\d+-\d+|172-2[0-9]-\d+-\d+|172-3[0-1]-\d+-\d+|192-168-\d+-\d+)'  # pylint: disable=line-too-long
+# the ip- prefix gives it away as an IP so can be a bit more general and let's catch all IPs not just private ranges
+aws_host_ip_regex      = r'\bip-\d+-\d+-\d+-\d+\b'
 hostname_regex         = hostname_component + r'(?:\.' + domain_regex + ')?'
-aws_hostname_regex     = aws_host_component + r'(?:\.' + domain_regex + ')?'
+aws_hostname_regex     = aws_host_ip_regex + r'(?:\.' + domain_regex + ')?'
 dirname_regex          = r'[\/\w\s\\.,:*()=%?+-]+'
 filename_regex         = dirname_regex + r'[^\/]'
 rwxt_regex             = r'[r-][w-][x-][r-][w-][x-][r-][w-][xt-]'
 fqdn_regex             = hostname_component + r'\.' + domain_regex
-aws_fqdn_regex         = aws_host_component + r'\.' + domain_regex
+aws_fqdn_regex         = aws_host_ip_regex + r'\.' + domain_regex
 # SECURITY NOTE: I'm allowing single quote through as it's found in Irish email addresses.
 # This makes the email_regex non-safe without further validation.
 # This regex only tests whether it's a valid email address, nothing more.
@@ -1584,6 +1586,12 @@ def split_if_str(arg, sep):
     return arg
 
 
+def strip_ansi_escape_codes(arg):
+    assert isStr(arg)
+    stripped_string = re.sub(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]', '', arg)
+    return stripped_string
+
+
 def uniq_list(my_list):
     if not isList(my_list):
         raise CodingError('non-list passed to uniq_list')
@@ -2240,6 +2248,7 @@ def which(my_bin):
 
 
 prog = os.path.basename(get_topfile())
+prog_version = get_file_version(get_topfile())
 
 
 # ============================================================================ #
