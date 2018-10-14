@@ -103,7 +103,7 @@ class RestNagiosPlugin(NagiosPlugin):
         self.port = self.get_opt('port')
         validate_host(self.host)
         validate_port(self.port)
-        if self.get_opt('kerberos'):
+        if self.auth and self.get_opt('kerberos'):
             self.auth = 'kerberos'
         if self.auth:
             self.user = self.get_opt('user')
