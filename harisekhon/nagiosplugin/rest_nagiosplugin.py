@@ -48,7 +48,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.6.0'
+__version__ = '0.6.1'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -91,7 +91,7 @@ class RestNagiosPlugin(NagiosPlugin):
             self.add_useroption(name=self.name,
                                 default_user=self.default_user,
                                 default_password=self.default_password)
-            self.add_opt('kerberos',
+            self.add_opt('--kerberos', action='store_true',
                          help='Kerberos SpNego authentication, uses TGT cache from $KRB5CCNAME or keytab ' + \
                               'from $KRB5_CLIENT_KEYTAB environment variable if defined ' + \
                               '(overrides --user/--password)')
