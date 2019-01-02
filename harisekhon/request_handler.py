@@ -46,7 +46,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.6.1'
+__version__ = '0.6.2'
 
 
 class RequestHandler(object):
@@ -63,10 +63,9 @@ class RequestHandler(object):
         log.debug('%s %s', str(method).upper(), url)
         req = None
         user_agent = 'Hari Sekhon {prog} version {version}'.format(prog=prog, version=prog_version)
-        if 'headers' in kwargs:
-            kwargs['headers']['User-Agent'] = user_agent
-        else:
-            kwargs['headers'] = {'User-Agent': user_agent}
+        if 'headers' not in kwargs:
+            kwargs['headers'] = {}
+        kwargs['headers']['User-Agent'] = user_agent
         try:
             req = getattr(requests, method)(url, *args, **kwargs)
         except requests.exceptions.RequestException as _:
