@@ -79,7 +79,10 @@ build:
 	$(SUDO_PIP) pip install --upgrade -r requirements.txt
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
-	$(SUDO_PIP) pip install --upgrade ndg-httpsclient || $(SUDO_PIP) pip install --upgrade ndg-httpsclient
+	# XXX: Breaks alpine docker builds since it pulls in cryptography which fails to find cffi
+	# Collecting cryptography>=2.3 (from PyOpenSSL->ndg-httpsclient)
+	#   Could not find a version that satisfies the requirement cffi!=1.11.3,>=1.8 (from versions: )
+	#$(SUDO_PIP) pip install --upgrade ndg-httpsclient || $(SUDO_PIP) pip install --upgrade ndg-httpsclient
 	# Python 2.4 - 2.6 backports
 	#$(SUDO_PIP) pip install argparse
 	#$(SUDO_PIP) pip install unittest2
