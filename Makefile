@@ -128,6 +128,7 @@ apk-packages-remove:
 apt-packages:
 	$(SUDO) apt-get update
 	$(SUDO) apt-get install -y `sed 's/#.*//; /^[[:space:]]*$$/d' setup/deb-packages.txt setup/deb-packages-dev.txt`
+	for package in `sed 's/#.*//; /^[[:space:]]*$$/d' setup/deb-packages-pip.txt`; do $(SUDO) apt-get install -y "$$package" || : ; done
 
 .PHONY: apt-packages-remove
 apt-packages-remove:
