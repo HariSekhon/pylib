@@ -15,6 +15,7 @@
 
 build-essential
 libffi-dev
+libkrb5-dev
 libsasl2-modules-gssapi-heimdal
 libssl-dev
 python-dev
