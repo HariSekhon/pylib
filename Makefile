@@ -74,22 +74,21 @@ build:
 	#$(SUDO_PIP) pip install mock
 	# upgrade required to get install to work properly on Debian
 	#$(SUDO_PIP) pip install --upgrade pip
-	$(SUDO_PIP) pip install --upgrade -r requirements.txt
+
+	# only install pip packages not installed via system packages
+	#$(SUDO_PIP) pip install --upgrade -r requirements.txt
+	for pip_module in `sed 's/#.*//; /^[[:space:]]*$$/d' requirements.txt`; do python -c "import $$pip_module" || $(SUDO_PIP) pip install "$$pip_module"; done
+
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
 	# XXX: Breaks alpine docker builds since it pulls in cryptography which fails to find cffi
 	# Collecting cryptography>=2.3 (from PyOpenSSL->ndg-httpsclient)
 	#   Could not find a version that satisfies the requirement cffi!=1.11.3,>=1.8 (from versions: )
 	#$(SUDO_PIP) pip install --upgrade ndg-httpsclient || $(SUDO_PIP) pip install --upgrade ndg-httpsclient
+
 	# Python 2.4 - 2.6 backports
 	#$(SUDO_PIP) pip install argparse
 	#$(SUDO_PIP) pip install unittest2
-	# json module built-in to Python >= 2.6, backport not available via pypi
-	#$(SUDO_PIP) pip install json
-	
-	#yum install -y perl-DBD-MySQL
-	# MySQL-python doesn't support Python 3 yet, breaks in Travis with "ImportError: No module named ConfigParser"
-	#$(SUDO_PIP) pip install MySQL-python || :
 
 	# PyLint breaks in Python 2.6
 	#if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO_PIP) pip uninstall -y pylint; fi
@@ -141,6 +140,7 @@ yum-packages:
 	rpm -q epel-release || yum install -y epel-release || { wget -t 100 --retry-connrefused -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
 
 	for x in `sed 's/#.*//; /^[[:space:]]*$$/d' setup/rpm-packages.txt setup/rpm-packages-dev.txt`; do rpm -q $$x || $(SUDO) yum install -y $$x; done
+	yum install -y `sed 's/#.*//; /^[[:space:]]*$$/d' setup/rpm-packages-pip.txt` || :
 
 .PHONY: yum-packages-remove
 yum-packages-remove:
