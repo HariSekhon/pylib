@@ -1,0 +1,30 @@
+#
+#  Author: Hari Sekhon
+#  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
+#
+#  https://github.com/harisekhon/devops-python-tools
+#
+#  License: see accompanying LICENSE file
+#
+#  https://www.linkedin.com/in/harisekhon
+#
+
+# ============================================================================ #
+#                          RPM PIP Package Requirements
+# ============================================================================ #
+
+python-beautifulsoup4
+python-blessings
+python-docker-py
+#python-jinja2
+python-linecache2
+python-nose
+python-py
+python-requests
+python-requests-kerberos
+python-six
+python-unittest2
+python2-traceback2
+python2-pyyaml
+#python34-PyYAML
+#python-wheel
