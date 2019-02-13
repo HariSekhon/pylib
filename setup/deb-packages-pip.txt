@@ -1,0 +1,27 @@
+#
+#  Author: Hari Sekhon
+#  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
+#
+#  https://github.com/harisekhon/devops-python-tools
+#
+#  License: see accompanying LICENSE file
+#
+#  https://www.linkedin.com/in/harisekhon
+#
+
+# ============================================================================ #
+#                          Deb PIP Package Requirements
+# ============================================================================ #
+
+python-blessings
+python-bs4
+python-docker
+python-linecache2
+python-nose
+python-py
+python-requests
+python-requests-kerberos
+python-six
+python-traceback2
+python-unittest2
+python-yaml
