@@ -58,16 +58,14 @@ build:
 	@echo Python Lib Build
 	@echo ================
 
+	make system-packages
+
 	python -V
 
 	which pip || $(SUDO) easy_install pip || :
 
 	pip -V
 
-	if [ -x /sbin/apk ];        then $(MAKE) apk-packages; fi
-	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then $(MAKE) apt-packages; fi
-	if [ -x /usr/bin/yum ];     then $(MAKE) yum-packages; fi
-	
 	git submodule init
 	git submodule update --recursive
 	
@@ -106,6 +104,12 @@ build:
 .PHONY: quick
 quick:
 	QUICK=1 $(MAKE)
+
+.PHONY: system-packages
+system-packages:
+	if [ -x /sbin/apk ];        then $(MAKE) apk-packages; fi
+	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then $(MAKE) apt-packages; fi
+	if [ -x /usr/bin/yum ];     then $(MAKE) yum-packages; fi
 
 .PHONY: apk-packages
 apk-packages:
