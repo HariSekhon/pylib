@@ -77,7 +77,9 @@ build:
 
 	# only install pip packages not installed via system packages
 	#$(SUDO_PIP) pip install --upgrade -r requirements.txt
-	for pip_module in `sed 's/#.*//; /^[[:space:]]*$$/d' requirements.txt`; do python -c "import $$pip_module" || $(SUDO_PIP) pip install "$$pip_module"; done
+	for pip_module in `sed 's/#.*//; /^[[:space:]]*$$/d' requirements.txt`; do \
+		python -c "import $$pip_module" || $(SUDO_PIP) pip install "$$pip_module" || exit 1; \
+	done
 
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
