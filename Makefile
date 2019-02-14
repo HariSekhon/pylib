@@ -72,8 +72,8 @@ build:
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
 	#$(SUDO_PIP) pip install mock
-	# upgrade required to get install to work properly on Debian
-	#$(SUDO_PIP) pip install --upgrade pip
+	# fixes bug in cffi version detection when installing requests-kerberos
+	$(SUDO_PIP) pip install --upgrade pip
 
 	# only install pip packages not installed via system packages
 	#$(SUDO_PIP) pip install --upgrade -r requirements.txt
