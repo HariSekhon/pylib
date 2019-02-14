@@ -1,0 +1,20 @@
+#
+#  Author: Hari Sekhon
+#  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
+#
+#  https://github.com/harisekhon/devops-python-tools
+#
+#  License: see accompanying LICENSE file
+#
+#  https://www.linkedin.com/in/harisekhon
+#
+
+# ============================================================================ #
+#                        Alpine PIP Package Requirements
+# ============================================================================ #
+
+docker-py
+py-nose
+py-requests
+py-six
+py-yaml
