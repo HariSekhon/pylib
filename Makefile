@@ -71,7 +71,6 @@ build:
 	
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
-	#$(SUDO_PIP) pip install mock
 	# fixes bug in cffi version detection when installing requests-kerberos
 	$(SUDO_PIP) pip install --upgrade pip
 
@@ -82,11 +81,7 @@ build:
 	done
 
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
-	# gets setuptools error, but works the second time, doesn't seem to prevent things from working
-	# XXX: Breaks alpine docker builds since it pulls in cryptography which fails to find cffi
-	# Collecting cryptography>=2.3 (from PyOpenSSL->ndg-httpsclient)
-	#   Could not find a version that satisfies the requirement cffi!=1.11.3,>=1.8 (from versions: )
-	#$(SUDO_PIP) pip install --upgrade ndg-httpsclient || $(SUDO_PIP) pip install --upgrade ndg-httpsclient
+	$(SUDO_PIP) pip install --upgrade ndg-httpsclient || $(SUDO_PIP) pip install --upgrade ndg-httpsclient
 
 	# Python 2.4 - 2.6 backports
 	#$(SUDO_PIP) pip install argparse
