@@ -40,15 +40,15 @@ endif
 
 # Alpine:
 #
-#   apk add --no-cache git $(MAKE) && git clone https://github.com/harisekhon/pylib && cd pylib && $(MAKE)
+#   apk add --no-cache git make && git clone https://github.com/harisekhon/pylib && cd pylib && make
 
 # Debian / Ubuntu:
 #
-#   apt-get update && apt-get install -y $(MAKE) git && git clone https://github.com/harisekhon/pylib && cd pylib && $(MAKE)
+#   apt-get update && apt-get install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
 
 # RHEL / CentOS:
 #
-#   yum install -y $(MAKE) git && git clone https://github.com/harisekhon/pylib && cd pylib && $(MAKE)
+#   yum install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
 
 # ===================
 
