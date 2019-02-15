@@ -159,7 +159,9 @@ test: test-common
 	# Python -m >= 2.7
 	#python -m unittest discover -v
 	#unit2 discover -v
-	nosetests
+	# fails to find blessings module in alpine while all other testing frameworks work
+	#nosetests
+	pytest
 
 .PHONY: test2
 test2: test-common
