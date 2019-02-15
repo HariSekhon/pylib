@@ -212,7 +212,7 @@ push:
 # For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/alpine-github
 .PHONY: docker-alpine
 docker-alpine:
-	docker run -ti -v $$PWD:/py alpine /py/bash-tools/exec-interactive.sh 'cd /py && apk add --no-cache make && make build test'
+	docker run -ti -v $$PWD:/py alpine sh /py/bash-tools/exec-interactive.sh 'cd /py && apk add --no-cache make && make build test'
 
 # For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/debian-github
 .PHONY: docker-debian
