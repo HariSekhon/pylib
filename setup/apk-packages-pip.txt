@@ -14,7 +14,8 @@
 # ============================================================================ #
 
 docker-py
-py-nose
+#py-nose
 py-requests
 py-six
 py-yaml
+pytest
