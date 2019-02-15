@@ -208,3 +208,23 @@ deep-clean: clean
 .PHONY: push
 push:
 	git push
+
+# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/alpine-github
+.PHONY: docker-alpine
+docker-alpine:
+	docker run -ti -v $$PWD:/py alpine /py/bash-tools/exec-interactive.sh 'cd /py && apk add --no-cache make && make build test'
+
+# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/debian-github
+.PHONY: docker-debian
+docker-debian:
+	docker run -ti -v $$PWD:/py debian /py/bash-tools/exec-interactive.sh 'cd /py && apt-get update && apt-get install -y make && make build test'
+
+# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/centos-github
+.PHONY: docker-centos
+docker-centos:
+	docker run -ti -v $$PWD:/py centos /py/bash-tools/exec-interactive.sh 'cd /py && yum install -y make && make build test'
+
+# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/ubuntu-github
+.PHONY: docker-ubuntu
+docker-ubuntu:
+	docker run -ti -v $$PWD:/py ubuntu /py/bash-tools/exec-interactive.sh 'cd /py && apt-get update && apt-get install -y make && make build test'
