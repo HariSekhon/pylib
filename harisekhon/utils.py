@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.12.1'
+__version__ = '0.12.2'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -238,7 +238,7 @@ def get_topfile():
     # filename = inspect.stack()[-1][1]
     filename = inspect.getfile(frame)
     # filename = os.path.splitext(filename)[0] + '.py'
-    filename = re.sub('.pyc$', '.py', filename)
+    filename = re.sub(r'\.py[co]$', '.py', filename)
     if not isStr(filename):
         code_error('non-string filename {} passed to get_topfile()'.format(filename))
     # this gets utrunner.py in PyCharm and runpy.py from unittest
