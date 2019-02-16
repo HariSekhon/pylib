@@ -162,7 +162,8 @@ test: test-common
 	# fails to find 'blessings' module in Alpine because both of these default to Python 3 versions but modules are installed to Python 2
 	#nosetests
 	# try pytest-2 first for Alpine, otherwise normal pytest which defaults to Python 3
-	pytest-2 || pytest
+	# On CentOS it's called py.test
+	pytest-2 || pytest || py.test
 
 .PHONY: test2
 test2: test-common
