@@ -169,8 +169,8 @@ test: test-common
 		py.test-2; \
 	elif type py.test 2>/dev/null; then \
 		py.test; \
-	else
-		pytest
+	else \
+		pytest; \
 	fi
 
 .PHONY: test2
