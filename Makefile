@@ -159,9 +159,10 @@ test: test-common
 	# Python -m >= 2.7
 	#python -m unittest discover -v
 	#unit2 discover -v
-	# fails to find blessings module in alpine while all other testing frameworks work
+	# fails to find 'blessings' module in Alpine because both of these default to Python 3 versions but modules are installed to Python 2
 	#nosetests
-	pytest
+	# try pytest-2 first for Alpine, otherwise normal pytest which defaults to Python 3
+	pytest-2 || pytest
 
 .PHONY: test2
 test2: test-common
