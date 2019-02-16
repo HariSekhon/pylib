@@ -163,7 +163,7 @@ test: test-common
 	#nosetests
 	# try pytest-2 first for Alpine, otherwise normal pytest which defaults to Python 3
 	# On CentOS it's called py.test
-	pytest-2 || pytest || py.test
+	pytest || py.test || pytest-2 || py-test-2
 
 .PHONY: test2
 test2: test-common
