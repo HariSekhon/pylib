@@ -151,7 +151,14 @@ sonar:
 .PHONY: test-common
 test-common:
 	tests/all.sh
-	rm -fr bash-tools/pytools_checks
+	# temporary workaround for pytest finding these files and breaking with error:
+	# import file mismatch:
+	# imported module 'test.test_utils' has this __file__ attribute:
+	#   /home/travis/build/HariSekhon/pylib/bash-tools/pytools_checks/pylib/test/test_utils.py
+	# which is not the same as the test file we want to collect:
+	#   /home/travis/build/HariSekhon/pylib/test/test_utils.py
+	# HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+	#rm -fr bash-tools/pytools_checks
 
 .PHONY: test
 test: test-common
@@ -160,19 +167,19 @@ test: test-common
 	# Python -m >= 2.7
 	#python -m unittest discover -v
 	#unit2 discover -v
-	# fails to find 'blessings' module in Alpine because both of these default to Python 3 versions but modules are installed to Python 2
-	#nosetests
+	# Alpine fails to find 'blessings' module because now defaults to Python 3 but modules are installed to Python 2
+	nosetests-2.7 || nosetests
 	# try pytest-2 first for Alpine, otherwise normal pytest which defaults to Python 3
 	# On CentOS it's called py.test
-	if type pytest-2 2>/dev/null; then \
-		pytest-2; \
-	elif type py.test-2 2>/dev/null; then \
-		py.test-2; \
-	elif type py.test 2>/dev/null; then \
-		py.test; \
-	else \
-		pytest; \
-	fi
+	#if type pytest-2 2>/dev/null; then \
+	#	pytest-2; \
+	#elif type py.test-2 2>/dev/null; then \
+	#	py.test-2; \
+	#elif type py.test 2>/dev/null; then \
+	#	py.test; \
+	#else \
+	#	pytest; \
+	#fi
 
 .PHONY: test2
 test2: test-common
