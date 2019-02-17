@@ -58,6 +58,9 @@ build:
 	@echo Python Lib Build
 	@echo ================
 
+	git submodule init
+	git submodule update --recursive
+
 	make system-packages
 
 	python -V
@@ -66,9 +69,6 @@ build:
 
 	pip -V
 
-	git submodule init
-	git submodule update --recursive
-	
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
 	# fixes bug in cffi version detection when installing requests-kerberos
