@@ -18,6 +18,7 @@ python-beautifulsoup4
 python-blessings
 python-docker-py
 python-linecache2
+python-nose
 python-py
 python-requests
 python-requests-kerberos
@@ -26,6 +27,5 @@ python-unittest2
 python2-pyyaml
 python2-traceback2
 #python-jinja2
-#python-nose
 #python-wheel
 #python34-PyYAML
