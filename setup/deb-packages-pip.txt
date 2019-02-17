@@ -17,7 +17,7 @@ python-blessings
 python-bs4
 python-docker
 python-linecache2
-#python-nose
+python-nose
 python-py
 python-pytest
 python-requests
