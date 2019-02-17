@@ -151,6 +151,7 @@ sonar:
 .PHONY: test-common
 test-common:
 	tests/all.sh
+	rm -fr bash-tools/pytools_checks
 
 .PHONY: test
 test: test-common
