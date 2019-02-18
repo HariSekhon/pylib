@@ -18,3 +18,4 @@ py-nose
 py-requests
 py-six
 py-yaml
+pytest

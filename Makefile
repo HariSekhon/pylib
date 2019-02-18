@@ -58,6 +58,9 @@ build:
 	@echo Python Lib Build
 	@echo ================
 
+	git submodule init
+	git submodule update --recursive
+
 	make system-packages
 
 	python -V
@@ -66,9 +69,6 @@ build:
 
 	pip -V
 
-	git submodule init
-	git submodule update --recursive
-	
 	git update-index --assume-unchanged resources/custom_tlds.txt
 	
 	# fixes bug in cffi version detection when installing requests-kerberos
@@ -108,9 +108,8 @@ system-packages:
 
 .PHONY: apk-packages
 apk-packages:
-	$(SUDO) apk update
-	$(SUDO) apk add `sed 's/#.*//; /^[[:space:]]*$$/d' setup/apk-packages.txt setup/apk-packages-dev.txt`
-	for package in `sed 's/#.*//; /^[[:space:]]*$$/d' setup/apk-packages-pip.txt`; do $(SUDO) apk add "$$package" || : ; done
+	bash-tools/apk-install-packages.sh setup/apk-packages.txt setup/apk-packages-dev.txt
+	NO_FAIL=1 NO_UPDATE=1 bash-tools/apk-install-packages.sh setup/apk-packages-pip.txt
 	# Spark Java Py4J gets java linking error without this
 	if [ -f /lib/libc.musl-x86_64.so.1 ]; then [ -e /lib/ld-linux-x86-64.so.2 ] || ln -sv /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2; fi
 
@@ -121,9 +120,8 @@ apk-packages-remove:
 
 .PHONY: apt-packages
 apt-packages:
-	$(SUDO) apt-get update
-	$(SUDO) apt-get install -y `sed 's/#.*//; /^[[:space:]]*$$/d' setup/deb-packages.txt setup/deb-packages-dev.txt`
-	for package in `sed 's/#.*//; /^[[:space:]]*$$/d' setup/deb-packages-pip.txt`; do $(SUDO) apt-get install -y "$$package" || : ; done
+	bash-tools/apt-install-packages.sh setup/deb-packages.txt setup/deb-packages-dev.txt
+	NO_FAIL=1 NO_UPDATE=1 bash-tools/apt-install-packages.sh setup/deb-packages-pip.txt
 
 .PHONY: apt-packages-remove
 apt-packages-remove:
@@ -131,14 +129,9 @@ apt-packages-remove:
 
 .PHONY: yum-packages
 yum-packages:
-	# needed to fetch the library submodule and CPAN modules
-	rpm -q git  || $(SUDO) yum install -y git
-	rpm -q wget || $(SUDO) yum install -y wget
-	# python-pip requires EPEL, so try to get the correct EPEL rpm
-	rpm -q epel-release || yum install -y epel-release || { wget -t 100 --retry-connrefused -O /tmp/epel.rpm "https://dl.fedoraproject.org/pub/epel/epel-release-latest-`grep -o '[[:digit:]]' /etc/*release | head -n1`.noarch.rpm" && $(SUDO) rpm -ivh /tmp/epel.rpm && rm -f /tmp/epel.rpm; }
-
-	for x in `sed 's/#.*//; /^[[:space:]]*$$/d' setup/rpm-packages.txt setup/rpm-packages-dev.txt`; do rpm -q $$x || $(SUDO) yum install -y $$x; done
-	yum install -y `sed 's/#.*//; /^[[:space:]]*$$/d' setup/rpm-packages-pip.txt` || :
+	bash-tools/install_epel_repo.sh
+	bash-tools/yum-install-packages.sh setup/rpm-packages.txt setup/rpm-packages-dev.txt
+	NO_FAIL=1 bash-tools/yum-install-packages.sh setup/rpm-packages-pip.txt
 
 .PHONY: yum-packages-remove
 yum-packages-remove:
@@ -151,6 +144,14 @@ sonar:
 .PHONY: test-common
 test-common:
 	tests/all.sh
+	# temporary workaround for pytest finding these files and breaking with error:
+	# import file mismatch:
+	# imported module 'test.test_utils' has this __file__ attribute:
+	#   /home/travis/build/HariSekhon/pylib/bash-tools/pytools_checks/pylib/test/test_utils.py
+	# which is not the same as the test file we want to collect:
+	#   /home/travis/build/HariSekhon/pylib/test/test_utils.py
+	# HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+	#rm -fr bash-tools/pytools_checks
 
 .PHONY: test
 test: test-common
@@ -159,7 +160,19 @@ test: test-common
 	# Python -m >= 2.7
 	#python -m unittest discover -v
 	#unit2 discover -v
-	nosetests
+	# Alpine fails to find 'blessings' module because now defaults to Python 3 but modules are installed to Python 2
+	nosetests-2.7 || nosetests
+	# try pytest-2 first for Alpine, otherwise normal pytest which defaults to Python 3
+	# On CentOS it's called py.test
+	#if type pytest-2 2>/dev/null; then \
+	#	pytest-2; \
+	#elif type py.test-2 2>/dev/null; then \
+	#	py.test-2; \
+	#elif type py.test 2>/dev/null; then \
+	#	py.test; \
+	#else \
+	#	pytest; \
+	#fi
 
 .PHONY: test2
 test2: test-common

@@ -174,8 +174,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_get_topfile(self):
         topfile = get_topfile()
-        print('topfile=%s' % topfile)
-        self.assertTrue(re.search(r'\b(unit2|nosetests|py.?test|coverage|\.py)$', topfile))
+        self.assertTrue(re.search(r'\b(unit2|nosetests|py.?test(?:-2)?|coverage|\.py)$', topfile))
         # comes out as utrunner.py in IDE or python2.7/runpy.py
         # self.assertEqual('test_utils.py', get_topfile())
 

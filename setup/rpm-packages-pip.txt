@@ -13,10 +13,10 @@
 #                          RPM PIP Package Requirements
 # ============================================================================ #
 
+pytest
 python-beautifulsoup4
 python-blessings
 python-docker-py
-#python-jinja2
 python-linecache2
 python-nose
 python-py
@@ -24,7 +24,8 @@ python-requests
 python-requests-kerberos
 python-six
 python-unittest2
-python2-traceback2
 python2-pyyaml
-#python34-PyYAML
+python2-traceback2
+#python-jinja2
 #python-wheel
+#python34-PyYAML

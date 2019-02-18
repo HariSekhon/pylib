@@ -19,6 +19,7 @@ python-docker
 python-linecache2
 python-nose
 python-py
+python-pytest
 python-requests
 python-requests-kerberos
 python-six
