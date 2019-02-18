@@ -161,7 +161,11 @@ test: test-common
 	#python -m unittest discover -v
 	#unit2 discover -v
 	# Alpine fails to find 'blessings' module because now defaults to Python 3 but modules are installed to Python 2
-	nosetests-2.7 || nosetests
+	if type nosetests-2.7 2>/dev/null; then \
+		nosetests-2.7; \
+	else \
+		nosetests; \
+	fi
 	# try pytest-2 first for Alpine, otherwise normal pytest which defaults to Python 3
 	# On CentOS it's called py.test
 	#if type pytest-2 2>/dev/null; then \
