@@ -169,14 +169,14 @@ test: test-common
 	@# try pytest-2 first for Alpine, otherwise normal pytest which defaults to Python 3
 	@# On CentOS it's called py.test
 	@#if type pytest-2 2>/dev/null; then \
-	@#	pytest-2; \
-	@#elif type py.test-2 2>/dev/null; then \
-	@#	py.test-2; \
-	@#elif type py.test 2>/dev/null; then \
-	@#	py.test; \
-	@#else \
-	@#	pytest; \
-	@#fi
+		pytest-2; \
+	elif type py.test-2 2>/dev/null; then \
+		py.test-2; \
+	elif type py.test 2>/dev/null; then \
+		py.test; \
+	else \
+		pytest; \
+	fi
 
 .PHONY: test2
 test2: test-common
