@@ -14,27 +14,6 @@
 #ifneq '$(VIRTUAL_ENV)$(CONDA_DEFAULT_ENV)$(TRAVIS)' ''
 # Looks like Perl travis builds are now using system Python - do not use TRAVIS env var
 
-SUDO     := sudo -H
-SUDO_PIP := sudo -H
-
-ifdef VIRTUAL_ENV
-	# breaks as command before first target
-	#$(info VIRTUAL_ENV environment variable detected, not using sudo)
-	SUDO_PIP :=
-endif
-ifdef CONDA_DEFAULT_ENV
-	#$(info CONDA_DEFAULT_ENV environment variable detected, not using sudo)
-	SUDO_PIP :=
-endif
-
-# must come after to reset SUDO_PIP to blank if root
-# EUID /  UID not exported in Make
-# USER not populated in Docker
-ifeq '$(shell id -u)' '0'
-	SUDO =
-	SUDO_PIP =
-endif
-
 # ===================
 # bootstrap commands:
 
@@ -52,16 +31,19 @@ endif
 
 # ===================
 
+ifneq ("$(wildcard bash-tools/Makefile.in)", "")
+	include bash-tools/Makefile.in
+endif
+
 .PHONY: build
 build:
 	@echo ================
 	@echo Python Lib Build
 	@echo ================
 
-	git submodule init
-	git submodule update --recursive
-
-	make system-packages
+	$(MAKE) init
+	if [ -z "$(CPANM)" ]; then make; exit $?; fi
+	$(MAKE) system-packages
 
 	python -V
 
@@ -89,6 +71,9 @@ build:
 	# PyLint breaks in Python 2.6
 	#if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO_PIP) pip uninstall -y pylint; fi
 
+	# Spark Java Py4J gets java linking error without this
+	if [ -f /lib/libc.musl-x86_64.so.1 ]; then [ -e /lib/ld-linux-x86-64.so.2 ] || ln -sv /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2; fi
+
 	@echo
 	bash-tools/python_compile.sh
 	@echo
@@ -96,50 +81,9 @@ build:
 	@echo
 	@echo
 
-.PHONY: quick
-quick:
-	QUICK=1 $(MAKE)
-
-.PHONY: system-packages
-system-packages:
-	if [ -x /sbin/apk ];        then $(MAKE) apk-packages; fi
-	if [ -x /usr/bin/apt-get -a "$$CI_NAME" != "codeship" ]; then $(MAKE) apt-packages; fi
-	if [ -x /usr/bin/yum ];     then $(MAKE) yum-packages; fi
-
-.PHONY: apk-packages
-apk-packages:
-	bash-tools/apk-install-packages.sh setup/apk-packages.txt setup/apk-packages-dev.txt
-	NO_FAIL=1 NO_UPDATE=1 bash-tools/apk-install-packages.sh setup/apk-packages-pip.txt
-	# Spark Java Py4J gets java linking error without this
-	if [ -f /lib/libc.musl-x86_64.so.1 ]; then [ -e /lib/ld-linux-x86-64.so.2 ] || ln -sv /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2; fi
-
-.PHONY: apk-packages-remove
-apk-packages-remove:
-	$(SUDO) apk del `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/apk-packages-dev.txt` || :
-	$(SUDO) rm -fr /var/cache/apk/*
-
-.PHONY: apt-packages
-apt-packages:
-	bash-tools/apt-install-packages.sh setup/deb-packages.txt setup/deb-packages-dev.txt
-	NO_FAIL=1 NO_UPDATE=1 bash-tools/apt-install-packages.sh setup/deb-packages-pip.txt
-
-.PHONY: apt-packages-remove
-apt-packages-remove:
-	$(SUDO) apt-get purge -y `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/deb-packages-dev.txt`
-
-.PHONY: yum-packages
-yum-packages:
-	bash-tools/install_epel_repo.sh
-	bash-tools/yum-install-packages.sh setup/rpm-packages.txt setup/rpm-packages-dev.txt
-	NO_FAIL=1 bash-tools/yum-install-packages.sh setup/rpm-packages-pip.txt
-
-.PHONY: yum-packages-remove
-yum-packages-remove:
-	for x in `sed 's/#.*//; /^[[:space:]]*$$/d' < setup/rpm-packages-dev.txt`; do rpm -q $$x && $(SUDO) yum remove -y $$x; done
-
-.PHONY: sonar
-sonar:
-	sonar-scanner
+.PHONY: init
+init:
+	git submodule update --init --recursive
 
 .PHONY: test-common
 test-common:
@@ -175,28 +119,6 @@ test2: test-common
 install:
 	@echo "No installation needed, just add '$(PWD)' to your \$$PATH"
 
-.PHONY: update
-update:
-	git pull
-	git submodule update --init --recursive
-	$(MAKE)
-
-.PHONY: update2
-update2:
-	$(MAKE) update-no-recompile
-
-.PHONY: update-no-recompile
-update-no-recompile:
-	git pull
-	git submodule update --init --recursive
-
-.PHONY: update-submodules
-update-submodules:
-	git submodule update --init --remote
-.PHONY: updatem
-updatem: update-submodules
-	:
-
 .PHONY: tld
 tld:
 	wget -t 100 --retry-connrefused -O resources/tlds-alpha-by-domain.txt http://data.iana.org/TLD/tlds-alpha-by-domain.txt
@@ -209,27 +131,3 @@ clean:
 .PHONY: deep-clean
 deep-clean: clean
 	$(SUDO) rm -fr /root/.cache ~/.cache 2>/dev/null
-
-.PHONY: push
-push:
-	git push
-
-# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/alpine-github
-.PHONY: docker-alpine
-docker-alpine:
-	bash-tools/docker_mount_build_exec.sh alpine
-
-# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/debian-github
-.PHONY: docker-debian
-docker-debian:
-	bash-tools/docker_mount_build_exec.sh debian
-
-# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/centos-github
-.PHONY: docker-centos
-docker-centos:
-	bash-tools/docker_mount_build_exec.sh centos
-
-# For quick testing only - for actual Dockerfile builds see https://hub.docker.com/r/harisekhon/ubuntu-github
-.PHONY: docker-ubuntu
-docker-ubuntu:
-	bash-tools/docker_mount_build_exec.sh ubuntu
