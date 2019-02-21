@@ -22,5 +22,4 @@ linux-headers
 #openssl-dev
 #libressl-dev
 snappy-dev
-wget
 zip
