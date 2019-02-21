@@ -13,7 +13,6 @@
 #                          Deb Package Requirements
 # ============================================================================ #
 
-build-essential
 git
 python
 python-dev
