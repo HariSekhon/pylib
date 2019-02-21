@@ -174,7 +174,7 @@ class UtilsTester(unittest.TestCase):
 
     def test_get_topfile(self):
         topfile = get_topfile()
-        self.assertTrue(re.search(r'\b(unit2|nosetests(?:-\d+(?:\.\d+)?)?|py.?test(?:-\d+(?:\.\d+)?)?|coverage|\.py)$', topfile))
+        self.assertTrue(re.search(r'\b(unit2|nosetests(?:-{version})?|py.?test(?:-{version})?|coverage|\.py)$'.format(version=version_regex), topfile))
         # comes out as utrunner.py in IDE or python2.7/runpy.py
         # self.assertEqual('test_utils.py', get_topfile())
 
@@ -191,7 +191,9 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(get_file_github_repo(__file__), 'https://github.com/harisekhon/pylib')
 
     def test_find_git_root(self):
-        self.assertTrue(re.match('.*/pylib', find_git_root(__file__)))
+        gitroot = find_git_root(__file__)
+        if os.path.exists('.git'):
+            self.assertTrue(re.match('.*/pylib', find_git_root(__file__)))
 
     def test_find_git_root_not_found(self):
         self.assertEqual(find_git_root('/usr/bin'), None)
