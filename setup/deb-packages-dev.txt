@@ -13,6 +13,8 @@
 #                          Deb Dev Package Requirements
 # ============================================================================ #
 
+build-essential
+
 # needed for ndg-httpsclient upgrade
 libffi-dev
 
