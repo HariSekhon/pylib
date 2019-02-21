@@ -2,7 +2,7 @@
 #  Author: Hari Sekhon
 #  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
 #
-#  https://github.com/harisekhon/devops-python-tools
+#  https://github.com/harisekhon/pylib
 #
 #  License: see accompanying LICENSE file
 #
@@ -42,7 +42,7 @@ build:
 	@echo ================
 
 	$(MAKE) init
-	if [ -z "$(CPANM)" ]; then make; exit $?; fi
+	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages
 
 	python -V
