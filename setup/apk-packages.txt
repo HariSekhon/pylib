@@ -13,20 +13,11 @@
 #                          Alpine Package Requirements
 # ============================================================================ #
 
-alpine-sdk
 bash
-cyrus-sasl-dev
-gcc
 git
-krb5-dev
-libffi-dev
-linux-headers
 make
-#openssl-dev
-libressl-dev
 py2-pip
 python
 python-dev
-snappy-dev
 wget
 zip
