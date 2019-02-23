@@ -13,11 +13,6 @@
 #                          RPM Dev Package Requirements
 # ============================================================================ #
 
-gcc
 libffi-devel
+# for mysql_config to build MySQL-python
 mysql-devel
-python-devel
-python-pip
-python-setuptools
-wget
-#ipython-notebook || :

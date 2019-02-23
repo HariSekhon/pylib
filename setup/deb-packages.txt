@@ -13,17 +13,11 @@
 #                          Deb Package Requirements
 # ============================================================================ #
 
-build-essential
 git
 python
 python-dev
 python-pip
 python-setuptools
-
-libssl-dev
-
-# needed for ndg-httpsclient upgrade
-libffi-dev
 
 # IPython Notebook fails and leave apt broken
 # The following packages have unmet dependencies:
@@ -34,3 +28,5 @@ libffi-dev
 
 # for mysql_config to build MySQL-python
 #libmysqlclient-dev || :
+
+wget
