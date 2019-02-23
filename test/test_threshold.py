@@ -55,11 +55,18 @@ class NagiosThresholdTester(unittest.TestCase):
         self.threshold_min = Threshold(2, min=1)
 
     def test_threshold_check_upper(self):
+        self.assertEqual(self.threshold.get_simple(), 5)
+        self.assertEqual(self.threshold.get_upper(), 5)
+        self.assertEqual(self.threshold.get_lower(), None)
+        self.assertEqual(self.threshold.get_upper(), 5)
         self.assertFalse(self.threshold.check(4))
         self.assertFalse(self.threshold.check(5))
         self.assertTrue(self.threshold.check(6))
 
     def test_threshold_check_lower(self):
+        self.assertEqual(self.threshold_lower.get_simple(), 5)
+        self.assertEqual(self.threshold_lower.get_lower(), 5)
+        self.assertEqual(self.threshold_lower.get_upper(), None)
         self.assertTrue(self.threshold_lower.check(4))
         self.assertFalse(self.threshold_lower.check(5))
         self.assertFalse(self.threshold_lower.check(6))
