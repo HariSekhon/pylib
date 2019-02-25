@@ -23,7 +23,7 @@ sys.path.append(libdir)
 from harisekhon.utils import InvalidOptionException, CodingError, isBool, isInt, isFloat, log
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.1'
+__version__ = '0.2'
 
 class InvalidThresholdException(InvalidOptionException):
     pass
@@ -140,3 +140,14 @@ class Threshold(object):
             if self.thresholds['upper'] is not None and result > self.thresholds['upper']:
                 return '({0:g} > {1:g})'.format(result, self.thresholds['upper'])
         return ''
+
+    def get_upper(self):
+        return self.thresholds['upper']
+
+    def get_lower(self):
+        return self.thresholds['lower']
+
+    def get_simple(self):
+        if self.opts['simple'] == 'lower':
+            return self.get_lower()
+        return self.get_upper()
