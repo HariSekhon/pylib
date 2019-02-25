@@ -43,7 +43,7 @@ build:
 
 	$(MAKE) init
 	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
-	$(MAKE) system-packages
+	$(MAKE) system-packages-python
 
 	python -V
 
