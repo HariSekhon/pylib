@@ -28,6 +28,7 @@ from __future__ import print_function
 import os
 import re
 import sys
+import time
 import traceback
 # Python 2.6+ only
 from abc import ABCMeta #, abstractmethod
@@ -44,7 +45,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.4.1'
+__version__ = '0.5.0'
 
 
 class RestVersionNagiosPlugin(RestNagiosPlugin):
@@ -80,12 +81,18 @@ class RestVersionNagiosPlugin(RestNagiosPlugin):
             log.info('expected version regex: %s', self.expected)
 
     def run(self):
+        start_time = time.time()
         version = self.get_version()
+        query_time = time.time() - start_time
         log.info("got version '%s'", version)
         self.check_version(version)
         extra_info = self.extra_info()
         if extra_info:
             self.msg += extra_info
+        if '|' not in self.msg:
+            self.msg += ' |'
+        if ' query_time=' not in self.msg:
+            self.msg += ' query_time={0:.4f}s'.format(query_time)
 
     def check_version(self, version):
         name = self.name
