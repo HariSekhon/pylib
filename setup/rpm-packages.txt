@@ -23,7 +23,4 @@ python-setuptools
 
 wget
 
-# needed for ndg-httpsclient upgrade
-libffi-devel
-
 #ipython-notebook || :
