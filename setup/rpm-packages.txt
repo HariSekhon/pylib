@@ -13,13 +13,8 @@
 #                          RPM Package Requirements
 # ============================================================================ #
 
-gcc
 git
 python
-python-setuptools
-python-pip
-python-devel
-python-setuptools
 
 wget
 
