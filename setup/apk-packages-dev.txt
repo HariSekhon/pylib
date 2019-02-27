@@ -25,5 +25,4 @@ libffi-dev
 linux-headers
 #openssl-dev
 #libressl-dev
-snappy-dev
 zip
