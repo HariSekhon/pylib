@@ -13,6 +13,12 @@
 #                          RPM Dev Package Requirements
 # ============================================================================ #
 
+gcc
+
+python-devel
+python-pip
+python-setuptools
+
 # needed for ndg-httpsclient upgrade
 libffi-devel
 
