@@ -16,7 +16,5 @@
 bash
 git
 make
-py2-pip
 python
-python-dev
 wget
