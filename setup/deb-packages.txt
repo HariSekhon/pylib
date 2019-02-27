@@ -15,8 +15,6 @@
 
 git
 python
-python-dev
-python-pip
 python-setuptools
 
 # IPython Notebook fails and leave apt broken
