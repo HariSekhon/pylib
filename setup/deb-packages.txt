@@ -23,7 +23,4 @@ python
 #
 #ipython-notebook || :
 
-# for mysql_config to build MySQL-python
-#libmysqlclient-dev || :
-
 wget
