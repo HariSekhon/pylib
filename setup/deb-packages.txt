@@ -15,7 +15,6 @@
 
 git
 python
-python-setuptools
 
 # IPython Notebook fails and leave apt broken
 # The following packages have unmet dependencies:
