@@ -14,8 +14,12 @@
 # ============================================================================ #
 
 alpine-sdk
-cyrus-sasl-dev
 gcc
+
+python-dev
+py2-pip
+
+cyrus-sasl-dev
 krb5-dev
 libffi-dev
 linux-headers
