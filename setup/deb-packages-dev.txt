@@ -25,4 +25,8 @@ libffi-dev
 
 libkrb5-dev
 libsasl2-modules-gssapi-heimdal
+
 libssl-dev
+
+# needed to build python-krbV
+libsasl2-dev
