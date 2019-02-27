@@ -13,7 +13,6 @@
 #                          Deb Dev Package Requirements
 # ============================================================================ #
 
-build-essential
 gcc
 
 # needed for ndg-httpsclient upgrade
