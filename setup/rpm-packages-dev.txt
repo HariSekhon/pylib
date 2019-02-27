@@ -21,6 +21,3 @@ python-setuptools
 
 # needed for ndg-httpsclient upgrade
 libffi-devel
-
-# for mysql_config to build MySQL-python
-mysql-devel
