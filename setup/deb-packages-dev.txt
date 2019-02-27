@@ -15,12 +15,13 @@
 
 gcc
 
+python-dev
+python-pip
+python-setuptools
+
 # needed for ndg-httpsclient upgrade
 libffi-dev
 
 libkrb5-dev
 libsasl2-modules-gssapi-heimdal
 libssl-dev
-python-dev
-python-pip
-python-setuptools
