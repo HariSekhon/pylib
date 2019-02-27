@@ -20,4 +20,3 @@ py2-pip
 python
 python-dev
 wget
-zip
