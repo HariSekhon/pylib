@@ -17,7 +17,7 @@ pytest
 python-beautifulsoup4
 python-blessings
 python-docker-py
-python-linecache2
+#python-linecache2
 python-nose
 python-py
 python-requests
