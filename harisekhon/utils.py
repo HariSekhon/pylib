@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.12.3'
+__version__ = '0.12.4'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -762,7 +762,7 @@ url_path_suffix_regex  = r'/(?:[\w.,:\/%&?#!=*|\[\]~+-]+)?'
 url_regex              = r'(?i)\bhttps?://' + host_regex + r'(?::\d{1,5})?(?:' + url_path_suffix_regex + ')?'
 user_regex             = r'\b[A-Za-z0-9][A-Za-z0-9\._-]*[A-Za-z0-9]\b'
 column_regex           = r'\b[\w\:]+\b'
-ldap_dn_regex          = r'\b\w+=[\w\s]+(?:,\w+=[\w\s]+)*\b'
+ldap_dn_regex          = r'\b\w+=[\w\s-]+(?:,\w+=[\w\s-]+)*\b'
 krb5_principal_regex   = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?:\@' + domain_regex + r')?'
 threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
