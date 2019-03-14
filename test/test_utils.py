@@ -896,8 +896,8 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isLabel(None))
 
     def test_isLdapDn(self):
-        self.assertTrue(isLdapDn('uid=hari,cn=users,cn=accounts,dc=local'))
-        self.assertTrue(isLdapDn('cn=hari-superuser,cn=big-users,cn=accounts,dc=local'))
+        self.assertTrue(isLdapDn('uid=hari,ou=users,ou=accounts,dc=local'))
+        self.assertTrue(isLdapDn('cn=hari-superuser,ou=big-users,ou=accounts,dc=local'))
         self.assertFalse(isLdapDn('hari@LOCAL'))
         self.assertFalse(isLdapDn(' '))
         self.assertFalse(isLdapDn(None))
@@ -2692,9 +2692,9 @@ class UtilsTester(unittest.TestCase):
 # ============================================================================ #
 
     def test_validate_ldap_dn(self):
-        self.assertTrue(validate_ldap_dn('uid=hari,cn=users,cn=accounts,dc=local'))
-        self.assertTrue(validate_ldap_dn('uid=hari,cn=users,cn=accounts,dc=local', 'name'))
-        self.assertTrue(validate_ldap_dn('cn=hari-superuser,cn=big-users,cn=accounts,dc=local'))
+        self.assertTrue(validate_ldap_dn('uid=hari,ou=users,ou=accounts,dc=local'))
+        self.assertTrue(validate_ldap_dn('uid=hari,ou=users,ou=accounts,dc=local', 'name'))
+        self.assertTrue(validate_ldap_dn('cn=hari-superuser,ou=big-users,ou=accounts,dc=local'))
 
     def test_validate_ldap_dn_exception(self):
         try:
