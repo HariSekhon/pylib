@@ -1110,6 +1110,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isUser('12345678'))
         self.assertFalse(isUser(' '))
         self.assertFalse(isUser(None))
+        self.assertTrue(isUser('hari.sekhon'))
 
     def test_isVersion(self):
         self.assertTrue(isVersion(1))
@@ -3009,6 +3010,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(validate_user('12345678'))
         self.assertTrue(validate_user('mysql_test'))
         self.assertTrue(validate_user('cloudera-scm'))
+        self.assertTrue(validate_user('hari.sekhon', 'long.name'))
 
     def test_validate_user_exception_dashfirst(self):
         try:
