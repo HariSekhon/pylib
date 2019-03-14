@@ -98,7 +98,10 @@ test-common:
 	#rm -fr bash-tools/pytools_checks
 
 .PHONY: test
-test: test-common
+test: test-common unittest
+
+.PHONY: unittest
+unittest:
 	#python test/test_HariSekhonUtils.py
 	# find all unit tests under test/
 	# Python -m >= 2.7
