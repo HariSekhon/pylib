@@ -25,4 +25,3 @@ libffi-dev
 linux-headers
 #openssl-dev
 #libressl-dev
-zip
