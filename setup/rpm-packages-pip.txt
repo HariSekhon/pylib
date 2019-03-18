@@ -16,7 +16,6 @@
 pytest
 python-beautifulsoup4
 python-blessings
-python-docker-py
 #python-linecache2
 python-nose
 python-py
@@ -29,3 +28,8 @@ python2-traceback2
 #python-jinja2
 #python-wheel
 #python34-PyYAML
+
+# this is NOT the docker module used and causes this error:
+#   networks = len(client.networks.list())
+#   AttributeError: 'function' object has no attribute 'list'
+#python-docker-py
