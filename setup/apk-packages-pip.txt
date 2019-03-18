@@ -13,9 +13,13 @@
 #                        Alpine PIP Package Requirements
 # ============================================================================ #
 
-docker-py
 py-nose
 py-requests
 py-six
 py-yaml
 pytest
+
+# this is NOT the docker module used and causes this error:
+#   networks = len(client.networks.list())
+#   AttributeError: 'function' object has no attribute 'list'
+#docker-py
