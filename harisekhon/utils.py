@@ -1075,6 +1075,14 @@ def isIP(arg):
     if arg is None:
         return False
     arg = str(arg)
+    # covers IPv6
+#    if isPythonVersion(3):
+#        import ipaddress
+#        try:
+#            ipaddress.ip_address(arg)
+#            return True
+#        except Exception:
+#            return False
     octets = arg.split('.')
     if len(octets) > 4:
         return False
