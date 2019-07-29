@@ -274,16 +274,6 @@ class NagiosPlugin(CLI):
             #     print('\n{0}'.format(tb), end='')
             # sys.exit(ERRORS['UNKNOWN'])
 
-    @staticmethod
-    def exception_msg():
-        err = None
-        if os.getenv('DEBUG') or log.isEnabledFor(logging.DEBUG):
-            err = traceback.format_exc()
-        else:
-            err = traceback.format_exc().split('\n')[-2]
-        err = err.rstrip('\r\n')
-        return err
-
     @abstractmethod
     def run(self): # pragma: no cover
         pass

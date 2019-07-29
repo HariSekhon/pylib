@@ -475,6 +475,16 @@ class CLI(object):
         raise CodingError('running HariSekhon.CLI().run() - this should be abstract and non-runnable!'
                           ' You should have overridden this run() method in the client code')
 
+    @staticmethod
+    def exception_msg():
+        err = None
+        if os.getenv('DEBUG') or log.isEnabledFor(logging.DEBUG):
+            err = traceback.format_exc()
+        else:
+            err = traceback.format_exc().split('\n')[-2]
+        err = err.rstrip('\r\n')
+        return err
+
     def end(self):
         pass
 
