@@ -16,8 +16,9 @@
 set -u
 srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd "$srcdir/..";
+cd "$srcdir/.." || exit 1;
 
+# shellcheck disable=SC1091
 . tests/utils.sh
 
 section "Checking Python format strings"
@@ -25,9 +26,9 @@ section "Checking Python format strings"
 start_time="$(start_timer)"
 
 set +e
-for x in ${@:-$(find . -iname '*.py' -o -iname '*.jy')}; do
+for x in "${@:-$(find . -iname '*.py' -o -iname '*.jy')}"; do
     isExcluded "$x" && continue
-    output="$(egrep ' log\.(info|warn|error|debug|notice)' "$x" | grep -v "['\"]")"
+    output="$(grep -E ' log\.(info|warn|error|debug|notice)' "$x" | grep -v "['\"]")"
     if [ -n "$output" ]; then
         echo "$x contains potentially unsafe string interpolation behaviour:"
         echo "$output"
