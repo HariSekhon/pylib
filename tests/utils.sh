@@ -41,4 +41,4 @@ check(){
     fi
 }
 
-. "$srcdir/../bash-tools/utils.sh"
+. "$srcdir/../bash-tools/lib/utils.sh"

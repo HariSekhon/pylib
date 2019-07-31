@@ -21,7 +21,7 @@ export PROJECT=pylib
 
 cd "$srcdir/..";
 
-. bash-tools/utils.sh
+. bash-tools/lib/utils.sh
 
 section "PyLib Tests ALL"
 

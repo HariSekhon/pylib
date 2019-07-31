@@ -18,7 +18,7 @@ srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "$srcdir/.."
 
-. "bash-tools/utils.sh"
+. "bash-tools/lib/utils.sh"
 
 section "Find Duplicate Defs"
 
