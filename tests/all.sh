@@ -21,6 +21,7 @@ export PROJECT=pylib
 
 cd "$srcdir/..";
 
+# shellcheck disable=SC1091
 . bash-tools/lib/utils.sh
 
 section "PyLib Tests ALL"
