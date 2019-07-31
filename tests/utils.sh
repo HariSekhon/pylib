@@ -25,15 +25,17 @@ if [ -n "${TRAVIS:-}" ]; then
 else
     sudo=""
 fi
+export sudo
 
 #export SPARK_HOME="$(ls -d tests/spark-*-bin-hadoop* | head -n 1)"
 
+# shellcheck disable=SC1090
 . "$srcdir/excluded.sh"
 
 check(){
-    cmd=$1
-    msg=$2
-    if eval $cmd; then
+    cmd="$1"
+    msg="$2"
+    if eval "$cmd"; then
         echo "SUCCESS: $msg"
     else
         echo "FAILED: $msg"
@@ -41,4 +43,5 @@ check(){
     fi
 }
 
+# shellcheck disable=SC1090
 . "$srcdir/../bash-tools/lib/utils.sh"
