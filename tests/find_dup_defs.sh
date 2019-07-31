@@ -18,6 +18,7 @@ srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "$srcdir/.."
 
+# shellcheck disable=SC1091
 . "bash-tools/lib/utils.sh"
 
 section "Find Duplicate Defs"
