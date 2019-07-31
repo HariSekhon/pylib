@@ -18,23 +18,24 @@ srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "$srcdir/..";
 
+# shellcheck disable=SC1091
 . ./tests/utils.sh
 
 section "Python Syntax Checks"
 
 start_time="$(start_timer)"
 
-for x in $(echo *.py *.jy 2>/dev/null); do
+for x in $(echo ./*.py ./*.jy 2>/dev/null); do
     isExcluded "$x" && continue
-    if which flake8 &> /dev/null; then
+    if command -v flake8 &> /dev/null; then
         echo "flake8 $x"
-        flake8 --max-line-length=120 --statistics $x
+        flake8 --max-line-length=120 --statistics "$x"
         echo; hr; echo
     fi
     for y in pyflakes pychecker; do
-        if which $y &>/dev/null; then
+        if command -v $y &>/dev/null; then
             echo "$y $x"
-            $y $x
+            "$y" "$x"
             echo; hr; echo
         fi
    done
