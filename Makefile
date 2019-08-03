@@ -134,3 +134,7 @@ clean:
 .PHONY: deep-clean
 deep-clean: clean
 	$(SUDO) rm -fr /root/.cache ~/.cache 2>/dev/null
+
+.PHONY: travis
+travis:
+	travis_last_log.py /pylib
