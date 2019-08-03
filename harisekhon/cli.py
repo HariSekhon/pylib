@@ -53,7 +53,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.3'
+__version__ = '0.9.4'
 
 
 class CLI(object):
@@ -466,6 +466,7 @@ class CLI(object):
 
     def add_ssl_option(self):
         self.add_opt('-S', '--ssl', action='store_true', default=False, help='Use SSL')
+        self.add_opt('--ssl-noverify', action='store_true', default=False, help='Disable SSL certificate verification')
 
     def add_quietoption(self):
         self.add_opt('-q', '--quiet', action='store_true', help='Quiet mode')
