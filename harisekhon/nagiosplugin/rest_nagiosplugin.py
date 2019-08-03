@@ -34,6 +34,7 @@ import traceback
 # Python 2.6+ only
 from abc import ABCMeta #, abstractmethod
 from requests_kerberos import HTTPKerberosAuth, OPTIONAL
+import urllib3
 srcdir = os.path.abspath(os.path.dirname(__file__))
 libdir = os.path.join(srcdir, 'pylib')
 sys.path.append(libdir)
@@ -48,7 +49,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.6.1'
+__version__ = '0.6.2'
 
 
 class RestNagiosPlugin(NagiosPlugin):
@@ -121,8 +122,18 @@ class RestNagiosPlugin(NagiosPlugin):
             else:
                 validate_user(self.user)
                 validate_password(self.password)
-        ssl = self.get_opt('ssl')
-        log_option('ssl', ssl)
+        ssl_noverify = self.get_opt('ssl_noverify')
+        if ssl_noverify:
+            log_option('ssl no verify', 'true')
+            ssl = 1
+            os.environ['SSL_NO_VERIFY'] = '1'
+            # doesn't work, probably too late after instantiation
+            #if not os.getenv('PYTHONWARNINGS'):
+            #    os.environ['PYTHONWARNINGS'] = 'ignore:Unverified HTTPS request'
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        else:
+            ssl = self.get_opt('ssl')
+            log_option('ssl', ssl)
         if ssl and self.protocol == 'http':
             self.protocol = 'https'
         if self.json:
@@ -159,7 +170,10 @@ class RestNagiosPlugin(NagiosPlugin):
         elif self.user and self.password:
             log.info('authenticating to Rest API with username and password')
             auth = (self.user, self.password)  # pylint: disable=redefined-variable-type
-        req = self.request.req(self.request_method, url, auth=auth, headers=self.headers)
+        kwargs = {}
+        if os.getenv('SSL_NO_VERIFY'):
+            kwargs['verify'] = False
+        req = self.request.req(self.request_method, url, auth=auth, headers=self.headers, **kwargs)
         return req
 
     #@abstractmethod
