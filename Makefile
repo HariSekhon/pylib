@@ -33,7 +33,7 @@
 
 REPO := HariSekhon/pylib
 
-CODE_FILES := $(shell find . -name '*.py' -o -name '*.sh' | grep -v -e bash-tools)
+CODE_FILES := $(shell find . -type f -name '*.py' -o -type f -name '*.sh' | grep -v -e bash-tools)
 
 ifneq ("$(wildcard bash-tools/Makefile.in)", "")
 	include bash-tools/Makefile.in
