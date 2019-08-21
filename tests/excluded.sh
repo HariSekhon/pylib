@@ -21,7 +21,10 @@ set -eu
 
 isExcluded(){
     local prog="$1"
+    # really want * prefixed files
+    # shellcheck disable=SC2049
     [[ "$prog" =~ ^\* ]] && return 0
+    [[ "$prog" =~ ^\# ]] && return 0
     [[ "$prog" =~ /\. ]] && return 0
     # this external git check is expensive, skip it when in CI as using fresh git checkouts
     is_CI && return 1
