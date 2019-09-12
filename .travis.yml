@@ -27,6 +27,10 @@ python:
   #- "pypy"
   #- "pypy3"
 
+os:
+  - linux
+  - osx
+
 dist: trusty
 
 sudo: required
