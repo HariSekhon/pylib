@@ -56,7 +56,7 @@ build:
 	pip -V
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
-	
+
 	# fixes bug in cffi version detection when installing requests-kerberos
 	$(SUDO_PIP) pip install --upgrade pip
 
@@ -112,11 +112,8 @@ unittest:
 	#python -m unittest discover -v
 	#unit2 discover -v
 	# Alpine fails to find 'blessings' module because now defaults to Python 3 but modules are installed to Python 2
-	if type nosetests-2.7 2>/dev/null; then \
-		nosetests-2.7; \
-	else \
-		nosetests; \
-	fi
+	# so check for nosetest-2.7 explicitly first
+	`bash-tools/python_find_library_executable.sh nosetests-2.7 nosetests`
 
 .PHONY: test2
 test2: test-common
