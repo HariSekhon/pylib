@@ -1,0 +1,20 @@
+#  vim:ts=4:sts=4:sw=4:et
+#
+#  Author: Hari Sekhon
+#  Date: 2018-05-22 11:15:16 +0100 (Tue, 22 May 2018)
+#
+#  https://github.com/harisekhon/devops-python-tools
+#
+#  License: see accompanying Hari Sekhon LICENSE file
+#
+#  https://www.linkedin.com/in/harisekhon
+#
+
+# ============================================================================ #
+#                    Mac OS X - Homebrew Package Requirements
+# ============================================================================ #
+
+# For compilers to find krb5 you may need to set:
+#   export LDFLAGS="-L/usr/local/opt/krb5/lib"
+#   export CPPFLAGS="-I/usr/local/opt/krb5/include"
+krb5
