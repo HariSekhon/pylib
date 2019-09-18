@@ -18,3 +18,6 @@
 #   export LDFLAGS="-L/usr/local/opt/krb5/lib"
 #   export CPPFLAGS="-I/usr/local/opt/krb5/include"
 krb5
+
+# export LDFLAGS="${LDFLAGS:-} -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib"
+openssl
