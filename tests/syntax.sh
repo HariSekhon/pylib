@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2230
 #  vim:ts=4:sts=4:sw=4:et
 #
 #  Author: Hari Sekhon
@@ -27,13 +28,13 @@ start_time="$(start_timer)"
 
 for x in $(echo ./*.py ./*.jy 2>/dev/null); do
     isExcluded "$x" && continue
-    if command -v flake8 &> /dev/null; then
+    if which flake8 &> /dev/null; then
         echo "flake8 $x"
         flake8 --max-line-length=120 --statistics "$x"
         echo; hr; echo
     fi
     for y in pyflakes pychecker; do
-        if command -v $y &>/dev/null; then
+        if which "$y" &>/dev/null; then
             echo "$y $x"
             "$y" "$x"
             echo; hr; echo
