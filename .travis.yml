@@ -61,7 +61,7 @@ matrix:
         #- "pypy"
         - "pypy3"
   allow_failures:
-    - python: "3.7"
+    - python: "3.6"
     - python: "pypy"
     - python: "pypy3"
 
