@@ -53,7 +53,7 @@ from harisekhon.utils import get_topfile, get_file_docstring, get_file_github_re
 from harisekhon.utils import CriticalError, WarningError, UnknownError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.4'
+__version__ = '0.9.5'
 
 
 class CLI(object):
@@ -126,6 +126,7 @@ class CLI(object):
                 width = Terminal().width
             except _curses.error:
                 width = 80
+        width = int(width)
         # limit the width to 200 as we don't want super long strings going all the way across
         # 27" Thunderbolt displays of 364 columns etc.
         width = min(width, 200)
