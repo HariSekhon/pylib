@@ -18,6 +18,12 @@
 #  - linux
 #  - osx
 
+python:
+  - "2.7"
+  - "3.6"
+  - "pypy"
+  - "pypy3"
+
 matrix:
   fast_finish: true
   include:
