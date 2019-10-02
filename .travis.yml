@@ -38,7 +38,7 @@ matrix:
       python: "2.7"
 
     - os: osx
-      language: generic # workaround since Mac doesn;'t have Python support yet, so install to system Python
+      language: generic # workaround since Mac doesn't have Python support yet, so install to system Python
 
     - os: linux
       language: python
