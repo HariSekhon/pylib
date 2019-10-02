@@ -30,43 +30,28 @@ matrix:
     - os: linux
       dist: trusty
       language: python
-      python:
-        # numpy has gone 2.7+ only now
-        #- "2.6"
-        - "2.7"
-  allow_failures:
-    # workaround is to use generic and install to system python
+      python: "2.7" # numpy has gone 2.7+ only now
     - os: osx
-      language: generic
+      language: generic # workaround is to use generic and install to system python
     - os: linux
       dist: trusty
       language: python
-      python:
-        - "3.6"
+      python: "3.6"
     - os: linux
       language: python
-      python:
-        - "3.6"
+      python: "3.6"
     - os: linux
       language: python
-      python:
-        # PyPy is getting UnicodeEncodeError: 'ascii' codec can't encode characters in position 9-12: ordinal not in range(128)
-        # here: https://travis-ci.org/HariSekhon/pylib/jobs/283211758#L654
-        - "pypy"
-        #- "pypy3"
+      python: "pypy" # PyPy is getting UnicodeEncodeError: 'ascii' codec can't encode characters in position 9-12: ordinal not in range(128)
+                     # here: https://travis-ci.org/HariSekhon/pylib/jobs/283211758#L654
     - os: linux
       language: python
-      python:
-        # PyPy is getting UnicodeEncodeError: 'ascii' codec can't encode characters in position 9-12: ordinal not in range(128)
-        # here: https://travis-ci.org/HariSekhon/pylib/jobs/283211758#L654
-        #- "pypy"
-        - "pypy3"
-  #allow_failures:
-  #  - python: "3.6"
-  #  - python: "pypy"
-  #  - python: "pypy3"
-
-sudo: required
+      python: "pypy3" # PyPy is getting UnicodeEncodeError: 'ascii' codec can't encode characters in position 9-12: ordinal not in range(128)
+                      # here: https://travis-ci.org/HariSekhon/pylib/jobs/283211758#L654
+  allow_failures:
+    - python: "3.6"
+    - python: "pypy"
+    - python: "pypy3"
 
 env:
   # DEBUG=1 is pushing log over 4MB limit causing Travis job to fail
