@@ -27,30 +27,38 @@ python:
 matrix:
   fast_finish: true
   include:
+    # numpy has gone 2.7+ only now, so had to drop Python 2.6 support
+    - os: linux
+      language: python
+      python: "2.7"
+
     - os: linux
       dist: trusty
       language: python
-      python: "2.7" # numpy has gone 2.7+ only now
+      python: "2.7"
+
     - os: osx
-      language: generic # workaround is to use generic and install to system python
+      language: generic # workaround since Mac doesn;'t have Python support yet, so install to system Python
+
+    - os: linux
+      language: python
+      python: "3.6"
+
     - os: linux
       dist: trusty
       language: python
       python: "3.6"
+
     - os: linux
       language: python
-      python: "3.6"
+      python: "pypy"
+
     - os: linux
       language: python
-      python: "pypy" # PyPy is getting UnicodeEncodeError: 'ascii' codec can't encode characters in position 9-12: ordinal not in range(128)
-                     # here: https://travis-ci.org/HariSekhon/pylib/jobs/283211758#L654
-    - os: linux
-      language: python
-      python: "pypy3" # PyPy is getting UnicodeEncodeError: 'ascii' codec can't encode characters in position 9-12: ordinal not in range(128)
-                      # here: https://travis-ci.org/HariSekhon/pylib/jobs/283211758#L654
+      python: "pypy3"
+
   allow_failures:
     - python: "3.6"
-    - python: "pypy"
     - python: "pypy3"
 
 env:
