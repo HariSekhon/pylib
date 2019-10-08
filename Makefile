@@ -31,13 +31,13 @@
 
 # ===================
 
-REPO := HariSekhon/pylib
-
-CODE_FILES := $(shell find . -type f -name '*.py' -o -type f -name '*.sh' | grep -v -e bash-tools)
-
 ifneq ("$(wildcard bash-tools/Makefile.in)", "")
 	include bash-tools/Makefile.in
 endif
+
+REPO := HariSekhon/pylib
+
+CODE_FILES := $(shell find . -type f -name '*.py' -o -type f -name '*.sh' | grep -v -e bash-tools)
 
 .PHONY: build
 build:
