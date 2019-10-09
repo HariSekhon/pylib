@@ -63,7 +63,7 @@ build:
 	# only install pip packages not installed via system packages
 	#$(SUDO_PIP) pip install --upgrade -r requirements.txt
 	#$(SUDO_PIP) pip install -r requirements.txt
-	@bash-tools/python_pip_install_if_absent.sh requirements.txt
+	@PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh --ignore-installed urllib3 requirements.txt
 
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	$(SUDO_PIP) pip install --upgrade ndg-httpsclient || $(SUDO_PIP) pip install --upgrade ndg-httpsclient
