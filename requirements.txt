@@ -10,7 +10,7 @@ nose2==0.9.1
 py==1.4.31
 # PyLint fails some checks in Travis that pass locally
 #pylint==1.5.2
-pytest==3.0.0
+pytest==5.2.1
 PyYAML==5.1
 requests==2.20.0
 requests-kerberos==0.12.0
