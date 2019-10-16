@@ -1,5 +1,5 @@
 beautifulsoup4==4.8.1
-blessings==1.6
+blessings==1.7
 docker==4.1.0
 #Jinja2==2.8
 #linecache2==1.0.0
