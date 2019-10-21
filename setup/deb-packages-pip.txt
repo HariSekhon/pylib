@@ -23,6 +23,6 @@ python-pytest
 python-requests
 python-requests-kerberos
 python-six
-python-traceback2
+#python-traceback2
 python-unittest2
 python-yaml
