@@ -24,7 +24,7 @@ python-requests-kerberos
 python-six
 python-unittest2
 python2-pyyaml
-python2-traceback2
+#python2-traceback2
 #python-jinja2
 #python-wheel
 #python34-PyYAML
