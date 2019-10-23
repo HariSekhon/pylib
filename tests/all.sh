@@ -32,7 +32,7 @@ tests/find_dup_defs.sh
 
 #./help.sh
 
-bash-tools/all.sh
+bash-tools/check_all.sh
 
 bash-tools/run_tests.sh
 
