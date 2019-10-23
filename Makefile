@@ -58,7 +58,7 @@ build:
 	git update-index --assume-unchanged resources/custom_tlds.txt
 
 	# fixes bug in cffi version detection when installing requests-kerberos
-	$(SUDO_PIP) pip install --upgrade pip
+	$(SUDO_PIP) pip install --upgrade pip || :
 
 	# only install pip packages not installed via system packages
 	#$(SUDO_PIP) pip install --upgrade -r requirements.txt
