@@ -1130,11 +1130,14 @@ def isJson(arg):
     return False
 
 
-def isYaml(arg):
+def isYaml(arg, safe_load_all=False):
     if not isStr(arg):
         return False
     try:
-        yaml.safe_load_all(arg)
+        if safe_load_all:
+            yaml.safe_load_all(arg)
+        else:
+            yaml.safe_load(arg)
         return True
     except yaml.YAMLError:
         pass
