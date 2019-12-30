@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.12.5'
+__version__ = '0.12.6'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1134,7 +1134,7 @@ def isYaml(arg):
     if not isStr(arg):
         return False
     try:
-        yaml.safe_load(arg)
+        yaml.safe_load_all(arg)
         return True
     except yaml.YAMLError:
         pass
