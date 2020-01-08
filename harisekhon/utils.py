@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.12.6'
+__version__ = '0.12.7'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -646,7 +646,7 @@ def read_file_without_comments(filename):
 
 def jsonpp(json_data):
     if isStr(json_data):
-        json_data = json.loads(json_data)
+        json_data = json.loads(json_data, encoding='utf-8')
     return json.dumps(json_data, sort_keys=True, indent=4, separators=(',', ': '))
 
 
