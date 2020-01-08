@@ -647,7 +647,8 @@ def read_file_without_comments(filename):
 def jsonpp(json_data):
     if isStr(json_data):
         json_data = json.loads(json_data, encoding='utf-8')
-    return json.dumps(json_data, sort_keys=True, indent=4, separators=(',', ': '))
+    # default=str converts otherwise unconvertible types like datetime objects to be dumpable to strings
+    return json.dumps(json_data, sort_keys=True, indent=4, separators=(',', ': '), default=str)
 
 
 def list_sort_dicts_by_value(my_list, key):
