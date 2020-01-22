@@ -12,6 +12,13 @@ My personal Python library, full of lots of validation code and utility function
 
 Only supports Python 2 for now.
 
+Hari Sekhon
+
+Cloud & Big Data Contractor, United Kingdom
+
+https://www.linkedin.com/in/harisekhon
+###### (you're welcome to connect with me on LinkedIn)
+
 #### Build + Unit Tests ####
 
 ```
