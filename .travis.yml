@@ -61,6 +61,7 @@ matrix:
 
   allow_failures:
     - python: "3.6"
+    - python: "pypy"
     - python: "pypy3"
 
 env:
@@ -80,6 +81,8 @@ cache: pip
 before_install:
   - sudo rm -f "${TRAVIS_ROOT}/etc/apt/apt.conf.d/99-travis-apt-proxy"
   - sudo rm -rf "${TRAVIS_ROOT}/var/lib/apt/lists/"*
+  # for some reason the perms on pypy builds are wrong and breaking builds now
+  #- sudo chown -R travis:travis -R /opt/python/pypy* || :
 
 install:
   - travis_retry make
