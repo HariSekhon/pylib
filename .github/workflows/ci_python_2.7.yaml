@@ -28,14 +28,12 @@ jobs:
   build:
     #name: build
     timeout-minutes: 10
-    #runs-on: ${{ matrix.os }}
-    runs-on: ubuntu-latest
-    python-version: 2.7
-    #strategy:
-    #  matrix:
-    #    os: [ubuntu-latest]
-    #    #python-version: [2.7, 3.6, 3.7, 3.8, pypy2, pypy3]
-    #    python-version: [2.7, 3.6]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        #python-version: [2.7, 3.6, 3.7, 3.8, pypy2, pypy3]
+        python-version: 2.7
     steps:
     - uses: actions/checkout@v2
 # ============================================================================
