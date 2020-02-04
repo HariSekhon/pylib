@@ -10,6 +10,8 @@ Hari Sekhon Python / Jython Library
 
 [![CI Ubuntu](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/workflows/CI%20ubuntu/badge.svg)
 [![CI Mac](https://github.com/HariSekhon/pylib/workflows/CI%20Mac/badge.svg)](https://github.com/HariSekhon/pylib/workflows/CI%20Mac/badge.svg)
+[![CI Python 2.7](https://github.com/HariSekhon/pylib/workflows/CI%20Python%202.7/badge.svg)](https://github.com/HariSekhon/pylib/workflows/CI%20Python%202.7/badge.svg)
+[![CI Python 3.6](https://github.com/HariSekhon/pylib/workflows/CI%20Python%203.6/badge.svg)](https://github.com/HariSekhon/pylib/workflows/CI%20Python%203.6/badge.svg)
 
 My personal Python library, full of lots of validation code and utility functions.
 
