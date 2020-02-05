@@ -8,8 +8,10 @@ Hari Sekhon Python / Jython Library
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20OS%20X-blue.svg)](https://github.com/harisekhon/pylib#hari-sekhon-python--jython-library)
 [![DockerHub](https://img.shields.io/badge/docker-available-blue.svg)](https://hub.docker.com/r/harisekhon/centos-github/)
 
-[![CI Ubuntu](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu%22)
 [![CI Mac](https://github.com/HariSekhon/pylib/workflows/CI%20Mac/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Mac%22)
+[![CI Ubuntu](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu%22)
+[![CI CentOS](https://github.com/HariSekhon/pylib/workflows/CI%20CentOS/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+CentOS%22)
+[![CI Alpine](https://github.com/HariSekhon/pylib/workflows/CI%20Alpine/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Alpine%22)
 [![CI Python 2.7](https://github.com/HariSekhon/pylib/workflows/CI%20Python%202.7/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Python+2.7%22)
 [![CI Python 3.6](https://github.com/HariSekhon/pylib/workflows/CI%20Python%203.6/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Python+3.6%22)
 
