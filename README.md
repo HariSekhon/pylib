@@ -2,6 +2,8 @@ Hari Sekhon Python / Jython Library
 ===================================
 [![Build Status](https://travis-ci.org/HariSekhon/pylib.svg?branch=master)](https://travis-ci.org/HariSekhon/pylib)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cfc553fcdbc94491b3c8c56797dcd189)](https://www.codacy.com/app/harisekhon/pylib)
+[![GitHub stars](https://img.shields.io/github/stars/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/network)
 [![Coverage Status](https://coveralls.io/repos/HariSekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/HariSekhon/pylib?branch=master)
 [![PyUp](https://pyup.io/repos/github/HariSekhon/pylib/shield.svg)](https://pyup.io/account/repos/github/HariSekhon/pylib/)
 [![Python 3](https://pyup.io/repos/github/HariSekhon/pylib/python-3-shield.svg)](https://pyup.io/repos/github/HariSekhon/pylib/)
