@@ -40,11 +40,14 @@ jobs:
         cat /etc/*release
         yum install -y git make
     - name: git clone
+      run: |
         cd /tmp &&
         git clone https://github.com/harisekhon/pylib
     - name: build
+      run: |
         cd /tmp/pylib &&
         make
     - name: test
+      run: |
         cd /tmp/pylib &&
         make test
