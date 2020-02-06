@@ -33,13 +33,18 @@ jobs:
     steps:
     # untars repo in docker container so git submodule update fails
     #- uses: actions/checkout@v2
-    - name: build & test
+    - name: install git & make
       run: |
         ls -l /.dockerenv
         echo "pwd is $PWD"
         cat /etc/*release
-        yum install -y git make &&
+        yum install -y git make
+    - name: git clone
         cd /tmp &&
-        git clone https://github.com/harisekhon/pylib &&
-        cd pylib &&
-        make build test
+        git clone https://github.com/harisekhon/pylib
+    - name: build
+        cd /tmp/pylib &&
+        make
+    - name: test
+        cd /tmp/pylib &&
+        make test
