@@ -31,6 +31,9 @@
 
 # ===================
 
+# would fail bootstrapping on Alpine
+#SHELL := /usr/bin/env bash
+
 ifneq ("$(wildcard bash-tools/Makefile.in)", "")
 	include bash-tools/Makefile.in
 endif
@@ -45,7 +48,9 @@ build:
 	@echo Python Lib Build
 	@echo ================
 
-	type -P python
+	# executing in sh where type is not available
+	#type -P python
+	which python || :
 	python -V
 
 	which pip || $(SUDO) easy_install pip || :
