@@ -45,17 +45,17 @@ build:
 	@echo Python Lib Build
 	@echo ================
 
-	$(MAKE) init
-	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
-	$(MAKE) system-packages-python
-
+	which python
 	python -V
 
 	which pip || $(SUDO) easy_install pip || :
-
 	pip -V
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
+
+	$(MAKE) init
+	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
+	$(MAKE) system-packages-python
 
 	# fixes bug in cffi version detection when installing requests-kerberos
 	$(SUDO_PIP) pip install --upgrade pip || :
