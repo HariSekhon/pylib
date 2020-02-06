@@ -15,9 +15,10 @@
 
 gcc
 
-python-devel
-python-pip
-python-setuptools
+# RHEL8 no longer supports 'python', must specify 'python2'
+python2-devel
+python2-pip
+python2-setuptools
 
 # needed for ndg-httpsclient upgrade
 libffi-devel
