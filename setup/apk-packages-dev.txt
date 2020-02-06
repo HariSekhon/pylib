@@ -25,3 +25,4 @@ libffi-dev
 linux-headers
 #openssl-dev
 #libressl-dev
+py-cryptography
