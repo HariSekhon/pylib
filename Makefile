@@ -45,7 +45,7 @@ build:
 	@echo Python Lib Build
 	@echo ================
 
-	which python
+	type -P python
 	python -V
 
 	which pip || $(SUDO) easy_install pip || :
