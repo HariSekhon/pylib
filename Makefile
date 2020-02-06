@@ -51,16 +51,21 @@ build:
 	# executing in sh where type is not available
 	#type -P python
 	which python || :
-	python -V
-
-	which pip || $(SUDO) easy_install pip || :
-	pip -V
-
-	git update-index --assume-unchanged resources/custom_tlds.txt
+	python -V || :
+	pip -V || :
 
 	$(MAKE) init
 	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
+
+	# executing in sh where type is not available
+	#type -P python
+	which python || :
+	python -V || :
+	which pip || $(SUDO) easy_install pip || :
+	pip -V || :
+
+	git update-index --assume-unchanged resources/custom_tlds.txt
 
 	# fixes bug in cffi version detection when installing requests-kerberos
 	$(SUDO_PIP) pip install --upgrade pip || :
