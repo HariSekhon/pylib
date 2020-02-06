@@ -14,7 +14,8 @@
 # ============================================================================ #
 
 git
-python
+# RHEL8 no longer supports 'python', must specify 'python2'
+python2
 
 wget
 
