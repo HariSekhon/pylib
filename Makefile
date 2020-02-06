@@ -60,10 +60,10 @@ build:
 
 	# executing in sh where type is not available
 	#type -P python
-	which python || :
-	python -V || :
+	which python
+	python -V
 	which pip || $(SUDO) easy_install pip || :
-	pip -V || :
+	pip -V
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
 
