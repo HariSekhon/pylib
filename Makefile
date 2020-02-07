@@ -67,7 +67,7 @@ build:
 	fi
 	python -V
 	if ! which pip; then \
-		if which pip2; then
+		if which pip2; then \
 			$(SUDO) ln -sv `which pip2` /usr/local/bin/pip; \
 		else \
 			$(SUDO) easy_install pip || : \
