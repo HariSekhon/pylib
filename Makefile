@@ -60,9 +60,19 @@ build:
 
 	# executing in sh where type is not available
 	#type -P python
-	which python
+	if ! which python; then \
+		if which python2; then \
+			$(SUDO) ln -sv `which python2` /usr/local/bin/python; \
+		fi; \
+	fi
 	python -V
-	which pip || $(SUDO) easy_install pip || :
+	if ! which pip; then \
+		if which pip2; then
+			$(SUDO) ln -sv `which pip2` /usr/local/bin/pip; \
+		else \
+			$(SUDO) easy_install pip || : \
+		fi; \
+	fi
 	pip -V
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
