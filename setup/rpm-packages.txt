@@ -15,7 +15,9 @@
 
 git
 # RHEL8 no longer supports 'python', must specify 'python2'
-python2
+# moved to rpm-packages-optional.txt to work across RHEL versions without failures
+#python
+#python2
 
 wget
 
