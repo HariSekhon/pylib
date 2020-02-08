@@ -19,4 +19,10 @@
 # but RHEL6 only supports 'python'
 # RHEL 7 supports both but for some reason RHEL8 has broken compatibility
 python
+python-devel
+python-pip
+python-setuptools
 python2
+python2-devel
+python2-pip
+python2-setuptools
