@@ -70,7 +70,7 @@ build:
 		if which pip2; then \
 			$(SUDO) ln -sv `which pip2` /usr/local/bin/pip; \
 		else \
-			$(SUDO) easy_install pip || : \
+			$(SUDO) easy_install pip || : ; \
 		fi; \
 	fi
 	pip -V
