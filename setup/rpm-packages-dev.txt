@@ -16,9 +16,12 @@
 gcc
 
 # RHEL8 no longer supports 'python', must specify 'python2'
-python2-devel
-python2-pip
-python2-setuptools
+# but RHEL6 only supports 'python'
+# RHEL 7 supports both but for some reason RHEL8 has broken compatibility
+# moved to rpm-packages-optional.txt to work across RHEL versions without failures
+#python2-devel
+#python2-pip
+#python2-setuptools
 
 # needed for ndg-httpsclient upgrade
 libffi-devel
