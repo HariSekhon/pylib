@@ -1,0 +1,22 @@
+#
+#  Author: Hari Sekhon
+#  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
+#
+#  https://github.com/harisekhon/devops-python-tools
+#
+#  License: see accompanying LICENSE file
+#
+#  https://www.linkedin.com/in/harisekhon
+#
+
+# ============================================================================ #
+#                          Optional RPM Package Requirements
+# ============================================================================ #
+
+# These will optimistically install and ignore failures
+
+# RHEL8 no longer supports 'python', must specify 'python2'
+# but RHEL6 only supports 'python'
+# RHEL 7 supports both but for some reason RHEL8 has broken compatibility
+python
+python2
