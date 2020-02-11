@@ -13,7 +13,9 @@
 #                          RPM Package Requirements
 # ============================================================================ #
 
-git
+# installed by bash-tools submodule now
+#git
+
 # RHEL8 no longer supports 'python', must specify 'python2'
 # but RHEL6 only supports 'python'
 # RHEL 7 supports both but for some reason RHEL8 has broken compatibility
@@ -21,6 +23,6 @@ git
 #python
 #python2
 
-wget
+#wget
 
 #ipython-notebook || :
