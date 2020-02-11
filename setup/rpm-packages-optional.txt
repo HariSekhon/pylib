@@ -18,11 +18,14 @@
 # RHEL8 no longer supports 'python', must specify 'python2'
 # but RHEL6 only supports 'python'
 # RHEL 7 supports both but for some reason RHEL8 has broken compatibility
-python
+
+# installed by bash-tools submodule now
+#python
+#python-pip
+#python2
+#python2-pip
+
 python-devel
-python-pip
 python-setuptools
-python2
 python2-devel
-python2-pip
 python2-setuptools
