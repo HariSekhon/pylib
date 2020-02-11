@@ -13,8 +13,10 @@
 #                          Deb Package Requirements
 # ============================================================================ #
 
-git
-python
+# installed by bash-tools submodule now
+#git
+#python
+#wget
 
 # IPython Notebook fails and leave apt broken
 # The following packages have unmet dependencies:
@@ -22,5 +24,3 @@ python
 #  E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
 #
 #ipython-notebook || :
-
-wget
