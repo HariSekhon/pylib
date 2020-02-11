@@ -14,7 +14,8 @@
 # ============================================================================ #
 
 alpine-sdk
-gcc
+# installed by bash-tools submodule now
+#gcc
 
 python-dev
 py2-pip
