@@ -23,6 +23,6 @@ cyrus-sasl-dev
 krb5-dev
 libffi-dev
 linux-headers
-#openssl-dev
+openssl-dev
 #libressl-dev
 py-cryptography
