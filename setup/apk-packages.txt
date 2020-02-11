@@ -13,8 +13,9 @@
 #                          Alpine Package Requirements
 # ============================================================================ #
 
-bash
-git
-make
-python
-wget
+# installed by bash-tools submodule now
+#bash
+#git
+#make
+#python
+#wget
