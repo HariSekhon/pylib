@@ -80,6 +80,9 @@ build:
 	# fixes bug in cffi version detection when installing requests-kerberos
 	$(SUDO_PIP) pip install --quiet --upgrade pip || :
 
+	# impyla needs newer setuptools than OS packaged with Python 2
+	$(SUDO_PIP) pip install --quiet --upgrade setuptools || :
+
 	# only install pip packages not installed via system packages
 	#$(SUDO_PIP) pip install --quiet --upgrade -r requirements.txt
 	#$(SUDO_PIP) pip install --quiet -r requirements.txt
