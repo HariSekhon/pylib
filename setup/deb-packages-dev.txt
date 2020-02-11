@@ -17,8 +17,10 @@ gcc
 g++
 
 python-dev
-python-pip
-python-setuptools
+
+# installed by bash-tools submodule now
+#python-pip
+#python-setuptools
 
 # needed for ndg-httpsclient upgrade
 libffi-dev
