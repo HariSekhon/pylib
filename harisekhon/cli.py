@@ -354,6 +354,7 @@ class CLI(object):
         self.verbose += int(self.get_opt('verbose'))
         env_verbose = os.getenv('VERBOSE')
         if isInt(env_verbose):
+            env_verbose = int(env_verbose)
             if env_verbose > self.verbose:
                 log.debug('environment variable $VERBOSE = %s, increasing verbosity', env_verbose)
                 self.verbose = int(env_verbose)
