@@ -12,6 +12,8 @@
 #
 
 # Not supporting RHEL6 any more because it doesn't have GNU parallel package
+#
+# RHEL Python 2.6 is too old
 
 name: CI CentOS 6
 
