@@ -137,7 +137,7 @@ unittest:
 	#unit2 discover -v
 	# Alpine fails to find 'blessings' module because now defaults to Python 3 but modules are installed to Python 2
 	# so check for nosetest-2.7 explicitly first
-	`bash-tools/python_find_library_executable.sh nose2 nosetests-2.7 nosetests nose`
+	`bash-tools/python_find_library_executable.sh nosetests-2.7 nosetests nose2 nose`
 
 .PHONY: test2
 test2: test-common
