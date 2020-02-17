@@ -36,7 +36,7 @@ jobs:
         path: ~/Library/Caches/pip
         key: ${{ runner.os }}-pip-pylib  # -${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-pip-
+          ${{ runner.os }}-pip-pylib
     - name: brew update
       run: which brew && brew update || :
     - name: build
