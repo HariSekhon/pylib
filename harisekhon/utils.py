@@ -564,7 +564,7 @@ def curl(url, *args, **kwargs):
         containing_module = re.sub(r'[^\.]+$', '', request_handler).rstrip('.')
         target_class = request_handler.split('.')[-1]
         # log.debug('containing module is %s' % containing_module)
-        module = __import__(containing_module, globals(), locals(), [], -1)
+        module = __import__(containing_module, globals(), locals(), [], 0)  # was -1 in Python 2
         # module = __import__(request_handler, globals(), locals(), [request_handler.split('.')[-1]], -1)
         _class = getattr(module, target_class)
         del kwargs['request_handler']

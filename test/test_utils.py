@@ -195,7 +195,10 @@ class UtilsTester(unittest.TestCase):
         gitroot = find_git_root(__file__)
         if os.path.exists('.git'):
             print('git root: {}'.format(find_git_root(__file__)))
-            self.assertTrue(re.match('.*/(pylib|code)', find_git_root(__file__)))
+            pwd = os.getcwd()
+            print('pwd: {}'.format(pwd))
+            #self.assertTrue(re.match('.*/(pylib|code|pwd)', find_git_root(__file__)))
+            self.assertTrue(re.match(pwd, find_git_root(__file__)))
 
     def test_find_git_root_not_found(self):
         self.assertEqual(find_git_root('/usr/bin'), None)

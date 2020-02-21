@@ -103,7 +103,7 @@ class RequestHandler(object):
             code_error('RequestHandler.exception_handler arg {} is not a subclass of Exception'.format(arg))
         # TODO: improve this to extract connection refused for more concise errors
         errhint = ''
-        if 'BadStatusLine' in str(arg.message):
+        if 'message' in dir(arg) and 'BadStatusLine' in str(arg.message):
             errhint = ' (possibly connecting to an SSL secured port using plain HTTP?)'
         elif 'https://' in self.url and 'unknown protocol' in str(arg.message):
             errhint = ' (possibly connecting to a plain HTTP port with the -S / --ssl switch enabled?)'
