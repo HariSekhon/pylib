@@ -55,7 +55,8 @@ build:
 	pip -V || :
 
 	$(MAKE) init
-	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
+	@# doesn't work, only exits the line not the script and don't wanna use oneshell
+	@#if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
 
 	bash-tools/setup/alternatives_set_python.sh
