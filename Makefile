@@ -58,17 +58,18 @@ build:
 	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
 
-	# executing in sh where type is not available
-	#type -P python
+	@# executing in sh where type is not available
+	@#type -P python
+	@#$(SUDO) ln -sv `which python2` /usr/local/bin/python; \
 	if ! which python; then \
-		if which python2; then \
-			$(SUDO) ln -sv `which python2` /usr/local/bin/python; \
+		if which python3; then \
+			$(SUDO) alternatives --set python `which python3`; \
 		fi; \
 	fi
 	python -V
 	if ! which pip; then \
-		if which pip2; then \
-			$(SUDO) ln -sv `which pip2` /usr/local/bin/pip; \
+		if which pip3; then \
+			$(SUDO) ln -sv `which pip3` /usr/local/bin/pip; \
 		else \
 			$(SUDO) easy_install pip || : ; \
 		fi; \
