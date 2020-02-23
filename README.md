@@ -26,6 +26,8 @@ Hari Sekhon Python / Jython Library
 [![CI Fedora](https://github.com/HariSekhon/pylib/workflows/CI%20Fedora/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Fedora%22)
 [![CI Alpine](https://github.com/HariSekhon/pylib/workflows/CI%20Alpine/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Alpine%22)
 [![CI Alpine 3](https://github.com/HariSekhon/pylib/workflows/CI%20Alpine%203/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Alpine+3%22)
+[![CI Python 2.7](https://github.com/HariSekhon/pylib/workflows/CI%20Python%202.7/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Python+2.7%22)
+[![CI Python 3.6](https://github.com/HariSekhon/pylib/workflows/CI%20Python%203.6/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Python+3.6%22)
 
 My personal Python library, full of lots of validation code and utility functions.
 
