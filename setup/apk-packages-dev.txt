@@ -18,7 +18,7 @@ alpine-sdk
 #gcc
 
 python-dev
-py2-pip
+py-pip
 
 cyrus-sasl-dev
 krb5-dev
