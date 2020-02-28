@@ -1,5 +1,6 @@
 Hari Sekhon Python / Jython Library
 ===================================
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cfc553fcdbc94491b3c8c56797dcd189)](https://www.codacy.com/app/harisekhon/pylib)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=alert_status)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
@@ -14,13 +15,17 @@ Hari Sekhon Python / Jython Library
 
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20OS%20X-blue.svg)](https://github.com/harisekhon/pylib#hari-sekhon-python--jython-library)
 [![DockerHub](https://img.shields.io/badge/docker-available-blue.svg)](https://hub.docker.com/r/harisekhon/centos-github/)
+[![DockerHub Pulls](https://img.shields.io/docker/pulls/harisekhon/centos-github.svg)](https://hub.docker.com/r/harisekhon/centos-github)
+[![DockerHub Build Automated](https://img.shields.io/docker/automated/harisekhon/centos-github.svg)](https://hub.docker.com/r/harisekhon/centos-github)
+[![Docker Build Status](https://img.shields.io/docker/cloud/build/harisekhon/centos-github.svg)](https://hub.docker.com/r/harisekhon/centos-github/builds)
+[![MicroBadger](https://images.microbadger.com/badges/image/harisekhon/centos-github.svg)](http://microbadger.com/#/images/harisekhon/centos-github)
 
 [![Travis CI](https://travis-ci.org/HariSekhon/pylib.svg?branch=master)](https://travis-ci.org/HariSekhon/pylib)
-[![Azure Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.DevOps-Bash-tools?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=1&branchName=master)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/u6f97cskcgb30sce/branch/master?svg=true)](https://ci.appveyor.com/project/HariSekhon/devops-bash-tools/branch/master)
-[![BitBucket Pipeline](https://img.shields.io/bitbucket/pipelines/harisekhon/devops-bash-tools/master)](https://bitbucket.org/harisekhon/devops-bash-tools/addon/pipelines/home#!/)
+[![Azure Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=1&branchName=master)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/u6f97cskcgb30sce/branch/master?svg=true)](https://ci.appveyor.com/project/HariSekhon/pylib/branch/master)
+[![BitBucket Pipeline](https://img.shields.io/bitbucket/pipelines/harisekhon/pylib/master)](https://bitbucket.org/harisekhon/pylib/addon/pipelines/home#!/)
 [![Codeship Status for HariSekhon/pylib](https://app.codeship.com/projects/47db8760-3c4f-0138-d157-661d474a0ccb/status?branch=master)](https://app.codeship.com/projects/387232)
-[![CircleCI](https://circleci.com/gh/HariSekhon/DevOps-Bash-tools.svg?style=svg)](https://circleci.com/gh/HariSekhon/DevOps-Bash-tools)
+[![CircleCI](https://circleci.com/gh/HariSekhon/pylib.svg?style=svg)](https://circleci.com/gh/HariSekhon/pylib)
 [![Shippable](https://api.shippable.com/projects/5e52c63645c70f0007ff5152/badge?branch=master)](https://app.shippable.com/github/HariSekhon/pylib/dashboard)
 [![Codefresh](https://g.codefresh.io/api/badges/pipeline/harisekhon/GitHub%2Fpylib?branch=master&key=eyJhbGciOiJIUzI1NiJ9.NWU1MmM5OGNiM2FiOWUzM2Y3ZDZmYjM3.O69674cW7vYom3v5JOGKXDbYgCVIJU9EWhXUMHl3zwA&type=cf-1)](https%3A%2F%2Fg.codefresh.io%2Fpipelines%2Fpylib%2Fbuilds%3FrepoOwner%3DHariSekhon%26repoName%3Dpylib%26serviceName%3DHariSekhon%252Fpylib%26filter%3Dtrigger%3Abuild~Build%3Bbranch%3Amaster%3Bpipeline%3A5e58e2f89604d74f0c95ee24~pylib)
 [![wercker status](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
