@@ -1,15 +1,29 @@
 Hari Sekhon Python / Jython Library
 ===================================
-[![Build Status](https://travis-ci.org/HariSekhon/pylib.svg?branch=master)](https://travis-ci.org/HariSekhon/pylib)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cfc553fcdbc94491b3c8c56797dcd189)](https://www.codacy.com/app/harisekhon/pylib)
 [![GitHub stars](https://img.shields.io/github/stars/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/network)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=alert_status)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=ncloc)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=security_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 [![Coverage Status](https://coveralls.io/repos/HariSekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/HariSekhon/pylib?branch=master)
 [![PyUp](https://pyup.io/repos/github/HariSekhon/pylib/shield.svg)](https://pyup.io/account/repos/github/HariSekhon/pylib/)
 [![Python 3](https://pyup.io/repos/github/HariSekhon/pylib/python-3-shield.svg)](https://pyup.io/repos/github/HariSekhon/pylib/)
 
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20OS%20X-blue.svg)](https://github.com/harisekhon/pylib#hari-sekhon-python--jython-library)
 [![DockerHub](https://img.shields.io/badge/docker-available-blue.svg)](https://hub.docker.com/r/harisekhon/centos-github/)
+
+[![Travis CI](https://travis-ci.org/HariSekhon/pylib.svg?branch=master)](https://travis-ci.org/HariSekhon/pylib)
+[![Azure Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.DevOps-Bash-tools?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=1&branchName=master)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/u6f97cskcgb30sce/branch/master?svg=true)](https://ci.appveyor.com/project/HariSekhon/devops-bash-tools/branch/master)
+[![BitBucket Pipeline](https://img.shields.io/bitbucket/pipelines/harisekhon/devops-bash-tools/master)](https://bitbucket.org/harisekhon/devops-bash-tools/addon/pipelines/home#!/)
+[![Codeship Status for HariSekhon/pylib](https://app.codeship.com/projects/47db8760-3c4f-0138-d157-661d474a0ccb/status?branch=master)](https://app.codeship.com/projects/387232)
+[![CircleCI](https://circleci.com/gh/HariSekhon/DevOps-Bash-tools.svg?style=svg)](https://circleci.com/gh/HariSekhon/DevOps-Bash-tools)
+[![Shippable](https://api.shippable.com/projects/5e52c63645c70f0007ff5152/badge?branch=master)](https://app.shippable.com/github/HariSekhon/pylib/dashboard)
+[![Codefresh](https://g.codefresh.io/api/badges/pipeline/harisekhon/GitHub%2Fpylib?branch=master&key=eyJhbGciOiJIUzI1NiJ9.NWU1MmM5OGNiM2FiOWUzM2Y3ZDZmYjM3.O69674cW7vYom3v5JOGKXDbYgCVIJU9EWhXUMHl3zwA&type=cf-1)](https%3A%2F%2Fg.codefresh.io%2Fpipelines%2Fpylib%2Fbuilds%3FrepoOwner%3DHariSekhon%26repoName%3Dpylib%26serviceName%3DHariSekhon%252Fpylib%26filter%3Dtrigger%3Abuild~Build%3Bbranch%3Amaster%3Bpipeline%3A5e58e2f89604d74f0c95ee24~pylib)
+[![wercker status](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
 
 [![CI Mac](https://github.com/HariSekhon/pylib/workflows/CI%20Mac/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Mac%22)
 [![CI Ubuntu](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu%22)
