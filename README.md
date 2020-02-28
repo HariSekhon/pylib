@@ -21,7 +21,7 @@ Hari Sekhon Python / Jython Library
 [![MicroBadger](https://images.microbadger.com/badges/image/harisekhon/centos-github.svg)](http://microbadger.com/#/images/harisekhon/centos-github)
 
 [![Travis CI](https://travis-ci.org/HariSekhon/pylib.svg?branch=master)](https://travis-ci.org/HariSekhon/pylib)
-[![Azure Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=4&branchName=master)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/u6f97cskcgb30sce/branch/master?svg=true)](https://ci.appveyor.com/project/HariSekhon/pylib/branch/master)
 [![BitBucket Pipeline](https://img.shields.io/bitbucket/pipelines/harisekhon/pylib/master)](https://bitbucket.org/harisekhon/pylib/addon/pipelines/home#!/)
 [![Codeship Status for HariSekhon/pylib](https://app.codeship.com/projects/47db8760-3c4f-0138-d157-661d474a0ccb/status?branch=master)](https://app.codeship.com/projects/387232)
