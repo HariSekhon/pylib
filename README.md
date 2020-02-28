@@ -1,10 +1,10 @@
 Hari Sekhon Python / Jython Library
 ===================================
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cfc553fcdbc94491b3c8c56797dcd189)](https://www.codacy.com/app/harisekhon/pylib)
-[![GitHub stars](https://img.shields.io/github/stars/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/network)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=alert_status)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
+[![GitHub stars](https://img.shields.io/github/stars/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib.svg)](https://github.com/harisekhon/pylib/network)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=ncloc)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=security_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
@@ -44,8 +44,6 @@ Hari Sekhon Python / Jython Library
 [![CI Python 3.6](https://github.com/HariSekhon/pylib/workflows/CI%20Python%203.6/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Python+3.6%22)
 
 My personal Python library, full of lots of validation code and utility functions.
-
-Only supports Python 2 for now.
 
 Hari Sekhon
 
