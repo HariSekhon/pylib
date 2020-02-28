@@ -27,7 +27,7 @@ Hari Sekhon Python / Jython Library
 [![Codeship Status for HariSekhon/pylib](https://app.codeship.com/projects/47db8760-3c4f-0138-d157-661d474a0ccb/status?branch=master)](https://app.codeship.com/projects/387232)
 [![CircleCI](https://circleci.com/gh/HariSekhon/pylib.svg?style=svg)](https://circleci.com/gh/HariSekhon/pylib)
 [![Shippable](https://api.shippable.com/projects/5e52c63645c70f0007ff5152/badge?branch=master)](https://app.shippable.com/github/HariSekhon/pylib/dashboard)
-[![Codefresh](https://g.codefresh.io/api/badges/pipeline/harisekhon/GitHub%2Fpylib?branch=master&key=eyJhbGciOiJIUzI1NiJ9.NWU1MmM5OGNiM2FiOWUzM2Y3ZDZmYjM3.O69674cW7vYom3v5JOGKXDbYgCVIJU9EWhXUMHl3zwA&type=cf-1)](https%3A%2F%2Fg.codefresh.io%2Fpipelines%2Fpylib%2Fbuilds%3FrepoOwner%3DHariSekhon%26repoName%3Dpylib%26serviceName%3DHariSekhon%252Fpylib%26filter%3Dtrigger%3Abuild~Build%3Bbranch%3Amaster%3Bpipeline%3A5e58e2f89604d74f0c95ee24~pylib)
+[![Codefresh](https://g.codefresh.io/api/badges/pipeline/harisekhon/GitHub%2Fpylib?branch=master&key=eyJhbGciOiJIUzI1NiJ9.NWU1MmM5OGNiM2FiOWUzM2Y3ZDZmYjM3.O69674cW7vYom3v5JOGKXDbYgCVIJU9EWhXUMHl3zwA&type=cf-1)](https://g.codefresh.io/pipelines/pylib/builds?filter=pageSize:10;page:1;timeFrameStart:week)
 [![Wercker](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
 
 [![CI Mac](https://github.com/HariSekhon/pylib/workflows/CI%20Mac/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Mac%22)
