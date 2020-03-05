@@ -39,7 +39,11 @@ from optparse import OptionParser
 from optparse import SUPPRESS_HELP
 # Python 2.6+ only
 from abc import ABCMeta, abstractmethod
-import _curses
+try:
+    import _curses
+except ImportError as _:
+    if os.getenv('DEBUG'):
+        print('Error importing _curses: {}'.format(_), file=sys.stderr)
 from blessings import Terminal
 # inspect.getfile(inspect.currentframe()) # filename
 # libdir = os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), '..')
