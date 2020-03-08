@@ -60,7 +60,7 @@ Hari Sekhon - Python / Jython Library
 [![CI Python 2.7](https://github.com/HariSekhon/pylib/workflows/CI%20Python%202.7/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Python+2.7%22)
 [![CI Python 3.6](https://github.com/HariSekhon/pylib/workflows/CI%20Python%203.6/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Python+3.6%22)
 
-My personal Python library, full of lots of validation code and utility functions.
+Python library, full of lots of validation code and utility functions.
 
 Hari Sekhon
 
