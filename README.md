@@ -41,6 +41,7 @@ Hari Sekhon - Python / Jython Library
 [![Repo on GitHub](https://img.shields.io/badge/repo-GitHub-blue?logo=github)](https://github.com/HariSekhon/pylib)
 [![Repo on GitLab](https://img.shields.io/badge/repo-GitLab-blue?logo=gitlab)](https://gitlab.com/HariSekhon/pylib)
 [![Repo on BitBucket](https://img.shields.io/badge/repo-BitBucket-blue?logo=bitbucket)](https://bitbucket.org/HariSekhon/pylib)
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib.svg?type=shield)](https://app.fossa.com/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib?ref=badge_shield)
 
 [![CI Mac](https://github.com/HariSekhon/pylib/workflows/CI%20Mac/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Mac%22)
 [![CI Ubuntu](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu%22)
