@@ -24,6 +24,7 @@ cyrus-sasl-dev
 krb5-dev
 libffi-dev
 linux-headers
-openssl-dev
-#libressl-dev
+# conflicts with libressl-dev which is needed by mariadb-dev
+#openssl-dev
+libressl-dev
 py-cryptography
