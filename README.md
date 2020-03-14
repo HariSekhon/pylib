@@ -32,6 +32,7 @@ Hari Sekhon - Python / Jython Library
 [![Codefresh](https://g.codefresh.io/api/badges/pipeline/harisekhon/GitHub%2Fpylib?branch=master&key=eyJhbGciOiJIUzI1NiJ9.NWU1MmM5OGNiM2FiOWUzM2Y3ZDZmYjM3.O69674cW7vYom3v5JOGKXDbYgCVIJU9EWhXUMHl3zwA&type=cf-1)](https://g.codefresh.io/pipelines/pylib/builds)
 [![Wercker](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
 [![Cirrus CI](https://img.shields.io/cirrus/github/HariSekhon/pylib/master?logo=Cirrus%20CI&label=Cirrus%20CI)](https://cirrus-ci.com/github/HariSekhon/pylib)
+[![BuildKite](https://img.shields.io/buildkite/ef11e788d5d3504fe9466ea4c1504dfb7136a78f2f550a6150/master?label=BuildKite)](https://buildkite.com/hari-sekhon/pylib)
 <!--
 [![Wercker](https://img.shields.io/wercker/ci/5e58eefdd322ec08007638b7/master?label=Wercker)](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
 -->
