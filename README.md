@@ -10,6 +10,7 @@ Hari Sekhon - Python / Jython Library
 [![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib)](https://github.com/harisekhon/pylib/network)
 
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=ncloc)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
+[![All Code](https://img.shields.io/badge/all%20code-10k-lightgrey)](https://github.com/HariSekhon/pylib)
 [![Coverage Status](https://coveralls.io/repos/HariSekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/HariSekhon/pylib?branch=master)
 [![PyUp](https://pyup.io/repos/github/HariSekhon/pylib/shield.svg)](https://pyup.io/account/repos/github/HariSekhon/pylib/)
 [![Python 3](https://pyup.io/repos/github/HariSekhon/pylib/python-3-shield.svg)](https://pyup.io/repos/github/HariSekhon/pylib/)
