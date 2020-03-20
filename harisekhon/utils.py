@@ -54,7 +54,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.12.7'
+__version__ = '0.12.8'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1653,13 +1653,16 @@ def merge_dicts(*args):
 #                           Options Validation
 # ============================================================================ #
 
-def validate_alnum(arg, name):
+def validate_alnum(arg, name, is_secret=False):
     if not name:
         code_error("second arg 'name' not defined when calling validate_alnum()")
     if not arg:
         raise InvalidOptionException('%(name)s not defined' % locals())
     if isAlNum(arg):
-        log_option(name, arg)
+        if is_secret:
+            log_option(name, 'X'*(len(arg)-2) + arg[-2:])
+        else:
+            log_option(name, arg)
         return True
     raise InvalidOptionException("invalid %(name)s '%(arg)s' defined: must be alphanumeric" % locals())
 
@@ -1694,13 +1697,16 @@ def validate_aws_secret_key(arg):
     raise InvalidOptionException('invalid aws secret key defined: must be 40 alphanumeric characters')
 
 
-def validate_chars(arg, name, chars):
+def validate_chars(arg, name, chars, is_secret=False):
     if not name:
         code_error("second arg 'name' not defined when calling validate_chars()")
     if not arg:
         raise InvalidOptionException('%(name)s not defined' % locals())
     if isChars(arg, chars):
-        log_option(name, arg)
+        if is_secret:
+            log_option(name, 'X'*(len(arg)-2) + arg[-2:])
+        else:
+            log_option(name, arg)
         return True
     raise InvalidOptionException("invalid %(name)s '%(arg)s' defined - must be one of the following chars: %(chars)s" \
                                  % locals())
