@@ -41,6 +41,13 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
     class SubKeyWriteNagiosPlugin(KeyWriteNagiosPlugin):
+        def __init__(self):
+            # Python 2.x
+            #super(SubKeyWriteNagiosPlugin, self).__init__()
+            KeyWriteNagiosPlugin.__init__(self)
+            # Python 3.x
+            # super().__init__()
+            self.name = 'test'
         def read(self):
             print("running SubKeyWriteNagiosPlugin().read()")
         def write(self):

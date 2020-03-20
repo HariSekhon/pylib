@@ -41,6 +41,13 @@ class PubSubNagiosPluginTester(unittest.TestCase):
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
     class SubPubSubNagiosPlugin(PubSubNagiosPlugin):
+        def __init__(self):
+            # Python 2.x
+            #super(SubPubSubNagiosPlugin, self).__init__()
+            PubSubNagiosPlugin.__init__(self)
+            # Python 3.x
+            # super().__init__()
+            self.name = 'test'
         def subscribe(self):
             print("running SubPubSubNagiosPlugin().subscribe()")
         def publish(self):

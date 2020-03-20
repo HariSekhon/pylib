@@ -41,6 +41,13 @@ class RestVersionNagiosPluginTester(unittest.TestCase):
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
     class SubRestVersionNagiosPlugin(RestVersionNagiosPlugin):
+        def __init__(self):
+            # Python 2.x
+            #super(SubRestVersionNagiosPlugin, self).__init__()
+            RestVersionNagiosPlugin.__init__(self)
+            # Python 3.x
+            # super().__init__()
+            self.name = 'test'
         def parse(self, req):
             pass
 

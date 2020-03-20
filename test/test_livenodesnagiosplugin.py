@@ -42,6 +42,13 @@ class LiveNodesNagiosPluginTester(unittest.TestCase):
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
     class SubLiveNodesNagiosPlugin(LiveNodesNagiosPlugin):
+        def __init__(self):
+            # Python 2.x
+            #super(SubLiveNodesNagiosPlugin, self).__init__()
+            LiveNodesNagiosPlugin.__init__(self)
+            # Python 3.x
+            # super().__init__()
+            self.name = 'test'
         def get_nodecount(self):
             print("running SubLiveNodesNagiosPlugin().get_nodecount()")
 

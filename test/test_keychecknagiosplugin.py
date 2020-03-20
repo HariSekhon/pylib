@@ -42,6 +42,13 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
     class SubKeyCheckNagiosPlugin(KeyCheckNagiosPlugin):
+        def __init__(self):
+            # Python 2.x
+            #super(SubKeyCheckNagiosPlugin, self).__init__()
+            KeyCheckNagiosPlugin.__init__(self)
+            # Python 3.x
+            # super().__init__()
+            self.name = 'test'
         def read(self):
             print("running SubKeyCheckNagiosPlugin().read()")
 
