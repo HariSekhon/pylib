@@ -44,10 +44,10 @@ import sys
 import traceback
 from types import CodeType
 import warnings
+import yaml
 # vulnerable to amplification exploit
 #import xml.etree.ElementTree as ET
 import defusedxml.ElementTree as ET
-import yaml
 # not available Python < 2.7
 # try:
 #     from xml.etree.ElementTree import ParseError
