@@ -1150,9 +1150,8 @@ def isXml(arg):
         ET.fromstring(arg)
         return True
     # Python 2.7 throws xml.etree.ElementTree.ParseError, but Python 2.6 throws xml.parsers.expat.ExpatError
-    # have to catch generic Exception to be able to handle both
-    except Exception: # pylint: disable=broad-except
-        pass
+    except ET.ParseError:
+        return False
     return False
 
 
