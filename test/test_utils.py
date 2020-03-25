@@ -1051,7 +1051,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isStr('test'))
         self.assertTrue(isStr(''))
         if not isPythonMinVersion(3):
-            self.assertTrue(isStr(unicode('test')))
+            self.assertTrue(isStr(u'test'))
             self.assertTrue(isStr(u'test'))
         self.assertFalse(isStr(None))
 
@@ -1078,7 +1078,7 @@ class UtilsTester(unittest.TestCase):
         if isPythonMinVersion(3) or 'unicode_literals' in globals():
             self.assertTrue(isUnicode('test'))
         else:
-            self.assertTrue(isUnicode(unicode('test')))
+            self.assertTrue(isUnicode(u'test'))
             self.assertFalse(isUnicode('test'))
             # no longer true in Python 3
             self.assertFalse(isUnicode(str('test')))
