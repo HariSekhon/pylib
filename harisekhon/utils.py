@@ -36,6 +36,7 @@ import re
 import logging
 import logging.config
 import platform
+import random
 import signal
 #import six
 import string
@@ -108,9 +109,6 @@ if os.getenv('DEBUG'):
 # avoid expensive info gathering when it will simply be discarded by logger anyway
 # if logger.isEnabledFor(logging.DEBUG):
 #     log.debug('msg %s %s', expensive_func1, expensive_func2)
-
-# XXX: enable for prod
-#raiseExceptions = False
 
 # Settings now controlled separately in logging.conf file
 # log.setLevel(logging.WARN)
@@ -1546,7 +1544,6 @@ def random_alnum(num):
     if not isInt(num):
         code_error('invalid length passed to random_alnum')
     chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
-    import random
     _ = ''.join(random.choice(chars) for _ in range(num))
     return _
 
