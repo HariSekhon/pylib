@@ -1334,7 +1334,7 @@ def isStr(arg):
     if isPythonMinVersion(3):
         return isinstance(arg, str)
     # pylint thinks unicode is an undefined variable
-    return isinstance(arg, str) or isinstance(arg, unicode)  # pylint: disable=undefined-variable
+    return isinstance(arg, (str, unicode))  # pylint: disable=undefined-variable
     # basestring is abstract superclass of both str and unicode
     # update: looks like this is removed in Python 3
     # return isinstance(arg, basestring)
