@@ -44,7 +44,9 @@ import sys
 import traceback
 from types import CodeType
 import warnings
-import xml.etree.ElementTree as ET
+# vulnerable to amplification exploit
+#import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 import yaml
 # not available Python < 2.7
 # try:
@@ -55,7 +57,7 @@ import yaml
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.12.8'
+__version__ = '0.12.9'
 
 # Standard Nagios return codes
 ERRORS = {
