@@ -2,6 +2,7 @@ beautifulsoup4==4.8.1
 blessings==1.7
 # needed to build thrifty on Fedora for PyTools and Nagios Plugin client repos
 Cython==0.29.15
+defusedxml==0.6.0
 docker==4.1.0
 enum34==1.1.9  # some buried dependency
 #Jinja2==2.8
