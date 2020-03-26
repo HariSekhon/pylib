@@ -1,0 +1,2 @@
+aws_access_key_regex[[:space:]]*=
+aws_secret_key_regex[[:space:]]*=
