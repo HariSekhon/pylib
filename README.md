@@ -41,6 +41,7 @@ Hari Sekhon - Python / Jython Library
 [![buddy pipeline](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989/badge.svg?token=7f63afa3c423a65e6e39a79be0386959e98c4105ea1e20f7f8b05d6d6b587038 "buddy pipeline")](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989)
 [![Cirrus CI](https://img.shields.io/cirrus/github/HariSekhon/pylib/master?logo=Cirrus%20CI&label=Cirrus%20CI)](https://cirrus-ci.com/github/HariSekhon/pylib)
 [![Concourse](https://img.shields.io/badge/Concourse-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/.concourse.yml)
+[![GoCD](https://img.shields.io/badge/GoCD-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/.gocd.yml)
 <!--
 [![Wercker](https://img.shields.io/wercker/ci/5e58eefdd322ec08007638b7/master?label=Wercker)](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
 -->
