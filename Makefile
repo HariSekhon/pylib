@@ -47,11 +47,11 @@ REPO := HariSekhon/pylib
 CODE_FILES := $(shell find . -type f -name '*.py' -o -type f -name '*.sh' | grep -v -e bash-tools)
 
 .PHONY: build
-build:
+build: init
 	@echo ================
 	@echo Python Lib Build
 	@echo ================
-	@bash-tools/git_summary_line.sh
+	@$(MAKE) git-summary
 	@echo
 
 	@# executing in sh where type is not available
@@ -60,7 +60,6 @@ build:
 	python -V || :
 	pip -V || :
 
-	$(MAKE) init
 	@# doesn't work, only exits the line not the script and don't wanna use oneshell
 	@#if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
