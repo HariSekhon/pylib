@@ -17,8 +17,11 @@ Hari Sekhon - Python / Jython Library
 -->
 [![Lines of Code](https://img.shields.io/badge/lines%20of%20code-10k-lightgrey)](https://github.com/HariSekhon/pylib)
 [![Coverage Status](https://coveralls.io/repos/HariSekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/HariSekhon/pylib?branch=master)
+
+<!-- site broken
 [![PyUp](https://pyup.io/repos/github/HariSekhon/pylib/shield.svg)](https://pyup.io/account/repos/github/HariSekhon/pylib/)
 [![Python 3](https://pyup.io/repos/github/HariSekhon/pylib/python-3-shield.svg)](https://pyup.io/repos/github/HariSekhon/pylib/)
+-->
 
 [![Linux](https://img.shields.io/badge/OS-Linux-blue?logo=linux)](https://github.com/HariSekhon/pylib#hari-sekhon---python--jython-library)
 [![Mac](https://img.shields.io/badge/OS-Mac-blue?logo=apple)](https://github.com/HariSekhon/pylib#hari-sekhon---python--jython-library)
