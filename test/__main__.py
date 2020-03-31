@@ -45,7 +45,7 @@ def main():
         # if subprocess.call(['python', x]):
         #     sys.exit(2)
         # subprocess.check_call(['python', x])
-    # pylint: disable=redefined-outer-name,reimported,import-outside-toplevel
+    # pylint: disable=redefined-outer-name,reimported
     from test.test_utils import main
     main()
     from test.test_cli import main
