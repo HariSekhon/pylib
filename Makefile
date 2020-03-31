@@ -51,6 +51,8 @@ build:
 	@echo ================
 	@echo Python Lib Build
 	@echo ================
+	@bash-tools/git_summary_line.sh
+	@echo
 
 	@# executing in sh where type is not available
 	@#type -P python
