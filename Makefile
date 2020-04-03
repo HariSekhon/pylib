@@ -58,6 +58,7 @@ build: init
 	@#type -P python
 	which python || :
 	python -V || :
+	which pip || :
 	pip -V || :
 
 	@# doesn't work, only exits the line not the script and don't wanna use oneshell
