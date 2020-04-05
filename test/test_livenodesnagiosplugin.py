@@ -55,10 +55,11 @@ class LiveNodesNagiosPluginTester(unittest.TestCase):
             print("running SubLiveNodesNagiosPlugin().get_nodecount()")
             return 3
 
-    def setUp(self):
-        self.plugin = self.SubLiveNodesNagiosPlugin()
+    #def setUp(self):
+    #    self.plugin = self.SubLiveNodesNagiosPlugin()
 
     def test_exit_0(self):
+        self.plugin = self.SubLiveNodesNagiosPlugin()
         try:
             self.plugin.main()
             raise Exception('LiveNodes plugin failed to terminate')
