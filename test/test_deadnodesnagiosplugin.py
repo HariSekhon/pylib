@@ -57,9 +57,9 @@ class DeadNodesNagiosPluginTester(unittest.TestCase):
         #self.plugin = self.SubDeadNodesNagiosPlugin()
 
     def test_exit_0(self):
-        self.plugin = self.SubDeadNodesNagiosPlugin()
+        plugin = self.SubDeadNodesNagiosPlugin()
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('DeadNodes plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
@@ -67,10 +67,10 @@ class DeadNodesNagiosPluginTester(unittest.TestCase):
                                 .format(_.code))
 
     def test_exit_2(self):
-        self.plugin = self.SubDeadNodesNagiosPlugin()
-        self.plugin.get_nodecount = lambda: 2
+        plugin = self.SubDeadNodesNagiosPlugin()
+        plugin.get_nodecount = lambda: 2
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('DeadNodes plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
