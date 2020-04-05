@@ -51,6 +51,7 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
             self.default_port = 80
         def read(self):
             print("running SubKeyWriteNagiosPlugin().read()")
+            return self._write_value
         def write(self):
             print("running SubKeyWriteNagiosPlugin().write()")
         def delete(self):
@@ -60,13 +61,13 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
     def setUp(self):
         self.plugin = self.SubKeyWriteNagiosPlugin()
 
-    def test_unknown_exit(self):
+    def test_exit_0(self):
         try:
             self.plugin.main()
             raise Exception('KeyWrite plugin failed to terminate')
         except SystemExit as _:
-            if _.code != 3:
-                raise Exception('KeyWriteNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+            if _.code != 0:
+                raise Exception('KeyWriteNagiosPlugin failed to exit OK (0), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
