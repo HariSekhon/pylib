@@ -51,17 +51,30 @@ class DeadNodesNagiosPluginTester(unittest.TestCase):
             self.default_port = 80
         def get_nodecount(self):
             print("running SubDeadNodesNagiosPlugin().get_nodecount()")
+            return 0
 
-    def setUp(self):
+    #def setUp(self):
+        #self.plugin = self.SubDeadNodesNagiosPlugin()
+
+    def test_exit_0(self):
         self.plugin = self.SubDeadNodesNagiosPlugin()
-
-    def test_unknown_exit(self):
         try:
             self.plugin.main()
             raise Exception('DeadNodes plugin failed to terminate')
         except SystemExit as _:
-            if _.code != 3:
-                raise Exception('DeadNodesNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+            if _.code != 0:
+                raise Exception('DeadNodesNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                .format(_.code))
+
+    def test_exit_2(self):
+        self.plugin = self.SubDeadNodesNagiosPlugin()
+        self.plugin.get_nodecount = lambda: 2
+        try:
+            self.plugin.main()
+            raise Exception('DeadNodes plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 2:
+                raise Exception('DeadNodesNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
