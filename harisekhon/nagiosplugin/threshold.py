@@ -23,7 +23,7 @@ sys.path.append(libdir)
 from harisekhon.utils import InvalidOptionException, CodingError, isBool, isInt, isFloat, log
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2'
+__version__ = '0.2.1'
 
 class InvalidThresholdException(InvalidOptionException):
     pass
@@ -127,6 +127,8 @@ class Threshold(object):
                                                 .format(self.name, boundary, self.thresholds['max']))
 
     def check(self, result):
+        if self.thresholds['upper'] is None and self.thresholds['lower'] is None:
+            return ''
         if not isFloat(result):
             return '(not a float!)'
         result = float(result)
