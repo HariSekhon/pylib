@@ -48,6 +48,7 @@ class DeadNodesNagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+            self.default_port = 80
         def get_nodecount(self):
             print("running SubDeadNodesNagiosPlugin().get_nodecount()")
 
