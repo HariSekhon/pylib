@@ -109,7 +109,7 @@ class LiveNodesNagiosPlugin(NagiosPlugin):
         self.check_thresholds(self.node_count)
         if self.additional_info:
             self.msg += ', {0}'.format(self.additional_info)
-        self.msg += ' | {0}s_{1}={2:d}s{3}'.format(self.agent_name, self.state,
+        self.msg += ' | {0}s_{1}={2:d}{3}'.format(self.agent_name, self.state,
                                                    self.node_count, self.get_perf_thresholds())
         if self.additional_perfdata:
             self.msg += ' {0}'.format(self.additional_perfdata)
