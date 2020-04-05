@@ -67,6 +67,17 @@ class LiveNodesNagiosPluginTester(unittest.TestCase):
                 raise Exception('LiveNodesNagiosPlugin failed to exit OK (0), got exit code {0} instead'
                                 .format(_.code))
 
+    def test_exit_2(self):
+        self.plugin = self.SubLiveNodesNagiosPlugin()
+        self.plugin.get_nodecount = lambda: 1
+        try:
+            self.plugin.main()
+            raise Exception('LiveNodes plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 2:
+                raise Exception('LiveNodesNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                .format(_.code))
+
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             LiveNodesNagiosPlugin()  # pylint: disable=abstract-class-instantiated
