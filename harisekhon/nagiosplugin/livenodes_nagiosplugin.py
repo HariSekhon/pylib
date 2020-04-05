@@ -92,7 +92,7 @@ class LiveNodesNagiosPlugin(NagiosPlugin):
         self._process_args()
 
     def _process_args(self):
-        self.validate_thresholds(self.agent_name, simple='lower')
+        self.validate_thresholds(name=self.agent_name, simple='lower')
 
     def run(self):
         self.ok()
