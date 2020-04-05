@@ -62,9 +62,9 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
     #    self.plugin = self.SubKeyWriteNagiosPlugin()
 
     def test_exit_0(self):
-        self.plugin = self.SubKeyWriteNagiosPlugin()
+        plugin = self.SubKeyWriteNagiosPlugin()
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('KeyWrite plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
@@ -72,10 +72,10 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
                                 .format(_.code))
 
     def test_exit_2(self):
-        self.plugin = self.SubKeyWriteNagiosPlugin()
-        self.plugin.read = lambda: 'wrongreadkey'
+        plugin = self.SubKeyWriteNagiosPlugin()
+        plugin.read = lambda: 'wrongreadkey'
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('KeyWrite plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
