@@ -58,16 +58,28 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
             print("running SubKeyWriteNagiosPlugin().delete()")
 
 
-    def setUp(self):
-        self.plugin = self.SubKeyWriteNagiosPlugin()
+    #def setUp(self):
+    #    self.plugin = self.SubKeyWriteNagiosPlugin()
 
     def test_exit_0(self):
+        self.plugin = self.SubKeyWriteNagiosPlugin()
         try:
             self.plugin.main()
             raise Exception('KeyWrite plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
                 raise Exception('KeyWriteNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                .format(_.code))
+
+    def test_exit_2(self):
+        self.plugin = self.SubKeyWriteNagiosPlugin()
+        self.plugin.read = lambda: 'wrongreadkey'
+        try:
+            self.plugin.main()
+            raise Exception('KeyWrite plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 2:
+                raise Exception('KeyWriteNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
