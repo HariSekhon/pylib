@@ -48,6 +48,7 @@ class RestNagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+            self.default_port = 80
         def parse(self, req):
             pass
 
