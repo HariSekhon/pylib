@@ -57,7 +57,7 @@ import defusedxml.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.12.9'
+__version__ = '0.13.0'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -987,16 +987,17 @@ def isFilename(arg):
 def isFloat(arg, allow_negative=False):
     if arg is None:
         return False
-    # wouldn't respect default of not allowing negative
-    # if type(arg) == 'float':
-    # if isinstance(arg, float):
-    #     return True
-    neg = ''
-    if allow_negative is True:
-        neg = '-?'
-    if re.match('^' + neg + r'\d+(?:\.\d+)?' + '$', str(arg)):
-        return True
-    return False
+    if not isinstance(arg, (float, int, str)):
+         return False
+    try:
+        arg = float(arg)
+        if str(arg) == 'nan':
+            raise ValueError
+    except ValueError:
+        return False
+    if not allow_negative and arg < 0:
+        return False
+    return True
 
 
 def isFqdn(arg):
