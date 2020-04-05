@@ -50,7 +50,7 @@ class LiveNodesNagiosPluginTester(unittest.TestCase):
             # super().__init__()
             self.name = 'test'
             self.host = 'localhost'
-            self.port = 80
+            self.default_port = 80
         def get_nodecount(self):
             print("running SubLiveNodesNagiosPlugin().get_nodecount()")
 
