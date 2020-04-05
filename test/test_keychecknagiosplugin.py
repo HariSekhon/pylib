@@ -49,6 +49,7 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+            self.default_port = 80
         def read(self):
             print("running SubKeyCheckNagiosPlugin().read()")
 
