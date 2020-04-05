@@ -106,7 +106,7 @@ class LiveNodesNagiosPlugin(NagiosPlugin):
         if self.node_count is None:
             raise UnknownError('node count is not set!')
         self.msg = '{0} {1}{2} {3}'.format(self.node_count, self.agent_name, plural(self.node_count), self.state)
-        self.check_thresholds(self.node_count)
+        self.check_thresholds(name=self.agent_name, result=self.node_count)
         if self.additional_info:
             self.msg += ', {0}'.format(self.additional_info)
         self.msg += ' | {0}s_{1}={2:d}{3}'.format(self.agent_name, self.state,
