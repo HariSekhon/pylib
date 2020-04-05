@@ -35,7 +35,7 @@ sys.path.append(libdir)
 from harisekhon.nagiosplugin import LiveNodesNagiosPlugin
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.3'
+__version__ = '0.3.1'
 
 
 class DeadNodesNagiosPlugin(LiveNodesNagiosPlugin):
@@ -48,10 +48,10 @@ class DeadNodesNagiosPlugin(LiveNodesNagiosPlugin):
     __metaclass__ = ABCMeta
 
     def _add_options(self):
-        self.add_thresholds(default_warning=0, default_critical=1)
+        self.add_thresholds(name=self.agent_name, default_warning=0, default_critical=1)
 
     def _process_args(self):
-        self.validate_thresholds(self.agent_name, simple='upper')
+        self.validate_thresholds(name=self.agent_name, simple='upper')
 
     @abstractmethod
     def get_nodecount(self):
