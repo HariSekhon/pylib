@@ -37,7 +37,7 @@ from harisekhon.utils import get_topfile, validate_host, validate_port
 from harisekhon.nagiosplugin import NagiosPlugin
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.3'
+__version__ = '0.3.1'
 
 
 class LiveNodesNagiosPlugin(NagiosPlugin):
@@ -79,7 +79,7 @@ class LiveNodesNagiosPlugin(NagiosPlugin):
         self._add_options()
 
     def _add_options(self):
-        self.add_thresholds(default_warning=3, default_critical=2)
+        self.add_thresholds(name=self.agent_name, default_warning=3, default_critical=2)
 
     def process_args(self):
         if not self.name:
