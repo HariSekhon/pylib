@@ -61,9 +61,9 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
     #    self.plugin = self.SubKeyCheckNagiosPlugin()
 
     def test_exit_0(self):
-        self.plugin = self.SubKeyCheckNagiosPlugin()
+        plugin = self.SubKeyCheckNagiosPlugin()
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('KeyCheck plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
@@ -71,10 +71,10 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
                                 .format(_.code))
 
     def test_exit_2(self):
-        self.plugin = self.SubKeyCheckNagiosPlugin()
-        self.plugin.read = lambda: 'wrongkey'
+        plugin = self.SubKeyCheckNagiosPlugin()
+        plugin.read = lambda: 'wrongkey'
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('KeyCheck plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
