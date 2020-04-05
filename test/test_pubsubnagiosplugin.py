@@ -48,6 +48,7 @@ class PubSubNagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+            self.default_port = 80
         def subscribe(self):
             print("running SubPubSubNagiosPlugin().subscribe()")
         def publish(self):
