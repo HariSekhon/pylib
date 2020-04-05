@@ -50,19 +50,35 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
             # super().__init__()
             self.name = 'test'
             self.default_port = 80
+        def process_args(self):
+            self.key = 'testkey'
+            self.regex = 'test.*'
         def read(self):
             print("running SubKeyCheckNagiosPlugin().read()")
+            return self.key
 
-    def setUp(self):
+    #def setUp(self):
+    #    self.plugin = self.SubKeyCheckNagiosPlugin()
+
+    def test_exit_0(self):
         self.plugin = self.SubKeyCheckNagiosPlugin()
-
-    def test_unknown_exit(self):
         try:
             self.plugin.main()
             raise Exception('KeyCheck plugin failed to terminate')
         except SystemExit as _:
-            if _.code != 3:
-                raise Exception('KeyCheckNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+            if _.code != 0:
+                raise Exception('KeyCheckNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                .format(_.code))
+
+    def test_exit_2(self):
+        self.plugin = self.SubKeyCheckNagiosPlugin()
+        self.plugin.read = lambda: 'wrongkey'
+        try:
+            self.plugin.main()
+            raise Exception('KeyCheck plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 2:
+                raise Exception('KeyCheckNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
