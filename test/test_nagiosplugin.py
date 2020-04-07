@@ -44,8 +44,8 @@ class NagiosPluginTester(unittest.TestCase):
     class SubNagiosPlugin(NagiosPlugin):
         def __init__(self):
             # Python 2.x
-            #super(SubNagiosPlugin, self).__init__()
-            NagiosPlugin.__init__(self)
+            #NagiosPlugin.__init__(self)
+            super(NagiosPluginTester.SubNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
             self.name = 'test'
