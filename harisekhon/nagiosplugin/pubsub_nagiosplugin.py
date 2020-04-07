@@ -39,7 +39,7 @@ from harisekhon.utils import qquit, log, CodingError, CriticalError, UnknownErro
 from harisekhon.utils import validate_host, validate_port, validate_float, get_topfile, random_alnum
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.3'
+__version__ = '0.3.1'
 
 
 class PubSubNagiosPlugin(NagiosPlugin):
@@ -79,7 +79,11 @@ class PubSubNagiosPlugin(NagiosPlugin):
         self.status = 'OK'
         self.warning_threshold_default = 1
         self.critical_threshold_default = 2
+        self.default_sleep_secs = 1.0
         self.__sleep_secs = 0
+        self.sleep_usage = 'Sleep time in seconds before publishing and subscribing ' + \
+                           'to give message a chance to appear ' + \
+                           '(optional, default: {} secs)'.format(self.default_sleep_secs)
 
     def add_options(self):
         if not self.name:
@@ -87,6 +91,7 @@ class PubSubNagiosPlugin(NagiosPlugin):
         self.add_hostoption(self.name, default_host=self.default_host, default_port=self.default_port)
         self.add_thresholds(default_warning=self.warning_threshold_default,
                             default_critical=self.critical_threshold_default)
+        self.add_opt('-s', '--sleep', type=float, default=1.0, metavar='secs', help=self.sleep_usage)
 
     def process_args(self):
         if not self.name:
