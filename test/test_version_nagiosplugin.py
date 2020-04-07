@@ -70,7 +70,8 @@ class VersionNagiosPluginTester(unittest.TestCase):
             VersionNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
             #                     'VersionNagiosPlugin')
-        #except TypeError:
+        except TypeError:  # only seems to enforce abstract type error in Python 2
+            pass
         except SystemExit as _:
             if _.code != 3:
                 raise AssertionError('VersionNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'

@@ -88,7 +88,7 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
             # broken in Python 3
             #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
             #                     'KeyWriteNagiosPlugin')
-        except TypeError as _:
+        except TypeError as _:  # only seems to enforce abstract type error in Python 2
             pass
 
 

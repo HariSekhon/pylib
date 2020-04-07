@@ -335,7 +335,7 @@ class CLITester(unittest.TestCase):
             CLI() # pylint: disable=abstract-class-instantiated
             # this is broken in Python3
             # raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class CLI')
-        except TypeError as _:
+        except TypeError as _:  # only seems to enforce abstract type error in Python 2
             # print('caught TypeError when running CLI.main(): %s' % _)
             pass
         # except CodingError as _:
