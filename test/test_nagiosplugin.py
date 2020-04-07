@@ -49,6 +49,9 @@ class NagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+            self.percentage = True
+            self.default_warning = 1
+            self.default_critical = 2
         def run(self):
             print("running SubNagiosPlugin()")
 
