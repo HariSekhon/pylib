@@ -53,7 +53,7 @@ class RequestHandlerTester(unittest.TestCase):
     def test_request_handler_failure():
         try:
             RequestHandler().get('127.0.0.1:1')
-            raise Exception('failed to raise exception for RequestHandler.get(nonexistent)')
+            raise AssertionError('failed to raise exception for RequestHandler.get(nonexistent)')
         except CriticalError:
             pass
 
