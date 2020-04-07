@@ -127,8 +127,8 @@ unittest:
 	@# Python -m >= 2.7
 	@#python -m unittest discover -v
 	@#unit2 discover -v
-	@#`bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2`
-	pytest
+	@`bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2`
+	@#pytest
 
 .PHONY: unittest2
 unittest2:
@@ -158,8 +158,8 @@ deep-clean: clean
 coverage:
 	@# doesn't catch a lot of tests, use nose instead
 	@#coverage run --source=harisekhon -m test
-	@#coverage run --source=harisekhon -m nose
-	coverage run --source=harisekhon -m pytest
+	coverage run --source=harisekhon -m nose
+	@#coverage run --source=harisekhon -m pytest
 	coverage report
 
 .PHONY: coveralls
