@@ -65,29 +65,29 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
         plugin = self.SubKeyWriteNagiosPlugin()
         try:
             plugin.main()
-            raise Exception('KeyWrite plugin failed to terminate')
+            raise AssertionError('KeyWrite plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('KeyWriteNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('KeyWriteNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
         plugin = self.SubKeyWriteNagiosPlugin()
         plugin.read = lambda: 'wrongreadkey'
         try:
             plugin.main()
-            raise Exception('KeyWrite plugin failed to terminate')
+            raise AssertionError('KeyWrite plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('KeyWriteNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('KeyWriteNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             KeyWriteNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             # broken in Python 3
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'KeyWriteNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'KeyWriteNagiosPlugin')
         except TypeError as _:
             pass
 
