@@ -59,32 +59,32 @@ class LiveNodesNagiosPluginTester(unittest.TestCase):
     #    self.plugin = self.SubLiveNodesNagiosPlugin()
 
     def test_exit_0(self):
-        self.plugin = self.SubLiveNodesNagiosPlugin()
+        plugin = self.SubLiveNodesNagiosPlugin()
         try:
-            self.plugin.main()
-            raise Exception('LiveNodes plugin failed to terminate')
+            plugin.main()
+            raise AssertionError('LiveNodes plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('LiveNodesNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('LiveNodesNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
-        self.plugin = self.SubLiveNodesNagiosPlugin()
-        self.plugin.get_nodecount = lambda: 1
+        plugin = self.SubLiveNodesNagiosPlugin()
+        plugin.get_nodecount = lambda: 1
         try:
-            self.plugin.main()
-            raise Exception('LiveNodes plugin failed to terminate')
+            plugin.main()
+            raise AssertionError('LiveNodes plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('LiveNodesNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('LiveNodesNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             LiveNodesNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             # broken in Python 3
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'LiveNodesNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'LiveNodesNagiosPlugin')
         except TypeError as _:
             pass
 
