@@ -43,8 +43,8 @@ class DeadNodesNagiosPluginTester(unittest.TestCase):
     class SubDeadNodesNagiosPlugin(DeadNodesNagiosPlugin):
         def __init__(self):
             # Python 2.x
-            #super(SubDeadNodesNagiosPlugin, self).__init__()
-            DeadNodesNagiosPlugin.__init__(self)
+            #DeadNodesNagiosPlugin.__init__(self)
+            super(DeadNodesNagiosPluginTester.SubDeadNodesNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
             self.name = 'test'
