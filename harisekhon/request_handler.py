@@ -46,7 +46,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.6.2'
+__version__ = '0.6.3'
 
 
 class RequestHandler(object):
@@ -103,9 +103,12 @@ class RequestHandler(object):
             code_error('RequestHandler.exception_handler arg {} is not a subclass of Exception'.format(arg))
         # TODO: improve this to extract connection refused for more concise errors
         errhint = ''
-        if 'message' in dir(arg) and 'BadStatusLine' in str(arg.message):
+        # Exception.message deprecated since Python 2.6 and removed in Python 3
+        #if 'message' in dir(arg) and 'BadStatusLine' in str(arg.message):
+        if 'BadStatusLine' in repr(arg):
             errhint = ' (possibly connecting to an SSL secured port using plain HTTP?)'
-        elif 'https://' in self.url and 'unknown protocol' in str(arg.message):
+        #elif 'https://' in self.url and 'unknown protocol' in str(arg.message):
+        elif 'https://' in self.url and 'unknown protocol' in repr(arg):
             errhint = ' (possibly connecting to a plain HTTP port with the -S / --ssl switch enabled?)'
         _type = type(arg).__name__
         msg = str(arg)
