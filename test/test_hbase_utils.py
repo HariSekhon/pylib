@@ -89,21 +89,21 @@ class HBaseUtilsTester(unittest.TestCase):
     def test_validate_hbase_column_qualifier_exception(self):
         try:
             validate_hbase_column_qualifier('?')
-            raise Exception('validate_hbase_column_qualifier() failed to raise exception for ?')
+            raise AssertionError('validate_hbase_column_qualifier() failed to raise exception for ?')
         except InvalidOptionException:
             pass
 
     def test_validate_hbase_column_qualifier_blank(self):
         try:
             validate_hbase_column_qualifier('')
-            raise Exception('validate_hbase_column_qualifier() failed to raise exception for blank')
+            raise AssertionError('validate_hbase_column_qualifier() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
     def test_validate_hbase_column_qualifier_none(self):
         try:
             validate_hbase_column_qualifier(None)
-            raise Exception('validate_hbase_column_qualifier() failed to raise exception for none')
+            raise AssertionError('validate_hbase_column_qualifier() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
@@ -111,21 +111,21 @@ class HBaseUtilsTester(unittest.TestCase):
     def test_validate_hbase_rowkey_exception(self):
         try:
             validate_hbase_rowkey('?')
-            raise Exception('validate_hbase_rowkey() failed to raise exception for ?')
+            raise AssertionError('validate_hbase_rowkey() failed to raise exception for ?')
         except InvalidOptionException:
             pass
 
     def test_validate_hbase_rowkey_blank(self):
         try:
             validate_hbase_rowkey('')
-            raise Exception('validate_hbase_rowkey() failed to raise exception for blank')
+            raise AssertionError('validate_hbase_rowkey() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
     def test_validate_hbase_rowkey_none(self):
         try:
             validate_hbase_rowkey(None)
-            raise Exception('validate_hbase_rowkey() failed to raise exception for none')
+            raise AssertionError('validate_hbase_rowkey() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
@@ -133,21 +133,21 @@ class HBaseUtilsTester(unittest.TestCase):
     def test_validate_hbase_table_exception(self):
         try:
             validate_hbase_table('?')
-            raise Exception('validate_hbase_table() failed to raise exception for ?')
+            raise AssertionError('validate_hbase_table() failed to raise exception for ?')
         except InvalidOptionException:
             pass
 
     def test_validate_hbase_table_blank(self):
         try:
             validate_hbase_table('')
-            raise Exception('validate_hbase_table() failed to raise exception for blank')
+            raise AssertionError('validate_hbase_table() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
     def test_validate_hbase_table_none(self):
         try:
             validate_hbase_table(None)
-            raise Exception('validate_hbase_table() failed to raise exception for none')
+            raise AssertionError('validate_hbase_table() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
