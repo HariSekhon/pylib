@@ -49,24 +49,38 @@ class PubSubNagiosPluginTester(unittest.TestCase):
             # super().__init__()
             self.name = 'test'
             self.default_port = 80
+            self.default_sleep_secs = 0
         def subscribe(self):
             print("running SubPubSubNagiosPlugin().subscribe()")
         def publish(self):
             print("running SubPubSubNagiosPlugin().publish()")
         def consume(self):
             print("running SubPubSubNagiosPlugin().consume()")
+            #return 'pretend consumed message'
+            return self.publish_message
 
+    #def setUp(self):
+    #    self.plugin = self.SubPubSubNagiosPlugin()
 
-    def setUp(self):
-        self.plugin = self.SubPubSubNagiosPlugin()
-
-    def test_unknown_exit(self):
+    def test_exit_0(self):
+        plugin = self.SubPubSubNagiosPlugin()
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('PubSub plugin failed to terminate')
         except SystemExit as _:
-            if _.code != 3:
-                raise Exception('PubSubNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+            if _.code != 0:
+                raise Exception('PubSubNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                .format(_.code))
+
+    def test_exit_2(self):
+        plugin = self.SubPubSubNagiosPlugin()
+        plugin.consume = lambda: 'fake read msg'
+        try:
+            plugin.main()
+            raise Exception('PubSub plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 2:
+                raise Exception('PubSubNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
