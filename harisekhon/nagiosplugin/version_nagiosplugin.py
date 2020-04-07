@@ -44,7 +44,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 
 class VersionNagiosPlugin(NagiosPlugin):
@@ -74,7 +74,7 @@ class VersionNagiosPlugin(NagiosPlugin):
         self.add_expected_version_option()
 
     def add_expected_version_option(self):
-        self.add_opt('-e', '--expected', help='Expected version regex (optional)')
+        self.add_opt('-e', '--expected', default='.*', help='Expected version regex (optional)')
 
     def process_options(self):
         self.no_args()
