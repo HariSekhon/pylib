@@ -48,31 +48,33 @@ class VersionNagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+        def get_version(self):
+            return '1.2.3'
 
     #def setUp(self):
     #    self.plugin = self.SubVersionNagiosPlugin()
 
     def test_exit_0(self):
         plugin = self.SubVersionNagiosPlugin()
-        plugin.get_version = lambda: '1.2.3'
+        #plugin.get_version = lambda: '1.2.3'
         try:
             plugin.main()
-            raise Exception('VersionSub plugin failed to terminate')
+            raise AssertionError('VersionSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('VersionNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('VersionNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             VersionNagiosPlugin()  # pylint: disable=abstract-class-instantiated
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'VersionNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'VersionNagiosPlugin')
         #except TypeError:
         except SystemExit as _:
-            if _.code != 0:
-                raise Exception('VersionNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
-                                .format(_.code))
+            if _.code != 3:
+                raise AssertionError('VersionNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                                     .format(_.code))
 
 
 def main():
