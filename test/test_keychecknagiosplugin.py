@@ -64,29 +64,29 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
         plugin = self.SubKeyCheckNagiosPlugin()
         try:
             plugin.main()
-            raise Exception('KeyCheck plugin failed to terminate')
+            raise AssertionError('KeyCheck plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('KeyCheckNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('KeyCheckNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
         plugin = self.SubKeyCheckNagiosPlugin()
         plugin.read = lambda: 'wrongkey'
         try:
             plugin.main()
-            raise Exception('KeyCheck plugin failed to terminate')
+            raise AssertionError('KeyCheck plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('KeyCheckNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('KeyCheckNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             KeyCheckNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             # broken in Python 3
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'KeyCheckNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'KeyCheckNagiosPlugin')
         except TypeError:
             pass
 
