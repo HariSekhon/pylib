@@ -160,3 +160,8 @@ coverage:
 	@#coverage run --source=harisekhon -m test
 	@#coverage run --source=harisekhon -m nose
 	coverage run --source=harisekhon -m pytest
+	coverage report
+
+.PHONY: coveralls
+coveralls: coverage
+	coveralls
