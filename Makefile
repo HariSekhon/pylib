@@ -152,4 +152,6 @@ deep-clean: clean
 
 .PHONY: coverage
 coverage:
-	coverage run --source=harisekhon -m test
+	@# doesn't catch a lot of tests, use nose instead
+	@#coverage run --source=harisekhon -m test
+	coverage run --source=harisekhon -m nose
