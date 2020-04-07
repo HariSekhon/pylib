@@ -68,10 +68,10 @@ class StatusNagiosPluginTester(unittest.TestCase):
 
     def test_exit_2(self):
         plugin = self.SubStatusNagiosPlugin()
-        def get_status():
+        def get_status2():
             plugin.critical()
             return 'fake broken'
-        plugin.get_status = get_status
+        plugin.get_status = get_status2
         try:
             plugin.main()
             raise AssertionError('StatusSub plugin failed to terminate')
