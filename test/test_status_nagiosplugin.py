@@ -49,31 +49,58 @@ class StatusNagiosPluginTester(unittest.TestCase):
             # super().__init__()
             self.name = 'test'
             self.default_port = 80
+        def get_status(self):
+            self.ok()
+            return 'pretending to be OK'
 
     #def setUp(self):
     #    self.plugin = self.SubStatusNagiosPlugin()
 
     def test_exit_0(self):
         plugin = self.SubStatusNagiosPlugin()
-        plugin.get_status = lambda: 'pretending to be OK'
         try:
             plugin.main()
-            raise Exception('StatusSub plugin failed to terminate')
+            raise AssertionError('StatusSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('StatusNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('StatusNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
+
+    def test_exit_2(self):
+        plugin = self.SubStatusNagiosPlugin()
+        def get_status():
+            plugin.critical()
+            return 'fake broken'
+        plugin.get_status = get_status
+        try:
+            plugin.main()
+            raise AssertionError('StatusSub plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 2:
+                raise AssertionError('StatusNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
+
+    def test_exit_3(self):
+        plugin = self.SubStatusNagiosPlugin()
+        plugin.get_status = lambda self: None
+        try:
+            plugin.main()
+            raise AssertionError('StatusSub plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 3:
+                raise AssertionError('StatusNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             StatusNagiosPlugin()  # pylint: disable=abstract-class-instantiated
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
             #                'StatusNagiosPlugin')
         #except TypeError:
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('StatusNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('StatusNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                                     .format(_.code))
 
 
 def main():
