@@ -60,29 +60,29 @@ class DeadNodesNagiosPluginTester(unittest.TestCase):
         plugin = self.SubDeadNodesNagiosPlugin()
         try:
             plugin.main()
-            raise Exception('DeadNodes plugin failed to terminate')
+            raise AssertionError('DeadNodes plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('DeadNodesNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('DeadNodesNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
         plugin = self.SubDeadNodesNagiosPlugin()
         plugin.get_nodecount = lambda: 2
         try:
             plugin.main()
-            raise Exception('DeadNodes plugin failed to terminate')
+            raise AssertionError('DeadNodes plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('DeadNodesNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('DeadNodesNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             DeadNodesNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             # broken in Python 3
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'DeadNodesNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'DeadNodesNagiosPlugin')
         except TypeError as _:
             pass
 
