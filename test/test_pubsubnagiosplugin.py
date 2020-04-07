@@ -66,29 +66,29 @@ class PubSubNagiosPluginTester(unittest.TestCase):
         plugin = self.SubPubSubNagiosPlugin()
         try:
             plugin.main()
-            raise Exception('PubSub plugin failed to terminate')
+            raise AssertionError('PubSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('PubSubNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('PubSubNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
         plugin = self.SubPubSubNagiosPlugin()
         plugin.consume = lambda: 'fake read msg'
         try:
             plugin.main()
-            raise Exception('PubSub plugin failed to terminate')
+            raise AssertionError('PubSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('PubSubNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('PubSubNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             PubSubNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             # broken in Python 3
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'PubSubNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'PubSubNagiosPlugin')
         except TypeError as _:
             pass
 
