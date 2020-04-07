@@ -43,8 +43,8 @@ class RestNagiosPluginTester(unittest.TestCase):
     class SubRestNagiosPlugin(RestNagiosPlugin):
         def __init__(self):
             # Python 2.x
-            #super(SubRestNagiosPlugin, self).__init__()
-            RestNagiosPlugin.__init__(self)
+            #RestNagiosPlugin.__init__(self)
+            super(RestNagiosPluginTester.SubRestNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
             self.name = 'test'
