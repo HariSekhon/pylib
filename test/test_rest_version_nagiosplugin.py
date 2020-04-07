@@ -61,11 +61,11 @@ class RestVersionNagiosPluginTester(unittest.TestCase):
         plugin = self.SubRestVersionNagiosPlugin()
         try:
             plugin.main()
-            raise Exception('RestVersionSub plugin failed to terminate')
+            raise AssertionError('RestVersionSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('RestVersionNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('RestVersionNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
         plugin = self.SubRestVersionNagiosPlugin()
@@ -73,22 +73,22 @@ class RestVersionNagiosPluginTester(unittest.TestCase):
         plugin.default_port = 65535
         try:
             plugin.main()
-            raise Exception('RestVersionSub plugin failed to terminate')
+            raise AssertionError('RestVersionSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('RestVersionNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('RestVersionNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             RestVersionNagiosPlugin()  # pylint: disable=abstract-class-instantiated
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
             #                'RestVersionNagiosPlugin')
         #except TypeError:
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('RestVersionNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('RestVersionNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                                     .format(_.code))
 
 
 def main():
