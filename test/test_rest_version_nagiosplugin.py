@@ -48,20 +48,35 @@ class RestVersionNagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+            self.default_host = 'google.com'
             self.default_port = 80
+            self.auth = False
         def parse(self, req):
-            pass
+            return '1.2.3'
 
-    def setUp(self):
-        self.plugin = self.SubRestVersionNagiosPlugin()
+    #def setUp(self):
+    #    self.plugin = self.SubRestVersionNagiosPlugin()
 
-    def test_unknown_exit(self):
+    def test_exit_0(self):
+        plugin = self.SubRestVersionNagiosPlugin()
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('RestVersionSub plugin failed to terminate')
         except SystemExit as _:
-            if _.code != 3:
-                raise Exception('RestVersionNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+            if _.code != 0:
+                raise Exception('RestVersionNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                .format(_.code))
+
+    def test_exit_2(self):
+        plugin = self.SubRestVersionNagiosPlugin()
+        plugin.default_host = 'localhost'
+        plugin.default_port = 65535
+        try:
+            plugin.main()
+            raise Exception('RestVersionSub plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 2:
+                raise Exception('RestVersionNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
