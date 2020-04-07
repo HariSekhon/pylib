@@ -44,8 +44,8 @@ class KeyCheckNagiosPluginTester(unittest.TestCase):
     class SubKeyCheckNagiosPlugin(KeyCheckNagiosPlugin):
         def __init__(self):
             # Python 2.x
-            #super(SubKeyCheckNagiosPlugin, self).__init__()
-            KeyCheckNagiosPlugin.__init__(self)
+            #KeyCheckNagiosPlugin.__init__(self)
+            super(KeyCheckNagiosPluginTester.SubKeyCheckNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
             self.name = 'test'
