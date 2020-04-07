@@ -44,8 +44,8 @@ class LiveNodesNagiosPluginTester(unittest.TestCase):
     class SubLiveNodesNagiosPlugin(LiveNodesNagiosPlugin):
         def __init__(self):
             # Python 2.x
-            #super(SubLiveNodesNagiosPlugin, self).__init__()
-            LiveNodesNagiosPlugin.__init__(self)
+            #LiveNodesNagiosPlugin.__init__(self)
+            super(LiveNodesNagiosPluginTester.SubLiveNodesNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
             self.name = 'test'
