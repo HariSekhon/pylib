@@ -91,8 +91,9 @@ install:
 
 # Travis CI runs all script list items regardless of whether the previous one failed, obscuring errors, so chain using &&
 script:
-  - travis_retry make test && { coverage run --source=harisekhon -m test || :; }
+  - travis_retry make test
 
 after_success:
+  - coverage run --source=harisekhon -m test
   - coveralls -v
   - codecov
