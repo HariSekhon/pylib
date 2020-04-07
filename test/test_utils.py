@@ -175,7 +175,9 @@ class UtilsTester(unittest.TestCase):
     def test_get_topfile(self):
         topfile = get_topfile()
         print('running tests from topfile: {}'.format(topfile))
-        self.assertTrue(re.search(r'\b(unit2|nose2|nosetests(?:-{version})?|py.?test(?:-{version})?|coverage|\.py[co]?)$'.format(version=version_regex), topfile))
+        self.assertTrue(
+            re.search(r'\b(unit2|nose2|nosetests(?:-{version})?|py.?test(?:-{version})?|coverage|\.py[co]?)$'\
+                      .format(version=version_regex), topfile))
         # comes out as utrunner.py in IDE or python2.7/runpy.py
         # self.assertEqual('test_utils.py', get_topfile())
 
@@ -197,8 +199,8 @@ class UtilsTester(unittest.TestCase):
             print('git root: {}'.format(find_git_root(__file__)))
             pwd = os.getcwd()
             print('pwd: {}'.format(pwd))
-            #self.assertTrue(re.match('.*/(pylib|code|pwd)', find_git_root(__file__)))
-            self.assertTrue(re.match(pwd, find_git_root(__file__)))
+            #self.assertTrue(re.match('.*/(pylib|code|pwd)', gitroot))
+            self.assertTrue(re.match(pwd, gitroot))
 
     def test_find_git_root_not_found(self):
         self.assertEqual(find_git_root('/usr/bin'), None)
@@ -404,7 +406,8 @@ class UtilsTester(unittest.TestCase):
     #     os.environ['SPARK_HOME'] = 'nonexistentdir'
     #     try:
     #         import_pyspark()
-    #         raise AssertionError('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
+    #         raise AssertionError('failed to raise import error when importing pyspark ' +
+    #                              'with nonexistent SPARK_HOME dir set')
     #     # except ImportError:
     #     #     pass
     #     except SystemExit, e:
