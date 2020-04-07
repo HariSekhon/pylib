@@ -43,8 +43,8 @@ class StatusNagiosPluginTester(unittest.TestCase):
     class SubStatusNagiosPlugin(StatusNagiosPlugin):
         def __init__(self):
             # Python 2.x
-            #super(SubStatusNagiosPlugin, self).__init__()
-            StatusNagiosPlugin.__init__(self)
+            #StatusNagiosPlugin.__init__(self)
+            super(StatusNagiosPluginTester.SubStatusNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
             self.name = 'test'
