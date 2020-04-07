@@ -65,14 +65,14 @@ class NagiosPluginTester(unittest.TestCase):
     def test_set_threshold_invalid(self):
         try:
             self.plugin.set_threshold('test', 5)
-            raise Exception('failed to raise CodingError on passing in non-threshold object to Threshold.set_threshold()') # pylint: disable=line-too-long
+            raise AssertionError('failed to raise CodingError on passing in non-threshold object to Threshold.set_threshold()') # pylint: disable=line-too-long
         except CodingError:
             pass
 
     def test_get_threshold_nonexistent(self):
         try:
             self.plugin.get_threshold('nonexistent')
-            raise Exception('failed to raise CodingError for Threshold.get_threshold(nonexistent)')
+            raise AssertionError('failed to raise CodingError for Threshold.get_threshold(nonexistent)')
         except CodingError:
             pass
 
@@ -80,7 +80,7 @@ class NagiosPluginTester(unittest.TestCase):
     #     self.plugin.set_threshold('setToNone', Threshold(None))
     #     try:
     #         self.plugin.get_threshold('setToNone')
-    #         raise Exception('failed to raise CodingError for Threshold.get_threshold(setToNone)')
+    #         raise AssertionError('failed to raise CodingError for Threshold.get_threshold(setToNone)')
     #     except CodingError:
     #         pass
 
@@ -91,7 +91,7 @@ class NagiosPluginTester(unittest.TestCase):
     def test_add_thresholds_nonstring_name_exception(self):
         try:
             self.plugin.add_thresholds(None)
-            raise Exception('failed to raise exception when passing None to add_thresholds()')
+            raise AssertionError('failed to raise exception when passing None to add_thresholds()')
         except CodingError:
             pass
 
@@ -102,7 +102,7 @@ class NagiosPluginTester(unittest.TestCase):
     def test_validate_threshold_not_set_exception(self):
         try:
             self.assertEqual(self.plugin.validate_threshold('nonexistent'), None)
-            raise Exception('failed to raise CodingError when threshold is not set')
+            raise AssertionError('failed to raise CodingError when threshold is not set')
         except CodingError:
             pass
 
@@ -113,22 +113,22 @@ class NagiosPluginTester(unittest.TestCase):
     # def test_validate_thresholds_nonexistent(self):
     #     try:
     #         self.plugin.validate_thresholds()
-    #         raise Exception('failed to raise exception for validate_thresholds() when no thresholds set')
+    #         raise AssertionError('failed to raise exception for validate_thresholds() when no thresholds set')
     #     except SystemExit as _:
     #         if _.code != 3:
-    #             raise Exception('invalid exit code raised when thresholds are not set')
+    #             raise AssertionError('invalid exit code raised when thresholds are not set')
 
     def test_check_thresholds(self):
         try:
             self.plugin.check_thresholds(10, 'nonexistent')
-            raise Exception('failed to raise exception for check_thresholds() when thresholds are not set')
+            raise AssertionError('failed to raise exception for check_thresholds() when thresholds are not set')
         except CodingError:
             pass
 
     def test_check_thresholds_nonstring_name(self):
         try:
             self.plugin.check_thresholds(10, None)
-            raise Exception('failed to raise exception for check_thresholds() when name is None')
+            raise AssertionError('failed to raise exception for check_thresholds() when name is None')
         except CodingError:
             pass
 
@@ -176,32 +176,34 @@ class NagiosPluginTester(unittest.TestCase):
 
     def test_main_unhandled_exception(self):
         def raise_exception():
-            raise Exception('this is an unhandled exception to be caught')
+            raise AssertionError('this is an unhandled exception to be caught')
         self.plugin.run = raise_exception
         try:
             self.plugin.main()
-            raise Exception('failed to exit on unhandled exception')
+            raise AssertionError('failed to exit on unhandled exception')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('failed to exit with code 3 upon unhandled exception')
+                raise AssertionError('failed to exit with code 3 upon unhandled exception')
             # if _.message[:7] != 'UNKNOWN':
-            #     raise Exception('unhandled exception failed to add UNKNOWN prefix')
+            #     raise AssertionError('unhandled exception failed to add UNKNOWN prefix')
 
 
     def test_critical_exit(self):
         try:
             self.plugin.critical()
             self.plugin.main()
-            raise Exception('plugin failed to terminate')
+            raise AssertionError('plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('NagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'.format(_.code))
+                raise AssertionError('NagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'\
+                                     .format(_.code))
 
     def test_nagiosplugin_abstract(self): # pylint: disable=no-self-use
         try:
             NagiosPlugin() # pylint: disable=abstract-class-instantiated
             # broken in Python 3
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class NagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting ' +
+            #                      'to instantiate abstract class NagiosPlugin')
         except TypeError as _:
             pass
 
