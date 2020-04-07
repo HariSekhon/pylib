@@ -94,6 +94,6 @@ script:
   - travis_retry make test
 
 after_success:
-  - coverage run --source=harisekhon -m test
+  - make coverage
   - coveralls -v
   - codecov
