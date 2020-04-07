@@ -59,6 +59,7 @@ Hari Sekhon - Python / Jython Library
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib.svg?type=shield)](https://app.fossa.com/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib?ref=badge_shield)
 
 [![CI Mac](https://github.com/HariSekhon/pylib/workflows/CI%20Mac/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Mac%22)
+[![CI Mac 10.15](https://github.com/HariSekhon/pylib/workflows/CI%20Mac%2010.15/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Mac+10.15%22)
 [![CI Ubuntu](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu%22)
 [![CI Ubuntu 14.04](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu%2014.04/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu+14.04%22)
 [![CI Ubuntu 16.04](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu%2016.04/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu+16.04%22)
