@@ -59,11 +59,11 @@ class DockerNagiosPluginTester(unittest.TestCase):
         plugin = self.SubDockerNagiosPlugin()
         try:
             plugin.main()
-            raise Exception('Docker plugin failed to terminate')
+            raise AssertionError('Docker plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('DockerNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('DockerNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
         plugin = self.SubDockerNagiosPlugin()
@@ -72,18 +72,18 @@ class DockerNagiosPluginTester(unittest.TestCase):
         plugin.check = raise_exception
         try:
             plugin.main()
-            raise Exception('Docker plugin failed to terminate')
+            raise AssertionError('Docker plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('DockerNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('DockerNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             DockerNagiosPlugin()  # pylint: disable=abstract-class-instantiated
             # broken in Python 3
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'DockerNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'DockerNagiosPlugin')
         except TypeError as _:
             pass
 
