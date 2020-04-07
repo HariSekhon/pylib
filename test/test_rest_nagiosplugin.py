@@ -48,23 +48,47 @@ class RestNagiosPluginTester(unittest.TestCase):
             # Python 3.x
             # super().__init__()
             self.name = 'test'
+            self.default_host = 'google.com'
             self.default_port = 80
-        def process_options(self):
-            self.host = 'localhost'
-            self.port = 65535
+            self.auth = False
         def parse(self, req):
             self.msg = 'unittest message'
 
-    def setUp(self):
-        self.plugin = self.SubRestNagiosPlugin()
+    #def setUp(self):
+    #    self.plugin = self.SubRestNagiosPlugin()
+
+    def test_exit_0(self):
+        plugin = self.SubRestNagiosPlugin()
+        try:
+            plugin.main()
+            raise Exception('RestSub plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 0:
+                raise Exception('RestNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                .format(_.code))
 
     def test_exit_2(self):
+        plugin = self.SubRestNagiosPlugin()
+        plugin.default_host = 'localhost'
+        plugin.default_port = 65535
+        plugin.auth = 'optional'
         try:
-            self.plugin.main()
+            plugin.main()
             raise Exception('RestSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
                 raise Exception('RestNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                .format(_.code))
+
+    def test_exit_3(self):
+        plugin = self.SubRestNagiosPlugin()
+        plugin.auth = True
+        try:
+            plugin.main()
+            raise Exception('RestSub plugin failed to terminate')
+        except SystemExit as _:
+            if _.code != 3:
+                raise Exception('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
                                 .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
