@@ -61,11 +61,11 @@ class RestNagiosPluginTester(unittest.TestCase):
         plugin = self.SubRestNagiosPlugin()
         try:
             plugin.main()
-            raise Exception('RestSub plugin failed to terminate')
+            raise AssertionError('RestSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('RestNagiosPlugin failed to exit OK (0), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('RestNagiosPlugin failed to exit OK (0), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_2(self):
         plugin = self.SubRestNagiosPlugin()
@@ -74,33 +74,33 @@ class RestNagiosPluginTester(unittest.TestCase):
         plugin.auth = 'optional'
         try:
             plugin.main()
-            raise Exception('RestSub plugin failed to terminate')
+            raise AssertionError('RestSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception('RestNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('RestNagiosPlugin failed to exit CRITICAL (2), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_exit_3(self):
         plugin = self.SubRestNagiosPlugin()
         plugin.auth = True
         try:
             plugin.main()
-            raise Exception('RestSub plugin failed to terminate')
+            raise AssertionError('RestSub plugin failed to terminate')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                                     .format(_.code))
 
     def test_plugin_abstract(self):  # pylint: disable=no-self-use
         try:
             RestNagiosPlugin()  # pylint: disable=abstract-class-instantiated
-            #raise Exception('failed to raise a TypeError when attempting to instantiate abstract class ' +
-            #                'RestNagiosPlugin')
+            #raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class ' +
+            #                     'RestNagiosPlugin')
         #except TypeError:
         except SystemExit as _:
             if _.code != 0:
-                raise Exception('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
-                                .format(_.code))
+                raise AssertionError('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
+                                     .format(_.code))
 
 
 def main():
