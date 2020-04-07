@@ -60,7 +60,7 @@ class CLITester(unittest.TestCase):
         # self.cli.set_default_port(80)
         # try:
         #     self.cli.set_default_port('a')
-        #     raise Exception('failed to throw CodingError when sending invalid port to set_default_port()')
+        #     raise AssertionError('failed to throw CodingError when sending invalid port to set_default_port()')
         # except CodingError:
         #     pass
 
@@ -74,15 +74,15 @@ class CLITester(unittest.TestCase):
         try:
             self.cli.add_hostoption()
             self.cli.add_hostoption()
-            raise Exception('failed to throw OptionConflictError from optparse OptionParser ' +
-                            'when duplicating add_hostoption')
+            raise AssertionError('failed to throw OptionConflictError from optparse OptionParser ' +
+                                 'when duplicating add_hostoption')
         except OptionConflictError as _:
             pass
 
     def test_add_hostoption_port_error_exception(self):
         try:
             self.cli.add_hostoption(default_port='error')
-            raise Exception('failed to throw CodingError when sending invalid port to add_hostoption')
+            raise AssertionError('failed to throw CodingError when sending invalid port to add_hostoption')
         except CodingError as _:
             pass
 
@@ -90,8 +90,8 @@ class CLITester(unittest.TestCase):
         try:
             self.cli.add_useroption()
             self.cli.add_useroption()
-            raise Exception('failed to throw OptionConflictError from optparse OptionParser ' +
-                            'when duplicating add_useroption')
+            raise AssertionError('failed to throw OptionConflictError from optparse OptionParser ' +
+                                 'when duplicating add_useroption')
         except OptionConflictError as _:
             pass
 
@@ -120,41 +120,41 @@ class CLITester(unittest.TestCase):
     def test_set_verbose_none_exception(self):
         try:
             self.cli.verbose = None
-            raise Exception('failed to raise CodingError when calling verbose = None')
+            raise AssertionError('failed to raise CodingError when calling verbose = None')
         except CodingError:
             pass
 
     def test_set_verbose_default_none_exception(self):
         try:
             self.cli.verbose_default = None
-            raise Exception('failed to raise CodingError when calling verbose_default = None')
+            raise AssertionError('failed to raise CodingError when calling verbose_default = None')
         except CodingError:
             pass
 
         # would need to inject self.cli.options.help / self.cli.options.version to trigger those code branches
         # try:
         #     self.cli.main()
-        #     raise Exception('failed to raise CodingError when calling main() after setting self.options.help') # pylint: disable=line-too-long
+        #     raise AssertionError('failed to raise CodingError when calling main() after setting self.options.help') # pylint: disable=line-too-long
         # except SystemExit as _:
         #     if _.code != 3:
-        #         raise Exception('wrong exit code != 3 when triggering usage via self.options.help')
+        #         raise AssertionError('wrong exit code != 3 when triggering usage via self.options.help')
 
     def test_usage(self):
         self.cli.__init__()
         try:
             self.cli.usage()
-            raise Exception('failed to exit on CLI.usage()')
+            raise AssertionError('failed to exit on CLI.usage()')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('wrong exit code %s != 3 when exiting usage() from base class CLI' % _.code)
+                raise AssertionError('wrong exit code %s != 3 when exiting usage() from base class CLI' % _.code)
 
     def test_usage_message(self):
         try:
             self.cli.usage('test message')
-            raise Exception('failed to exit on CLI.usage(test message)')
+            raise AssertionError('failed to exit on CLI.usage(test message)')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('wrong exit code != 3 when exiting usage(test message) from base class CLI')
+                raise AssertionError('wrong exit code != 3 when exiting usage(test message) from base class CLI')
 
     #def test_parser_version(self):
     #    print('parser version = %s' % self.cli.__parser.get_version())
@@ -165,7 +165,7 @@ class CLITester(unittest.TestCase):
     def test_set_timeout(self):
         try:
             self.cli.timeout = None
-            raise Exception('failed to raise CodingError for CLI.timeout = None')
+            raise AssertionError('failed to raise CodingError for CLI.timeout = None')
         except InvalidOptionException:
             pass
         self.cli.main()
@@ -179,7 +179,7 @@ class CLITester(unittest.TestCase):
         self.cli.__init__()
         try:
             self.cli.timeout = 'a'
-            raise Exception('failed to raise CodingError for CLI.timeout = a')
+            raise AssertionError('failed to raise CodingError for CLI.timeout = a')
         except InvalidOptionException:
             pass
 
@@ -187,14 +187,14 @@ class CLITester(unittest.TestCase):
         self.cli.timeout_max = 5
         try:
             self.cli.timeout = 6
-            raise Exception('failed to raise InvalidOptionException when setting timeout higher than max')
+            raise AssertionError('failed to raise InvalidOptionException when setting timeout higher than max')
         except InvalidOptionException:
             pass
 
     def test_set_timeout_max_alpha_exception(self):
         try:
             self.cli.timeout_max = 'a'
-            raise Exception('failed to raise CodingError for timeout_max = a')
+            raise AssertionError('failed to raise CodingError for timeout_max = a')
         except CodingError:
             pass
 
@@ -214,7 +214,7 @@ class CLITester(unittest.TestCase):
         self.cli.timeout_max = 10
         try:
             self.cli.timeout_default = 11
-            raise Exception('failed to raise exception on CLI.timeout_default > max')
+            raise AssertionError('failed to raise exception on CLI.timeout_default > max')
         except CodingError:
             pass
 
@@ -234,7 +234,7 @@ class CLITester(unittest.TestCase):
         self.cli.__init__()
         try:
             self.cli.timeout_default = 'a'
-            raise Exception('failed to raise CodingError for CLI.timeout_default = a')
+            raise AssertionError('failed to raise CodingError for CLI.timeout_default = a')
         except CodingError:
             pass
 
@@ -243,10 +243,10 @@ class CLITester(unittest.TestCase):
         self.cli.run = lambda: time.sleep(3)
         try:
             self.cli.main()
-            raise Exception('failed to self-timeout after 1 second')
+            raise AssertionError('failed to self-timeout after 1 second')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('wrong exit code != 3 when self timing out CLI')
+                raise AssertionError('wrong exit code != 3 when self timing out CLI')
 
     def test_invalidoptionexception(self):
         self.cli.__init__()
@@ -258,7 +258,7 @@ class CLITester(unittest.TestCase):
             self.cli.main()
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('failed to trap and re-throw InvalidOptionException in CLI main as SystemExit (usage)')
+                raise AssertionError('failed to trap and re-throw InvalidOptionException in CLI main as SystemExit (usage)')
 
     def test_no_args_exception(self):
         self.cli.__init__()
@@ -266,10 +266,10 @@ class CLITester(unittest.TestCase):
         try:
             self.cli.args = "blah"
             self.cli.no_args()
-            raise Exception('failed to exit via no_args()')
+            raise AssertionError('failed to exit via no_args()')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception('wrong exit code for no_args()')
+                raise AssertionError('wrong exit code for no_args()')
 
     def test_verbose_env(self):
         os.environ['VERBOSE'] = '3'
@@ -284,49 +284,49 @@ class CLITester(unittest.TestCase):
         # self.cli._env_var('', 'test')
         # try:
         #     self.cli._env_var(None, 1)
-        #     raise Exception('failed to raise a CodingError in _env_var when sending integer as var')
+        #     raise AssertionError('failed to raise a CodingError in _env_var when sending integer as var')
         # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli._env_var('test', None)
-        #     raise Exception('failed to raise a CodingError in _env_var when sending None as var')
+        #     raise AssertionError('failed to raise a CodingError in _env_var when sending None as var')
         # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli._env_var('test', ' ')
-        #     raise Exception('failed to raise a CodingError in _env_var when sending blank as var')
+        #     raise AssertionError('failed to raise a CodingError in _env_var when sending blank as var')
         # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli._env_var(None, 'test')
-        #     raise Exception('failed to raise a CodingError in _env_var when sending None name')
+        #     raise AssertionError('failed to raise a CodingError in _env_var when sending None name')
         # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars('test', ' ')
-        #     raise Exception('failed to raise a CodingError in env_vars() when sending blank var')
+        #     raise AssertionError('failed to raise a CodingError in env_vars() when sending blank var')
         # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars(None, 'test')
-        #     raise Exception('failed to raise a CodingError in env_vars() when sending None as name var')
+        #     raise AssertionError('failed to raise a CodingError in env_vars() when sending None as name var')
         # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars('test', ['test', None])
-        #     raise Exception('failed to raise a CodingError in env_vars() when sending array with blank var')
+        #     raise AssertionError('failed to raise a CodingError in env_vars() when sending array with blank var')
         # except CodingError as _:
         #     pass
         #
         # try:
         #     self.cli.env_vars('test', self.myDict)
-        #     raise Exception('failed to raise a CodingError in env_vars() when sending dict for var')
+        #     raise AssertionError('failed to raise a CodingError in env_vars() when sending dict for var')
         # except CodingError as _:
         #     pass
 
@@ -334,18 +334,18 @@ class CLITester(unittest.TestCase):
         try:
             CLI() # pylint: disable=abstract-class-instantiated
             # this is broken in Python3
-            # raise Exception('failed to raise a TypeError when attempting to instantiate abstract class CLI')
+            # raise AssertionError('failed to raise a TypeError when attempting to instantiate abstract class CLI')
         except TypeError as _:
             # print('caught TypeError when running CLI.main(): %s' % _)
             pass
         # except CodingError as _:
         #     if not re.search('abstract', str(_)):
-        #         raise Exception('raised CodingError from CLI.main() but message mismatch')
+        #         raise AssertionError('raised CodingError from CLI.main() but message mismatch')
         # disabled abstract enforcement as it's Python 2.6+ only
         # but base class exits 3 in run() so can catch that too
         # except SystemExit as _:
         #     if _.code != 3:
-        #         raise Exception('wrong exit code != 3 when exiting main() from base class CLI')
+        #         raise AssertionError('wrong exit code != 3 when exiting main() from base class CLI')
 
 
 def main():
