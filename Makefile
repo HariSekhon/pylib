@@ -155,3 +155,4 @@ coverage:
 	@# doesn't catch a lot of tests, use nose instead
 	@#coverage run --source=harisekhon -m test
 	coverage run --source=harisekhon -m nose
+	@#coverage run --source=harisekhon -m pytest
