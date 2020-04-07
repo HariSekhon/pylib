@@ -96,81 +96,81 @@ class UtilsTester(unittest.TestCase):
     def test_die(self):
         try:
             die('test')
-            raise Exception('failed to raise SystemExit exception from die(test)')
+            raise AssertionError('failed to raise SystemExit exception from die(test)')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception("incorrect exit code '%s' raised by die(test)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by die(test)" % _.code)
                 # also gives 2 not 'test'
                 # if  _.message != 'test':
-                #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
+                #     raise AssertionError("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 4)
-            raise Exception('failed to raise SystemExit exception from die(test, 4)')
+            raise AssertionError('failed to raise SystemExit exception from die(test, 4)')
         except SystemExit as _:
             if _.code != 4:
-                raise Exception("incorrect exit code '%s' raised by die(test, 4)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by die(test, 4)" % _.code)
                 # also gives 2 not 'test'
                 # if  _.message != 'test':
-                #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
+                #     raise AssertionError("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 5 + 256)
-            raise Exception('failed to raise SystemExit exception from die(test, 5 + 256)')
+            raise AssertionError('failed to raise SystemExit exception from die(test, 5 + 256)')
         except SystemExit as _:
             if _.code != 5:
-                raise Exception("incorrect exit code '%s' raised by die(test, 5 + 256)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by die(test, 5 + 256)" % _.code)
                 # also gives 2 not 'test'
                 # if  _.message != 'test':
-                #     raise Exception("incorrect exit message '%s' raised by die()" %  _.message)
+                #     raise AssertionError("incorrect exit message '%s' raised by die()" %  _.message)
         try:
             die('test', 'UNKNOWN')
-            raise Exception('failed to raise SystemExit exception from die(test, UNKNOWN)')
+            raise AssertionError('failed to raise SystemExit exception from die(test, UNKNOWN)')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by die(test, UNKNOWN)" % _.code)
         try:
             die('test', 'unrecognized_status')
-            raise Exception('failed to raise SystemExit exception from die(test, unrecognized_status)')
+            raise AssertionError('failed to raise SystemExit exception from die(test, unrecognized_status)')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception("incorrect exit code '%s' raised by die(test, UNKNOWN)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by die(test, UNKNOWN)" % _.code)
 
     def test_qquit(self):
         try:
             qquit('UNKNOWN', 'test')
-            raise Exception('failed to raise SystemExit exception from qquit(UNKNOWN, test)')
+            raise AssertionError('failed to raise SystemExit exception from qquit(UNKNOWN, test)')
         except SystemExit as _:
             if _.code != 3:
-                raise Exception("incorrect exit code '%s' raised by qquit(UNKNOWN, test)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by qquit(UNKNOWN, test)" % _.code)
 
     def test_qquit_wrong_status(self):
         try:
             qquit('wrongstatus', 'test')
-            raise Exception('failed to raise SystemExit exception from qquit(wrongstatus, test)')
+            raise AssertionError('failed to raise SystemExit exception from qquit(wrongstatus, test)')
         except SystemExit as _:
             if _.code != 2:
-                raise Exception("incorrect exit code '%s' raised by qquit(wrongstatus, test)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by qquit(wrongstatus, test)" % _.code)
 
     def test_usage(self):
         from optparse import OptionParser
         parser = OptionParser()
         try:
             usage(parser, status='UNKNOWN')
-            raise Exception('failed to raise SystemExit exception from usage(parser)')
+            raise AssertionError('failed to raise SystemExit exception from usage(parser)')
         except SystemExit as _:
             if _.code != ERRORS['UNKNOWN']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by usage(parser)" % _.code)
         try:
             usage(parser, '', 'WARNING')
-            raise Exception('failed to raise SystemExit exception from usage(parser)')
+            raise AssertionError('failed to raise SystemExit exception from usage(parser)')
         except SystemExit as _:
             if _.code != ERRORS['WARNING']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by usage(parser)" % _.code)
         try:
             usage(parser, 'msg', 'UNKNOWN')
-            raise Exception('failed to raise SystemExit exception from usage(parser, msg)')
+            raise AssertionError('failed to raise SystemExit exception from usage(parser, msg)')
         except SystemExit as _:
             if _.code != ERRORS['UNKNOWN']:
-                raise Exception("incorrect exit code '%s' raised by usage(parser)" % _.code)
+                raise AssertionError("incorrect exit code '%s' raised by usage(parser)" % _.code)
 
     def test_get_topfile(self):
         topfile = get_topfile()
@@ -209,7 +209,7 @@ class UtilsTester(unittest.TestCase):
     def test_code_error(self):
         try:
             code_error('test')
-            raise Exception('code_error() failed to raise exception')
+            raise AssertionError('code_error() failed to raise exception')
         except CodingError:
             pass
 
@@ -232,12 +232,12 @@ class UtilsTester(unittest.TestCase):
         try:
             # without list() the generator is created but not executed so the CodingError doesn't get raised
             list(gen_prefixes(1, 'test'))
-            raise Exception('gen_prefixes() failed to raise CodingError on non-iterable prefixes')
+            raise AssertionError('gen_prefixes() failed to raise CodingError on non-iterable prefixes')
         except CodingError:
             pass
         try:
             list(gen_prefixes('test', 1))
-            raise Exception('gen_prefixes() failed to raise CodingError on non-iterable names')
+            raise AssertionError('gen_prefixes() failed to raise CodingError on non-iterable names')
         except CodingError:
             pass
 
@@ -248,17 +248,17 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(getenv('nonexistent', 'myDefault'), 'myDefault')
         try:
             getenv(1)
-            raise Exception('getenv failed to raise CodingError for non-string var')
+            raise AssertionError('getenv failed to raise CodingError for non-string var')
         except CodingError:
             pass
         try:
             getenv(None)
-            raise Exception('getenv failed to raise CodingError for None var')
+            raise AssertionError('getenv failed to raise CodingError for None var')
         except CodingError:
             pass
         try:
             getenv('')
-            raise Exception('getenv failed to raise CodingError for blank var')
+            raise AssertionError('getenv failed to raise CodingError for blank var')
         except CodingError:
             pass
 
@@ -272,17 +272,17 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(getenvs('nonexistent', 'myDefault', 'prefix'), 'myDefault')
         try:
             getenvs(['test', 1])
-            raise Exception('getenvs failed to raise CodingError for non-string var')
+            raise AssertionError('getenvs failed to raise CodingError for non-string var')
         except CodingError:
             pass
         try:
             getenvs('PATH', '', None)
-            raise Exception('getenvs failed to raise CodingError for None prefix')
+            raise AssertionError('getenvs failed to raise CodingError for None prefix')
         except CodingError:
             pass
         try:
             getenvs('PATH', '', prefix=1)
-            raise Exception('getenvs failed to raise CodingError for prefix=1')
+            raise AssertionError('getenvs failed to raise CodingError for prefix=1')
         except CodingError:
             pass
 
@@ -302,7 +302,7 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(result, 'mysecret')
         try:
             getenvs2('HOST', 'myDefault', None)
-            raise Exception('failed to raise CodingError for name=None for getenvs2')
+            raise AssertionError('failed to raise CodingError for name=None for getenvs2')
         except CodingError:
             pass
 
@@ -316,7 +316,7 @@ class UtilsTester(unittest.TestCase):
         utils._tlds = set()
         try:
             utils._check_tldcount()
-            raise Exception('check_tldcount() failed to raise exception before IANA list loaded')
+            raise AssertionError('check_tldcount() failed to raise exception before IANA list loaded')
         except CodingError:
             pass
 
@@ -337,7 +337,7 @@ class UtilsTester(unittest.TestCase):
         utils._tlds.add('2001')
         try:
             utils._check_tldcount()
-            raise Exception('failed to raise CodingError on double loaded TLDs')
+            raise AssertionError('failed to raise CodingError on double loaded TLDs')
         except CodingError:
             pass
         # reset the TLDs
@@ -395,21 +395,21 @@ class UtilsTester(unittest.TestCase):
     #     os.environ['SPARK_HOME'] = ''
     #     try:
     #         import_pyspark()
-    #         raise Exception('failed to raise import error when importing pyspark without SPARK_HOME set')
+    #         raise AssertionError('failed to raise import error when importing pyspark without SPARK_HOME set')
     #     # except ImportError:
     #     #    pass
     #     except SystemExit, e:
     #         if  _.code != 3:
-    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
+    #             raise AssertionError("incorrect exit code '%s' raised by import_pyspark" %  _.code)
     #     os.environ['SPARK_HOME'] = 'nonexistentdir'
     #     try:
     #         import_pyspark()
-    #         raise Exception('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
+    #         raise AssertionError('failed to raise import error when importing pyspark with nonexistent SPARK_HOME dir set')
     #     # except ImportError:
     #     #     pass
     #     except SystemExit, e:
     #         if  _.code != 3:
-    #             raise Exception("incorrect exit code '%s' raised by import_pyspark" %  _.code)
+    #             raise AssertionError("incorrect exit code '%s' raised by import_pyspark" %  _.code)
 
 # ============================================================================ #
 #                                  J y t h o n
@@ -427,7 +427,7 @@ class UtilsTester(unittest.TestCase):
         del sys.JYTHON_JAR
         try:
             jython_only()
-            raise Exception('failed to exit/raise exception when calling jython_only()')
+            raise AssertionError('failed to exit/raise exception when calling jython_only()')
         except SystemExit:
             pass
 
@@ -456,7 +456,7 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(isOS(platform.system()), isOS(platform.system()))
         try:
             isOS(None)
-            raise Exception('failed to raise exception for none arg')
+            raise AssertionError('failed to raise exception for none arg')
         except CodingError:
             pass
 
@@ -478,7 +478,7 @@ class UtilsTester(unittest.TestCase):
             # assertRaises >= 2.7
             try:
                 mac_only()
-                raise Exception('failed to raise mac only exception when running on Linux')
+                raise AssertionError('failed to raise mac only exception when running on Linux')
             except MacOnlyException:
                 pass
 
@@ -500,7 +500,7 @@ class UtilsTester(unittest.TestCase):
             # assertRaises >= 2.7
             try:
                 linux_only()
-                raise Exception('failed to raise linux_only exception when running on Mac')
+                raise AssertionError('failed to raise linux_only exception when running on Mac')
             except LinuxOnlyException:
                 pass
 
@@ -580,21 +580,21 @@ class UtilsTester(unittest.TestCase):
     def test_isChars_exception_blank_chars(self):
         try:
             isChars('alpha', '')
-            raise Exception('failed to coding raise exception for blank chars')
+            raise AssertionError('failed to coding raise exception for blank chars')
         except CodingError:
             pass
 
     def test_isChars_exception_none_chars(self):
         try:
             isChars('alpha', None)
-            raise Exception('failed to coding raise exception for none chars')
+            raise AssertionError('failed to coding raise exception for none chars')
         except CodingError:
             pass
 
     def test_isChars_exception_invalid_char_range(self):
         try:
             isChars('alpha', 'c-a')
-            raise Exception('failed to coding raise exception for invalid char range')
+            raise AssertionError('failed to coding raise exception for invalid char range')
         except CodingError:
             pass
 
@@ -1005,7 +1005,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(isPythonVersion(getPythonVersion()))
         try:
             isPythonVersion(None)
-            raise Exception('failed to raise exception for none arg')
+            raise AssertionError('failed to raise exception for none arg')
         except CodingError:
             pass
 
@@ -1014,12 +1014,12 @@ class UtilsTester(unittest.TestCase):
         self.assertFalse(isPythonMinVersion('10.0'))
         try:
             isPythonMinVersion(' ')
-            raise Exception('failed to raise exception for blank version')
+            raise AssertionError('failed to raise exception for blank version')
         except CodingError:
             pass
         try:
             isPythonMinVersion(None)
-            raise Exception('failed to raise exception for none version')
+            raise AssertionError('failed to raise exception for none version')
         except CodingError:
             pass
 
@@ -1178,12 +1178,12 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(min_value(3, 4), 4)
         try:
             min_value(None, 4)
-            raise Exception('failed to raise exception for none first arg')
+            raise AssertionError('failed to raise exception for none first arg')
         except CodingError:
             pass
         try:
             min_value(3, None)
-            raise Exception('failed to raise exception for none second arg')
+            raise AssertionError('failed to raise exception for none second arg')
         except CodingError:
             pass
 
@@ -1247,7 +1247,7 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(list(flatten(1)), [1])
         # try:
         #     flatten(1)
-        #     raise Exception('failed to raise exception for non-iterable integer passed to flatten()')
+        #     raise AssertionError('failed to raise exception for non-iterable integer passed to flatten()')
         # except CodingError:
         #     pass
 
@@ -1286,27 +1286,27 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(list_sort_dicts_by_value([], 'name'), [])
         try:
             list_sort_dicts_by_value(myList, 'brokenkey')
-            raise Exception('failed to raise KeyError exception for invalid/missing key')
+            raise AssertionError('failed to raise KeyError exception for invalid/missing key')
         except KeyError:
             pass
         try:
             list_sort_dicts_by_value(myList, None)
-            raise Exception('failed to raise InvalidArgumentException when passed a non-string None for key')
+            raise AssertionError('failed to raise InvalidArgumentException when passed a non-string None for key')
         except InvalidArgumentException:
             pass
         try:
             list_sort_dicts_by_value('notAList', 'name')
-            raise Exception('failed to raise InvalidArgumentException when passed a non-list')
+            raise AssertionError('failed to raise InvalidArgumentException when passed a non-list')
         except InvalidArgumentException:
             pass
         try:
             list_sort_dicts_by_value([['test']], 'name')
-            raise Exception('failed to raise AssertionError when list contains non-dict')
+            raise AssertionError('failed to raise AssertionError when list contains non-dict')
         except AssertionError:
             pass
         try:
             list_sort_dicts_by_value([{'name': ['embedded_array_should_have_been_string']}], 'name')
-            raise Exception('failed to raise AssertionError when list dict key value is not a string')
+            raise AssertionError('failed to raise AssertionError when list dict key value is not a string')
         except AssertionError:
             pass
 
@@ -1361,17 +1361,17 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(sec2human(100000), '1 day 3 hours 46 mins 40 secs')
         try:
             sec2human(None)
-            raise Exception('failed to raise exception for none')
+            raise AssertionError('failed to raise exception for none')
         except CodingError:
             pass
         try:
             sec2human('')
-            raise Exception('failed to raise exception for blank')
+            raise AssertionError('failed to raise exception for blank')
         except CodingError:
             pass
         try:
             sec2human(' ')
-            raise Exception('failed to raise exception for spaces')
+            raise AssertionError('failed to raise exception for spaces')
         except CodingError:
             pass
 
@@ -1407,8 +1407,8 @@ class UtilsTester(unittest.TestCase):
 
     def test_strip_ansi_escape_codes(self):
         self.assertEqual(strip_ansi_escape_codes("some \033[01;31m\033[Kcontent\033[m\033[K here"), 'some content here')
-        self.assertEqual(strip_ansi_escape_codes(
-                         'some \033[01;31m\033[Khigh\033[m\033[Klighted \033[01;31m\033[Kcontent\033[m\033[K'),
+        self.assertEqual(strip_ansi_escape_codes( \
+                         'some \033[01;31m\033[Khigh\033[m\033[Klighted \033[01;31m\033[Kcontent\033[m\033[K'), \
                          'some highlighted content')
 
     def test_timeout(self):
@@ -1416,7 +1416,7 @@ class UtilsTester(unittest.TestCase):
         set_timeout(50, lambda x, y: x)
         try:
             set_timeout('a')
-            raise Exception('failed to raise CodingError when passing non-integer to set_timeout()')
+            raise AssertionError('failed to raise CodingError when passing non-integer to set_timeout()')
         except CodingError:
             pass
 
@@ -1424,7 +1424,7 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(sorted(uniq_list(self.myList + self.myList)), sorted(self.myList))
         try:
             uniq_list(self.myDict)
-            raise Exception('failed to raise CodingError when passing non-list to uniq_list()')
+            raise AssertionError('failed to raise CodingError when passing non-list to uniq_list()')
         except CodingError:
             pass
 
@@ -1432,7 +1432,7 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(uniq_list_ordered(self.myList + self.myList), self.myList)
         try:
             uniq_list_ordered(self.myDict)
-            raise Exception('failed to raise CodingError when passing non-list to uniq_list_ordered()')
+            raise AssertionError('failed to raise CodingError when passing non-list to uniq_list_ordered()')
         except CodingError:
             pass
 
@@ -1440,12 +1440,12 @@ class UtilsTester(unittest.TestCase):
         self.assertEqual(merge_dicts({'key': 'one'}, {'count': 100}), {'key': 'one', 'count': 100})
         try:
             merge_dicts(self.myList, self.myDict)
-            raise Exception('failed to raise CodingError when passing non-dict to merge_dicts()')
+            raise AssertionError('failed to raise CodingError when passing non-dict to merge_dicts()')
         except CodingError:
             pass
 
 # ============================================================================ #
-        #                          Validation Functions
+#                          Validation Functions
 # ============================================================================ #
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
@@ -1456,28 +1456,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_alnum_exception(self):
         try:
             validate_alnum('Alnum2Test99*', 'alnum invalid')
-            raise Exception('validate_alnum() failed to raise exception')
+            raise AssertionError('validate_alnum() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_alnum_exception_noname(self):
         try:
             validate_alnum('Alnum2Test99*', '')
-            raise Exception('validate_alnum() failed to raise exception for no name')
+            raise AssertionError('validate_alnum() failed to raise exception for no name')
         except CodingError:
             pass
 
     def test_validate_alnum_exception_none(self):
         try:
             validate_alnum(None, 'alnum invalid')
-            raise Exception('validate_alnum() failed to raise exception for none')
+            raise AssertionError('validate_alnum() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_alnum_exception_blank(self):
         try:
             validate_alnum('', 'alnum invalid')
-            raise Exception('validate_alnum() failed to raise exception for blank')
+            raise AssertionError('validate_alnum() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1489,21 +1489,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_aws_access_key_exception(self):
         try:
             validate_aws_access_key('A' * 19 + '*')
-            raise Exception('validate_aws_access_key() failed to raise exception')
+            raise AssertionError('validate_aws_access_key() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_aws_access_key_exception_none(self):
         try:
             validate_aws_access_key(None)
-            raise Exception('validate_aws_access_key() failed to raise exception for none')
+            raise AssertionError('validate_aws_access_key() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_aws_access_key_exception_blank(self):
         try:
             validate_aws_access_key('')
-            raise Exception('validate_aws_access_key() failed to raise exception for blank')
+            raise AssertionError('validate_aws_access_key() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1515,21 +1515,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_aws_bucket_exception(self):
         try:
             validate_aws_bucket('A' * 64)
-            raise Exception('validate_aws_bucket() failed to raise exception')
+            raise AssertionError('validate_aws_bucket() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_aws_bucket_exception_none(self):
         try:
             validate_aws_bucket(None)
-            raise Exception('validate_aws_bucket() failed to raise exception for none')
+            raise AssertionError('validate_aws_bucket() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_aws_bucket_exception_blank(self):
         try:
             validate_aws_bucket('')
-            raise Exception('validate_aws_bucket() failed to raise exception for blank')
+            raise AssertionError('validate_aws_bucket() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1543,28 +1543,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_aws_secret_key_exception(self):
         try:
             validate_aws_secret_key('A' * 41)
-            raise Exception('validate_aws_secret_key() failed to raise exception')
+            raise AssertionError('validate_aws_secret_key() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_aws_secret_key_exception_none(self):
         try:
             validate_aws_secret_key(None)
-            raise Exception('validate_aws_secret_key() failed to raise exception for none')
+            raise AssertionError('validate_aws_secret_key() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_aws_secret_key_exception_space(self):
         try:
             validate_aws_secret_key(' ')
-            raise Exception('validate_aws_secret_key() failed to raise exception for space')
+            raise AssertionError('validate_aws_secret_key() failed to raise exception for space')
         except InvalidOptionException:
             pass
 
     def test_validate_aws_secret_key_exception_blank(self):
         try:
             validate_aws_secret_key('')
-            raise Exception('validate_aws_secret_key() failed to raise exception for blank')
+            raise AssertionError('validate_aws_secret_key() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1576,28 +1576,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_chars_exception(self):
         try:
             validate_chars('log_date=2015-05-23_10*', 'validate chars broken', 'A-Za-z0-9_=-')
-            raise Exception('validate_chars() failed to raise exception')
+            raise AssertionError('validate_chars() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_chars_exception_noname(self):
         try:
             validate_chars('log_date=2015-05-23_10*', '', 'A-Za-z0-9_=-')
-            raise Exception('validate_chars() failed to raise exception for no name')
+            raise AssertionError('validate_chars() failed to raise exception for no name')
         except CodingError:
             pass
 
     def test_validate_chars_exception_none(self):
         try:
             validate_chars(None, 'validate chars broken', 'A-Za-z0-9_=-')
-            raise Exception('validate_chars() failed to raise exception for none')
+            raise AssertionError('validate_chars() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_chars_exception_blank(self):
         try:
             validate_chars('', 'validate chars broken', 'A-Za-z0-9_=-')
-            raise Exception('validate_chars() failed to raise exception for blank')
+            raise AssertionError('validate_chars() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1610,21 +1610,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_collection_exception(self):
         try:
             validate_collection('students.grades*')
-            raise Exception('validate_collection() failed to raise exception')
+            raise AssertionError('validate_collection() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_collection_exception_none(self):
         try:
             validate_collection(None)
-            raise Exception('validate_collection() failed to raise exception for none')
+            raise AssertionError('validate_collection() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_collection_exception_blank(self):
         try:
             validate_collection('')
-            raise Exception('validate_collection() failed to raise exception for blank')
+            raise AssertionError('validate_collection() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1636,21 +1636,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_database_exception(self):
         try:
             validate_database('mysql*', 'MySQL')
-            raise Exception('validate_database() failed to raise exception')
+            raise AssertionError('validate_database() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_database_exception_none(self):
         try:
             validate_database(None, 'MySQL')
-            raise Exception('validate_database() failed to raise exception for none')
+            raise AssertionError('validate_database() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_database_exception_blank(self):
         try:
             validate_database('', 'MySQL')
-            raise Exception('validate_database() failed to raise exception for blank')
+            raise AssertionError('validate_database() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1662,21 +1662,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_database_columnname_exception(self):
         try:
             validate_database_columnname('myColumn_1*')
-            raise Exception('validate_database_columnname() failed to raise exception')
+            raise AssertionError('validate_database_columnname() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_database_columnname_exception_none(self):
         try:
             validate_database_columnname(None)
-            raise Exception('validate_database_columnname() failed to raise exception for none')
+            raise AssertionError('validate_database_columnname() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_database_columnname_exception_blank(self):
         try:
             validate_database_columnname('')
-            raise Exception('validate_database_columnname() failed to raise exception for blank')
+            raise AssertionError('validate_database_columnname() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1690,21 +1690,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_database_fieldname_exception(self):
         try:
             validate_database_fieldname('age*')
-            raise Exception('validate_database_fieldname() failed to raise exception')
+            raise AssertionError('validate_database_fieldname() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_database_fieldname_exception_none(self):
         try:
             validate_database_fieldname(None)
-            raise Exception('validate_database_fieldname() failed to raise exception for none')
+            raise AssertionError('validate_database_fieldname() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_database_fieldname_exception_blank(self):
         try:
             validate_database_fieldname('')
-            raise Exception('validate_database_fieldname() failed to raise exception for blank')
+            raise AssertionError('validate_database_fieldname() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1717,21 +1717,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_database_tablename_exception(self):
         try:
             validate_database_tablename('myTable*', 'Hive')
-            raise Exception('validate_database_tablename() failed to raise exception')
+            raise AssertionError('validate_database_tablename() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_database_tablename_exception_none(self):
         try:
             validate_database_tablename(None, 'Hive')
-            raise Exception('validate_database_tablename() failed to raise exception for none')
+            raise AssertionError('validate_database_tablename() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_database_tablename_exception_blank(self):
         try:
             validate_database_tablename('', 'Hive')
-            raise Exception('validate_database_tablename() failed to raise exception for blank')
+            raise AssertionError('validate_database_tablename() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1744,21 +1744,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_database_viewname_exception(self):
         try:
             validate_database_viewname('myview*', 'Hive')
-            raise Exception('validate_database_viewname() failed to raise exception')
+            raise AssertionError('validate_database_viewname() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_database_viewname_exception_none(self):
         try:
             validate_database_viewname(None, 'Hive')
-            raise Exception('validate_database_viewname() failed to raise exception for none')
+            raise AssertionError('validate_database_viewname() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_database_viewname_exception_blank(self):
         try:
             validate_database_viewname('', 'Hive')
-            raise Exception('validate_database_viewname() failed to raise exception for blank')
+            raise AssertionError('validate_database_viewname() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1774,35 +1774,35 @@ class UtilsTester(unittest.TestCase):
     def test_validate_database_query_select_show_exception(self):
         try:
             validate_database_query_select_show('drop myTable', 'name')
-            raise Exception('validate_database_query_select_show() failed to raise exception')
+            raise AssertionError('validate_database_query_select_show() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_database_query_select_show_exception_delete(self):
         try:
             validate_database_query_select_show('DELETE from myTable)', 'name')
-            raise Exception('validate_database_query_select_show() failed to raise exception for delete')
+            raise AssertionError('validate_database_query_select_show() failed to raise exception for delete')
         except InvalidOptionException:
             pass
 
     def test_validate_database_query_select_show_exception_embedded_drop(self):
         try:
             validate_database_query_select_show('select * from (DROP myTable)', 'name')
-            raise Exception('validate_database_query_select_show() failed to raise exception for embedded drop')
+            raise AssertionError('validate_database_query_select_show() failed to raise exception for embedded drop')
         except InvalidOptionException:
             pass
 
     def test_validate_database_query_select_show_exception_none(self):
         try:
             validate_database_query_select_show(None, 'name')
-            raise Exception('validate_database_query_select_show() failed to raise exception for none')
+            raise AssertionError('validate_database_query_select_show() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_database_query_select_show_exception_blank(self):
         try:
             validate_database_query_select_show('')
-            raise Exception('validate_database_query_select_show() failed to raise exception for blank')
+            raise AssertionError('validate_database_query_select_show() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1816,21 +1816,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_dirname_exception(self):
         try:
             validate_dirname('b@ddir')
-            raise Exception('validate_dirname() failed to raise exception')
+            raise AssertionError('validate_dirname() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_dirname_exception_none(self):
         try:
             validate_dirname(None)
-            raise Exception('validate_dirname() failed to raise exception for none')
+            raise AssertionError('validate_dirname() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_dirname_exception_blank(self):
         try:
             validate_dirname('')
-            raise Exception('validate_dirname() failed to raise exception for blank')
+            raise AssertionError('validate_dirname() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1844,21 +1844,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_directory_exception(self):
         try:
             validate_directory('/nonexistentdir')
-            raise Exception('validate_directory() failed to raise exception')
+            raise AssertionError('validate_directory() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_directory_exception_none(self):
         try:
             validate_directory(None)
-            raise Exception('validate_directory() failed to raise exception for none')
+            raise AssertionError('validate_directory() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_directory_exception_blank(self):
         try:
             validate_directory('')
-            raise Exception('validate_directory() failed to raise exception for blank')
+            raise AssertionError('validate_directory() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1877,28 +1877,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_domain_exception(self):
         try:
             validate_domain('harisekhon')
-            raise Exception('validate_domain() failed to raise exception')
+            raise AssertionError('validate_domain() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_domain_exception64(self):
         try:
             validate_domain('a' * 64)
-            raise Exception('validate_domain() failed to raise exception for 64 char')
+            raise AssertionError('validate_domain() failed to raise exception for 64 char')
         except InvalidOptionException:
             pass
 
     def test_validate_domain_exception_none(self):
         try:
             validate_domain(None)
-            raise Exception('validate_domain() failed to raise exception for none')
+            raise AssertionError('validate_domain() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_domain_exception_blank(self):
         try:
             validate_domain('')
-            raise Exception('validate_domain() failed to raise exception for blank')
+            raise AssertionError('validate_domain() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1911,21 +1911,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_email_exception(self):
         try:
             validate_email('harisekhon')
-            raise Exception('validate_email() failed to raise exception')
+            raise AssertionError('validate_email() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_email_exception_none(self):
         try:
             validate_email(None)
-            raise Exception('validate_email() failed to raise exception for none')
+            raise AssertionError('validate_email() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_email_exception_blank(self):
         try:
             validate_email('')
-            raise Exception('validate_email() failed to raise exception for blank')
+            raise AssertionError('validate_email() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1940,21 +1940,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_filename_exception(self):
         try:
             validate_filename(r'\@me')
-            raise Exception('validate_filename() failed to raise exception')
+            raise AssertionError('validate_filename() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_filename_exception_none(self):
         try:
             validate_filename(None)
-            raise Exception('validate_filename() failed to raise exception for none')
+            raise AssertionError('validate_filename() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_filename_exception_blank(self):
         try:
             validate_filename('')
-            raise Exception('validate_filename() failed to raise exception for blank')
+            raise AssertionError('validate_filename() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -1969,21 +1969,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_file_exception(self):
         try:
             validate_file('/etc/nonexistentfile')
-            raise Exception('validate_file() failed to raise exception')
+            raise AssertionError('validate_file() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_file_exception_none(self):
         try:
             validate_file(None)
-            raise Exception('validate_file() failed to raise exception for none')
+            raise AssertionError('validate_file() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_file_exception_blank(self):
         try:
             validate_file('')
-            raise Exception('validate_file() failed to raise exception for blank')
+            raise AssertionError('validate_file() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2000,42 +2000,42 @@ class UtilsTester(unittest.TestCase):
     def test_validate_files_exception(self):
         try:
             validate_files('/etc/nonexistentfile')
-            raise Exception('validate_files() failed to raise exception')
+            raise AssertionError('validate_files() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_files_exception_none(self):
         try:
             validate_files(None)
-            raise Exception('validate_files() failed to raise exception for none')
+            raise AssertionError('validate_files() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_files_exception_blank(self):
         try:
             validate_files('')
-            raise Exception('validate_files() failed to raise exception for blank')
+            raise AssertionError('validate_files() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
     def test_validate_files_exception_empty(self):
         try:
             validate_files(set())
-            raise Exception('validate_files() failed to raise exception for set()')
+            raise AssertionError('validate_files() failed to raise exception for set()')
         except InvalidOptionException:
             pass
 
     def test_validate_files_exception_nonlist(self):
         try:
             validate_files(set([1, 2, 3]))
-            raise Exception('validate_files() failed to raise exception for set(1,2,3)')
+            raise AssertionError('validate_files() failed to raise exception for set(1,2,3)')
         except CodingError:
             pass
 
     def test_validate_files_exception_int(self):
         try:
             validate_files(1)
-            raise Exception('validate_files(1) failed to raise exception')
+            raise AssertionError('validate_files(1) failed to raise exception')
         except CodingError:
             pass
 
@@ -2052,42 +2052,42 @@ class UtilsTester(unittest.TestCase):
     def test_validate_float_exception_noname(self):
         try:
             validate_float(-6, '', -6, 0)
-            raise Exception('validate_float() failed to raise exception for no name')
+            raise AssertionError('validate_float() failed to raise exception for no name')
         except CodingError:
             pass
 
     def test_validate_float_exception_min(self):
         try:
             validate_float(-6, 'name', 'blah', 0)
-            raise Exception('validate_float() failed to raise exception for invalid min')
+            raise AssertionError('validate_float() failed to raise exception for invalid min')
         except CodingError:
             pass
 
     def test_validate_float_exception_max(self):
         try:
             validate_float(-6, 'name', -6, 'blah')
-            raise Exception('validate_float() failed to raise exception for invalid max')
+            raise AssertionError('validate_float() failed to raise exception for invalid max')
         except CodingError:
             pass
 
     def test_validate_float_exception(self):
         try:
             validate_float(2, 'two', 3, 10)
-            raise Exception('validate_float() failed to raise exception')
+            raise AssertionError('validate_float() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_float_exception_none(self):
         try:
             validate_float(None, 'none', 3, 10)
-            raise Exception('validate_float() failed to raise exception for none')
+            raise AssertionError('validate_float() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_float_exception_blank(self):
         try:
             validate_float('', 'blank', 3, 10)
-            raise Exception('validate_float() failed to raise exception for blank')
+            raise AssertionError('validate_float() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2100,21 +2100,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_fqdn_exception(self):
         try:
             validate_fqdn('b@ddomain.local')
-            raise Exception('validate_fqdn() failed to raise exception')
+            raise AssertionError('validate_fqdn() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_fqdn_exception_none(self):
         try:
             validate_fqdn(None)
-            raise Exception('validate_fqdn() failed to raise exception for none')
+            raise AssertionError('validate_fqdn() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_fqdn_exception_blank(self):
         try:
             validate_fqdn('')
-            raise Exception('validate_fqdn() failed to raise exception for blank')
+            raise AssertionError('validate_fqdn() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2133,35 +2133,35 @@ class UtilsTester(unittest.TestCase):
     def test_validate_host_no_host_exception(self):
         try:
             validate_host('NO_SERVER_AVAILABLE')
-            raise Exception('validate_host() failed to raise exception for NO_SERVER_AVAILABLE')
+            raise AssertionError('validate_host() failed to raise exception for NO_SERVER_AVAILABLE')
         except CriticalError:
             pass
 
     def test_validate_host_exception_ip(self):
         try:
             validate_host('10.10.10.256')
-            raise Exception('validate_host() failed to raise exception for 10.10.10.256')
+            raise AssertionError('validate_host() failed to raise exception for 10.10.10.256')
         except InvalidOptionException:
             pass
 
     def test_validate_host_exception_a256(self):
         try:
             validate_host('a' * 256)
-            raise Exception('validate_host() failed to raise exception for a * 256')
+            raise AssertionError('validate_host() failed to raise exception for a * 256')
         except InvalidOptionException:
             pass
 
     def test_validate_host_exception_none(self):
         try:
             validate_host(None)
-            raise Exception('validate_host() failed to raise exception for none')
+            raise AssertionError('validate_host() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_host_exception_blank(self):
         try:
             validate_host('')
-            raise Exception('validate_host() failed to raise exception for blank')
+            raise AssertionError('validate_host() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2179,42 +2179,42 @@ class UtilsTester(unittest.TestCase):
     def test_validate_hostname_no_host_exception(self):
         try:
             self.assertTrue(validate_hostname('NO_SERVER_AVAILABLE'))
-            raise Exception('validate_hostname() failed to raise exception for NO_SERVER_AVAILABLE')
+            raise AssertionError('validate_hostname() failed to raise exception for NO_SERVER_AVAILABLE')
         except CriticalError:
             pass
 
     def test_validate_hostname_exception_help(self):
         try:
             self.assertTrue(validate_hostname('-help'))
-            raise Exception('validate_hostname() failed to raise exception for -help')
+            raise AssertionError('validate_hostname() failed to raise exception for -help')
         except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_64(self):
         try:
             self.assertTrue(validate_hostname('a' * 64))
-            raise Exception('validate_hostname() failed to raise exception for a * 64')
+            raise AssertionError('validate_hostname() failed to raise exception for a * 64')
         except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_tilda(self):
         try:
             self.assertTrue(validate_hostname('hari~sekhon'))
-            raise Exception('validate_hostname() failed to raise exception for tilda')
+            raise AssertionError('validate_hostname() failed to raise exception for tilda')
         except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_none(self):
         try:
             validate_hostname(None)
-            raise Exception('validate_hostname() failed to raise exception for none')
+            raise AssertionError('validate_hostname() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_hostname_exception_blank(self):
         try:
             validate_hostname('')
-            raise Exception('validate_hostname() failed to raise exception for blank')
+            raise AssertionError('validate_hostname() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2233,42 +2233,42 @@ class UtilsTester(unittest.TestCase):
     def test_validate_hosts_no_host_exception(self):
         try:
             validate_hosts('10.10.10.10,NO_SERVER_AVAILABLE')
-            raise Exception('validate_hosts() failed to raise exception for NO_SERVER_AVAILBLE')
+            raise AssertionError('validate_hosts() failed to raise exception for NO_SERVER_AVAILBLE')
         except CriticalError:
             pass
 
     def test_validate_hosts_exception_ip(self):
         try:
             validate_hosts('10.10.10.1,10.10.10.256')
-            raise Exception('validate_hosts() failed to raise exception for 10.10.10.256')
+            raise AssertionError('validate_hosts() failed to raise exception for 10.10.10.256')
         except InvalidOptionException:
             pass
 
     def test_validate_hosts_exception_a256(self):
         try:
             validate_hosts('10.10.10.1,' + 'a' * 256)
-            raise Exception('validate_hosts() failed to raise exception for a * 256')
+            raise AssertionError('validate_hosts() failed to raise exception for a * 256')
         except InvalidOptionException:
             pass
 
     def test_validate_hosts_exception_none(self):
         try:
             validate_hosts(None)
-            raise Exception('validate_hosts() failed to raise exception for none')
+            raise AssertionError('validate_hosts() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_hosts_exception_blank_element(self):
         try:
             validate_hosts('10.10.10.10,')
-            raise Exception('validate_hosts() failed to raise exception for blank')
+            raise AssertionError('validate_hosts() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
     def test_validate_hosts_exception_blank(self):
         try:
             validate_hosts('')
-            raise Exception('validate_hosts() failed to raise exception for blank')
+            raise AssertionError('validate_hosts() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2286,35 +2286,35 @@ class UtilsTester(unittest.TestCase):
     def test_validate_host_list_exception_ip(self):
         try:
             validate_host_list(['10.10.10.1', '10.10.10.256'])
-            raise Exception('validate_host_list() failed to raise exception for 10.10.10.256')
+            raise AssertionError('validate_host_list() failed to raise exception for 10.10.10.256')
         except InvalidOptionException:
             pass
 
     def test_validate_host_list_exception_a256(self):
         try:
             validate_host_list(['10.10.10.1', 'a' * 256])
-            raise Exception('validate_host_list() failed to raise exception for a * 256')
+            raise AssertionError('validate_host_list() failed to raise exception for a * 256')
         except InvalidOptionException:
             pass
 
     def test_validate_host_list_exception_non_list(self):
         try:
             validate_host_list('test')
-            raise Exception('validate_host_list() failed to raise exception for test non-list')
+            raise AssertionError('validate_host_list() failed to raise exception for test non-list')
         except InvalidOptionException:
             pass
 
     def test_validate_host_list_exception_none(self):
         try:
             validate_host_list(None)
-            raise Exception('validate_host_list() failed to raise exception for none')
+            raise AssertionError('validate_host_list() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_host_list_exception_blank(self):
         try:
             validate_host_list([])
-            raise Exception('validate_host_list() failed to raise exception for blank list')
+            raise AssertionError('validate_host_list() failed to raise exception for blank list')
         except InvalidOptionException:
             pass
 
@@ -2334,56 +2334,57 @@ class UtilsTester(unittest.TestCase):
     def test_validate_hostport_no_host_exception(self):
         try:
             validate_hostport('SERVER_NOT_AVAILABLE')
-            raise Exception('validate_hostport() failed to raise exception for SERVER_NOT_AVAILABLE')
+            raise AssertionError('validate_hostport() failed to raise exception for SERVER_NOT_AVAILABLE')
         except CriticalError:
             pass
 
     def test_validate_hostport_exception_port_not_optional(self):
         try:
             validate_hostport('harisekhon.com')
-            raise Exception('validate_hostport() failed to raise exception for harisekhon.com when port not optional')
+            raise AssertionError('validate_hostport() failed to raise exception for harisekhon.com ' +
+                                 'when port not optional')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_exception_port(self):
         try:
             validate_hostport('10.10.10.1:65536')
-            raise Exception('validate_hostport() failed to raise exception for 10.10.10.1:65536')
+            raise AssertionError('validate_hostport() failed to raise exception for 10.10.10.1:65536')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_exception_ip(self):
         try:
             validate_hostport('10.10.10.256:80')
-            raise Exception('validate_hostport() failed to raise exception for 10.10.10.256')
+            raise AssertionError('validate_hostport() failed to raise exception for 10.10.10.256')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_exception_a256(self):
         try:
             validate_hostport('a' * 256 + ':80')
-            raise Exception('validate_hostport() failed to raise exception for a * 256')
+            raise AssertionError('validate_hostport() failed to raise exception for a * 256')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_exception_non_list(self):
         try:
             validate_hostport('test')
-            raise Exception('validate_hostport() failed to raise exception for test non-list')
+            raise AssertionError('validate_hostport() failed to raise exception for test non-list')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_exception_none(self):
         try:
             validate_hostport(None)
-            raise Exception('validate_hostport() failed to raise exception for none')
+            raise AssertionError('validate_hostport() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_exception_blank(self):
         try:
             validate_hostport('')
-            raise Exception('validate_hostport() failed to raise exception for blank')
+            raise AssertionError('validate_hostport() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2403,57 +2404,57 @@ class UtilsTester(unittest.TestCase):
     def test_validate_hostport_list_no_host_exception(self):
         try:
             validate_hostport_list(['SERVER_NOT_AVAILABLE'])
-            raise Exception('validate_hostport_list() failed to raise exception for SERVER_NOT_AVAILABLE')
+            raise AssertionError('validate_hostport_list() failed to raise exception for SERVER_NOT_AVAILABLE')
         except CriticalError:
             pass
 
     def test_validate_hostport_list_exception_port_not_optional(self):
         try:
             validate_hostport_list(['harisekhon.com'])
-            raise Exception('validate_hostport_list() failed to raise exception ' +
-                            'for harisekhon.com when port not optional')
+            raise AssertionError('validate_hostport_list() failed to raise exception ' +
+                                 'for harisekhon.com when port not optional')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_list_exception_port(self):
         try:
             validate_hostport_list(['10.10.10.1:65536'])
-            raise Exception('validate_hostport_list() failed to raise exception for 10.10.10.1:65536')
+            raise AssertionError('validate_hostport_list() failed to raise exception for 10.10.10.1:65536')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_list_exception_ip(self):
         try:
             validate_hostport_list(['10.10.10.256:80'])
-            raise Exception('validate_hostport_list() failed to raise exception for 10.10.10.256')
+            raise AssertionError('validate_hostport_list() failed to raise exception for 10.10.10.256')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_list_exception_a256(self):
         try:
             validate_hostport_list(['a' * 256 + ':80'])
-            raise Exception('validate_hostport_list() failed to raise exception for a * 256')
+            raise AssertionError('validate_hostport_list() failed to raise exception for a * 256')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_list_exception_none(self):
         try:
             validate_hostport_list(None)
-            raise Exception('validate_hostport_list() failed to raise exception for none')
+            raise AssertionError('validate_hostport_list() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_list_exception_blank_element(self):
         try:
             validate_hostport_list(['10.10.10.10', ''])
-            raise Exception('validate_hostport_list() failed to raise exception for list with blank entry')
+            raise AssertionError('validate_hostport_list() failed to raise exception for list with blank entry')
         except InvalidOptionException:
             pass
 
     def test_validate_hostport_list_exception_blank_list(self):
         try:
             validate_hostport_list([])
-            raise Exception('validate_hostport_list() failed to raise exception for blank list')
+            raise AssertionError('validate_hostport_list() failed to raise exception for blank list')
         except InvalidOptionException:
             pass
 
@@ -2473,49 +2474,49 @@ class UtilsTester(unittest.TestCase):
     def test_validate_int_exception_noname(self):
         try:
             validate_int(6, '', 5, 7)
-            raise Exception('validate_int() failed to raise exception for no name')
+            raise AssertionError('validate_int() failed to raise exception for no name')
         except CodingError:
             pass
 
     def test_validate_int_exception_invalid_min(self):
         try:
             validate_int(6, 'name', 'blah', 7)
-            raise Exception('validate_int() failed to raise exception for invalid min')
+            raise AssertionError('validate_int() failed to raise exception for invalid min')
         except CodingError:
             pass
 
     def test_validate_int_exception_invalid_max(self):
         try:
             validate_int(6, 'name', 5, 'blah')
-            raise Exception('validate_int() failed to raise exception for invalid max')
+            raise AssertionError('validate_int() failed to raise exception for invalid max')
         except CodingError:
             pass
 
     def test_validate_int_exception_boundary(self):
         try:
             validate_int(3, 'three', 4, 10)
-            raise Exception('validate_int() failed to raise exception for boundary')
+            raise AssertionError('validate_int() failed to raise exception for boundary')
         except InvalidOptionException:
             pass
 
     def test_validate_int_exception_float(self):
         try:
             validate_int(2.1, 'two-float', 0, 10)
-            raise Exception('validate_int() failed to raise exception for float')
+            raise AssertionError('validate_int() failed to raise exception for float')
         except InvalidOptionException:
             pass
 
     def test_validate_int_exception_none(self):
         try:
             validate_int(None, 'blah', 0, 10)
-            raise Exception('validate_int() failed to raise exception for none')
+            raise AssertionError('validate_int() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_int_exception_blank(self):
         try:
             validate_int('', 'blah2', 1, 5)
-            raise Exception('validate_int() failed to raise exception for blank')
+            raise AssertionError('validate_int() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2531,28 +2532,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_interface_exception_boundary(self):
         try:
             validate_interface('vethfa1b2z3')
-            raise Exception('validate_interface() failed to raise exception for vethfa1b2z3')
+            raise AssertionError('validate_interface() failed to raise exception for vethfa1b2z3')
         except InvalidOptionException:
             pass
 
     def test_validate_interface_exception_float(self):
         try:
             validate_interface('b@interface')
-            raise Exception('validate_interface() failed to raise exception for b@interface')
+            raise AssertionError('validate_interface() failed to raise exception for b@interface')
         except InvalidOptionException:
             pass
 
     def test_validate_interface_exception_none(self):
         try:
             validate_interface(None)
-            raise Exception('validate_interface() failed to raise exception for none')
+            raise AssertionError('validate_interface() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_interface_exception_blank(self):
         try:
             validate_interface('')
-            raise Exception('validate_interface() failed to raise exception for blank')
+            raise AssertionError('validate_interface() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2571,28 +2572,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_ip_exception_boundary(self):
         try:
             validate_ip('10.10.10.256')
-            raise Exception('validate_ip() failed to raise exception for 10.10.10.256')
+            raise AssertionError('validate_ip() failed to raise exception for 10.10.10.256')
         except InvalidOptionException:
             pass
 
     def test_validate_ip_exception_x(self):
         try:
             validate_ip('x.x.x.x')
-            raise Exception('validate_ip() failed to raise exception for x.x.x.x')
+            raise AssertionError('validate_ip() failed to raise exception for x.x.x.x')
         except InvalidOptionException:
             pass
 
     def test_validate_ip_exception_none(self):
         try:
             validate_ip(None)
-            raise Exception('validate_ip() failed to raise exception for none')
+            raise AssertionError('validate_ip() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_ip_exception_blank(self):
         try:
             validate_ip('')
-            raise Exception('validate_ip() failed to raise exception for blank')
+            raise AssertionError('validate_ip() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2610,21 +2611,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_krb5_princ_exception(self):
         try:
             validate_krb5_princ('hari$HARI.COM')
-            raise Exception('validate_krb5_princ() failed to raise exception for x.x.x.x')
+            raise AssertionError('validate_krb5_princ() failed to raise exception for x.x.x.x')
         except InvalidOptionException:
             pass
 
     def test_validate_krb5_princ_exception_none(self):
         try:
             validate_krb5_princ(None)
-            raise Exception('validate_krb5_princ() failed to raise exception for none')
+            raise AssertionError('validate_krb5_princ() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_krb5_princ_exception_blank(self):
         try:
             validate_krb5_princ('')
-            raise Exception('validate_krb5_princ() failed to raise exception for blank')
+            raise AssertionError('validate_krb5_princ() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2643,28 +2644,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_krb5_realm_exception(self):
         try:
             validate_krb5_realm('harisekhon')
-            raise Exception('validate_krb5_realm() failed to raise exception')
+            raise AssertionError('validate_krb5_realm() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_krb5_realm_exception64(self):
         try:
             validate_krb5_realm('a' * 64)
-            raise Exception('validate_krb5_realm() failed to raise exception for 64 char')
+            raise AssertionError('validate_krb5_realm() failed to raise exception for 64 char')
         except InvalidOptionException:
             pass
 
     def test_validate_krb5_realm_exception_none(self):
         try:
             validate_krb5_realm(None)
-            raise Exception('validate_krb5_realm() failed to raise exception for none')
+            raise AssertionError('validate_krb5_realm() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_krb5_realm_exception_blank(self):
         try:
             validate_krb5_realm('')
-            raise Exception('validate_krb5_realm() failed to raise exception for blank')
+            raise AssertionError('validate_krb5_realm() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2676,21 +2677,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_label_exception(self):
         try:
             validate_label('b@dlabel')
-            raise Exception('validate_label() failed to raise exception')
+            raise AssertionError('validate_label() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_label_exception_none(self):
         try:
             validate_label(None)
-            raise Exception('validate_label() failed to raise exception for none')
+            raise AssertionError('validate_label() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_label_exception_blank(self):
         try:
             validate_label('')
-            raise Exception('validate_label() failed to raise exception for blank')
+            raise AssertionError('validate_label() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2704,21 +2705,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_ldap_dn_exception(self):
         try:
             validate_ldap_dn(r'hari\@LOCAL')
-            raise Exception('validate_ldap_dn() failed to raise exception')
+            raise AssertionError('validate_ldap_dn() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_ldap_dn_exception_none(self):
         try:
             validate_ldap_dn(None)
-            raise Exception('validate_ldap_dn() failed to raise exception for none')
+            raise AssertionError('validate_ldap_dn() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_ldap_dn_exception_blank(self):
         try:
             validate_ldap_dn('')
-            raise Exception('validate_ldap_dn() failed to raise exception for blank')
+            raise AssertionError('validate_ldap_dn() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2731,21 +2732,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_nosql_key_exception(self):
         try:
             validate_nosql_key('HariSekhon@check_riak_write.pl')
-            raise Exception('validate_nosql_key() failed to raise exception')
+            raise AssertionError('validate_nosql_key() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_nosql_key_exception_none(self):
         try:
             validate_nosql_key(None)
-            raise Exception('validate_nosql_key() failed to raise exception for none')
+            raise AssertionError('validate_nosql_key() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_nosql_key_exception_blank(self):
         try:
             validate_nosql_key('')
-            raise Exception('validate_nosql_key() failed to raise exception for blank')
+            raise AssertionError('validate_nosql_key() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2759,42 +2760,42 @@ class UtilsTester(unittest.TestCase):
     def test_validate_port_exception_65535(self):
         try:
             validate_port(65536)
-            raise Exception('validate_port() failed to raise exception for 655356')
+            raise AssertionError('validate_port() failed to raise exception for 655356')
         except InvalidOptionException:
             pass
 
     def test_validate_port_exception_alpha(self):
         try:
             validate_port('a')
-            raise Exception('validate_port() failed to raise exception for alpha')
+            raise AssertionError('validate_port() failed to raise exception for alpha')
         except InvalidOptionException:
             pass
 
     def test_validate_port_exception_negative(self):
         try:
             validate_port(-1)
-            raise Exception('validate_port() failed to raise exception for negative')
+            raise AssertionError('validate_port() failed to raise exception for negative')
         except InvalidOptionException:
             pass
 
     def test_validate_port_exception_zero(self):
         try:
             validate_port(0)
-            raise Exception('validate_port() failed to raise exception for zero')
+            raise AssertionError('validate_port() failed to raise exception for zero')
         except InvalidOptionException:
             pass
 
     def test_validate_port_exception_none(self):
         try:
             validate_port(None)
-            raise Exception('validate_port() failed to raise exception for none')
+            raise AssertionError('validate_port() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_port_exception_blank(self):
         try:
             validate_port('')
-            raise Exception('validate_port() failed to raise exception for blank')
+            raise AssertionError('validate_port() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2808,28 +2809,28 @@ class UtilsTester(unittest.TestCase):
     def test_validate_process_name_exception_init(self):
         try:
             validate_process_name('[init] 3')
-            raise Exception('validate_process_name() failed to raise exception for init')
+            raise AssertionError('validate_process_name() failed to raise exception for init')
         except InvalidOptionException:
             pass
 
     def test_validate_process_name_exception_badfile(self):
         try:
             validate_process_name(r'./b\@dfile')
-            raise Exception('validate_process_name() failed to raise exception for badfile')
+            raise AssertionError('validate_process_name() failed to raise exception for badfile')
         except InvalidOptionException:
             pass
 
     def test_validate_process_name_exception_none(self):
         try:
             validate_process_name(None)
-            raise Exception('validate_process_name() failed to raise exception for none')
+            raise AssertionError('validate_process_name() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_process_name_exception_blank(self):
         try:
             validate_process_name('')
-            raise Exception('validate_process_name() failed to raise exception for blank')
+            raise AssertionError('validate_process_name() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2846,42 +2847,42 @@ class UtilsTester(unittest.TestCase):
     def test_validate_password_exception_backticks(self):
         try:
             validate_password('`danger`')
-            raise Exception('validate_password() failed to raise exception for backticks')
+            raise AssertionError('validate_password() failed to raise exception for backticks')
         except InvalidOptionException:
             pass
 
     def test_validate_password_exception_subshell(self):
         try:
             validate_password('$(hari)')
-            raise Exception('validate_password() failed to raise exception for subshell')
+            raise AssertionError('validate_password() failed to raise exception for subshell')
         except InvalidOptionException:
             pass
 
     def test_validate_password_exception_double_quotes(self):
         try:
             validate_password('"hari"')
-            raise Exception('validate_password() failed to raise exception for double quotes')
+            raise AssertionError('validate_password() failed to raise exception for double quotes')
         except InvalidOptionException:
             pass
 
     def test_validate_password_exception_single_quotes(self):
         try:
             validate_password("O'Reilly")
-            raise Exception('validate_password() failed to raise exception for single quotes')
+            raise AssertionError('validate_password() failed to raise exception for single quotes')
         except InvalidOptionException:
             pass
 
     def test_validate_password_exception_none(self):
         try:
             validate_password(None)
-            raise Exception('validate_password() failed to raise exception for none')
+            raise AssertionError('validate_password() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_password_exception_blank(self):
         try:
             validate_password('')
-            raise Exception('validate_password() failed to raise exception for blank')
+            raise AssertionError('validate_password() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2894,21 +2895,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_regex_exception_unmatched_bracket(self):
         try:
             validate_regex('(.*')
-            raise Exception('validate_regex() failed to raise exception for missing closing brace')
+            raise AssertionError('validate_regex() failed to raise exception for missing closing brace')
         except InvalidOptionException:
             pass
 
     def test_validate_regex_exception_none(self):
         try:
             validate_regex(None)
-            raise Exception('validate_regex() failed to raise exception for none')
+            raise AssertionError('validate_regex() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_regex_exception_blank(self):
         try:
             validate_regex('')
-            raise Exception('validate_regex() failed to raise exception for blank')
+            raise AssertionError('validate_regex() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2929,21 +2930,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_units_exception(self):
         try:
             validate_units('a')
-            raise Exception('validate_units() failed to raise exception for "a"')
+            raise AssertionError('validate_units() failed to raise exception for "a"')
         except InvalidOptionException:
             pass
 
     def test_validate_units_exception_none(self):
         try:
             validate_units(None)
-            raise Exception('validate_units() failed to raise exception for none')
+            raise AssertionError('validate_units() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_units_exception_blank(self):
         try:
             validate_units('')
-            raise Exception('validate_units() failed to raise exception for blank')
+            raise AssertionError('validate_units() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2960,21 +2961,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_url_exception(self):
         try:
             validate_url('-help')
-            raise Exception('validate_url() failed to raise exception')
+            raise AssertionError('validate_url() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_url_exception_none(self):
         try:
             validate_url(None)
-            raise Exception('validate_url() failed to raise exception for none')
+            raise AssertionError('validate_url() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_url_exception_blank(self):
         try:
             validate_url('')
-            raise Exception('validate_url() failed to raise exception for blank')
+            raise AssertionError('validate_url() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -2990,21 +2991,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_url_path_suffix_exception(self):
         try:
             validate_url_path_suffix('hari')
-            raise Exception('validate_url_path_suffix() failed to raise exception')
+            raise AssertionError('validate_url_path_suffix() failed to raise exception')
         except InvalidOptionException:
             pass
 
     def test_validate_url_path_suffix_exception_none(self):
         try:
             validate_url_path_suffix(None)
-            raise Exception('validate_url_path_suffix() failed to raise exception for none')
+            raise AssertionError('validate_url_path_suffix() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_url_path_suffix_exception_blank(self):
         try:
             validate_url_path_suffix('')
-            raise Exception('validate_url_path_suffix() failed to raise exception for blank')
+            raise AssertionError('validate_url_path_suffix() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -3022,21 +3023,21 @@ class UtilsTester(unittest.TestCase):
     def test_validate_user_exception_dashfirst(self):
         try:
             validate_user('-hari')
-            raise Exception('validate_user() failed to raise exception for dashfirst')
+            raise AssertionError('validate_user() failed to raise exception for dashfirst')
         except InvalidOptionException:
             pass
 
     def test_validate_user_exception_none(self):
         try:
             validate_user(None)
-            raise Exception('validate_user() failed to raise exception for none')
+            raise AssertionError('validate_user() failed to raise exception for none')
         except InvalidOptionException:
             pass
 
     def test_validate_user_exception_blank(self):
         try:
             validate_user('')
-            raise Exception('validate_user() failed to raise exception for blank')
+            raise AssertionError('validate_user() failed to raise exception for blank')
         except InvalidOptionException:
             pass
 
@@ -3066,42 +3067,42 @@ class UtilsTester(unittest.TestCase):
         def test_which_exception_non_executable(self):
             try:
                 which('/etc/hosts')
-                raise Exception('which() failed to raise non executable exception for /etc/hosts')
+                raise AssertionError('which() failed to raise non executable exception for /etc/hosts')
             except FileNotExecutableException:
                 pass
 
     # def test_which_exception_non_found(self):
     #     try:
     #         which('/etc/nonexistent')
-    #         raise Exception('which() failed to raise exception for nonexistent file')
+    #         raise AssertionError('which() failed to raise exception for nonexistent file')
     #     except FileNotFoundException:
     #         pass
 
     def test_which_exception_invalid_filename(self):
         try:
             which('b@dfile')
-            raise Exception('which() failed to raise exception for dashfirst')
+            raise AssertionError('which() failed to raise exception for dashfirst')
         except InvalidFilenameException:
             pass
 
     # def test_which_exception_numfirst(self):
     #     try:
     #         which('9hari')
-    #         raise Exception('which() failed to raise exception for numfirst')
+    #         raise AssertionError('which() failed to raise exception for numfirst')
     #     except FileNotFoundException:
     #         pass
 
     def test_which_exception_none(self):
         try:
             which(None)
-            raise Exception('which() failed to raise exception for none')
+            raise AssertionError('which() failed to raise exception for none')
         except InvalidFilenameException:
             pass
 
     def test_which_exception_blank(self):
         try:
             which('')
-            raise Exception('which() failed to raise exception for blank')
+            raise AssertionError('which() failed to raise exception for blank')
         except InvalidFilenameException:
             pass
 
@@ -3115,21 +3116,21 @@ class UtilsTester(unittest.TestCase):
 # def test_validate_user_exists_exception(self):
 #     try:
 #         validate_user_exists('noexistentuser')
-#         raise Exception('validate_user_exists() failed to raise exception for nonexistentuser')
+#         raise AssertionError('validate_user_exists() failed to raise exception for nonexistentuser')
 #     except InvalidOptionException:
 #         pass
 #
 # def test_validate_user_exists_exception_none(self):
 #     try:
 #         validate_user_exists(None)
-#         raise Exception('validate_user_exists() failed to raise exception for none')
+#         raise AssertionError('validate_user_exists() failed to raise exception for none')
 #     except InvalidOptionException:
 #         pass
 #
 # def test_validate_user_exists_exception_blank(self):
 #     try:
 #         validate_user_exists('')
-#         raise Exception('validate_user_exists() failed to raise exception for blank')
+#         raise AssertionError('validate_user_exists() failed to raise exception for blank')
 #     except InvalidOptionException:
 #         pass
 
