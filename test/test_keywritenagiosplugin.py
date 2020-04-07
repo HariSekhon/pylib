@@ -43,8 +43,8 @@ class KeyWriteNagiosPluginTester(unittest.TestCase):
     class SubKeyWriteNagiosPlugin(KeyWriteNagiosPlugin):
         def __init__(self):
             # Python 2.x
-            #super(SubKeyWriteNagiosPlugin, self).__init__()
-            KeyWriteNagiosPlugin.__init__(self)
+            #KeyWriteNagiosPlugin.__init__(self)
+            super(KeyWriteNagiosPluginTester.SubKeyWriteNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
             self.name = 'test'
