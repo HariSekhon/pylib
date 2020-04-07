@@ -122,16 +122,20 @@ test: test-common unittest
 
 .PHONY: unittest
 unittest:
-	#python test/test_HariSekhonUtils.py
-	# find all unit tests under test/
-	# Python -m >= 2.7
-	#python -m unittest discover -v
-	#unit2 discover -v
-	`bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2`
+	@#python test/test_HariSekhonUtils.py
+	@# find all unit tests under test/
+	@# Python -m >= 2.7
+	@#python -m unittest discover -v
+	@#unit2 discover -v
+	@#`bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2`
+	pytest
+
+.PHONY: unittest2
+unittest2:
+	@`bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2`
 
 .PHONY: test2
-test2: test-common
-	python -m unittest discover -v
+test2: test-common unittest2
 
 .PHONY: install
 install:
@@ -154,5 +158,5 @@ deep-clean: clean
 coverage:
 	@# doesn't catch a lot of tests, use nose instead
 	@#coverage run --source=harisekhon -m test
-	coverage run --source=harisekhon -m nose
-	@#coverage run --source=harisekhon -m pytest
+	@#coverage run --source=harisekhon -m nose
+	coverage run --source=harisekhon -m pytest
