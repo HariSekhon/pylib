@@ -733,6 +733,7 @@ class UtilsTester(unittest.TestCase):
     def test_isFloat(self):
         self.assertTrue(isFloat(1))
         self.assertTrue(isFloat('1'))
+        self.assertTrue(isFloat(u'1'))
         self.assertFalse(isFloat(-1))
         self.assertFalse(isFloat('-1'))
         self.assertTrue(isFloat(1, True))

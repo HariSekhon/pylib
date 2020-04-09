@@ -57,7 +57,7 @@ import defusedxml.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.13.0'
+__version__ = '0.13.1'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -987,13 +987,15 @@ def isFilename(arg):
 def isFloat(arg, allow_negative=False):
     if arg is None:
         return False
-    if not isinstance(arg, (float, int, str)):
-         return False
+    # not a good idea, behaviour differences in Python 2 vs Python 3 break this
+    # as unicode needed in Python 2, but not present in Python 3
+    #if not isinstance(arg, (float, int, str, unicode)):
+    #     return False
     try:
         arg = float(arg)
         if str(arg) == 'nan':
             raise ValueError
-    except ValueError:
+    except (ValueError, TypeError):
         return False
     if not allow_negative and arg < 0:
         return False
