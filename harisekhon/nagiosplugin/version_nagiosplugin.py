@@ -44,7 +44,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2.4'
+__version__ = '0.2.3'
 
 
 class VersionNagiosPlugin(NagiosPlugin):
@@ -58,7 +58,7 @@ class VersionNagiosPlugin(NagiosPlugin):
         super(VersionNagiosPlugin, self).__init__()
         # Python 3.x
         # super().__init__()
-        self.name = None
+        self.software = None
         self.default_host = 'localhost'
         self.default_port = 80
         self.host = None
@@ -68,9 +68,7 @@ class VersionNagiosPlugin(NagiosPlugin):
         self.ok()
 
     def add_options(self):
-        if self.name is None:
-            raise CodingError('self.name is not set in inheriting class')
-        self.add_hostoption(name=self.name,
+        self.add_hostoption(name=self.software,
                             default_host=self.default_host,
                             default_port=self.default_port)
         self.add_expected_version_option()
@@ -85,6 +83,8 @@ class VersionNagiosPlugin(NagiosPlugin):
         validate_host(self.host)
         validate_port(self.port)
         self.process_expected_version_option()
+        if self.software is None:
+            raise CodingError('self.software is not set in inheriting class')
 
     def process_expected_version_option(self):
         self.expected = self.get_opt('expected')
@@ -100,11 +100,11 @@ class VersionNagiosPlugin(NagiosPlugin):
     def check_version(self, version):
         log.info("checking version '%s'", version)
         if not version:
-            qquit('UNKNOWN', '{0} version not found. {1}'.format(self.name, support_msg_api()))
+            qquit('UNKNOWN', '{0} version not found. {1}'.format(self.software, support_msg_api()))
         if not isVersion(version):
             qquit('UNKNOWN', '{0} version unrecognized \'{1}\'. {2}'\
-                             .format(self.name, version, support_msg_api()))
-        self.msg = '{0} version = {1}'.format(self.name, version)
+                             .format(self.software, version, support_msg_api()))
+        self.msg = '{0} version = {1}'.format(self.software, version)
         if self.expected is not None:
             log.info("verifying version against expected regex '%s'", self.expected)
             if re.match(self.expected, str(version)):
