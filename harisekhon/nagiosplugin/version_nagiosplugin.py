@@ -36,7 +36,7 @@ libdir = os.path.join(srcdir, 'pylib')
 sys.path.append(libdir)
 try:
     # pylint: disable=wrong-import-position
-    from harisekhon.utils import log, qquit, support_msg_api
+    from harisekhon.utils import log, qquit, support_msg_api, CodingError
     from harisekhon.utils import validate_host, validate_port, validate_regex, isVersion
     from harisekhon.nagiosplugin import NagiosPlugin
 except ImportError as _:
@@ -44,7 +44,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 
 
 class VersionNagiosPlugin(NagiosPlugin):
@@ -83,6 +83,8 @@ class VersionNagiosPlugin(NagiosPlugin):
         validate_host(self.host)
         validate_port(self.port)
         self.process_expected_version_option()
+        if self.software is None:
+            raise CodingError('self.software is not set in inheriting class')
 
     def process_expected_version_option(self):
         self.expected = self.get_opt('expected')
