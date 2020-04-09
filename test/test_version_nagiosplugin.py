@@ -56,7 +56,6 @@ class VersionNagiosPluginTester(unittest.TestCase):
 
     def test_exit_0(self):
         plugin = self.SubVersionNagiosPlugin()
-        plugin.software = 'test'
         #plugin.get_version = lambda: '1.2.3'
         try:
             plugin.main()
