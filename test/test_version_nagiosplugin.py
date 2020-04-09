@@ -47,7 +47,7 @@ class VersionNagiosPluginTester(unittest.TestCase):
             super(VersionNagiosPluginTester.SubVersionNagiosPlugin, self).__init__()
             # Python 3.x
             # super().__init__()
-            self.name = 'test'
+            self.software = 'test'
         def get_version(self):
             return '1.2.3'
 
