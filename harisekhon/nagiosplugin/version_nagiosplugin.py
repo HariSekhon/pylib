@@ -44,7 +44,7 @@ except ImportError as _:
     sys.exit(4)
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.2.3'
+__version__ = '0.2.4'
 
 
 class VersionNagiosPlugin(NagiosPlugin):
@@ -68,6 +68,8 @@ class VersionNagiosPlugin(NagiosPlugin):
         self.ok()
 
     def add_options(self):
+        if self.software is None:
+            raise CodingError('self.software is not set in inheriting class')
         self.add_hostoption(name=self.software,
                             default_host=self.default_host,
                             default_port=self.default_port)
@@ -83,8 +85,6 @@ class VersionNagiosPlugin(NagiosPlugin):
         validate_host(self.host)
         validate_port(self.port)
         self.process_expected_version_option()
-        if self.software is None:
-            raise CodingError('self.software is not set in inheriting class')
 
     def process_expected_version_option(self):
         self.expected = self.get_opt('expected')
