@@ -162,6 +162,11 @@ coverage:
 	@#coverage run --source=harisekhon -m pytest
 	coverage report
 
+.PHONY: coverage-html
+coverage-html: coverage
+	coverage html
+	open htmlcov/index.html
+
 .PHONY: coveralls
 coveralls: coverage
 	coveralls
