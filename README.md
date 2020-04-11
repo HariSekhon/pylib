@@ -65,6 +65,7 @@ Hari Sekhon - Python / Jython Library
 [![CI Ubuntu 14.04](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu%2014.04/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu+14.04%22)
 [![CI Ubuntu 16.04](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu%2016.04/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu+16.04%22)
 [![CI Ubuntu 18.04](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu%2018.04/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu+18.04%22)
+[![CI Ubuntu GitHub](https://github.com/HariSekhon/pylib/workflows/CI%20Ubuntu%20GitHub/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Ubuntu+GitHub%22)
 [![CI Debian](https://github.com/HariSekhon/pylib/workflows/CI%20Debian/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Debian%22)
 [![CI Debian 8](https://github.com/HariSekhon/pylib/workflows/CI%20Debian%208/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Debian+8%22)
 [![CI Debian 9](https://github.com/HariSekhon/pylib/workflows/CI%20Debian%209/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+Debian+9%22)
