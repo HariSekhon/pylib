@@ -36,6 +36,6 @@ section "Running PyLib Unit Tests"
 #pytest
 
 nose="$(bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2)"
-echo $nose
+echo "running nose tests using: $nose"
 echo
 $nose
