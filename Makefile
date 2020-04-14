@@ -87,7 +87,7 @@ build: init
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	@#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient || \
 	@#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient
-	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient ||
+	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient ||\
 	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient
 
 	# Python 2.4 - 2.6 backports
