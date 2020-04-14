@@ -72,19 +72,23 @@ build: init
 	git update-index --assume-unchanged resources/custom_tlds.txt
 
 	# fixes bug in cffi version detection when installing requests-kerberos
-	$(SUDO_PIP) pip install --quiet --upgrade pip || :
+	@#$(SUDO_PIP) pip install --quiet --upgrade pip || :
+	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh pip || :
 
 	# impyla needs newer setuptools than OS packaged with Python 2
-	$(SUDO_PIP) pip install --quiet --upgrade setuptools || :
+	@#$(SUDO_PIP) pip install --quiet --upgrade setuptools || :
+	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh setuptools || :
 
 	# only install pip packages not installed via system packages
 	#$(SUDO_PIP) pip install --quiet --upgrade -r requirements.txt
 	#$(SUDO_PIP) pip install --quiet -r requirements.txt
-	@PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh requirements.txt
+	PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh requirements.txt
 
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
-	$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient || \
-	$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient
+	@#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient || \
+	@#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient
+	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient ||
+	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient
 
 	# Python 2.4 - 2.6 backports
 	#$(SUDO_PIP) pip install argparse
@@ -124,11 +128,14 @@ test: test-common unittest
 
 .PHONY: unittest
 unittest:
+	@echo "Running PyLib Unit Tests"; echo
 	@#python test/test_HariSekhonUtils.py
 	@# find all unit tests under test/
 	@# Python -m >= 2.7
 	@#python -m unittest discover -v
 	@#unit2 discover -v
+	bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2
+	@echo
 	@`bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2`
 	@#pytest
 
