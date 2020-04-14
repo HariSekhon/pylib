@@ -54,14 +54,7 @@ build: init
 	@$(MAKE) git-summary
 	@echo
 
-	@# executing in sh where type is not available
-	@#type -P python
-	which python && python -V || :
-	which python2 && python2 -V || :
-	which python3 && python3 -V || :
-	which pip && pip -V || :
-	which pip2 && pip2 -V || :
-	which pip3 && pip3 -V || :
+	$(MAKE) which-python
 
 	# doesn't work, only exits the line not the script and don't wanna use oneshell
 	#if [ -z "$(CPANM)" ]; then make; exit $$?; fi
