@@ -63,8 +63,8 @@ build: init
 	which pip2 && pip2 -V || :
 	which pip3 && pip3 -V || :
 
-	@# doesn't work, only exits the line not the script and don't wanna use oneshell
-	@#if [ -z "$(CPANM)" ]; then make; exit $$?; fi
+	# doesn't work, only exits the line not the script and don't wanna use oneshell
+	#if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
 
 	bash-tools/setup/alternatives_set_python.sh
@@ -72,27 +72,27 @@ build: init
 	git update-index --assume-unchanged resources/custom_tlds.txt
 
 	# fixes bug in cffi version detection when installing requests-kerberos
-	@# $(SUDO_PIP) pip install --quiet --upgrade pip || :
+	# $(SUDO_PIP) pip install --quiet --upgrade pip || :
 	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh pip || :
 
 	# impyla needs newer setuptools than OS packaged with Python 2
-	@# $(SUDO_PIP) pip install --quiet --upgrade setuptools || :
+	# $(SUDO_PIP) pip install --quiet --upgrade setuptools || :
 	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh setuptools || :
 
 	# only install pip packages not installed via system packages
-	@# $(SUDO_PIP) pip install --quiet --upgrade -r requirements.txt
-	@# $(SUDO_PIP) pip install --quiet -r requirements.txt
+	# $(SUDO_PIP) pip install --quiet --upgrade -r requirements.txt
+	# $(SUDO_PIP) pip install --quiet -r requirements.txt
 	PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh requirements.txt
 
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
-	@#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient || \
-	@#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient
+	#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient || \
+	#$(SUDO_PIP) pip install --quiet --upgrade ndg-httpsclient
 	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient ||\
 	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient
 
-	@# Python 2.4 - 2.6 backports
-	@# $(SUDO_PIP) pip install argparse
-	@# $(SUDO_PIP) pip install unittest2
+	# Python 2.4 - 2.6 backports
+	# $(SUDO_PIP) pip install argparse
+	# $(SUDO_PIP) pip install unittest2
 
 	# PyLint breaks in Python 2.6
 	#if [ "$$(python -c 'import sys; sys.path.append("pylib"); import harisekhon; print(harisekhon.utils.getPythonVersion())')" = "2.6" ]; then $(SUDO_PIP) pip uninstall -y pylint; fi
