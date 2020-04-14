@@ -130,9 +130,6 @@ test: test-common unittest
 unittest:
 	tests/unittest.sh
 
-.PHONY: test2
-test2: test-common unittest2
-
 .PHONY: install
 install:
 	@echo "No installation needed, just add '$(PWD)' to your \$$PATH"
