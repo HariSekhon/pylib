@@ -35,7 +35,22 @@ section "Running PyLib Unit Tests"
 # more concise output but pip version problems between verions that support Python 2 and Python 3
 #pytest
 
-nose="$(bash-tools/python_find_library_executable.sh nose2 nose nosetests nosetests-3 nosetests-2)"
+potential_nose_commands="
+nose2
+nose
+nosetests
+nosetests-3
+nosetests-2
+"
+
+if is_CI; then
+    echo "Available Python nose commands:"
+    for cmd in $potential_nose_commands; do
+        find / -type f -name "$cmd"
+    done
+fi
+
+nose="$(bash-tools/python_find_library_executable.sh $potential_nose_commands)"
 echo "running nose tests using: $nose"
 echo
 $nose
