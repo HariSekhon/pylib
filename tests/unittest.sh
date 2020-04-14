@@ -46,7 +46,7 @@ nosetests-2
 if is_CI; then
     echo "Available Python nose commands:"
     for cmd in $potential_nose_commands; do
-        find / -type f -name "$cmd" 2>/dev/null
+        find / -type f -name "$cmd" 2>/dev/null || :
     done
 fi
 
