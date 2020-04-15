@@ -43,7 +43,6 @@ class RequestHandlerTester(unittest.TestCase):
 
     # Not using assertRaises >= 2.7 and maintaining compatibility with Python 2.6 servers
 
-    # TODO: mock this
     def test_request_handler(self):
         req = RequestHandler().get('www.google.com')
         self.assertTrue(isinstance, requests.Response)
@@ -53,7 +52,37 @@ class RequestHandlerTester(unittest.TestCase):
     def test_request_handler_failure():
         try:
             RequestHandler().get('127.0.0.1:1')
-            raise AssertionError('failed to raise exception for RequestHandler.get(nonexistent)')
+            raise AssertionError('failed to raise exception for RequestHandler.get(127.0.0.1:1)')
+        except CriticalError:
+            pass
+
+    @staticmethod
+    def test_request_handler_failure2():
+        request_handler = RequestHandler()
+        request_handler.req = lambda: {'status': 500, 'content': {'message': 'fake message BadStatusLine'}}
+        try:
+            RequestHandler().get('127.0.0.1:2')
+            raise AssertionError('failed to raise exception for RequestHandler.get(127.0.0.1:2)')
+        except CriticalError:
+            pass
+
+    @staticmethod
+    def test_request_handler_failure3():
+        request_handler = RequestHandler()
+        request_handler.req = lambda: {'status': 500, 'content': {'message': 'fake message unknown protocol'}}
+        try:
+            RequestHandler().get('https://127.0.0.1:3')
+            raise AssertionError('failed to raise exception for RequestHandler.get(https://127.0.0.1:3)')
+        except CriticalError:
+            pass
+
+    @staticmethod
+    def test_request_handler_failure4():
+        request_handler = RequestHandler()
+        request_handler.req = lambda: 'fake error'
+        try:
+            RequestHandler().get('https://127.0.0.1:4')
+            raise AssertionError('failed to raise exception for RequestHandler.get(https://127.0.0.1:4)')
         except CriticalError:
             pass
 
