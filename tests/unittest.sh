@@ -35,12 +35,13 @@ section "Running PyLib Unit Tests"
 # more concise output but pip version problems between verions that support Python 2 and Python 3
 #pytest
 
+# in Semaphore CI /usr/bin/nosetests should come before /usr/local/bin/nose2 which will use Python 3.8 instead of /usr/bin/python -> python2.7
 potential_nose_commands="
-nose2
-nose
 nosetests
 nosetests-3
 nosetests-2
+nose2
+nose
 "
 
 if is_CI; then
