@@ -31,7 +31,7 @@ import unittest
 libdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(libdir)
 # pylint: disable=wrong-import-position
-from harisekhon.utils import log
+from harisekhon.utils import log, InvalidOptionException
 from harisekhon.nagiosplugin import RestNagiosPlugin
 
 class RestNagiosPluginTester(unittest.TestCase):
@@ -86,7 +86,7 @@ class RestNagiosPluginTester(unittest.TestCase):
         try:
             plugin.main()
             raise AssertionError('RestSub plugin failed to terminate')
-        except SystemExit as _:
+        except (SystemExit, InvalidOptionException) as _:
             if _.code != 3:
                 raise AssertionError('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
                                      .format(_.code))
@@ -99,7 +99,7 @@ class RestNagiosPluginTester(unittest.TestCase):
         except TypeError:  # only seems to enforce abstract type error in Python 2
             pass
         except SystemExit as _:
-            if _.code != 0:
+            if _.code != 3:
                 raise AssertionError('RestNagiosPlugin failed to exit UNKNOWN (3), got exit code {0} instead'
                                      .format(_.code))
 
