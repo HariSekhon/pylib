@@ -22,7 +22,7 @@ version: ~> 1.0
 
 python:
   - "2.7"
-  - "3.4"
+  #- "3.4" supported by pip as of March 2019
   - "3.5"
   - "3.6"
   - "3.7"
@@ -40,10 +40,6 @@ matrix:
 
     - os: osx
       language: generic # workaround since Mac doesn't have Python support yet, so install to system Python
-
-    - os: linux
-      language: python
-      python: "3.4"
 
     - os: linux
       language: python
