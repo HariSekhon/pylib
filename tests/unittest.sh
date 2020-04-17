@@ -72,8 +72,13 @@ nose_commands="$(
 # shellcheck disable=SC2086
 nose="$(bash-tools/python_find_library_executable.sh $nose_commands)"
 echo
+echo "Unsetting environment variables that may interfere with unit tests"
+unset HOST
+unset PORT
+echo
+
 # $python defined in bash-tools/lib/python.sh
 # shellcheck disable=SC2154
-echo "running nose tests using: $python $nose"
+echo "Running nose tests using: $python $nose"
 echo
 "$python" "$nose"
