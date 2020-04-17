@@ -40,11 +40,12 @@ section "Running PyLib Unit Tests"
 
 # in Semaphore CI /usr/bin/nosetests should come before /usr/local/bin/nose2 which will use Python 3.8 instead of /usr/bin/python -> python2.7
 potential_nose_commands="
+nose
 nosetests
+nose3
+nose2
 nosetests-3
 nosetests-2
-nose2
-nose
 "
 
 if is_CI; then
@@ -54,10 +55,24 @@ if is_CI; then
     done
 fi
 
+nose_commands="$(
+    for nose in $potential_nose_commands; do
+        # $python_major_version defined in bash-tools/lib/python.sh
+        # shellcheck disable=SC2154
+        if [[ "$nose" =~ [[:digit:]]$ ]] &&
+           ! [[ "$nose" =~ $python_major_version$ ]]; then
+            continue
+        fi
+        echo "$nose"
+    done
+)"
+
 # want splitting
 # shellcheck disable=SC2086
-nose="$(bash-tools/python_find_library_executable.sh $potential_nose_commands)"
+nose="$(bash-tools/python_find_library_executable.sh $nose_commands)"
 echo
-echo "running nose tests using: $nose"
+# $python defined in bash-tools/lib/python.sh
+# shellcheck disable=SC2154
+echo "running nose tests using: $python $nose"
 echo
-"$nose"
+"$python" "$nose"
