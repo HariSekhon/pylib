@@ -48,12 +48,13 @@ nosetests-3
 nosetests-2
 "
 
-if is_CI; then
-    echo "Available Python nose commands:"
-    for cmd in $potential_nose_commands; do
-        find / -type f -name "$cmd" 2>/dev/null || :
-    done
-fi
+# causes timeouts on some builds (eg, Mac on GitHub Actions)
+#if is_CI; then
+#    echo "Available Python nose commands:"
+#    for cmd in $potential_nose_commands; do
+#        find / -type f -name "$cmd" 2>/dev/null || :
+#    done
+#fi
 
 nose_commands="$(
     for nose in $potential_nose_commands; do
