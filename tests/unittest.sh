@@ -51,7 +51,10 @@ if is_CI; then
     done
 fi
 
+# want splitting
+# shellcheck disable=SC2086
 nose="$(bash-tools/python_find_library_executable.sh $potential_nose_commands)"
+echo
 echo "running nose tests using: $nose"
 echo
-$nose
+"$nose"
