@@ -24,6 +24,9 @@ cd "$srcdir/.."
 
 section "Running PyLib Unit Tests"
 
+# shellcheck disable=SC1091
+. bash-tools/lib/python.sh
+
 #python test/test_utils.py
 
 # find all unit tests under test/
