@@ -39,7 +39,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.4'
+__version__ = '0.9.5'
 
 
 class NagiosPlugin(CLI):
@@ -128,8 +128,7 @@ class NagiosPlugin(CLI):
             if _ is None:
                 if optional:
                     return Threshold(None, optional=True)
-                else:
-                    raise CodingError('threshold {0} is not set (None)'.format(name))
+                raise CodingError('threshold {0} is not set (None)'.format(name))
             return _
         except KeyError:
             raise CodingError("threshold '%s' does not exist. " % name +
@@ -169,7 +168,7 @@ class NagiosPlugin(CLI):
             # log.debug("using threshold option '%s'", name)
             threshold = self.get_opt(name)
             # log.debug("got threshold '%s'", threshold)
-        if optional and threshold is None:
+        if optional and threshold is None:  # pylint: disable=no-else-return
             return None
         else:
             try:
@@ -177,6 +176,7 @@ class NagiosPlugin(CLI):
             except InvalidThresholdException as _:
                 self.usage(_)
         log_option(name, threshold)
+        return None
 
     # not making this implicit via add_options as we may want to specify threshold validation options so must call
     # manually when creating threshold objects
@@ -213,7 +213,7 @@ class NagiosPlugin(CLI):
             name += '_'
         threshold_breach_msg = self.check_threshold('{0}critical'.format(name), result)
         threshold_breach_msg2 = self.check_threshold('{0}warning'.format(name), result)
-        if threshold_breach_msg:
+        if threshold_breach_msg:  # pylint: disable=no-else-return
             self.msg += ' ' + threshold_breach_msg
             return threshold_breach_msg
         elif threshold_breach_msg2:
@@ -256,8 +256,10 @@ class NagiosPlugin(CLI):
             if log.isEnabledFor(logging.DEBUG):
                 log.debug("exception: '%s'", exception_type)
                 log.debug(traceback.format_exc())
-            msg = 'Nagios Plugin Exception: {exception_type}: {msg}'\
-                  .format(exception_type=exception_type, msg=self.exception_msg())
+            # exception type is part of the string, so don't double it up by prefixing it again
+            #msg = 'Nagios Plugin Exception: {exception_type}: {msg}'\
+            #      .format(exception_type=exception_type, msg=self.exception_msg())
+            msg = 'Nagios Plugin Exception: {msg}'.format(msg=self.exception_msg())
             #msg = ', '.join([x.strip() for x in msg.split('\n')])
             # ', ' doesn't look nice for ':\n ...' => ':, ...' (snakebite OutOfNNException)
             #msg = '\t'.join([x.strip() for x in msg.split('\n')])
