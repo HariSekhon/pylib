@@ -53,8 +53,7 @@ build: init
 	@echo ================
 	@$(MAKE) git-summary
 	@echo
-
-	$(MAKE) python-version
+	@$(MAKE) python-version
 
 	# doesn't work, only exits the line not the script and don't wanna use oneshell
 	#if [ -z "$(CPANM)" ]; then make; exit $$?; fi
