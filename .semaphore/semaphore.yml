@@ -31,7 +31,7 @@ blocks:
     #  hours: 2
     task:
       env_vars:
-        # /usr/bin/python and /usr/local/bin/pip are mismatched from $PATH
+        # $PATH selects /usr/bin/python and /usr/local/bin/pip which are mismatched versions of Python
         - name: PYTHON
           value: python3
         - name: PIP
