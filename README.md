@@ -41,14 +41,19 @@ Hari Sekhon - Python / Jython Library
 [![Codefresh](https://g.codefresh.io/api/badges/pipeline/harisekhon/GitHub%2Fpylib?branch=master&key=eyJhbGciOiJIUzI1NiJ9.NWU1MmM5OGNiM2FiOWUzM2Y3ZDZmYjM3.O69674cW7vYom3v5JOGKXDbYgCVIJU9EWhXUMHl3zwA&type=cf-1)](https://g.codefresh.io/pipelines/edit/new/builds?id=5e58e2f89604d74f0c95ee24&pipeline=pylib&projects=GitHub&projectId=5e52ca8ea284e00f882ea992&context=github&filter=page:1;pageSize:10;timeFrameStart:week)
 [![Wercker](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/harisekhon/pylib/runs)
 [![BuildKite](https://img.shields.io/buildkite/7cc15b95df0f0478ccecd598dffa756d1460f68914b6d3083d/master?label=BuildKite)](https://buildkite.com/hari-sekhon/pylib)
-[![buddy pipeline](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989/badge.svg?token=7f63afa3c423a65e6e39a79be0386959e98c4105ea1e20f7f8b05d6d6b587038 "buddy pipeline")](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989)
 [![Cirrus CI](https://img.shields.io/cirrus/github/HariSekhon/pylib/master?logo=Cirrus%20CI&label=Cirrus%20CI)](https://cirrus-ci.com/github/HariSekhon/pylib)
 [![Semaphore](https://harisekhon.semaphoreci.com/badges/pylib.svg)](https://harisekhon.semaphoreci.com/projects/pylib)
 [![Concourse](https://img.shields.io/badge/Concourse-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/.concourse.yml)
 [![GoCD](https://img.shields.io/badge/GoCD-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/.gocd.yml)
 [![Jenkins](https://img.shields.io/badge/Jenkins-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/Jenkinsfile)
 <!--
+
+shields.io gets throttled after a few reloads :-/ - which is bad because shields latency is high and oftens fails to load some badges which requires you to reload the page a few times until they load, so have gone back to the generic wercker badge
+
 [![Wercker](https://img.shields.io/wercker/ci/5e58eefdd322ec08007638b7/master?label=Wercker)](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
+
+can't run Buddy on more than 5 projects on free plan :-(
+[![Buddy](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989/badge.svg?token=7f63afa3c423a65e6e39a79be0386959e98c4105ea1e20f7f8b05d6d6b587038 "buddy pipeline")](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989)
 -->
 
 [![Azure DevOps Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=4&branchName=master)
