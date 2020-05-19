@@ -46,15 +46,6 @@ Hari Sekhon - Python / Jython Library
 [![Concourse](https://img.shields.io/badge/Concourse-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/.concourse.yml)
 [![GoCD](https://img.shields.io/badge/GoCD-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/.gocd.yml)
 [![Jenkins](https://img.shields.io/badge/Jenkins-ready-blue)](https://github.com/HariSekhon/pylib/blob/master/Jenkinsfile)
-<!--
-
-shields.io gets throttled after a few reloads :-/ - which is bad because shields latency is high and oftens fails to load some badges which requires you to reload the page a few times until they load, so have gone back to the generic wercker badge
-
-[![Wercker](https://img.shields.io/wercker/ci/5e58eefdd322ec08007638b7/master?label=Wercker)](https://app.wercker.com/project/byKey/abfa58ca784a2d86cc417be3615f2d3a)
-
-can't run Buddy on more than 5 projects on free plan :-(
-[![Buddy](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989/badge.svg?token=7f63afa3c423a65e6e39a79be0386959e98c4105ea1e20f7f8b05d6d6b587038 "buddy pipeline")](https://app.buddy.works/harisekhon/pylib/pipelines/pipeline/246989)
--->
 
 [![Azure DevOps Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=4&branchName=master)
 [![BitBucket Pipeline](https://img.shields.io/bitbucket/pipelines/harisekhon/pylib/master?logo=bitbucket&label=BitBucket)](https://bitbucket.org/harisekhon/pylib/addon/pipelines/home#!/)
