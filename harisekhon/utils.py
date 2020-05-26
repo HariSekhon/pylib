@@ -1305,7 +1305,7 @@ def isRegex(arg):
         re.match(arg, "")
         return True
     except re.error as _:
-        log.debug("regex failed validation: %s", _)
+        log.debug("regex '%s' failed validation: %s", arg, _)
     return False
 
 
