@@ -57,7 +57,7 @@ import defusedxml.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.13.1'
+__version__ = '0.13.2'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -1304,8 +1304,8 @@ def isRegex(arg):
     try:
         re.match(arg, "")
         return True
-    except re.error:
-        pass
+    except re.error as _:
+        log.debug("regex failed validation: %s", _)
     return False
 
 
