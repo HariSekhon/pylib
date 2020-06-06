@@ -17,9 +17,6 @@ alpine-sdk
 # installed by bash-tools submodule now
 #gcc
 
-python-dev
-py-pip
-
 cyrus-sasl-dev
 krb5-dev
 libffi-dev
