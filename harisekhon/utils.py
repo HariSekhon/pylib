@@ -57,7 +57,7 @@ import defusedxml.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.13.2'
+__version__ = '0.13.3'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -2170,7 +2170,15 @@ def validate_regex(arg, name=''):
     if isRegex(arg):
         log_option('{0}regex'.format(name), arg)
         return True
-    raise InvalidOptionException("invalid %(name)sregex '%(arg)s' defined" % locals())
+    msg = 'blank'
+    if arg is None:
+        msg = 'None'
+    else:
+        try:
+            re.compile(arg)
+        except re.error as _:
+            msg = _
+    raise InvalidOptionException("invalid %(name)sregex '%(arg)s' defined: %(msg)s" % locals())
 
 
 # def validate_resolvable
