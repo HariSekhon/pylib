@@ -87,7 +87,7 @@ Hari Sekhon
 
 Cloud & Big Data Contractor, United Kingdom
 
-[https://www.linkedin.com/in/harisekhon](https://www.linkedin.com/in/harisekhon)
+[![My LinkedIn](https://img.shields.io/badge/LinkedIn%20Profile-HariSekhon-blue?logo=linkedin)](https://www.linkedin.com/in/harisekhon/)
 ###### (you're welcome to connect with me on LinkedIn)
 
 #### Build + Unit Tests ####
