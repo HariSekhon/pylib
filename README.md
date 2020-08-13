@@ -32,6 +32,11 @@ Hari Sekhon - Python / Jython Library
 [![Docker Build Status](https://img.shields.io/docker/cloud/build/harisekhon/centos-github?logo=docker)](https://hub.docker.com/r/harisekhon/centos-github/builds)
 [![MicroBadger](https://images.microbadger.com/badges/image/harisekhon/github.svg)](http://microbadger.com/#/images/harisekhon/github)
 
+[![CI Builds Overview](https://img.shields.io/badge/CI%20Builds-Overview%20Page-blue?logo=circleci)](https://bitbucket.org/harisekhon/devops-bash-tools/src/master/STATUS.md)
+[![Jenkins](https://img.shields.io/badge/Jenkins-ready-blue?logo=jenkins)](https://github.com/HariSekhon/pylib/blob/master/Jenkinsfile)
+[![Concourse](https://img.shields.io/badge/Concourse-ready-blue?logo=concourse)](https://github.com/HariSekhon/pylib/blob/master/.concourse.yml)
+[![GoCD](https://img.shields.io/badge/GoCD-ready-blue?logo=go)](https://github.com/HariSekhon/pylib/blob/master/.gocd.yml)
+
 [![Travis CI](https://img.shields.io/travis/harisekhon/pylib/master?logo=travis&label=Travis)](https://travis-ci.org/HariSekhon/pylib)
 [![AppVeyor](https://img.shields.io/appveyor/build/harisekhon/pylib/master?logo=appveyor&label=AppVeyor)](https://ci.appveyor.com/project/HariSekhon/pylib/branch/master)
 [![Drone](https://img.shields.io/drone/build/HariSekhon/pylib/master?logo=drone&label=Drone)](https://cloud.drone.io/HariSekhon/pylib)
@@ -44,11 +49,6 @@ Hari Sekhon - Python / Jython Library
 [![Semaphore](https://harisekhon.semaphoreci.com/badges/pylib.svg)](https://harisekhon.semaphoreci.com/projects/pylib)
 [![Wercker](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/harisekhon/pylib/runs)
 <!--[![Wercker](https://img.shields.io/wercker/ci/5e58eefdd322ec08007638b7/master?label=Wercker&logo=oracle)](https://app.wercker.com/harisekhon/pylib/runs)-->
-
-[![Jenkins](https://img.shields.io/badge/Jenkins-ready-blue?logo=jenkins)](https://github.com/HariSekhon/pylib/blob/master/Jenkinsfile)
-[![Concourse](https://img.shields.io/badge/Concourse-ready-blue?logo=concourse)](https://github.com/HariSekhon/pylib/blob/master/.concourse.yml)
-[![GoCD](https://img.shields.io/badge/GoCD-ready-blue?logo=go)](https://github.com/HariSekhon/pylib/blob/master/.gocd.yml)
-[![CI Builds Overview](https://img.shields.io/badge/CI%20Builds-Overview%20Page-blue?logo=circleci)](https://bitbucket.org/harisekhon/devops-bash-tools/src/master/STATUS.md)
 
 [![Azure DevOps Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=4&branchName=master)
 [![BitBucket Pipeline](https://img.shields.io/bitbucket/pipelines/harisekhon/pylib/master?logo=bitbucket&label=BitBucket)](https://bitbucket.org/harisekhon/pylib/addon/pipelines/home#!/)
