@@ -52,7 +52,7 @@ Hari Sekhon - Python / Jython Library
 
 [![Azure DevOps Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=4&branchName=master)
 [![BitBucket Pipeline](https://img.shields.io/bitbucket/pipelines/harisekhon/pylib/master?logo=bitbucket&label=BitBucket)](https://bitbucket.org/harisekhon/pylib/addon/pipelines/home#!/)
-[![GitLab Pipeline](https://img.shields.io/gitlab/pipeline/harisekhon/pylib?logo=gitlab&label=GitLab)](https://gitlab.com/HariSekhon/pylib/pipelines)
+[![GitLab Pipeline](https://img.shields.io/gitlab/pipeline/harisekhon/pylib?logo=gitlab&label=GitLab%20CI)](https://gitlab.com/HariSekhon/pylib/pipelines)
 [![Repo on GitHub](https://img.shields.io/badge/repo-GitHub-blue?logo=github)](https://github.com/HariSekhon/pylib)
 [![Repo on GitLab](https://img.shields.io/badge/repo-GitLab-blue?logo=gitlab)](https://gitlab.com/HariSekhon/pylib)
 [![Repo on BitBucket](https://img.shields.io/badge/repo-BitBucket-blue?logo=bitbucket)](https://bitbucket.org/HariSekhon/pylib)
