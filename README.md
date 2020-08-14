@@ -46,7 +46,7 @@ Hari Sekhon - Python / Jython Library
 [![Codeship Status for HariSekhon/pylib](https://app.codeship.com/projects/47db8760-3c4f-0138-d157-661d474a0ccb/status?branch=master)](https://app.codeship.com/projects/387232)
 [![Shippable](https://img.shields.io/shippable/5e52c63645c70f0007ff5152/master?label=Shippable&logo=jfrog)](https://app.shippable.com/github/HariSekhon/pylib/dashboard/jobs)
 [![Codefresh](https://g.codefresh.io/api/badges/pipeline/harisekhon/GitHub%2Fpylib?branch=master&key=eyJhbGciOiJIUzI1NiJ9.NWU1MmM5OGNiM2FiOWUzM2Y3ZDZmYjM3.O69674cW7vYom3v5JOGKXDbYgCVIJU9EWhXUMHl3zwA&type=cf-1)](https://g.codefresh.io/pipelines/edit/new/builds?id=5e58e2f89604d74f0c95ee24&pipeline=pylib&projects=GitHub&projectId=5e52ca8ea284e00f882ea992&context=github&filter=page:1;pageSize:10;timeFrameStart:week)
-[![BuildKite](https://img.shields.io/buildkite/7cc15b95df0f0478ccecd598dffa756d1460f68914b6d3083d/master?label=BuildKite)](https://buildkite.com/hari-sekhon/pylib)
+[![BuildKite](https://img.shields.io/buildkite/7cc15b95df0f0478ccecd598dffa756d1460f68914b6d3083d/master?label=BuildKite&logo=buildkite)](https://buildkite.com/hari-sekhon/pylib)
 [![Cirrus CI](https://img.shields.io/cirrus/github/HariSekhon/pylib/master?logo=Cirrus%20CI&label=Cirrus%20CI)](https://cirrus-ci.com/github/HariSekhon/pylib)
 [![Semaphore](https://harisekhon.semaphoreci.com/badges/pylib.svg)](https://harisekhon.semaphoreci.com/projects/pylib)
 [![Wercker](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/harisekhon/pylib/runs)
