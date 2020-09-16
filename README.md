@@ -86,6 +86,8 @@ Hari Sekhon - Python / Jython Library
 [![CI PyPy 2](https://github.com/HariSekhon/pylib/workflows/CI%20PyPy%202/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+PyPy+2%22)
 [![CI PyPy 3](https://github.com/HariSekhon/pylib/workflows/CI%20PyPy%203/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22CI+PyPy+3%22)
 
+[git.io/python-lib](https://git.io/pylib)
+
 Python library, full of lots of validation code and utility functions.
 
 Hari Sekhon
@@ -140,3 +142,5 @@ If using bespoke internal domains such as `.local`, `.intranet`, `.vm`, `.cloud`
 * [Dockerfiles](https://github.com/HariSekhon/Dockerfiles) - 50+ DockerHub public images for Docker & Kubernetes - Hadoop, Kafka, ZooKeeper, HBase, Cassandra, Solr, SolrCloud, Presto, Apache Drill, Nifi, Spark, Mesos, Consul, Riak, OpenTSDB, Jython, Advanced Nagios Plugins & DevOps Tools repos on Alpine, CentOS, Debian, Fedora, Ubuntu, Superset, H2O, Serf, Alluxio / Tachyon, FakeS3
 
 [git.io/python-lib](https://git.io/python-lib)
+
+[git.io/python-lib](https://git.io/pylib)
