@@ -112,6 +112,10 @@ notifications:
 # ========================================
 # https://docs.travis-ci.com/user/caching/
 
+before_cache:
+  # XXX: cache breaks pypy builds, so clear it
+  - rm -f $HOME/.cache/pip
+
 cache:
   - pip
   - directories:
