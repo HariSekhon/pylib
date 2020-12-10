@@ -118,9 +118,9 @@ before_cache:
   - rm -f $HOME/.cache/pip
 
 cache:
-  - pip
+  #- pip
   - directories:
-    - $HOME/.cache
+    #- $HOME/.cache
     - $HOME/.cpan
     - $HOME/.cpanm
     - $HOME/.gem
