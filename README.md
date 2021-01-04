@@ -83,6 +83,8 @@ Hari Sekhon - Python / Jython Library
 [![Fedora](https://github.com/HariSekhon/pylib/workflows/Fedora/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22Fedora%22)
 [![Alpine](https://github.com/HariSekhon/pylib/workflows/Alpine/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22Alpine%22)
 [![Alpine 3](https://github.com/HariSekhon/pylib/workflows/Alpine%203/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22Alpine+3%22)
+
+[![Python versions](https://img.shields.io/badge/Python-2.7+-3776AB?logo=python&logoColor=white)](https://github.com/HariSekhon/pylib)
 [![Python 2.7](https://github.com/HariSekhon/pylib/workflows/Python%202.7/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22Python+2.7%22)
 [![Python 3.5](https://github.com/HariSekhon/pylib/workflows/Python%203.5/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22Python+3.5%22)
 [![Python 3.6](https://github.com/HariSekhon/pylib/workflows/Python%203.6/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22Python+3.6%22)
