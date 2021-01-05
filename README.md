@@ -27,6 +27,7 @@ Hari Sekhon - Python / Jython Library
 [![Linux](https://img.shields.io/badge/OS-Linux-blue?logo=linux)](https://github.com/HariSekhon/pylib#hari-sekhon---python--jython-library)
 [![Mac](https://img.shields.io/badge/OS-Mac-blue?logo=apple)](https://github.com/HariSekhon/pylib#hari-sekhon---python--jython-library)
 [![Docker](https://img.shields.io/badge/container-Docker-blue?logo=docker)](https://hub.docker.com/r/harisekhon/github/)
+[![Dockerfile](https://img.shields.io/badge/Dockerfile-repo-blue?logo=docker)](https://github.com/HariSekhon/Dockerfiles)
 [![DockerHub Pulls](https://img.shields.io/docker/pulls/harisekhon/centos-github?label=DockerHub%20pulls&logo=docker)](https://hub.docker.com/r/harisekhon/github)
 [![DockerHub Build Automated](https://img.shields.io/docker/automated/harisekhon/centos-github?logo=docker)](https://hub.docker.com/r/harisekhon/centos-github)
 <!-- these badges don't work any more
