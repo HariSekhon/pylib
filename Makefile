@@ -60,7 +60,6 @@ build: init
 	$(MAKE) system-packages-python
 
 	bash-tools/setup/alternatives_set_python.sh
-	bash-tools/setup/pip_fix_version.sh
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
 
