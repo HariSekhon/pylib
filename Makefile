@@ -65,7 +65,8 @@ build: init
 
 	# fixes bug in cffi version detection when installing requests-kerberos
 	# $(SUDO_PIP) pip install --quiet --upgrade pip || :
-	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh pip || :
+	# Update: breaks Python 2.7 because pip 21.0 no longer supports Python 2.7, which breaks a lot of OS builds
+	#PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh pip || :
 
 	# impyla needs newer setuptools than OS packaged with Python 2
 	# $(SUDO_PIP) pip install --quiet --upgrade setuptools || :
