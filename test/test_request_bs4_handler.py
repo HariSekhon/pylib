@@ -49,7 +49,7 @@ class RequestBS4HandlerTester(unittest.TestCase):
 
     # TODO: mock this
     def test_request_bs4_handler(self):
-        req = self.SubRequestBS4Handler().get('www.travis-ci.org')
+        req = self.SubRequestBS4Handler().get('www.travis-ci.com')
         self.assertTrue(isinstance, requests.Response)
         self.SubRequestBS4Handler(req)
 
