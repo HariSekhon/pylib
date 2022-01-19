@@ -27,7 +27,7 @@ on:
 jobs:
   build:
     #name: build
-    timeout-minutes: 60
+    timeout-minutes: 20
     runs-on: macos-10.15
     steps:
     - uses: actions/checkout@v2
@@ -37,6 +37,12 @@ jobs:
         key: ${{ runner.os }}-pip-pylib  # -${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-pylib
+    - uses: actions/cache@v1
+      with:
+        path: ~/.cpanm
+        key: ${{ runner.os }}-cpanm-pylib-${{ hashFiles('**/cpan-requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-cpanm-pylib
     - name: brew update
       run: which brew && brew update || echo
     - name: init
