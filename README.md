@@ -41,7 +41,6 @@ Hari Sekhon - Python / Jython Library
 [![GoCD](https://img.shields.io/badge/GoCD-ready-blue?logo=go)](https://github.com/HariSekhon/pylib/blob/master/.gocd.yml)
 [![TeamCity](https://img.shields.io/badge/TeamCity-ready-blue?logo=teamcity)](https://github.com/HariSekhon/TeamCity-CI)
 
-[![Travis CI](https://img.shields.io/badge/TravisCI-legacy-lightgrey?logo=travis&label=Travis%20CI)](https://github.com/HariSekhon/pylib/blob/master/.travis.yml)
 [![AppVeyor](https://img.shields.io/appveyor/build/harisekhon/pylib/master?logo=appveyor&label=AppVeyor)](https://ci.appveyor.com/project/HariSekhon/pylib/branch/master)
 [![Drone](https://img.shields.io/drone/build/HariSekhon/pylib/master?logo=drone&label=Drone)](https://cloud.drone.io/HariSekhon/pylib)
 [![CircleCI](https://circleci.com/gh/HariSekhon/pylib.svg?style=svg)](https://circleci.com/gh/HariSekhon/pylib)
@@ -53,6 +52,8 @@ Hari Sekhon - Python / Jython Library
 [![Semaphore](https://harisekhon.semaphoreci.com/badges/pylib.svg)](https://harisekhon.semaphoreci.com/projects/pylib)
 [![Wercker](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/harisekhon/pylib/runs)
 [![Buddy](https://img.shields.io/badge/Buddy-ready-1A86FD?logo=buddy)](https://github.com/HariSekhon/pylib/blob/master/buddy.yml)
+[![Travis CI](https://img.shields.io/badge/TravisCI-legacy-lightgrey?logo=travis&label=Travis%20CI)](https://github.com/HariSekhon/pylib/blob/master/.travis.yml)
+[![Validation](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml)
 <!--[![Wercker](https://img.shields.io/wercker/ci/5e58eefdd322ec08007638b7/master?label=Wercker&logo=oracle)](https://app.wercker.com/harisekhon/pylib/runs)-->
 
 [![Azure DevOps Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=4&branchName=master)
