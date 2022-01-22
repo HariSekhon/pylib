@@ -53,7 +53,6 @@ Hari Sekhon - Python / Jython Library
 [![Wercker](https://app.wercker.com/status/abfa58ca784a2d86cc417be3615f2d3a/s/master "wercker status")](https://app.wercker.com/harisekhon/pylib/runs)
 [![Buddy](https://img.shields.io/badge/Buddy-ready-1A86FD?logo=buddy)](https://github.com/HariSekhon/pylib/blob/master/buddy.yml)
 [![Travis CI](https://img.shields.io/badge/TravisCI-legacy-lightgrey?logo=travis&label=Travis%20CI)](https://github.com/HariSekhon/pylib/blob/master/.travis.yml)
-[![Validation](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml)
 <!--[![Wercker](https://img.shields.io/wercker/ci/5e58eefdd322ec08007638b7/master?label=Wercker&logo=oracle)](https://app.wercker.com/harisekhon/pylib/runs)-->
 
 [![Azure DevOps Pipeline](https://dev.azure.com/harisekhon/GitHub/_apis/build/status/HariSekhon.pylib?branchName=master)](https://dev.azure.com/harisekhon/GitHub/_build/latest?definitionId=4&branchName=master)
@@ -67,6 +66,8 @@ Hari Sekhon - Python / Jython Library
 [![Repo on GitLab](https://img.shields.io/badge/repo-GitLab-FCA121?logo=gitlab)](https://gitlab.com/HariSekhon/pylib)
 [![Repo on BitBucket](https://img.shields.io/badge/repo-BitBucket-0052CC?logo=bitbucket)](https://bitbucket.org/HariSekhon/pylib)
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib.svg?type=shield)](https://app.fossa.com/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib?ref=badge_shield)
+[![Validation](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml)
+[![Semgrep](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml)
 
 [![GitHub Actions Ubuntu](https://github.com/HariSekhon/pylib/workflows/GitHub%20Actions%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22GitHub+Actions+Ubuntu%22)
 [![Mac](https://github.com/HariSekhon/pylib/workflows/Mac/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22Mac%22)
