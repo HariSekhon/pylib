@@ -11,13 +11,14 @@ Hari Sekhon - Python / Jython Library
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/HariSekhon/pylib.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/HariSekhon/pylib/alerts/)
 [![GitHub stars](https://img.shields.io/github/stars/harisekhon/pylib?logo=github)](https://github.com/harisekhon/pylib/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib?logo=github)](https://github.com/harisekhon/pylib/network)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/HariSekhon/pylib?logo=github)](https://github.com/HariSekhon/pylib/commits/master)
 
 <!-- doesn't include /tests?/ or comments
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=ncloc)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 -->
-[![Lines of Code](https://img.shields.io/badge/lines%20of%20code-10k-lightgrey?logo=codecademy)](https://github.com/HariSekhon/pylib)
 [![Coverage Status](https://coveralls.io/repos/HariSekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/HariSekhon/pylib?branch=master)
+[![Lines of Code](https://img.shields.io/badge/lines%20of%20code-10k-lightgrey?logo=codecademy)](https://github.com/HariSekhon/pylib)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/HariSekhon/pylib?logo=github)](https://github.com/HariSekhon/pylib/commits/master)
+[![License](https://img.shields.io/github/license/HariSekhon/pylib)](https://github.com/HariSekhon/pylib/blob/master/LICENSE)
 
 <!-- site broken
 [![PyUp](https://pyup.io/repos/github/HariSekhon/pylib/shield.svg)](https://pyup.io/account/repos/github/HariSekhon/pylib/)
