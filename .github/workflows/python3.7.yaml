@@ -25,6 +25,7 @@ on:
 jobs:
   build:
     name: Python 3.7
-    uses: HariSekhon/GitHub-Actions/.github/workflows/python3.7.yaml@master
-    #with:
-    #  debug: 1
+    uses: HariSekhon/GitHub-Actions/.github/workflows/python.yaml@master
+    with:
+      version: 3.7
+      #debug: 1
