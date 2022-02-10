@@ -24,6 +24,7 @@ on:
 jobs:
   build:
     name: PyPy2
-    uses: HariSekhon/GitHub-Actions/.github/workflows/pypy2.yaml@master
-    #with:
-    #  debug: 1
+    uses: HariSekhon/GitHub-Actions/.github/workflows/python.yaml@master
+    with:
+      version: pypy2
+      #debug: 1
