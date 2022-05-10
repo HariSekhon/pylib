@@ -4,7 +4,7 @@
 #  Author: Hari Sekhon
 #  Date: 2017-06-29 15:48:48 +0200 (Thu, 29 Jun 2017)
 #
-#  https://github.com/harisekhon/pylib
+#  https://github.com/HariSekhon/pylib
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #

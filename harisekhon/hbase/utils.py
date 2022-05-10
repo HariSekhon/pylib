@@ -5,14 +5,14 @@
 #  Date: 2016-10-12 23:09:32 +0100 (Wed, 12 Oct 2016)
 #  Port of my Perl library version from Date: 2014-01-08 15:44:41 +0000 (Wed, 08 Jan 2014)
 #
-#  https://github.com/harisekhon/pylib
+#  https://github.com/HariSekhon/pylib
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn
 #  and optionally send me feedback to help steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 """

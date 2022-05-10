@@ -2,11 +2,11 @@
 #  Author: Hari Sekhon
 #  Date: 2013-01-06 15:45:00 +0000 (Sun, 06 Jan 2013)
 #
-#  https://github.com/harisekhon/pylib
+#  https://github.com/HariSekhon/pylib
 #
 #  License: see accompanying LICENSE file
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 # Travis has custom python install earlier in $PATH even in Perl builds so need to install PyPI modules to non-system python otherwise they're not found by programs.
@@ -23,15 +23,15 @@
 #
 # Alpine:
 #
-#   apk add --no-cache git make && git clone https://github.com/harisekhon/pylib && cd pylib && make
+#   apk add --no-cache git make && git clone https://github.com/HariSekhon/pylib && cd pylib && make
 #
 # Debian / Ubuntu:
 #
-#   apt-get update && apt-get install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
+#   apt-get update && apt-get install -y make git && git clone https://github.com/HariSekhon/pylib && cd pylib && make
 #
 # RHEL / CentOS:
 #
-#   yum install -y make git && git clone https://github.com/harisekhon/pylib && cd pylib && make
+#   yum install -y make git && git clone https://github.com/HariSekhon/pylib && cd pylib && make
 
 # ===================
 

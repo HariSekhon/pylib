@@ -3,14 +3,14 @@
 #  Author: Hari Sekhon
 #  Date: 2013-01-06 01:25:55 +0000 (Sun, 06 Jan 2013)
 #
-#  https://github.com/harisekhon/pylib
+#  https://github.com/HariSekhon/pylib
 #
 #  License: see accompanying Hari Sekhon LICENSE file
 #
 #  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
 #  to help improve or steer this or other code I publish
 #
-#  https://www.linkedin.com/in/harisekhon
+#  https://www.linkedin.com/in/HariSekhon
 #
 
 """
@@ -191,7 +191,7 @@ class UtilsTester(unittest.TestCase):
         self.assertTrue(get_file_docstring(__file__))
 
     def test_get_file_github_repo(self):
-        self.assertEqual(get_file_github_repo(__file__), 'https://github.com/harisekhon/pylib')
+        self.assertEqual(get_file_github_repo(__file__), 'https://github.com/HariSekhon/pylib')
 
     def test_find_git_root(self):
         gitroot = find_git_root(__file__)
@@ -1317,12 +1317,12 @@ class UtilsTester(unittest.TestCase):
     def test_support_msg(self):
         # avoid assertRegexpMatches as it's only available >= 2.7
         self.assertTrue(re.search('https://github.com/HariSekhon/testrepo/issues', support_msg('testrepo')))
-        self.assertTrue(re.search('https://github.com/HariSekhon/devops-python-tools/issues', support_msg('')))
-        self.assertTrue(re.search('https://github.com/HariSekhon/devops-python-tools/issues', support_msg(None)))
-        self.assertTrue(re.search('https://github.com/HariSekhon/devops-python-tools/issues', support_msg()))
+        self.assertTrue(re.search('https://github.com/HariSekhon/DevOps-Python-tools/issues', support_msg('')))
+        self.assertTrue(re.search('https://github.com/HariSekhon/DevOps-Python-tools/issues', support_msg(None)))
+        self.assertTrue(re.search('https://github.com/HariSekhon/DevOps-Python-tools/issues', support_msg()))
         prog2 = harisekhon.utils.prog
         harisekhon.utils.prog = 'check_test'
-        self.assertTrue(re.search('https://github.com/HariSekhon/nagios-plugins/issues', support_msg(None)))
+        self.assertTrue(re.search('https://github.com/HariSekhon/Nagios-Plugins/issues', support_msg(None)))
         harisekhon.utils.prog = prog2
 
     def test_support_msg_api(self):
@@ -1330,7 +1330,7 @@ class UtilsTester(unittest.TestCase):
         # avoid assertRegexpMatches as it's only available >= 2.7
         self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/testrepo/issues',
                                   support_msg_api('testrepo')))
-        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/devops-python-tools/issues',
+        self.assertTrue(re.search(r'API may have changed\. .* https://github.com/HariSekhon/DevOps-Python-tools/issues',
                                   support_msg_api()))
 
     def test_skip_java_output(self):
