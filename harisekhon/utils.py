@@ -128,9 +128,9 @@ valid_nagios_units = ('%', 's', 'ms', 'us', 'B', 'KB', 'MB', 'GB', 'TB', 'c')
 def support_msg(repo=None):
     if isBlankOrNone(repo):
         if prog.startswith('check_'):
-            repo = 'nagios-plugins'
+            repo = 'Nagios-Plugins'
         else:
-            repo = 'devops-python-tools'
+            repo = 'DevOps-Python-tools'
     _ = 'Please try latest version from https:/github.com/HariSekhon/%(repo)s and if problem persists paste the full output using the --debug switch in to a ticket for a fix/update at https://github.com/HariSekhon/%(repo)s/issues' % locals()  # pylint: disable=line-too-long
     return _
 
@@ -323,7 +323,7 @@ def get_file_github_repo(filename):
     filename = re.sub('.pyc$', '.py', filename)
     _ = open(filename)
     for line in _:
-        if 'https://github.com/harisekhon' in line:
+        if 'https://github.com/HariSekhon' in line:
             _.close()
             return line.lstrip('#').strip()
     _.close()
