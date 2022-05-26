@@ -704,6 +704,7 @@ def _load_tlds(filename):
             tld_count += 1
         else:
             warnings.warn("TLD: '%(line)s' from tld file '%(filename)s' not validated, skipping that TLD" % locals())
+    _.close()
     log.debug("loaded %s TLDs from file '%s'", tld_count, filename)
 
 _tld_file = libdir + '/resources/tlds-alpha-by-domain.txt'
