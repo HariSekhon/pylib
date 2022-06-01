@@ -67,6 +67,7 @@ Hari Sekhon - Python / Jython Library
 [![Repo on GitLab](https://img.shields.io/badge/repo-GitLab-FCA121?logo=gitlab)](https://gitlab.com/HariSekhon/pylib)
 [![Repo on BitBucket](https://img.shields.io/badge/repo-BitBucket-0052CC?logo=bitbucket)](https://bitbucket.org/HariSekhon/pylib)
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib.svg?type=shield)](https://app.fossa.com/projects/custom%2B16526%2Fgithub.com%2FHariSekhon%2Fpylib?ref=badge_shield)
+[![ShellCheck](https://github.com/HariSekhon/pylib/actions/workflows/shellcheck.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/shellcheck.yaml)
 [![Validation](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml)
 [![Semgrep](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml)
 [![Kics](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml)
