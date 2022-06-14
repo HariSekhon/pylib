@@ -70,6 +70,7 @@ Hari Sekhon - Python / Jython Library
 [![ShellCheck](https://github.com/HariSekhon/pylib/actions/workflows/shellcheck.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/shellcheck.yaml)
 [![Validation](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml)
 [![Semgrep](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml)
+[![Semgrep Cloud](https://github.com/HariSekhon/pylib/actions/workflows/semgrep-cloud.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/semgrep-cloud.yaml)
 [![Kics](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml)
 
 [![GitHub Actions Ubuntu](https://github.com/HariSekhon/pylib/workflows/GitHub%20Actions%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22GitHub+Actions+Ubuntu%22)
