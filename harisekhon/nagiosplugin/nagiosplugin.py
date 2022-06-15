@@ -39,7 +39,7 @@ from harisekhon.nagiosplugin.threshold import Threshold
 from harisekhon.nagiosplugin.threshold import InvalidThresholdException
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.9.5'
+__version__ = '0.9.6'
 
 
 class NagiosPlugin(CLI):
@@ -229,9 +229,13 @@ class NagiosPlugin(CLI):
         warning_msg = ''
         critical_msg = ''
         if not warning or warning.thresholds[boundary] is not None:
-            warning_msg = '{0:g}'.format(warning.thresholds[boundary])
+            # results in exponential format
+            #warning_msg = '{0:g}'.format(warning.thresholds[boundary])
+            warning_msg = '{0:f}'.format(warning.thresholds[boundary])
         if not critical or critical.thresholds[boundary] is not None:
-            critical_msg = '{0:g}'.format(critical.thresholds[boundary])
+            # results in exponential format
+            #critical_msg = '{0:g}'.format(critical.thresholds[boundary])
+            critical_msg = '{0:f}'.format(critical.thresholds[boundary])
         return ';{0};{1}'.format(warning_msg, critical_msg)
 
     # Generic exception handler for Nagios to rewrite any unhandled exceptions as UNKNOWN rather than allowing
