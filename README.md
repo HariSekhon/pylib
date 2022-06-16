@@ -1,5 +1,4 @@
-Hari Sekhon - Python / Jython Library
-===================================
+# Hari Sekhon - Python / Jython Library
 
 [![GitHub stars](https://img.shields.io/github/stars/harisekhon/pylib?logo=github)](https://github.com/HariSekhon/pylib/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib?logo=github)](https://github.com/HariSekhon/pylib/network)
