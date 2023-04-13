@@ -66,23 +66,23 @@ build: init
 	# fixes bug in cffi version detection when installing requests-kerberos
 	# $(SUDO_PIP) pip install --quiet --upgrade pip || :
 	# Update: breaks Python 2.7 because pip 21.0 no longer supports Python 2.7, which breaks a lot of OS builds
-	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh 'pip<21.0' || :
+	PIP=$(PIP) PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh 'pip<21.0' || :
 
 	# impyla needs newer setuptools than OS packaged with Python 2
 	# $(SUDO_PIP) pip install --quiet --upgrade setuptools || :
 	# Python 2.7 - latest version to support is 44.1.1
-	PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh 'setuptools==44.1.1' || :
+	PIP=$(PIP) PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh 'setuptools==44.1.1' || :
 
 	# only install pip packages not installed via system packages
 	# $(SUDO_PIP) pip install --quiet --upgrade -r requirements.txt
 	# $(SUDO_PIP) pip install --quiet -r requirements.txt
-	PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh requirements.txt
+	PIP=$(PIP) PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh requirements.txt
 
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# broken with:
 	# Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-CoopMc/cryptography/
-	#PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient ||\
-	#PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient
+	#PIP=$(PIP) PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient ||\
+	#PIP=$(PIP) PIP_OPTS="--quiet --upgrade" bash-tools/python_pip_install.sh ndg-httpsclient
 
 	# Python 2.4 - 2.6 backports
 	# $(SUDO_PIP) pip install argparse
