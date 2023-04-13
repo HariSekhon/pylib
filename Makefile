@@ -59,7 +59,7 @@ build: init
 	#if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
 
-	bash-tools/setup/alternatives_set_python.sh
+	@if type -P alternatives; then bash-tools/setup/alternatives_set_python.sh; fi
 
 	git update-index --assume-unchanged resources/custom_tlds.txt
 
