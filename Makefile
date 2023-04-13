@@ -76,7 +76,8 @@ build: init
 	# only install pip packages not installed via system packages
 	# $(SUDO_PIP) pip install --quiet --upgrade -r requirements.txt
 	# $(SUDO_PIP) pip install --quiet -r requirements.txt
-	PIP=$(PIP) PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh requirements.txt
+	#PIP=$(PIP) PIP_OPTS="--ignore-installed urllib3" bash-tools/python_pip_install_if_absent.sh requirements.txt
+	PIP=$(PIP) bash-tools/python_pip_install_if_absent.sh requirements.txt
 
 	# prevents https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning
 	# broken with:
