@@ -52,7 +52,6 @@ build: init
 	@echo Python Lib Build
 	@echo ================
 	@$(MAKE) git-summary
-	@if uname -s | grep -q Darwin; then brew install python; fi
 	@echo
 	@$(MAKE) python-version
 
