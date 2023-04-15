@@ -163,6 +163,8 @@ If using bespoke internal domains such as `.local`, `.intranet`, `.vm`, `.cloud`
 
 - [Dockerfiles](https://github.com/HariSekhon/Dockerfiles) - 50+ DockerHub public images for Docker & Kubernetes - Hadoop, Kafka, ZooKeeper, HBase, Cassandra, Solr, SolrCloud, Presto, Apache Drill, Nifi, Spark, Mesos, Consul, Riak, OpenTSDB, Jython, Advanced Nagios Plugins & DevOps Tools repos on Alpine, CentOS, Debian, Fedora, Ubuntu, Superset, H2O, Serf, Alluxio / Tachyon, FakeS3
 
+- [Diagrams-as-Code](https://github.com/HariSekhon/Diagrams-as-Code) - Cloud & Open Source architecture diagrams with Python source code provided - automatically regenerated via GitHub Actions CI/CD - AWS, GCP, Kubernetes, ArgoCD, Kong API Gateway, Nginx, Redis, PostgreSQL, Kafka, Spark, web farms, event processing...
+
 [git.io/python-lib](https://git.io/python-lib)
 
 [git.io/python-lib](https://git.io/pylib)
