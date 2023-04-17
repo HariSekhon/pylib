@@ -57,7 +57,7 @@ import defusedxml.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.13.4'
+__version__ = '0.13.5'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -743,7 +743,7 @@ aws_host_ip_regex      = r'\bip-\d+-\d+-\d+-\d+\b'
 hostname_regex         = hostname_component + r'(?:\.' + domain_regex + ')?'
 aws_hostname_regex     = aws_host_ip_regex + r'(?:\.' + domain_regex + ')?'
 dirname_regex          = r'[\/\w\s\\.,:*()=%?+-]+'
-filename_regex         = dirname_regex + r'[^\/]'
+filename_regex         = dirname_regex + r'(?<![\/])'
 rwxt_regex             = r'[r-][w-][x-][r-][w-][x-][r-][w-][xt-]'
 fqdn_regex             = hostname_component + r'\.' + domain_regex
 aws_fqdn_regex         = aws_host_ip_regex + r'\.' + domain_regex
