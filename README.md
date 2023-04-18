@@ -16,6 +16,7 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=security_rating)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=HariSekhon_pylib)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/HariSekhon/pylib.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/HariSekhon/pylib/alerts/)
 [![Coverage Status](https://coveralls.io/repos/HariSekhon/pylib/badge.svg?branch=master&service=github)](https://coveralls.io/github/HariSekhon/pylib?branch=master)
 
