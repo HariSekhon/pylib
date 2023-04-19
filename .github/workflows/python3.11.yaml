@@ -54,9 +54,9 @@ jobs:
     # github.event.repository context not available in scheduled workflows
     #if: github.event.repository.fork == false
     if: github.repository_owner == 'HariSekhon'
-    name: Python 3.10
+    name: Python 3.11
     uses: HariSekhon/GitHub-Actions/.github/workflows/make.yaml@master
     with:
-      python-version: "3.10"
+      python-version: "3.11"
       caches: apt pip
       debug: ${{ github.event.inputs.debug }}
