@@ -16,4 +16,4 @@
 set -eu
 srcdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-"$srcdir/../bash-tools/python_compile.sh"
+"$srcdir/../bash-tools/python/python_compile.sh"
