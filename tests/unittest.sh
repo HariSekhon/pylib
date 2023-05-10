@@ -70,7 +70,7 @@ nose_commands="$(
 
 # want splitting
 # shellcheck disable=SC2086
-nose="$(bash-tools/python_find_library_executable.sh $nose_commands)"
+nose="$(bash-tools/python/python_find_library_executable.sh $nose_commands)"
 echo
 echo "Unsetting environment variables that may interfere with unit tests"
 unset HOST
