@@ -32,9 +32,9 @@ tests/find_dup_defs.sh
 
 #./help.sh
 
-bash-tools/check_all.sh
+bash-tools/checks/check_all.sh
 
-bash-tools/run_tests.sh
+bash-tools/checks/run_tests.sh
 
 time_taken "$pylib_start_time" "PyLib Tests Completed in"
 section2 "PyLib Tests Successful"
