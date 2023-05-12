@@ -67,9 +67,10 @@
 [![YAML](https://github.com/HariSekhon/pylib/actions/workflows/yaml.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/yaml.yaml)
 [![XML](https://github.com/HariSekhon/pylib/actions/workflows/xml.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/xml.yaml)
 [![Validation](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/validate.yaml)
+[![Kics](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml)
 [![Semgrep](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/semgrep.yaml)
 [![Semgrep Cloud](https://github.com/HariSekhon/pylib/actions/workflows/semgrep-cloud.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/semgrep-cloud.yaml)
-[![Kics](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/kics.yaml)
+[![Trivy](https://github.com/HariSekhon/pylib/actions/workflows/trivy.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/trivy.yaml)
 
 [![GitHub Actions Ubuntu](https://github.com/HariSekhon/pylib/workflows/GitHub%20Actions%20Ubuntu/badge.svg)](https://github.com/HariSekhon/pylib/actions?query=workflow%3A%22GitHub+Actions+Ubuntu%22)
 [![Mac](https://github.com/HariSekhon/pylib/actions/workflows/mac.yaml/badge.svg)](https://github.com/HariSekhon/pylib/actions/workflows/mac.yaml)
