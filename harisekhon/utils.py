@@ -57,7 +57,7 @@ import defusedxml.ElementTree as ET
 # from xml.parsers.expat import ExpatError
 
 __author__ = 'Hari Sekhon'
-__version__ = '0.13.5'
+__version__ = '0.14.0'
 
 # Standard Nagios return codes
 ERRORS = {
@@ -725,7 +725,7 @@ _custom_tlds = libdir + '/resources/custom_tlds.txt'
 if os.path.isfile(_custom_tlds):
     _load_tlds(_custom_tlds)
 
-tld_regex = r'(?i)\b(?:' + '|'.join(_tlds) + r')\b'
+tld_regex = r'\b(?:' + '|'.join(_tlds) + r')\b'
 
 # pylint: disable=bad-whitespace
 domain_component_regex = r'\b[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\b'
@@ -765,11 +765,11 @@ host_regex             = r'\b(?:' + hostname_regex + '|' + ip_regex + r')\b'
 # This is not from ps -ef etc it is the actual process registered name, hence init not [init] as it appears in ps output
 process_name_regex     = r'\s*[\w_\.\/\<\>-][\w\s_\.\/\<\>-]+'
 url_path_suffix_regex  = r'/(?:[\w.,:\/%&?#!=*|\[\]~+-]+)?'
-url_regex              = r'(?i)\bhttps?://' + host_regex + r'(?::\d{1,5})?(?:' + url_path_suffix_regex + ')?'
+url_regex              = r'\bhttps?://' + host_regex + r'(?::\d{1,5})?(?:' + url_path_suffix_regex + ')?'
 user_regex             = r'\b[A-Za-z0-9][A-Za-z0-9\._-]*[A-Za-z0-9]\b'
 column_regex           = r'\b[\w\:]+\b'
 ldap_dn_regex          = r'\b\w+=[\w\s-]+(?:,\w+=[\w\s-]+)*\b'
-krb5_principal_regex   = r'(?i)' + user_regex + r'(?:\/' + hostname_regex + r')?(?:\@' + domain_regex + r')?'
+krb5_principal_regex   = user_regex + r'(?:\/' + hostname_regex + r')?(?:\@' + domain_regex + r')?'
 threshold_range_regex  = r'^(\@)?(-?\d+(?:\.\d+)?)(:)(-?\d+(?:\.\d+)?)?'
 threshold_simple_regex = r'^(-?\d+(?:\.\d+)?)'
 label_regex            = r'\s*[\%\(\)\/\*\w-][\%\(\)\/\*\w\s-]*'
