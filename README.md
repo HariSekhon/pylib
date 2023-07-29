@@ -4,6 +4,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/harisekhon/pylib?logo=github)](https://github.com/HariSekhon/pylib/network)
 [![Lines of Code](https://img.shields.io/badge/lines%20of%20code-10k-lightgrey?logo=codecademy)](https://github.com/HariSekhon/pylib)
 [![License](https://img.shields.io/github/license/HariSekhon/pylib)](https://github.com/HariSekhon/pylib/blob/master/LICENSE)
+[![My LinkedIn](https://img.shields.io/badge/LinkedIn%20Profile-HariSekhon-blue?logo=linkedin)](https://www.linkedin.com/in/HariSekhon/)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/HariSekhon/pylib?logo=github)](https://github.com/HariSekhon/pylib/commits/master)
 <!-- doesn't include /tests?/ or comments
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=HariSekhon_pylib&metric=ncloc)](https://sonarcloud.io/dashboard?id=HariSekhon_pylib)
